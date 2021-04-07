@@ -19,7 +19,7 @@ export const getServerSideProps = async ({
   const { connected, errorProp, extractHandle } = require("@utils/serverFunctions");
 
   if (!articleId) return errorProp();
-  if (!(await connected)) return errorProp(400, "It seems there's a network connectivity issue, try again later");
+  if (!(await connected)) return errorProp(400, "It seems there's a network connectivity issue, try again later, fixing");
 
   const { content, error } = await fetchArticle({ articleId }),
     { myAuthorID } = await extractHandle("cookiePedroView", cookie),
