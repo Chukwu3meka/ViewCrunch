@@ -12,7 +12,7 @@ export default async (req, res) => {
       })
       .then()
       .catch((error) => {
-        console.log("Error initializing profile");
+        console.log(error);
       });
 
     return res.status(200).send(true);

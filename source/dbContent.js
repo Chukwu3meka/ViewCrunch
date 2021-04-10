@@ -6,7 +6,7 @@ export default [
   <ol>
         <li>
           Anybody can make money - it isn't selective or discriminatory 
-          <Image src="/images/${range(0, 10)}.png" alt="title" layout="fill"/>
+          <Image src="/images/${range(0, 10)}.png" alt="title" layout="fill" />
         </li>
 <code>console.log("hey")
 const jass = "Jazza"
@@ -18,12 +18,12 @@ jass.map()
         <li> Understand your money is a consequence, not a reward <Image src="/images/${range(
           11,
           15
-        )}.png"  alt="title" layout="fill" /> </li>
+        )}.png" alt="title" layout="fill" /> </li>
         <li> If you see money as the solution you'll find it becomes the problem  </li>
         <li> You can make lots of money, you can enjoy your job, and sleep nights </li>
         <li> Know the differnces between price and value </li>
         <li> It harder to manage yourself than it is to manage your money </li>
-        <li> It's never to late to start getting wealthy <Image src="/images/${range(16, 20)}.png"  alt="title" layout="fill" /> </li>
+        <li> It's never to late to start getting wealthy <Image src="/images/${range(16, 20)}.png" alt="title" layout="fill" /> </li>
         <li> You have to work hard to get rich enough not to have to work hard </li>
         <li> Small economies won't make you wealthy but they will make you miserable</li>
         <li> Spend less than you earn</li>
@@ -31,12 +31,12 @@ jass.map()
         <li> Cultivate a skill and it'll repay you over and over again <Image src="/images/${range(
           21,
           30
-        )}.png"  alt="title" layout="fill" /></li>
+        )}.png" alt="title" layout="fill" /></li>
         <li> Don't be to busy earning a living to make some money </li>
         <li> Don't believe you can always win </li>
         <li> Don't answer ads that promise get-rich-quick schemes - it won't be you who get rich quick</li>
         <li> Don't ever believe you are only worth what you are being paid</li>
-        <li> Shop for quality <Image src="/images/${range(31, 40)}.png"  alt="title" layout="fill" /></li>
+        <li> Shop for quality <Image src="/images/${range(31, 40)}.png" alt="title" layout="fill" /></li>
         <li> Never lend money to friends or family unless you are prepared to write it off</li>
       </ol>`,
 ];

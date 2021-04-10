@@ -1,5 +1,4 @@
 import clsx from "clsx";
-import { useState, useEffect } from "react";
 import Drawer from "@material-ui/core/Drawer";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
@@ -24,7 +23,7 @@ export default function TemporaryDrawer({ title, list, displayDrawer, setDisplay
   };
 
   return (
-    <Drawer anchor={"bottom"} open={displayDrawer} onClose={toggleDrawer(false)}>
+    <Drawer anchor={"bottom"} open={!!displayDrawer} onClose={toggleDrawer(false)}>
       <div
         className={clsx(classes.list, {
           [classes.fullList]: "bottom",
@@ -34,23 +33,24 @@ export default function TemporaryDrawer({ title, list, displayDrawer, setDisplay
         onKeyDown={toggleDrawer(false)}>
         <>
           <Typography variant="body2">{title}</Typography>
-          {list?.map(({ label, jsx, handler }, index, arr) => (
-            <span
-              onClick={() => handler()}
-              key={index}
-              style={{
-                padding: "5px 10px",
-                textAlign: "center",
-                display: "block",
-                borderBottom: arr.length - 1 !== index ? "1px solid grey" : "",
-              }}>
-              {jsx || (
-                <Typography align="center" variant="button">
-                  {label}
-                </Typography>
-              )}
-            </span>
-          ))}
+          {list &&
+            list.map(({ label, jsx, handler }, index, arr) => (
+              <span
+                onClick={() => handler()}
+                key={index}
+                style={{
+                  padding: "5px 10px",
+                  textAlign: "center",
+                  display: "block",
+                  borderBottom: arr.length - 1 !== index ? "1px solid grey" : "",
+                }}>
+                {jsx || (
+                  <Typography align="center" variant="button">
+                    {label}
+                  </Typography>
+                )}
+              </span>
+            ))}
         </>
       </div>
     </Drawer>

@@ -136,12 +136,10 @@ const MyIntro = ({
     <Paper elevation={4}>
       {myProfile ? (
         <div>
-          <div>
-            <TextField size="small" color="primary" variant="outlined" label="LinkedIN" value={linkedinHandle} />
-            <TextField size="small" color="primary" variant="outlined" label="Twitter" value={twitterHandle} />
-            <TextField size="small" color="primary" variant="outlined" label="Facebook" value={facebookHandle} />
-            <TextField size="small" color="primary" variant="outlined" label="Website" value={personalWebsite} />
-          </div>
+          <TextField size="small" color="primary" variant="outlined" label="LinkedIN" value={linkedinHandle} />
+          <TextField size="small" color="primary" variant="outlined" label="Twitter" value={twitterHandle} />
+          <TextField size="small" color="primary" variant="outlined" label="Facebook" value={facebookHandle} />
+          <TextField size="small" color="primary" variant="outlined" label="Website" value={personalWebsite} />
         </div>
       ) : (
         <span>

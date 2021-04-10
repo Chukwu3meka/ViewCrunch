@@ -57,7 +57,7 @@ const FixedIcon = ({ icon, clickHandler, pathname }) => {
           </IconButton>
         </Paper>
       ) : (
-        <Paper elevation={0} className={styles.fixedIconPublish} style={{ right: "10px", padding: "0px !important" }}>
+        <Paper elevation={0} className={styles.fixedIconPublish} style={{ right: "-10px", padding: "0px !important" }}>
           <IconButton aria-label="scroll" onClick={() => setShowIcons(true)}>
             <Tooltip title="scroll bottom">
               <ArrowLeftAltIcon fontSize="small" />

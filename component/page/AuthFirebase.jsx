@@ -73,23 +73,25 @@
 //             JSON.stringify({
 //               uid: authDetail.uid,
 //               handle: `viewChest_new-user_${authDetail.displayName}`,
-// photoURL:authDetail.photoURL
+//               photoURL: authDetail.photoURL,
 //             })
 //           );
 //           setChooseHandle(true);
 //         } else {
-//           if (authDetail?.uid?.startsWith("@")) {
-//             const profile = await fetchProfile(authDetail.uid);
+//           const handle = await getHandleViaRefresh(authDetail.myRefresh);
+//           // setAuthDetail({ ...authDetail, myHandle: handle });
+
+//           if (handle?.startsWith("@")) {
+//             const profile = await fetchProfile(handle);
 //             if (profile) {
 //               const viewer = {
 //                 myProfilePicture: profile.profilePicture,
 //                 myCoverPicture: profile.coverPicture,
-//                 myHandle: authDetail.uid,
+//                 myHandle: handle,
 //                 myDisplayName: profile.displayName,
 //                 myProfession: profile.profession,
 //                 myNotification: profile.notification,
 //                 myTheme: profile.theme,
-//                 myRefresh: authDetail.myRefresh,
 //               };
 
 //               await cookie.set("viewChest", authDetail.myRefresh, {

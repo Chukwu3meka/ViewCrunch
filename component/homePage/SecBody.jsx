@@ -10,7 +10,7 @@ import VisibilityIcon from "@material-ui/icons/Visibility";
 
 import { styles } from "/";
 import { Loading, LineText, Avatar } from "@component/others";
-import { shortNumber, trimString, htmlToString, toHref } from "@utils/clientFunctions";
+import { shortNumber, trimString, htmlToString, toId } from "@utils/clientFunctions";
 
 const SecBody = ({ content = [], deviceWidth, label, loading, getMorePost, fetchFailed }) => (
   <Grid container alignItems="center">
@@ -19,7 +19,7 @@ const SecBody = ({ content = [], deviceWidth, label, loading, getMorePost, fetch
 
       {content.map(({ space, content, title, author, pryImage, displayName, profilePicture, viewers }, index) => (
         <Fade bottom key={index}>
-          <Link href={toHref({ author, title })}>
+          <Link href={`/${author}/${toId(title)}`}>
             <a>
               <Paper>
                 <div>

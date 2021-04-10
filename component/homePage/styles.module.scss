@@ -7,18 +7,18 @@
     @include flexCenter(row);
     align-items: stretch;
     gap: 20px;
-    margin-top: 170px;
+    margin-top: 110px;
     position: relative;
     max-width: 550px;
     & > div:first-of-type {
       position: relative;
       z-index: -1;
       position: absolute;
-      top: -160px;
+      top: -98px;
       align-self: center;
-      height: 180px;
+      height: 100px;
       width: 80%;
-      border-radius: 0 25px 5px 15px;
+      border-radius: 5px 25px 5px 15px;
       overflow: hidden;
     }
     & > div:last-of-type {
@@ -26,15 +26,16 @@
       justify-content: space-between;
       align-items: flex-start;
       & > * {
-        font-size: 0.7em !important;
+        font-size: 0.5em !important;
       }
       & > *:nth-child(2) {
-        font-size: 1.2em !important;
         display: -webkit-box;
         -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-align: left;
+        font-size: 1em !important;
+        line-height: 1.4em;
       }
       & > div {
         @include flexCenter(row);
@@ -67,7 +68,7 @@
 }
 
 .midHomePage {
-  border-radius: 5px;
+  border-radius: 100px 0 100px 0;
   margin: 20px 0 !important;
   background: linear-gradient(to right, var(--pry), color(dim));
   padding: 20px;
@@ -107,55 +108,67 @@
   height: 230px;
   position: relative;
   margin: 0 auto 20px;
-}
 
-.text {
-  width: 100%;
-  height: 100%;
-  background: var(--dim);
-  border-radius: 50%;
-  position: relative;
-  margin: 0;
-  color: var(--pry);
-}
+  .text {
+    width: 100%;
+    height: 100%;
+    background: var(--dim);
+    border-radius: 50%;
+    position: relative;
+    margin: 0;
+    color: var(--pry);
+  }
 
-.text p {
-  height: 100%;
-  font-size: 23px;
-  line-height: 1.2;
-  padding: 0;
-  text-align: center;
-  font-style: italic;
-  text-shadow: 0.5px 0.5px 1px var(--dim);
-}
+  .text p {
+    height: 100%;
+    font-size: 23px;
+    line-height: 1.2;
+    padding: 0;
+    text-align: center;
+    font-style: italic;
+    text-shadow: 0.5px 0.5px 1px var(--dim);
+  }
 
-.text::before {
-  content: "";
-  width: 50%;
-  height: 100%;
-  float: left;
-  shape-outside: polygon(0 0, 98% 0, 50% 6%, 23.4% 17.3%, 6% 32.6%, 0 50%, 6% 65.6%, 23.4% 82.7%, 50% 94%, 98% 100%, 0 100%);
-  shape-margin: 20px;
-}
+  .text::before {
+    content: "";
+    width: 50%;
+    height: 100%;
+    float: left;
+    shape-outside: polygon(0 0, 98% 0, 50% 6%, 23.4% 17.3%, 6% 32.6%, 0 50%, 6% 65.6%, 23.4% 82.7%, 50% 94%, 98% 100%, 0 100%);
+    shape-margin: 20px;
+  }
 
-.text p::before {
-  content: "";
-  width: 50%;
-  height: 100%;
-  float: right;
-  shape-outside: polygon(2% 0%, 100% 0%, 100% 100%, 2% 100%, 50% 94%, 76.6% 82.7%, 94% 65.6%, 100% 50%, 94% 32.6%, 76.6% 17.3%, 50% 6%);
-  shape-margin: 20px;
-}
+  .text p::before {
+    content: "";
+    width: 50%;
+    height: 100%;
+    float: right;
+    shape-outside: polygon(
+      2% 0%,
+      100% 0%,
+      100% 100%,
+      2% 100%,
+      50% 94%,
+      76.6% 82.7%,
+      94% 65.6%,
+      100% 50%,
+      94% 32.6%,
+      76.6% 17.3%,
+      50% 6%
+    );
+    shape-margin: 20px;
+  }
 
-.quoteWrapper blockquote footer {
-  width: 100%;
-  position: absolute;
-  bottom: 12px;
-  letter-spacing: 0.05em;
-  font-size: 14px;
-  text-align: center;
-  font-style: italic;
-  text-shadow: 0.5px 0.5px 1px var(--dim);
+  & > blockquote footer {
+    width: 100%;
+    position: absolute;
+    bottom: 12px;
+    letter-spacing: 0.05em;
+    font-size: 14px;
+    text-align: center;
+    font-style: italic;
+    text-shadow: 0.5px 0.5px 1px var(--dim);
+  }
 }
 
 .quoteWrapper::before {
@@ -235,6 +248,21 @@
 }
 
 @media screen and (min-width: 420px) {
+  .primaryBody > * > a > div {
+    margin-top: 160px;
+    & > div:first-of-type {
+      top: -150px;
+      height: 150px;
+    }
+    & > div:last-of-type {
+      & > * {
+        font-size: 0.7em !important;
+      }
+      & > *:nth-child(2) {
+        font-size: 1.2em !important;
+      }
+    }
+  }
   .secBody {
     & > * > a > div {
       @include flexCenter(row);
@@ -270,7 +298,7 @@
       width: 100%;
       max-width: 220px;
     }
-    & > div {
+    & > div:last-of-type {
       & > * {
         font-size: 0.9em !important;
       }

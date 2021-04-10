@@ -6,19 +6,33 @@ const sanitize = (value) => {
 };
 const validate = (valueType, value) => {
   switch (valueType) {
+    case "handle": {
+      const handle = value?.trim().startsWith("@") ? value.substr(1).toLowerCase() : undefined;
+      const status = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.\s@!~#^$*']{2,14}$/gim.test(handle);
+      if (status) return value;
+      return undefined;
+    }
+    case "title": {
+      let status = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.\s\-:()]{12,151}$/gim.test(value.trim());
+      if (status && value.split(" ").length >= 3 && value.split(" ").length <= 20) return value;
+      return undefined;
+    }
+    case "description": {
+      let status = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.\s\-:(),;]{49,201}$/gim.test(value.trim());
+      if (status && value.split(" ").length >= 3 && value.split(" ").length <= 20) return value;
+      return undefined;
+    }
+    case "keywords": {
+      let status = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.\s,]{3,101}$/gim.test(value.trim());
+      if (status && value.split(" ").length >= 3 && value.split(" ").length <= 20) return value;
+      return undefined;
+    }
     case "text": {
       const newValue = value;
       const reg = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.\s\-']{2,200}$/gim;
       let status = reg.test(newValue.trim());
       if (status === true) return sanitize(newValue);
       return false;
-    }
-    case "handle": {
-      const handle = value?.startsWith("@") ? value.substr(1).toLowerCase() : undefined;
-      const status = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.\s@!~#^$*']{2,14}$/gim.test(handle);
-      console.log(status, value, handle);
-      if (status) return value;
-      return undefined;
     }
     case "string": {
       const newValue = value;

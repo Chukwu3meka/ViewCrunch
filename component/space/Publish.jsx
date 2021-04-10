@@ -14,8 +14,6 @@ const Publish = ({
   classes,
   loading,
   preview,
-  setTitle,
-  viewError,
   scrollRef,
   setPreview,
   scroll2Ref,
@@ -24,15 +22,18 @@ const Publish = ({
   description,
   imageHandler,
   contentArray,
-  setDescription,
   setContentText,
+  descriptionError,
   previewHandler,
   setContentArray,
-  formerImagesUrl,
-  titleErrorHandler,
+  viewToBeModified,
+  titleHandler,
+  descriptionHandler,
   formatContentArray,
   keywords,
   space,
+  keywordsError,
+  keywordsHandler,
 }) => (
   <div className={styles.publish} ref={scrollRef}>
     <TextField
@@ -41,11 +42,19 @@ const Publish = ({
       error={title.length && titleError}
       label="Title"
       value={title}
-      onChange={(e) => {
-        setTitle(e.target.value.trimStart().replace(/\s+/g, " "));
-        titleErrorHandler(e.target.value.trimStart().replace(/\s+/g, " "));
-      }}
+      onChange={(e) => titleHandler(e.target.value.trimStart().replace(/\s+/g, " "))}
     />
+
+    <TextField
+      fullWidth
+      error={description.length && descriptionError}
+      label="Description"
+      value={description}
+      variant="outlined"
+      multiline
+      onChange={(e) => descriptionHandler(e.target.value.trimStart().replace(/\s+/g, " "))}
+    />
+
     <Typography variant="caption">View</Typography>
     <div>
       {formatContentArray()?.map((x, index, loopArray) =>
@@ -92,13 +101,15 @@ const Publish = ({
       {/* <span /> */}
       {/* <span style={{ height: contentArray?.length ? 5 : Math.round(deviceHeight / 33) }} /> */}
     </div>
+
     <TextField
-      value={description}
-      variant="outlined"
-      label="View Description"
       fullWidth
+      error={keywords.length && keywordsError}
+      label="Keywords"
+      value={keywords}
+      variant="outlined"
       multiline
-      onChange={(e) => setDescription(e.target.value)}
+      onChange={(e) => keywordsHandler(e.target.value.trimStart().replace(/\s+/g, " "))}
     />
 
     <div className={classes.wrapper}>
@@ -110,7 +121,7 @@ const Publish = ({
     <FixedIcon icon="publish" clickHandler={{ image: imageHandler, down: () => scroll2Ref("end"), up: () => scroll2Ref("start") }} />
     {preview && (
       <PreviewContainer
-        {...{ title, description, content: [...contentArray, contentText], setPreview, formerImagesUrl, profile, keywords, space }}
+        {...{ title, description, content: [...contentArray, contentText], setPreview, viewToBeModified, profile, keywords, space }}
       />
     )}
   </div>

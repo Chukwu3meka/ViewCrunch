@@ -2,7 +2,7 @@ import { Publish } from "/";
 import { connect } from "react-redux";
 import { useState, useRef } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { imageObject } from "@utils/clientFunctions";
+import { imageObject, sleep } from "@utils/clientFunctions";
 import { isTitleTaken } from "@utils/firestoreFetch";
 import validate from "@utils/validator";
 import { useSnackbar } from "notistack";
@@ -22,34 +22,48 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const PublishContainer = (props) => {
-  const classes = useStyles(),
+  const { profile, viewToBeModified = {}, space } = props,
+    classes = useStyles(),
     scrollRef = useRef(null),
-    { profile, retouch = {}, space } = props,
     { enqueueSnackbar } = useSnackbar(),
     [loading, setLoading] = useState(false),
     [preview, setPreview] = useState(false),
-    [viewError, setViewError] = useState(false),
     [contentText, setContentText] = useState(""),
     [titleError, setTitleError] = useState(false),
-    [title, setTitle] = useState(retouch.title || "fake temporary title"),
-    [contentArray, setContentArray] = useState(retouch.contentArray || []),
-    [description, setDescription] = useState("View Description goes here");
-  const [keywords, setKeywords] = useState("Keywords separated by comma");
+    [keywordsError, setKeywordsError] = useState(false),
+    [descriptionError, setDescriptionError] = useState(false),
+    [title, setTitle] = useState(viewToBeModified.title || "Title of view"),
+    [contentArray, setContentArray] = useState(viewToBeModified.content || []),
+    [keywords, setKeywords] = useState(
+      viewToBeModified.keywords || "All Keywords used in view separated by comma. Characters should be within 4 to 110"
+    ),
+    [description, setDescription] = useState(
+      viewToBeModified.description || "Describe what view is about, and how it should appear in search engines"
+    );
 
-  const formerImagesUrl = retouch.contentArray
-    ?.filter((x) => typeof x === "object")
-    .map(({ image }) => image)
-    .join(" ")
-    ?.match(/\bhttps?:\/\/\S+/gi);
+  const titleHandler = async (value) => {
+    if (!viewToBeModified.title) {
+      setTitle(value);
+      setTitleError(!validate("title", value));
 
-  const titleErrorHandler = async (value) => {
-    const title = validate("text", value) || " ";
-    setTitleError(title.length < 13 || title.length > 200 || title.split(" ").length < 3 || title.split(" ").length > 50);
-    const titleTaken = await isTitleTaken(title);
-    if (titleTaken) {
-      setTitleError(true);
-      enqueueSnackbar(`Duplicate title`, { variant: "error" });
+      const titleTaken = await isTitleTaken(title);
+      if (titleTaken) {
+        setTitleError(true);
+        enqueueSnackbar(`Duplicate title`, { variant: "error" });
+      }
+    } else {
+      enqueueSnackbar(`Title cannot be changed`, { variant: "warning" });
     }
+  };
+
+  const descriptionHandler = async (value) => {
+    setDescription(value);
+    setDescriptionError(!validate("description", value));
+  };
+
+  const keywordsHandler = async (value) => {
+    setKeywords(value);
+    setKeywordsError(!validate("keywords", value));
   };
 
   const previewHandler = async () => {
@@ -60,10 +74,23 @@ const PublishContainer = (props) => {
       if (typeof x === "string") return fullArticleWord.push(x.replace(/\s+/g, " "));
       if (typeof x === "object") return fullArticleImage.push(x);
     });
-    if (titleError) {
-      setViewError(true);
-      enqueueSnackbar(`Title error`, { variant: "error" });
-    } else if (
+
+    let viewError = false;
+
+    const viewErrorHandler = (error) => {
+      viewError = true;
+      enqueueSnackbar(error, { variant: "error" });
+    };
+
+    if (!title?.length && titleError)
+      viewErrorHandler(
+        "Make sure title is not taken and within the range of 3 to 20 words, 13 to 150 letters and special characters [ - : ( ) ]."
+      );
+    if (!description?.length && descriptionError)
+      viewErrorHandler("Description can only contain 50 to 200 letters and special characters [ - : ( ) , ; ].");
+    if (!keywords?.length && keywordsError)
+      viewErrorHandler("Keywords can only contain letters within 4 to 100 characters separated by comma and special characters [ , ].");
+    if (
       !(
         (fullArticleWord?.join(" ")?.split(" ")?.length >= 100 &&
           fullArticleWord?.join(" ")?.split(" ")?.length <= 10000 &&
@@ -71,17 +98,12 @@ const PublishContainer = (props) => {
           fullArticleWord.join(" ").length <= 1000000) ||
         (fullArticleImage?.length >= 10 && fullArticleImage?.length <= 30)
       )
-    ) {
-      setViewError(true);
-      enqueueSnackbar(`Article should have at least 100 words or 10 images and at most 10,000 words or 30MB`, { variant: "error" });
-    } else if (!validate("text", description)) {
-      setViewError(true);
-      enqueueSnackbar(`Description should contain only text, and must be less than 180 characters`, { variant: "error" });
-    } else {
-      setPreview(true);
-    }
-    setViewError(false);
+    )
+      viewErrorHandler(`Article should have at least 100 words or 10 images and at most 10,000 words or 30MB`);
+
+    await sleep(3);
     setLoading(false);
+    if (!viewError) setPreview(true);
   };
 
   const formatContentArray = () => {
@@ -130,7 +152,6 @@ const PublishContainer = (props) => {
         loading,
         preview,
         setTitle,
-        viewError,
         scrollRef,
         setPreview,
         scroll2Ref,
@@ -143,10 +164,15 @@ const PublishContainer = (props) => {
         setContentText,
         previewHandler,
         setContentArray,
-        formerImagesUrl,
-        titleErrorHandler,
+        viewToBeModified,
+        titleHandler,
         formatContentArray,
         keywords,
+        descriptionHandler,
+        descriptionError,
+        keywords,
+        keywordsError,
+        keywordsHandler,
         space,
       }}
     />

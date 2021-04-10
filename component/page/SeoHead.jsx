@@ -1,18 +1,17 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 
-const SeoHead = ({ seo_title, seo_hashtag, seo_quote, seo_image, seo_keyphrase, seo_keywords, seo_description }) => {
+const SeoHead = ({ seo_title, seo_hashtag, seo_quote, seo_image, seo_keywords, seo_description }) => {
   const currentUrl = `https://viewchest.com${useRouter().asPath}`,
     title = seo_title || "viewChest",
     hashtag = seo_hashtag || "#viewChest",
     quote = seo_quote || "Sharing your Views",
     image = seo_image || "/images/viewChest.webp",
-    keyphrase = seo_keyphrase || "latest trends in technology, blog, space, trending news",
     keywords =
       seo_keywords || "viewChest, Technology, Lifehack &amp; health, Entertainment, Business &amp; Finance, Miscellaneous, NEWS",
     description =
       seo_description ||
-      "viewChest covers a wide range of Fascinating and Captivating contents, with an option to share your views with the world.";
+      "viewChest covers a wide range of Fascinating and Captivating contents, with an option to share your views with the world; Latest trends in technology, blog, space, trending news";
 
   return (
     <Head>
@@ -21,7 +20,6 @@ const SeoHead = ({ seo_title, seo_hashtag, seo_quote, seo_image, seo_keyphrase, 
       <meta property="image" content={image} />
       <meta property="url" content={currentUrl} />
       <meta name="keywords" content={keywords} />
-      <meta name="keyphrase" content={keyphrase} />
       <meta name="description" content={description} />
 
       <title>{title}</title>

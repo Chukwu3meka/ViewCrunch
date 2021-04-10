@@ -2,7 +2,7 @@ const { v4 } = require("uuid");
 import { storage } from "./firebaseClient";
 import firebaseAdmin, { bucket } from "@utils/firebaseServer";
 
-export const connected = fetch("https://google.com", {
+const connected = fetch("https://google.com", {
   method: "FET",
   cache: "no-cache",
   headers: { "Content-Type": "application/json" },
@@ -49,9 +49,7 @@ export const extractHandle = async (cookie) => {
   return handle.startsWith("@") ? handle : undefined;
 };
 
-export const errorProp = (code = 404, title = "Page not found") => {
-  return { props: { error: { code, title } } };
-};
+export const errorProp = (code = 404, title = "Page not found") => ({ props: { error: { code, title } } });
 
 export const saveTempImage = async ({ image, location, handle }) => {
   const fs = require("fs");
@@ -93,6 +91,23 @@ export const uploadImages = async ({ tempLocation, myHandle, title }) => {
     });
 };
 
+export const getHandleViaRefresh = async (myRefresh) => {
+  return "@pedro";
+  // return await firebaseAdmin
+  //   .auth()
+  //   .verifyIdToken(myRefresh)
+  //   .then(
+  //     async (decodedToken) =>
+  //       await firebaseAdmin
+  //         .auth()
+  //         .getUser(decodedToken?.uid)
+  //         .then((user) => user.displayName)
+  //   )
+  //   .catch((error) => {
+  //     console.log(error);
+  //   });
+};
+
 export const deleteImages = async ({ downloadUrl }) => {
   const httpsRef = storage.refFromURL(downloadUrl).fullPath;
   return await bucket
@@ -115,60 +130,40 @@ export const deleteTempImage = async (handle) => {
   } catch {}
 };
 
-export const verifyRefresh = async ({ myRefresh, initial }) => {
-  return initial
-    ? {
-        myHandle: "@pedro",
-        myTheme: "dark",
-        myNotification: 7,
-        myProfilePicture: "/images/20.png",
-        myCoverPicture: "/images/9.png",
-        myDisplayName: "Pedro JR",
-        myProfession: "React Developer",
-      }
-    : "@pedro";
+export const convertContentToArray = async (content) => {
+  const contentArray = [],
+    formerImagesUrl = [];
+  content = await content?.replace(/<Image src="/g, `\n<Image src="`).replace(/layout="fill" \/>/g, `layout="fill" />\n`);
 
-  const { access_token: token } = await fetch(`https://securetoken.googleapis.com/v1/token?key=${process.env.FIREBASE_API_KEY}`, {
-    method: "POST",
-    headers: new Headers({ "Content-Type": "application/x-www-form-urlencoded" }),
-    body: `grant_type=refresh_token&refresh_token=${myRefresh}`,
-    credentials: "same-origin",
-  }).then((res) => res.json());
+  for (const x of content?.split("\n")) {
+    if (x.match(/<Image src="(?=.*" layout="fill" \/>)/gi)) {
+      const image = x.replace(/<Image src="/g, "").split(`" alt`)[0];
+      await contentArray.push({ image });
+      await formerImagesUrl.push(image);
+    } else {
+      await contentArray.push(x);
+    }
+  }
 
-  return await firebaseAdmin
-    .auth()
-    .verifyIdToken(token)
-    .then(async (decodedToken) => {
-      const handle = await firebaseAdmin
-        .auth()
-        .getUser(decodedToken?.uid)
-        .then((user) => user.displayName);
+  // export const createMarkdownArray = async (markdown) => {
+  //   const markdownArray = [];
 
-      if (!handle) throw new TypeError("invalid user");
+  //   for (const x of markdown?.split("\n")) {
+  //     if (x.match(/\bhttps?:\/\/\S+/gi)?.[0]) {
+  //       await markdownArray.push({ image: x.match(/\bhttps?:\/\/\S+/gi)[0].slice(0, -1) });
+  //     } else {
+  //       await markdownArray.push(x);
+  //     }
+  //   }
 
-      if (initial) {
-        const profile = await firebaseAdmin
-          .firestore()
-          .collection("profile")
-          .doc(handle)
-          .get()
-          .then((querySnapshot) => querySnapshot.docs[0])
-          .catch();
+  //   return await markdownArray;
+  // };
 
-        return {
-          myHandle: handle,
-          myTheme: profile.data().stat?.theme,
-          myNotification: profile.data().notification.length,
-          myProfilePicture: profile.data().profilePicture,
-          myCoverPicture: profile.data().coverPicture,
-          myDisplayName: profile.data().displayName,
-          myProfession: profile.data().profession,
-        };
-      } else {
-        return handle;
-      }
-    })
-    .catch((error) => {
-      // console.log("error validating user");
-    });
+  // const formerImagesUrl = viewToBeModified.content
+  //   ?.filter((x) => typeof x === "object")
+  //   .map(({ image }) => image)
+  //   .join(" ")
+  //   ?.match(/\bhttps?:\/\/\S+/gi);
+
+  return { contentArray, formerImagesUrl };
 };

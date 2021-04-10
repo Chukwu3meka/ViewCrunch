@@ -1,7 +1,8 @@
 @import "@source/_variables.scss";
 
 .view {
-  background: linear-gradient(to bottom right, var(--pry), var(--textSec));
+  // background: linear-gradient(to bottom right, var(--pry), var(--dim));
+  background: linear-gradient(to bottom right, var(--pry), color(dim));
   border-bottom-right-radius: 50px;
   padding-bottom: 20px !important;
   & > div:nth-of-type(1) {

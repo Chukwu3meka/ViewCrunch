@@ -41,9 +41,9 @@
   bottom: 0;
   right: 0;
   left: 0;
-  z-index: 1;
+  z-index: 10000;
   background-color: var(--sec);
-  opacity: 0.94;
+  opacity: 0.98;
   overflow-x: hidden;
   overflow-y: auto;
   @include flexCenter(column);

@@ -5,12 +5,12 @@ import Fade from "react-reveal/Fade";
 import { Avatar } from "@component/others";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import { trimString, toHref, dateCalculator } from "@utils/clientFunctions";
+import { trimString, toId, dateCalculator } from "@utils/clientFunctions";
 
 const PrimaryBody = ({ primaryPost = [], deviceWidth }) =>
   primaryPost.map(({ title, date, author, space, pryImage, displayName, profilePicture }, index) => (
     <Fade left key={index}>
-      <Link href={toHref({ author, title })}>
+      <Link href={`/${author}/${toId(title)}`}>
         <a>
           <Paper elevation={2}>
             <div>

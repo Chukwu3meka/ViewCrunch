@@ -66,7 +66,7 @@ const name3 = [
   "Veniam Lorem occaecat dolor nostrud amet ea ex officia aute adipisicing labore Lorem. Do adipisicing sunt qui laboris exercitation enim.",
   "Proident mollit ad ex occaecat amet tempor ullamco amet consectetur aute exercitation id.",
   "Sunt sunt duis aliqua nostrud veniam deserunt excepteur officia exercitation eiusmod aute mollit tempor pariatur. Adipisicing occaecat irure sint pariatur duis eiusmod id fugiat pariatur ex.",
-  "Book: Top Picks",
+  "Books Top Picks",
   "Countries with the best data",
   "latest trend in tech",
 ];
@@ -88,13 +88,13 @@ export const viewer = name1.map((name) => ({
   coverPicture: `/images/${range(0, 40)}.png`,
   about:
     "Adipisicing nulla adipisicing irure culpa aute cillum. Commodo nulla culpa proident id commodo esse fugiat officia velit. Cillum qui                reprehenderit adipisicing id.",
-  roles: ["comment", "vote", "valid", "moderate", "share"],
+  roles: ["comment", "vote", "enabled", "moderate", "share"],
   spaces: name2.map((title) => ({ title, roles: ["publish", "delete", "modify", "share", "moderate"] })),
   displayName: name,
   profession: profession[range(0, profession.length - 1)],
   notification: [],
-  favourite: [],
-  blacklist: [],
+  favourite: name3.slice(0, 9).map((title) => toId(title)),
+  blacklist: name3.slice(10, 14).map((title) => toId(title)),
   published: name3.map((title) => ({
     title,
     date: date(),
@@ -120,7 +120,7 @@ export const viewer = name1.map((name) => ({
     voteReceived: range(0, 10000000),
     audience: range(0, 100000),
     profileCreated: date(),
-    seen: [name3.slice(0, 12)],
+    seen: name3.slice(0, 12).map((title) => toId(title)),
     theme: "dark",
   },
 }));
@@ -132,7 +132,7 @@ const generateComment = () => ({
 });
 
 export const view = name3.map((title) => ({
-  id: toId(title, "-"),
+  id: toId(title),
   title: {
     data: title,
     length: title.split(" ").length,
@@ -142,13 +142,13 @@ export const view = name3.map((title) => ({
   space: name2[range(0, name2.length - 1)],
   pryImage: `/images/${range(1, 40)}.png`,
   content: dbContent[range(0, dbContent.length - 1)],
-  keyphrase: "keyphrase",
   keywords: "keywords",
   description: "description",
   comments: [...Array(range(0, 100)).keys()].map(() => generateComment()),
   viewers: [...Array(range(0, 10000)).keys()].map(() => "@pedro"),
   upvote: [...Array(range(0, 10000)).keys()].map(() => "@pedro"),
   downvote: [...Array(range(0, 10000)).keys()].map(() => "@pedro"),
+  disabled: false,
 }));
 
 export const news = [

@@ -1,9 +1,9 @@
 import { ErrorPage, SeoHead } from "@component/page";
 import HomePage, { SecBodyContainer } from "@component/homePage";
-import { fetchArticles, fetchAuthorData, fetchHomePageData } from "@utils/firestoreFetch";
 
 const Index = ({ error, articles, highlight, newsFlash, quoteOfTheDay, primaryArticles, propsLastVisible, propsArticlesRead }) => {
   if (error) return <ErrorPage statusCode={error.code} title={error.title} />;
+
   return (
     <>
       <SeoHead />
@@ -16,35 +16,30 @@ const Index = ({ error, articles, highlight, newsFlash, quoteOfTheDay, primaryAr
 };
 export default Index;
 
-export const getServerSideProps = async ({ ctx }) => {
-  const { extractHandle, errorProp, connected } = require("@utils/serverFunctions");
+export const getServerSideProps = async (ctx) => {
+  const { extractHandle, errorProp } = require("@utils/serverFunctions");
+  const { fetchArticles, fetchProfile, fetchHomeData } = require("@utils/firestoreFetch");
 
-  // if (!(await connected)) return errorProp(400, "Network connectivity issue");
-  // const { myAuthorID } = await extractHandle("cookiePedroView", ctx?.req?.headers?.cookie);
-  // const { articlesRead = [] } = myAuthorID ? await fetchAuthorData(myAuthorID) : [];
-  // const { articles, propsLastVisible } = await fetchArticles({ limit: 10, articlesRead });
-  const { articles, propsLastVisible } = await fetchArticles({ limit: 10 });
+  const myHandle = await extractHandle(ctx.req.headers.cookie);
+  if (myHandle === "Network connectivity issue") return errorProp(408, "Network connectivity issue");
 
-  const { highlight, newsFlash, primaryArticles, quoteOfTheDay } = await fetchHomePageData();
-  // console.log(
-  //   //
-  //   highlight
-  //   // , newsFlash
-  //   // primaryArticles,
-  //   // quoteOfTheDay
-  // );
+  const {
+    stat: { seen = [] },
+  } = myHandle ? await fetchProfile(myHandle) : [];
 
-  // if (!articles.length || !primaryArticles.length) return errorProp(408, "Check your network connection, and try again.");
+  const homeData = await fetchHomeData();
+  const profileData = await fetchArticles({ limit: 10, seen });
+  if (profileData.error || homeData.error) return errorProp(400, "Difficulty fetching data");
 
   return {
     props: {
-      articles,
-      highlight,
-      newsFlash,
-      // error: false,
-      quoteOfTheDay,
-      primaryArticles,
-      propsLastVisible: 10,
+      articles: profileData.articles,
+      highlight: homeData.highlight,
+      newsFlash: homeData.newsFlash,
+      //:// error: false,
+      quoteOfTheDay: homeData.quoteOfTheDay,
+      primaryArticles: homeData.primaryArticles,
+      propsLastVisible: profileData.propsLastVisible,
       propsArticlesRead: [],
     },
   };

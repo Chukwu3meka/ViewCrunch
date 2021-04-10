@@ -60,6 +60,7 @@ const publishHandler = async ({ profile: { myHandle }, title, description, conte
     keywords,
     description,
     space,
+    disabled: false,
   };
 
   firebaseAdmin
@@ -92,7 +93,7 @@ const publishHandler = async ({ profile: { myHandle }, title, description, conte
 export default async (req, res) => {
   try {
     const { description, profile, title, content, keywords, space } = req.body;
-    profile.myHandle = await verifyRefresh({ myRefresh: profile.myRefresh });
+    // profile.myHandle = await verifyRefresh({ myRefresh: profile.myRefresh });
     const viewURL = await publishHandler({ profile, title, description, content, keywords, space });
     return res.status(200).json(viewURL);
   } catch (error) {

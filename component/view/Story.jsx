@@ -14,7 +14,8 @@ import CommentIcon from "@material-ui/icons/RateReviewRounded";
 
 import { CommentsContainer } from "/";
 import { Avatar } from "@component/others";
-import { time2read, trimString, shortNumber, toHref, dateCalculator } from "@utils/clientFunctions";
+import { time2read, trimString, shortNumber, toId, dateCalculator } from "@utils/clientFunctions";
+import { SocialShare, Drawer, Dialog } from "@component/others";
 
 const View = ({
   online,
@@ -22,7 +23,8 @@ const View = ({
   date,
   space,
   title,
-  author,
+  author: { author, displayName, profilePicture },
+
   // upvote,
   content,
   profile,
@@ -33,13 +35,23 @@ const View = ({
   upvote,
   downvote: { length: totalDownvote },
   downvote,
-  displayName,
-  profilePicture,
   moreActionsHandler,
+
+  moreActions,
+  setMoreActions,
+  // forceRefresh,
+  // reportView,
+  // setReportView,
+  // view: { title, displayName, author },
+  // viewInFavourite,
+  // viewInBlacklist,
+  // favouriteHandler,
+  // blacklistHandler,
+  // reportHandler,
 }) => (
   <>
     <Grid item xs={12} sm={12} md={12} lg={9}>
-      <Link href={{ pathname: toHref({ space }) }}>
+      <Link href={{ pathname: `/space/${toId(space)}` }}>
         <a style={{ fontSize: ".7em" }}>{space}</a>
       </Link>
       <h1>
@@ -84,8 +96,23 @@ const View = ({
           </IconButton>
         </div>
       </Paper>
-      <CommentsContainer {...{ online, view, profile }} />
+      {/* <CommentsContainer {...{ online, view, profile }} /> */}
     </Grid>
+    <>
+      <Drawer title={title} list={moreActions} displayDrawer={moreActions} setDisplayDrawer={setMoreActions} />
+
+      {/* {reportView && (
+        <Dialog
+          proceed="report"
+          handler={reportHandler}
+          title={`Report View`}
+          // forceRefresh={forceRefresh}
+          cancelHandler={() => setReportView(false)}
+          feedback={true}
+          message={`Reporting this view, will automatically add it to your blacklist. Moderators won't receive your profile details; Do you wish to proceed.`}
+        />
+      )} */}
+    </>
   </>
 );
 

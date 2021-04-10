@@ -8,7 +8,6 @@ const Publish = ({ space, error }) => {
 export default Publish;
 
 export const getServerSideProps = async (ctx) => {
-  const { fetchProfileData } = require("@utils/firestoreFetch");
   const { extractHandle, errorProp } = require("@utils/serverFunctions");
 
   const myHandle = await extractHandle(ctx.req.headers.cookie);

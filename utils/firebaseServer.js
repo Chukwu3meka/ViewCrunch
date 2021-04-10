@@ -17,6 +17,7 @@ const firebaseAdminFunc = () => {
 
 const firebaseAdmin = firebaseAdminFunc();
 
-const bucket = firebaseAdmin.storage().bucket();
+const bucket = [];
+// const bucket = firebaseAdmin.storage().bucket();
 
 export { bucket, firebaseAdmin as default };

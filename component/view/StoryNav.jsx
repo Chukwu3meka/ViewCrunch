@@ -7,7 +7,7 @@ import Button from "@material-ui/core/Button";
 import Hidden from "@material-ui/core/Hidden";
 import Typography from "@material-ui/core/Typography";
 
-import { toHref } from "@utils/clientFunctions";
+import { toId } from "@utils/clientFunctions";
 import { SocialShare, LineText } from "@component/others";
 
 const StoryNav = ({
@@ -67,7 +67,7 @@ const StoryNav = ({
         <Paper>
           <span>Similar view</span>
           {similarPost.map(({ author, title, pryImage }, index) => (
-            <Link href={{ pathname: toHref({ author, title }) }} key={index}>
+            <Link href={{ pathname: `/${author}/${toId(title)}` }} key={index}>
               <a>
                 <div>
                   <Image src={pryImage || "/images/no-image.webp"} layout="fill" />

@@ -5,7 +5,7 @@ const profileRef = firestore.collection("profile");
 
 import * as db from "@source/tempdb";
 import { firestore } from "@utils/firebaseClient";
-import { ref, htmlToString, range, toHref, toId, shortNumber } from "@utils/clientFunctions";
+import { ref, htmlToString, range, toId, shortNumber } from "@utils/clientFunctions";
 
 export const isHandleTaken = async (handle) => {
   return await profileRef
@@ -94,15 +94,8 @@ export const fetchProfileData = async (handle) => {
   //   .catch(() => {});
 
   viewerData?.published?.forEach((x) => {
-    // fix date convertion here from firebase
     // x.date = x.date.toDate().toDateString();
-    x.id = toHref({ author: handle, title: x?.title });
-    x.rating =
-      (x.views > 1000 ? 1 : 0) +
-      (x.views > 100 ? 1 : 0) +
-      (x.downvote < x.upvote / 5 ? 1 : 0) +
-      (x.upvote > x.views / 10 / 2 ? 1 : 0) +
-      1;
+    x.id = `/${handle}/${toId(x?.title)}`;
   });
 
   viewerData.avgVote = Math.round(viewerData?.stat.voteReceived / viewerData?.published.length);
@@ -119,27 +112,27 @@ export const fetchProfileData = async (handle) => {
 
       return {
         firstArticle: {
-          link: toHref({ title: sortDate[0].title, author: handle }),
+          link: `/${handle}/${toId(sortDate[0].title)}`,
           title: sortDate[0].title,
           // label: sortDate[0].date.toDate().toDateString(),
           label: sortDate[0].date,
         },
         lastArticle: {
-          link: toHref({ title: sortDate[totalView].title, author: handle }),
+          link: `/${handle}/${toId(sortDate[totalView].title)}`,
           title: sortDate[totalView].title,
           label: sortDate[totalView].date,
         },
         highestRating: {
-          link: toHref({ title: sortRating[0].title, author: handle }),
+          link: `/${handle}/${toId(sortRating[0].title)}`,
           title: `${sortRating[0].title} @ ${shortNumber(sortRating[0].upvote)}`,
         },
         worstRating: {
-          link: toHref({ title: sortRating[totalView].title, author: handle }),
+          link: `/${handle}/${toId(sortRating[totalView].title)}`,
           title: `${sortRating[totalView].title} @ ${shortNumber(sortRating[totalView].upvote)}`,
         },
-        mostView: { link: toHref({ title: sortViews[0].title, author: handle }), title: sortViews[0].title, label: sortViews[0].views },
+        mostView: { link: `/${handle}/${toId(sortViews[0].title)}`, title: sortViews[0].title, label: sortViews[0].views },
         leastView: {
-          link: toHref({ title: sortViews[totalView].title, author: handle }),
+          link: `/${handle}/${toId(sortViews[totalView].title)}`,
           title: sortViews[totalView].title,
           label: sortViews[totalView].views,
         },
@@ -317,9 +310,8 @@ export const fetchArticle = async ({ author, viewHref, myHandle }) => {
   // });
 
   // const full_view = db.view?.find((x) => viewHref.replace(/-/g, " ") == x.title.data.toLowerCase());
-  console.log("here");
-  const full_view = await db.view?.find((x) => viewHref == x.id);
-
+  const full_view = await db?.view?.find((x) => viewHref == x.id);
+  if (!full_view) return { error: true };
   // const full_view = db.view?.find((x) => x.author === author);
 
   const {
@@ -328,10 +320,12 @@ export const fetchArticle = async ({ author, viewHref, myHandle }) => {
     date,
     content,
     pryImage,
-    comments: commentsList,
+    // comments: commentsList,
     viewers,
     upvote,
     downvote,
+    description,
+    keywords,
   } = full_view;
 
   const {
@@ -342,22 +336,14 @@ export const fetchArticle = async ({ author, viewHref, myHandle }) => {
     views,
   } = db.viewer?.find((x) => x.handle === author);
 
-  // const { favourite = false, blacklist = false } = myHandle ? db.viewer?.find((x) => x.handle === myHandle) : [];
-  const { favourite = [], blacklist = [] } = myHandle ? db.viewer?.find((x) => x.handle === myHandle) : [];
-
-  const viewInFavourite = favourite,
-    viewInBlacklist = blacklist;
-
-  // console.log(commentsList);
-  const comments = [];
-  if (commentsList?.length) {
-    for (const { author, comment, date } of commentsList) {
-      const { displayName, profilePicture } = db.viewer?.find((x) => x.handle === author);
-      comments.push({ comment, date, displayName, profilePicture });
-    }
-  }
-
-  // console.log(comments);
+  // // console.log(commentsList);
+  // const comments = [];
+  // if (commentsList?.length) {
+  //   for (const { author, comment, date } of commentsList) {
+  //     const { displayName, profilePicture } = db.viewer?.find((x) => x.handle === author);
+  //     comments.push({ comment, date, displayName, profilePicture });
+  //   }
+  // }
 
   let featuredPost = [];
   views?.length && featuredPost.push(views[range(0, views.length - 1)]);
@@ -369,6 +355,7 @@ export const fetchArticle = async ({ author, viewHref, myHandle }) => {
     title: db.view[index].title.data,
     pryImage: db.view[index].pryImage,
   });
+
   const similarPost = [
     getSimilarPost(range(0, db.view.length - 1)),
     getSimilarPost(range(0, db.view.length - 1)),
@@ -378,32 +365,44 @@ export const fetchArticle = async ({ author, viewHref, myHandle }) => {
   // console.log(similarPost);
 
   const view = {
+    id: toId(title),
     title,
     content,
     pryImage,
+    description,
+    keywords,
     space,
-    comments,
+    comments: [],
     date,
-
     viewers,
     upvote,
     downvote,
+    author: {
+      author,
+      displayName,
+      profilePicture,
+      about,
 
-    author,
-    displayName,
-    profilePicture,
-    about,
-
-    featuredPost,
-    similarPost,
-
-    linkedinHandle,
-    twitterHandle,
-    facebookHandle,
-
-    viewInFavourite,
-    viewInBlacklist,
+      linkedinHandle,
+      twitterHandle,
+      facebookHandle,
+    },
+    post: {
+      featuredPost,
+      similarPost,
+    },
   };
+
+  if (myHandle) {
+    const profile = await fetchProfile(myHandle);
+
+    view.viewer = profile
+      ? {
+          viewInFavourite: profile?.blacklist?.includes(toId(title)) ? true : false,
+          viewInBlacklist: profile?.favourite?.includes(toId(title)) ? true : false,
+        }
+      : {};
+  }
 
   const advert = {
     company: "SoccerMASS",
@@ -413,8 +412,6 @@ export const fetchArticle = async ({ author, viewHref, myHandle }) => {
     href: "https://www.soccermass.com",
   };
 
-  console.log(view);
-
   return {
     view,
     error: !view,
@@ -422,7 +419,7 @@ export const fetchArticle = async ({ author, viewHref, myHandle }) => {
   };
 };
 
-export const fetchHomePageData = async () => {
+export const fetchHomeData = async () => {
   // const newsFlash = [],
   //   highlight = [],
   //   quoteOfTheDay = {},
@@ -503,7 +500,7 @@ export const fetchHomePageData = async () => {
     newsFlash: db.news.map(({ flash, source, newsLink, date }) => ({ flash, source, newsLink, date })),
 
     primaryArticles: db.view
-      .filter((x) => x.title.length >= 15)
+      .filter((x) => x.title.length >= 10)
       .slice(0, 3)
       .map((doc) => {
         const {

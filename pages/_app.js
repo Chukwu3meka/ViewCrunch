@@ -21,42 +21,33 @@ import { setDisplayHeader, setOnlineAction, setProfileAction, setTheme } from "@
 const App = ({ Component, pageProps }) => {
   config({ ssrFadeout: true });
   const store = useStore(pageProps.initialReduxState),
-    myRefresh = userControl().myRefresh,
+    { myRefresh } = userControl(),
     [online, setOnline] = useState(false),
     [pageReady, setPageReady] = useState(false),
     [appTheme, setAppTheme] = useState("light"),
     [chooseHandle, setChooseHandle] = useState(false);
 
   const persistUser = async () => {
-    const { myHandle, myTheme, myNotification, myProfilePicture, myCoverPicture, myDisplayName, myProfession } = await fetcher(
-      "/api/profile/verifyToken",
-      JSON.stringify({ myRefresh, initial: true })
-    );
+    const profile = await fetcher("/api/profile/verifyToken", JSON.stringify({ myRefresh }));
 
-    // console.log(m)
-
-    if (myHandle) {
-      setAppTheme(myTheme);
-      store.dispatch(setTheme(myTheme));
-      if (myHandle.startsWith("@")) {
+    if (profile?.myHandle) {
+      if (isNaN(profile.myHandle) && profile.myHandle.startsWith("@")) {
+        setAppTheme(profile.myTheme);
+        store.dispatch(setTheme(profile.myTheme));
         store.dispatch(
           setProfileAction({
-            myRefresh,
-            myHandle,
-            myTheme,
-            myNotification,
-            myProfilePicture,
-            myCoverPicture,
-            myDisplayName,
-            myProfession,
+            myHandle: profile.myHandle,
+            myTheme: profile.myTheme,
+            myNotification: profile.myNotification,
+            myProfilePicture: profile.myProfilePicture,
+            myCoverPicture: profile.myCoverPicture,
+            myDisplayName: profile.myDisplayName,
+            myProfession: profile.myProfession,
           })
         );
       } else {
         setChooseHandle(true);
       }
-    } else {
-      store.dispatch(setProfileAction({}));
-      userControl().logout;
     }
   };
 

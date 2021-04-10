@@ -1,35 +1,36 @@
 import { ErrorPage } from "@component/page";
 import { PublishContainer } from "@component/space";
-import { createMarkdownArray } from "@utils/clientFunctions";
-import { fetchArticle, fetchProfileData } from "@utils/firestoreFetch";
 
-const BlogPost = ({ error, titles, propsTitle, propsTag, propsContentArray, articleId }) => {
+const BlogPost = ({ error, viewToBeModified }) => {
   if (error) return <ErrorPage statusCode={error.code} title={error.title} />;
-  return <PublishContainer {...{ titles, propsTitle, propsTag, propsContentArray, articleId }} />;
+  return <PublishContainer viewToBeModified={viewToBeModified} />;
 };
 
 export default BlogPost;
 
-export const getServerSideProps = async ({
-  query: { articleId },
-  req: {
-    headers: { cookie },
-  },
-}) => {
-  const { connected, errorProp, extractHandle } = require("@utils/serverFunctions");
+export const getServerSideProps = async (ctx) => {
+  const { fetchArticle } = require("@utils/firestoreFetch");
+  const { extractHandle, errorProp, convertContentToArray } = require("@utils/serverFunctions");
 
-  if (!articleId) return errorProp();
-  if (!(await connected)) return errorProp(400, "It seems there's a network connectivity issue, try again later, fixing");
+  if (!ctx.query.id) return errorProp(404, "View not found");
 
-  const { content, error } = await fetchArticle({ articleId }),
-    { myAuthorID } = await extractHandle("cookiePedroView", cookie),
-    { articles, error: profileErr } = await fetchProfileData({ authorId: myAuthorID }),
-    titles = articles?.map(({ title }) => title?.toLowerCase());
+  const myHandle = await extractHandle(ctx.req.headers.cookie);
+  if (myHandle === "Network connectivity issue") return errorProp(408, "Network connectivity issue");
+  if (!myHandle) return errorProp(401, "User not logged in");
 
-  if (!myAuthorID || myAuthorID !== content?.authorId || error || profileErr) return errorProp();
-  const propsContentArray = await createMarkdownArray(content.markdown);
+  const { view, error } = await fetchArticle({ author: myHandle, viewHref: `${ctx.query.id}`, myHandle });
+  if (error || view.author !== myHandle) return errorProp(404, "View does not exist");
+
+  const viewToBeModified = {};
+
+  const { contentArray, formerImagesUrl } = await convertContentToArray(view.content);
+  viewToBeModified.content = contentArray;
+  viewToBeModified.title = view.title;
+  viewToBeModified.description = view.description;
+  viewToBeModified.keywords = view.keywords;
+  viewToBeModified.formerImagesUrl = formerImagesUrl;
 
   return {
-    props: { titles, propsTitle: content.title, propsTag: content.tag, propsContentArray, articleId },
+    props: { viewToBeModified },
   };
 };

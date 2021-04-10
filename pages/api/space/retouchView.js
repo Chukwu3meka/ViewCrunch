@@ -84,6 +84,7 @@ const retouchArticle = async ({ author: { myAuthorID }, title, tag, content, mar
 
 export default async (req, res) => {
   try {
+    throw new TypeError("cannot update article");
     const { author, title, tag, content, formerImagesUrl, articleId } = req.body;
     const authorId = await verifyIdToken(author?.token);
     if (authorId !== author?.myAuthorID) throw new TypeError("invalid user");

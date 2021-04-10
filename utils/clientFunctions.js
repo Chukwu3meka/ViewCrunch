@@ -9,11 +9,6 @@ export const trimString = (string = "undefined", lenght = 0) => {
   return string.length > lenght ? `${string.substring(0, lenght).trim()}...` : string;
 };
 
-// export const seoDescTrim = (string = "undefined") => {
-//   string = string.toString().replace(/!\[(.*?)](.*?)\)/gi, "\b");
-//   return `${string.substring(0, 120).trim()}`;
-// };
-
 export const time2read = (article = "") => {
   // article = htmlToString(article);
   const wordCount = noOfWord(article);
@@ -63,10 +58,6 @@ const imageObjectConverter = (blob) => {
   });
 };
 
-export const toHref = ({ title = "empty title", author = "viewChest", space }) => {
-  return space ? `/space/${space?.toLowerCase()?.replace(/ /g, "-")}` : `/${author}/${title?.toLowerCase()?.replace(/ /g, "-")}`;
-};
-
 export const imageObject = async (image) => {
   const content = await imageObjectConverter(image);
   const result = content.split(/\r\n|\n/);
@@ -93,29 +84,6 @@ export const htmlToString = (content = <div>nothing to convert</div>) => {
   //   .replace(/&quot;/g, '"')
   //   .replace(/&#x27;/g, "'")
   //   .replace(/&#x2F;/g, "/");
-};
-
-// return ReactDomServer.renderToStaticMarkup(content).replace(/<[^>]+>/g, "");
-// .from(content).toString("base64");
-//  <div dangerouslySetInnerHTML={{ __html: content }} />;
-// console.log(JSON.stringify(content));
-// return content;
-
-// export const formatNavBarMarkdown = async ({ markdown }) => {
-//   return await trimString(markdown.replace(/!\[(.*?)](.*?)\)/gi, "\b"), 1000);
-// };
-
-export const createMarkdownArray = async (markdown) => {
-  const markdownArray = [];
-
-  for (const x of markdown?.split("\n")) {
-    if (x.match(/\bhttps?:\/\/\S+/gi)?.[0]) {
-      await markdownArray.push({ image: x.match(/\bhttps?:\/\/\S+/gi)[0].slice(0, -1) });
-    } else {
-      await markdownArray.push(x);
-    }
-  }
-  return await markdownArray;
 };
 
 export const chunkArray = ({ array = [], chunkSize = 13 }) => {
@@ -147,4 +115,4 @@ export const dateCalculator = ({ date, days }) => {
   }
 };
 
-export const toId = (string, delimiter = "_") => string.replace(/ /g, delimiter).toLowerCase();
+export const toId = (string) => string.replace(/ /g, "-").toLowerCase();

@@ -42,14 +42,14 @@ const MyArticlesContainer = ({ articles, token, myProfile, enqueueSnackbar }) =>
     handlePagination = (event, value) => {
       setPage(value);
     },
-    deleteArticle = ({ id, ratingLength, view, title, rating }) => {
-      setDeleteEnabled(ratingLength < 100 ? true : false);
-      setVerifiedArticle(ratingLength < 100 ? false : true);
+    deleteArticle = ({ id, upvote, view, title, rating }) => {
+      setDeleteEnabled(upvote < 100 ? true : false);
+      setVerifiedArticle(upvote < 100 ? false : true);
       // setDeleteSuccess(false);
       // setDeleteFailed(false);
-      enqueueSnackbar("Failed to delete", { variant: "error" });
+      enqueueSnackbar("Cannot delete view with over 100 upvotes", { variant: "warning" });
 
-      if (ratingLength < 100) {
+      if (upvote < 100) {
         setSelectedArticle({ id, view, title, rating });
       }
       // setForceRefresh(Math.random() * 1000);

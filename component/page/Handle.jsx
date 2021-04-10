@@ -7,10 +7,9 @@ import { useEffect, useState } from "react";
 import { Typography, TextField, Button } from "@material-ui/core";
 
 import { styles } from "/";
-import { fetcher } from "@utils/clientFunctions";
-import { setProfileAction } from "@store/actions";
-import { isHandleTaken } from "@utils/firestoreFetch";
 import validate from "@utils/validator";
+import { fetcher } from "@utils/clientFunctions";
+import { isHandleTaken } from "@utils/firestoreFetch";
 
 const Handle = (props) => {
   const [handleError, setHandleError] = useState(false);
@@ -20,10 +19,11 @@ const Handle = (props) => {
 
   useEffect(() => {
     setOnline(props.online);
+    if (!props.online) setHandleError(true);
   }, [props.online]);
 
   useEffect(() => {
-    if (handle) {
+    if (handle && online) {
       const verifyHandle = async () => {
         const validated = validate("handle", handle);
         if (validated) {
@@ -42,10 +42,7 @@ const Handle = (props) => {
     if (!handleError && handle?.length) {
       const profileStatus = await fetcher("/api/profile/createProfile", JSON.stringify({ handle, myRefresh: props.myRefresh }));
       if (profileStatus) {
-        cookie.set("viewChest", props.myRefresh, {
-          expires: 183,
-          path: "",
-        });
+        cookie.set("viewChest", props.myRefresh, { expires: 183, path: "" });
         Router.reload();
       } else {
         enqueueSnackbar(`Unable to save handle, Please try again later`, { variant: "error" });
@@ -95,8 +92,6 @@ const Handle = (props) => {
 const mapStateToProps = (state) => ({
     online: state.device?.online,
   }),
-  mapDispatchToProps = {
-    setProfileAction,
-  };
+  mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Handle);

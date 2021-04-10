@@ -18,4 +18,7 @@ module.exports = {
     // domains: ["firebase.com"],
     domains: ["platform-lookaside.fbsbx.com"],
   },
+  future: {
+    webpack5: true,
+  },
 };

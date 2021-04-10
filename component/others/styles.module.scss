@@ -58,12 +58,14 @@
   border-image-slice: 1;
   display: block;
   & > *:first-of-type {
-    margin: 10px auto -10px;
+    margin: 0 auto -5px;
   }
 }
+
 .fixedIcon {
   position: sticky !important;
   bottom: 20px;
+
   float: right;
   margin-right: 25px !important;
   background-color: var(--dim) !important;
@@ -73,7 +75,7 @@
 
 .fixedIconPublish {
   position: fixed;
-  right: -55px;
+  right: -70px;
   top: 50%;
   overflow: hidden;
   transform: rotate(90deg);
