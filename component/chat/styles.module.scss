@@ -8,7 +8,7 @@
 }
 
 .chatList {
-  background-color: color(dim);
+  background-color: color(light);
   position: relative;
   left: 0;
   height: 100%;
@@ -33,7 +33,7 @@
     padding: 10px;
     height: stretch;
     .selected > div:last-of-type {
-      border-right: 3px solid color(sec);
+      border-right: 3px solid color(secondary);
       border-radius: 3px;
       background-color: var(--pry);
       & > span:last-of-type {
@@ -105,7 +105,7 @@
         margin: 10px;
         min-width: 120px;
         text-align: center;
-        background-color: color(dim);
+        background-color: color(light);
       }
     }
   }

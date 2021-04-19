@@ -1,5 +1,4 @@
 const newsRef = firestore.collection("news");
-const quoteRef = firestore.collection("quote");
 const articleRef = firestore.collection("article");
 const profileRef = firestore.collection("profile");
 
@@ -235,7 +234,7 @@ export const fetchArticles = async ({ limit = 5, navTag, lastVisible, articlesRe
       space,
       pryImage,
       author,
-      viewers: { length: viewers },
+      upvote: { length: upvote },
       title: { data: title },
     } = x;
 
@@ -247,7 +246,7 @@ export const fetchArticles = async ({ limit = 5, navTag, lastVisible, articlesRe
       content,
       space,
       author,
-      viewers,
+      upvote,
       displayName,
       profilePicture,
     };
@@ -491,17 +490,18 @@ export const fetchHomeData = async () => {
     highlight: db.view
       .filter((x) => x.title.length === 3)
       .slice(0, 3)
-      .map(({ author, title: { data: title }, viewers: { length: viewers }, pryImage }) => ({
+      .map(({ author, title: { data: title }, upvote: { length: upvote }, pryImage }) => ({
         author,
         title,
         pryImage,
-        viewers,
+        upvote,
       })),
+
     newsFlash: db.news.map(({ flash, source, newsLink, date }) => ({ flash, source, newsLink, date })),
 
     primaryArticles: db.view
       .filter((x) => x.title.length >= 10)
-      .slice(0, 3)
+      .slice(0, 4)
       .map((doc) => {
         const {
           title: { data: title },
@@ -513,8 +513,6 @@ export const fetchHomeData = async () => {
         const { displayName, profilePicture } = db.viewer?.find((x) => x.handle === author);
         return { title, date, space, pryImage, displayName, profilePicture, author };
       }),
-
-    quoteOfTheDay: db.quotes[db.quotes.length - 1],
   };
 };
 

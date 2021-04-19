@@ -1,6 +1,6 @@
 import Grid from "@material-ui/core/Grid";
 import Hidden from "@material-ui/core/Hidden";
-import { styles, HeaderContainer, FooterContainer, NavbarContainer } from "/";
+import { styles, HeaderContainer, Footer, NavbarContainer } from "/";
 
 const Layout = ({ handleScroll, children, style, pathname }) => (
   <Grid container className={styles.layout} style={style}>
@@ -13,7 +13,7 @@ const Layout = ({ handleScroll, children, style, pathname }) => (
       <HeaderContainer />
       <div onScroll={handleScroll} className={styles.content}>
         {children}
-        {pathname.includes("/chat") ? <div /> : <FooterContainer />}
+        {pathname.includes("/chat") ? <div /> : <Footer />}
       </div>
     </Grid>
   </Grid>

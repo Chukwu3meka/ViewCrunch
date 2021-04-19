@@ -10,7 +10,7 @@ const NewsFlash = ({ newsFlash }) => (
       <a href={newsLink} key={index}>
         <Paper elevation={4}>
           <Typography variant="body1">{trimString(flash, 70)}</Typography>
-          <Typography variant="caption" color="textSecondary">{`${source} | ${dateCalculator({ date })}`}</Typography>
+          <Typography variant="caption" color="secondary">{`${source} | ${dateCalculator({ date })}`}</Typography>
         </Paper>
       </a>
     ))}

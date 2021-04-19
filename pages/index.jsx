@@ -1,14 +1,14 @@
 import { ErrorPage, SeoHead } from "@component/page";
 import HomePage, { SecBodyContainer } from "@component/homePage";
 
-const Index = ({ error, articles, highlight, newsFlash, quoteOfTheDay, primaryArticles, propsLastVisible, propsArticlesRead }) => {
+const Index = ({ error, articles, highlight, newsFlash,  primaryArticles, propsLastVisible, propsArticlesRead }) => {
   if (error) return <ErrorPage statusCode={error.code} title={error.title} />;
 
   return (
     <>
       <SeoHead />
       <div style={{ padding: "10px" }}>
-        <HomePage {...{ highlight, newsFlash, primaryArticles, quoteOfTheDay }} />
+        <HomePage {...{ highlight, newsFlash, primaryArticles, }} />
         <SecBodyContainer {...{ articles, propsLastVisible, propsArticlesRead }} />
       </div>
     </>
@@ -36,8 +36,6 @@ export const getServerSideProps = async (ctx) => {
       articles: profileData.articles,
       highlight: homeData.highlight,
       newsFlash: homeData.newsFlash,
-      //:// error: false,
-      quoteOfTheDay: homeData.quoteOfTheDay,
       primaryArticles: homeData.primaryArticles,
       propsLastVisible: profileData.propsLastVisible,
       propsArticlesRead: [],

@@ -1,24 +1,23 @@
 import Link from "next/link";
 import Image from "next/image";
 import Fade from "react-reveal/Fade";
-
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import VisibilityIcon from "@material-ui/icons/Visibility";
+import UpvoteIcon from "@material-ui/icons/ThumbUp";
 import { shortNumber, trimString, toId } from "@utils/clientFunctions";
 
 const Highlight = ({ highlight, styles }) => (
   <div className={styles.highlight}>
-    {highlight.map(({ title, pryImage, author, viewers }, index) => (
+    {highlight.map(({ title, pryImage, author, upvote }, index) => (
       <Fade right key={index}>
         <Link href={{ pathname: `/${author}/${toId(title)}` }}>
           <a>
             <Paper elevation={2}>
               <div>
                 <span>
-                  <VisibilityIcon fontSize="small" color="primary" />
+                  <UpvoteIcon fontSize="small" color="primary" />
                   <Typography variant="caption" color="textSecondary">
-                    {shortNumber(viewers)}
+                    {shortNumber(upvote)}
                   </Typography>
                 </span>
                 <Typography variant="body1">{trimString(title, 20)}</Typography>

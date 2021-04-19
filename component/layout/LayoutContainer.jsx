@@ -18,8 +18,10 @@ const LayoutContainer = (props) => {
     setAppTheme(props.theme);
     setStyle({
       "--pry": props.theme === "light" ? "#fff" : "#424242",
-      "--dim": props.theme === "light" ? "#0000008a" : "#ffffffb3",
       "--sec": props.theme === "light" ? "#424242" : "#fff",
+      // "--dark": props.theme === "light" ? "#0000008a" : "#ffffffb3",
+      "--dim": props.theme === "light" ? "#b1b1b18a" : "#ffffffb3",
+      // "--light": props.theme === "light" ? "#0000008a" : "#ffffffb3",
     });
   }, [props.theme]);
 

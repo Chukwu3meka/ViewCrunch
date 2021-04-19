@@ -3,7 +3,6 @@
 .primaryBody {
   @include flexCenter(column);
   & > * > a > div {
-    border: 1px solid color(dim);
     @include flexCenter(row);
     align-items: stretch;
     gap: 20px;
@@ -51,10 +50,11 @@
 
 .newsFlash > div {
   @include flexCenter(column);
-  padding: 10px !important;
-  border: 1px solid color(dim);
+  padding: 15px 10px !important;
+  // border: 1px solid color(light);
+  border: 1px solid var(--dim);
   & > a > div {
-    border-bottom: 3px solid color(pry);
+    border-bottom: 3px solid color(primary);
     margin: 10px 0;
     @include flexCenter(column);
     & > *:first-child {
@@ -62,30 +62,26 @@
     }
   }
   & > a:nth-child(odd) > div {
-    background-color: color(dim);
+    background-color: var(--dim);
     color: #000;
   }
 }
 
-.midHomePage {
-  border-radius: 100px 0 100px 0;
-  margin: 20px 0 !important;
-  background: linear-gradient(to right, var(--pry), color(dim));
-  padding: 20px;
-}
-
 .highlight {
-  padding: 0 10px 20px;
-  @include flexCenter(row);
+  background: linear-gradient(to right, var(--pry), var(--dim));
+  border-radius: 10px 15px 5px 10px;
   justify-content: space-evenly;
+  @include flexCenter(row);
+  padding: 20px 0;
   flex-wrap: wrap;
+  margin: 40px 0;
   gap: 15px;
   & > * > a > div {
     @include flexCenter(row);
     justify-content: space-evenly;
     gap: 10px;
     max-width: 320px;
-    border-left: 3px solid color(sec);
+    border-left: 3px solid color(secondary);
     & > div:first-of-type {
       @include flexCenter(column);
       & > span {
@@ -96,104 +92,24 @@
     }
     & > div:last-of-type {
       position: relative;
+      border-radius: 0 5px 5px 0;
+      overflow: hidden;
       height: 70px;
       width: 100px;
     }
   }
 }
 
-.quoteWrapper {
-  width: 100%;
-  max-width: 400px;
-  height: 230px;
-  position: relative;
-  margin: 0 auto 20px;
-
-  .text {
-    width: 100%;
-    height: 100%;
-    background: var(--dim);
-    border-radius: 50%;
-    position: relative;
-    margin: 0;
-    color: var(--pry);
-  }
-
-  .text p {
-    height: 100%;
-    font-size: 23px;
-    line-height: 1.2;
-    padding: 0;
-    text-align: center;
-    font-style: italic;
-    text-shadow: 0.5px 0.5px 1px var(--dim);
-  }
-
-  .text::before {
-    content: "";
-    width: 50%;
-    height: 100%;
-    float: left;
-    shape-outside: polygon(0 0, 98% 0, 50% 6%, 23.4% 17.3%, 6% 32.6%, 0 50%, 6% 65.6%, 23.4% 82.7%, 50% 94%, 98% 100%, 0 100%);
-    shape-margin: 20px;
-  }
-
-  .text p::before {
-    content: "";
-    width: 50%;
-    height: 100%;
-    float: right;
-    shape-outside: polygon(
-      2% 0%,
-      100% 0%,
-      100% 100%,
-      2% 100%,
-      50% 94%,
-      76.6% 82.7%,
-      94% 65.6%,
-      100% 50%,
-      94% 32.6%,
-      76.6% 17.3%,
-      50% 6%
-    );
-    shape-margin: 20px;
-  }
-
-  & > blockquote footer {
-    width: 100%;
-    position: absolute;
-    bottom: 12px;
-    letter-spacing: 0.05em;
-    font-size: 14px;
-    text-align: center;
-    font-style: italic;
-    text-shadow: 0.5px 0.5px 1px var(--dim);
-  }
-}
-
-.quoteWrapper::before {
-  content: "\201C";
-  font-size: 270px;
-  height: 82px;
-  line-height: 1;
-  position: absolute;
-  top: -48px;
-  left: 0;
-  z-index: 1;
-  color: var(--dim);
-  opacity: 0.9;
-}
-
 .secBody {
   @include flexCenter(column);
   max-width: 1000px !important;
   & > * > a > div {
-    border: 1px solid color(dim);
+    border: 1px solid color(light);
     margin: 5px 0;
     @include flexCenter(column);
     justify-content: flex-start;
     & > div:first-of-type {
-      background-color: color(dim);
+      background-color: color(light);
       @include flexCenter(row);
       border-radius: 5px;
       overflow: hidden;
@@ -237,7 +153,6 @@
         }
         & > *:first-child {
           margin: -5px 0;
-          gap: 5px;
         }
         & > *:last-child {
           margin-bottom: -5px;
@@ -276,13 +191,6 @@
         padding-left: 5px;
       }
     }
-  }
-}
-
-@media screen and (min-width: 520px) {
-  .quoteWrapper {
-    width: 500px;
-    height: 250px;
   }
 }
 

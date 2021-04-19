@@ -1,6 +1,7 @@
 import dbContent from "./dbContent";
 import { range, toId } from "@utils/clientFunctions";
-export const date = () => new Date(range(1998, 2020), range(0, 11), range(0, 30)).toDateString();
+export const date = () => new Date(range(2018, 2020), range(0, 11), range(0, 30)).toDateString();
+
 export const name1 = [
   "Pedro",
   "Dorothy",
@@ -145,7 +146,6 @@ export const view = name3.map((title) => ({
   keywords: "keywords",
   description: "description",
   comments: [...Array(range(0, 100)).keys()].map(() => generateComment()),
-  viewers: [...Array(range(0, 10000)).keys()].map(() => "@pedro"),
   upvote: [...Array(range(0, 10000)).keys()].map(() => "@pedro"),
   downvote: [...Array(range(0, 10000)).keys()].map(() => "@pedro"),
   disabled: false,
@@ -165,6 +165,12 @@ export const news = [
     date: date(),
   },
   {
+    flash: "Persucution around the world",
+    source: "viewChest",
+    newsLink: "https://www.viewchest.com",
+    date: date(),
+  },
+  {
     flash: `Two police officers shot after grand jury decides not to pursue murder or manslaughter charge in 26-year-old's death`,
     source: "france24",
     newsLink: "https://www.france24.com",
@@ -176,10 +182,4 @@ export const news = [
     newsLink: "https://www.aljazeera.com",
     date: date(),
   },
-];
-
-export const quotes = [
-  { phrase: "Whatever the mind of man can conceive it acheive", author: "Richard Templar" },
-  { phrase: "Never chew more than your mouth can contain and Never lose your temper", author: "Pedro JR" },
-  { phrase: "If you want to kill a big dream tell it to a small minded person", author: "Barrack Obama" },
 ];

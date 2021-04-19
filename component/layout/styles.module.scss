@@ -32,27 +32,49 @@
 
   a:link {
     cursor: pointer;
-    color: color(sec);
+    color: color(secondary);
     text-decoration: none;
   }
   a:visited {
     text-decoration: none;
-    color: color(sec);
+    color: color(secondary);
   }
   a:hover {
-    color: darken($color: color(pry), $amount: 10);
+    color: darken($color: color(primary), $amount: 10);
     transition-delay: 200ms;
     cursor: pointer;
   }
   a:active {
     text-decoration: none;
-    color: color(sec);
+    color: color(secondary);
   }
+
+  // a:hover {
+  //   color: var(--sec);
+  //   cursor: pointer;
+  // }
 }
 
 .navbar {
   @include flexCenter(column);
-  @include link;
+  a:link {
+    cursor: pointer;
+    color: var(--sec);
+    text-decoration: none;
+  }
+  a:visited {
+    text-decoration: none;
+    color: var(--sec);
+  }
+  a:hover {
+    color: var(--sec);
+    cursor: pointer;
+  }
+  a:active {
+    text-decoration: none;
+    color: var(--sec);
+  }
+
   justify-content: space-between;
   height: 100%;
   background-color: var(--pry);
@@ -75,7 +97,7 @@
       }
     }
     & > div:last-of-type {
-      border-top: 1px solid color(sec);
+      border-top: 1px solid color(secondary);
       position: relative;
       z-index: 10000;
       padding: 30px 0;
@@ -83,7 +105,7 @@
     }
   }
   & > div:nth-of-type(2) {
-    border-top: 1px solid color(sec);
+    border-top: 1px solid color(secondary);
     padding: 10px 5px 5px;
     @include flexCenter(row);
     justify-content: space-between;
@@ -115,7 +137,7 @@
       font-weight: 500;
       font-size: 30px;
       text-shadow: 2px 2px 0 var(--dim);
-      color: color(sec) !important;
+      color: color(secondary) !important;
     }
   }
 }
@@ -133,7 +155,8 @@
   overflow-y: auto;
   display: grid;
   grid-template-rows: auto max-content;
-  background-color: color(dim);
+  background: linear-gradient(to bottom right, var(--pry), var(--dim));
+
   & > *:first-child {
     padding: 0 10px 10px;
     position: relative;
@@ -146,61 +169,45 @@
 }
 
 .footer {
-  @include flexCenter(column);
-  border-top-right-radius: 50px;
   background-color: var(--pry);
-  & > div:first-of-type {
-    overflow: hidden;
-    position: relative;
-    & > div {
-      border: 13px solid color(dim);
-      transform: rotate(45deg);
-      border-radius: 3px;
-      position: relative;
-      top: -17px;
-    }
-  }
+  @include flexCenter(column);
+  padding: 10px 5px 5px !important;
+  text-align: center;
+  // border-radius: 5px;
   & > div:last-of-type {
-    @include flexCenter(column);
-    @include link;
-    padding: 0px 10px 5px;
-    margin: -5px 0 0;
-    text-align: center;
-    border-radius: 5px;
-    & > div:last-of-type {
+    // position: relative;
+    @include flexCenter(row);
+    flex-wrap: wrap;
+    font-size: 0.8em;
+    justify-content: space-evenly;
+    border-top: 1px solid color(light);
+    border-bottom: 1px solid color(light);
+    margin: 10px 0;
+    & > span {
       @include flexCenter(row);
-      flex-wrap: wrap;
-      font-size: 0.8em;
-      justify-content: space-evenly;
-      border-top: 1px solid color(dim);
-      border-bottom: 1px solid color(dim);
-      margin: 10px 0;
-      & > span {
-        @include flexCenter(row);
-        width: fit-content;
-        padding: 5px 10px;
-        margin: 0 -15px;
-        & > * {
-          margin: 0 15px;
-        }
+      width: fit-content;
+      padding: 5px 10px;
+      margin: 0 -15px;
+      & > * {
+        margin: 0 15px;
       }
-      & > img {
-        visibility: hidden;
-        position: absolute;
-        margin: auto;
-        width: 40px;
-        height: 40px;
-        padding: 5px;
-        background-color: color(dim);
-        border-radius: 50%;
-        border: 3px solid color(dim);
-      }
+    }
+    & > img {
+      visibility: hidden;
+      position: absolute;
+      margin: auto;
+      width: 40px;
+      height: 40px;
+      padding: 5px;
+      background-color: color(light);
+      border-radius: 50%;
+      border: 3px solid color(light);
     }
   }
 }
 
 @media screen and (min-width: 600px) {
-  .footer > div:last-of-type > div:last-of-type {
+  .footer > div:last-of-type {
     & > span {
       width: fit-content;
     }

@@ -1,9 +1,9 @@
 $fontColors: (
   // "pry": #c28c17,
-  "pry": #b8860b,
-  "sec": #1197c0,
-  "dim": #b1b1b18a,
-  "dark": #252635,
+  "primary": #b8860b,
+  "secondary": #1197c0,
+  "light": #b1b1b18a,
+  // "dark": #252635,
   // "success": rgb(24, 185, 24),
   // "error": #b91818,,,,,
 );
@@ -18,24 +18,4 @@ $fontColors: (
   justify-content: center;
   align-items: center;
   width: $width;
-}
-
-@mixin link {
-  a:link {
-    cursor: pointer;
-    color: var(--sec);
-    text-decoration: none;
-  }
-  a:visited {
-    text-decoration: none;
-    color: var(--sec);
-  }
-  a:hover {
-    color: var(--sec);
-    cursor: pointer;
-  }
-  a:active {
-    text-decoration: none;
-    color: var(--sec);
-  }
 }

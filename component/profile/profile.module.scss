@@ -12,7 +12,7 @@
       max-height: 300px !important;
     }
     & > div:last-of-type {
-      border-color: color(dim);
+      border-color: color(light);
     }
   }
 }
@@ -22,7 +22,7 @@
   padding: 10px 5px;
   & > div:nth-of-type(1) {
     @include flexCenter(column);
-    background-color: color(dim);
+    background-color: color(light);
     padding: 0 10px 5px;
     & > button:nth-of-type(1) {
       margin-bottom: -15px;
@@ -39,7 +39,7 @@
   }
   & > div:nth-of-type(2) {
     @include flexCenter(column);
-    background-color: color(dim);
+    background-color: color(light);
     margin: 10px 0;
     padding: 10px;
     & > span:nth-of-type(1) {
@@ -55,7 +55,7 @@
     }
   }
   & > div:nth-of-type(3) {
-    background-color: color(dim);
+    background-color: color(light);
     width: 100%;
     & > div {
       // border: 3px solid green;
@@ -123,7 +123,7 @@
       }
     }
     & > div:nth-of-type(3) {
-      border-top: 1px solid color(dim);
+      border-top: 1px solid color(light);
       @include flexCenter(row);
     }
   }
@@ -146,7 +146,7 @@
       }
       & > div:nth-of-type(3) {
         border: none;
-        border-left: 1px solid color(dim);
+        border-left: 1px solid color(light);
         @include flexCenter(column);
         justify-content: space-between;
         align-self: stretch;

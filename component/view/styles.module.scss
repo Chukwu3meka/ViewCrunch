@@ -2,7 +2,7 @@
 
 .view {
   // background: linear-gradient(to bottom right, var(--pry), var(--dim));
-  background: linear-gradient(to bottom right, var(--pry), color(dim));
+  background: linear-gradient(to bottom right, var(--pry), color(light));
   border-bottom-right-radius: 50px;
   padding-bottom: 20px !important;
   & > div:nth-of-type(1) {
@@ -13,7 +13,7 @@
         text-align: center;
         font-weight: bolder;
         letter-spacing: 1px;
-        border-bottom: 1px solid color(pry);
+        border-bottom: 1px solid color(primary);
         margin: 0;
       }
       & > div:nth-of-type(1) {
@@ -41,7 +41,7 @@
         }
 
         code {
-          background: color(dim);
+          background: color(light);
           border-radius: 10px;
           padding: 10px 20px;
           margin: 10px 0;
@@ -60,7 +60,7 @@
         & > span {
           @include flexCenter(row);
           width: fit-content;
-          border: 1px solid color(dim);
+          border: 1px solid color(light);
           border-radius: 20px;
           & > button {
             padding: 5px 7px;
@@ -69,7 +69,7 @@
           & > span {
             font-size: 0.9em;
             padding-right: 7px;
-            border-right: 1px solid color(dim);
+            border-right: 1px solid color(light);
           }
         }
         & > div {
@@ -94,7 +94,7 @@
         // max-width: 1000px;
         & > div:nth-of-type(2) {
           border: 2px solid transparent;
-          border-image: linear-gradient(to right, color(pry), color(dim), color(sec));
+          border-image: linear-gradient(to right, color(primary), color(light), color(secondary));
           border-image-slice: 1;
         }
         & > span {
@@ -120,14 +120,14 @@
           }
           & > div:nth-of-type(2) {
             position: relative;
-            background-color: color(dim);
+            background-color: color(light);
             border-radius: 5px;
             padding: 5px;
             width: 100%;
             margin: 0 0 0 10px;
             & > p {
               border-bottom: 2px solid transparent;
-              border-image: linear-gradient(to right, color(pry), color(dim), color(sec));
+              border-image: linear-gradient(to right, color(primary), color(light), color(secondary));
               border-image-slice: 1;
               font-size: 0.6em;
               width: fit-content;
@@ -140,7 +140,7 @@
           }
           & > div:nth-of-type(2)::before {
             content: "";
-            background-color: color(dim);
+            background-color: color(light);
             position: absolute;
             height: 15px;
 
@@ -204,7 +204,7 @@
           align-self: start;
         }
         & > a {
-          border: 1px solid color(dim);
+          border: 1px solid color(light);
           margin: 0 auto 10px;
           padding: 5px;
           width: 100%;

@@ -49,12 +49,12 @@
     position: absolute;
     top: 50%;
     width: 100%;
-    border: 1px solid color(sec);
+    border: 1px solid color(secondary);
   }
 }
 .lineTextStyle {
   border-bottom: 5px solid transparent;
-  border-image: linear-gradient(to right, color(pry), var(--dim), color(sec));
+  border-image: linear-gradient(to right, color(primary), var(--dim), color(secondary));
   border-image-slice: 1;
   display: block;
   & > *:first-of-type {
@@ -69,7 +69,7 @@
   float: right;
   margin-right: 25px !important;
   background-color: var(--dim) !important;
-  border: 1px solid color(sec) !important;
+  border: 1px solid color(secondary) !important;
   opacity: 0.8;
 }
 
@@ -123,7 +123,7 @@
     padding: 0 5px;
     @include flexCenter(row);
     width: initial;
-    color: color(sec) !important ;
+    color: color(secondary) !important ;
   }
 }
 
@@ -154,7 +154,7 @@
   position: relative;
   min-height: 100px;
   .span1 {
-    border-top: 3px solid color(sec);
+    border-top: 3px solid color(secondary);
     height: 50px;
     position: absolute;
     width: 50px;
