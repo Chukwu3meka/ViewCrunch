@@ -1,16 +1,29 @@
-import { Story, StoryNav } from "/";
+import { useSnackbar } from "notistack";
 import Grid from "@material-ui/core/Grid";
-import { useState } from "react";
+import { Story, StoryNav, styles } from "/";
 import { fetcher, toId } from "@utils/clientFunctions";
 import { SocialShare, Drawer, Dialog } from "@component/others";
 
-import { useSnackbar } from "notistack";
+import { connect } from "react-redux";
+import { useEffect, useRef, useState } from "react";
 
-const StoryContainer = ({ view, profile, advert, online }) => {
+const StoryContainer = (props) => {
+  const { view, profile, advert } = props;
   const { enqueueSnackbar } = useSnackbar();
   const [viewInFavourite, setViewInFavourite] = useState(view.viewer.viewInFavourite);
   const [viewInBlacklist, setViewInBlacklist] = useState(view.viewer.viewInBlacklist);
   const [reportView, setReportView] = useState(false);
+
+  const scrollRef = useRef(null);
+  const [online, setOnline] = useState(props.online);
+
+  useEffect(() => {
+    setOnline(props.online);
+  }, [props.online]);
+
+  useEffect(() => {
+    scrollRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, []);
 
   const [moreActions, setMoreActions] = useState(false);
   //   const { date, title, handle, markdown, comments, authorId, articleId, avgRating, ratingData, noOfRating, viewLength, profilePicture } =
@@ -79,11 +92,18 @@ const StoryContainer = ({ view, profile, advert, online }) => {
   };
 
   return (
-    <Grid container spacing={5}>
+    <Grid container spacing={2} ref={scrollRef} style={{ padding: "5px 0" }}>
       <Story {...{ ...view, profile, moreActionsHandler, setReportView, online, view, moreActions, setMoreActions }} />
       <StoryNav {...{ ...view.author, ...view.post, advert }} />
     </Grid>
   );
 };
 
-export default StoryContainer;
+const mapStateToProps = (state) => ({
+    profile: state.profile,
+    online: state?.device?.online,
+    deviceWidth: state.device?.deviceWidth,
+  }),
+  mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(StoryContainer);

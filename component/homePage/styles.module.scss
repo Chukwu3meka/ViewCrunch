@@ -51,14 +51,19 @@
 .newsFlash > div {
   @include flexCenter(column);
   padding: 15px 10px !important;
-  // border: 1px solid color(light);
   border: 1px solid var(--dim);
+  border-radius: 5px;
   & > a > div {
     border-bottom: 3px solid color(primary);
     margin: 10px 0;
     @include flexCenter(column);
     & > *:first-child {
       margin-bottom: 10px;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      word-break: normal;
+      overflow: hidden;
     }
   }
   & > a:nth-child(odd) > div {
@@ -69,10 +74,10 @@
 
 .highlight {
   background: linear-gradient(to right, var(--pry), var(--dim));
-  border-radius: 10px 15px 5px 10px;
+  border-radius: 20px 5px 15px 10px;
   justify-content: space-evenly;
   @include flexCenter(row);
-  padding: 20px 0;
+  padding: 20px 10px;
   flex-wrap: wrap;
   margin: 40px 0;
   gap: 15px;
@@ -104,17 +109,13 @@
   @include flexCenter(column);
   max-width: 1000px !important;
   & > * > a > div {
-    border: 1px solid color(light);
     margin: 5px 0;
     @include flexCenter(column);
     justify-content: flex-start;
     & > div:first-of-type {
-      background-color: color(light);
-      @include flexCenter(row);
       border-radius: 5px;
       overflow: hidden;
       height: 150px;
-      padding: 5px;
       & > div {
         position: relative;
         width: 100%;
@@ -150,12 +151,6 @@
         & > div {
           @include flexCenter(row);
           width: fit-content;
-        }
-        & > *:first-child {
-          margin: -5px 0;
-        }
-        & > *:last-child {
-          margin-bottom: -5px;
         }
       }
     }

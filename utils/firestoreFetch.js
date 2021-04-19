@@ -320,7 +320,6 @@ export const fetchArticle = async ({ author, viewHref, myHandle }) => {
     content,
     pryImage,
     // comments: commentsList,
-    viewers,
     upvote,
     downvote,
     description,
@@ -373,7 +372,6 @@ export const fetchArticle = async ({ author, viewHref, myHandle }) => {
     space,
     comments: [],
     date,
-    viewers,
     upvote,
     downvote,
     author: {

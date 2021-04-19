@@ -12,7 +12,7 @@ import DownvoteIcon from "@material-ui/icons/ThumbDown";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import CommentIcon from "@material-ui/icons/RateReviewRounded";
 
-import { CommentsContainer } from "/";
+import { CommentsContainer, styles } from "/";
 import { Avatar } from "@component/others";
 import { time2read, trimString, shortNumber, toId, dateCalculator } from "@utils/clientFunctions";
 import { SocialShare, Drawer, Dialog } from "@component/others";
@@ -30,7 +30,6 @@ const View = ({
   profile,
   comments,
 
-  viewers: { length: viewers },
   upvote: { length: totalUpvote },
   upvote,
   downvote: { length: totalDownvote },
@@ -50,7 +49,7 @@ const View = ({
   // reportHandler,
 }) => (
   <>
-    <Grid item xs={12} sm={12} md={12} lg={9}>
+    <Grid item xs={12} sm={12} md={12} lg={9} className={styles.storyHeader}>
       <Link href={{ pathname: `/space/${toId(space)}` }}>
         <a style={{ fontSize: ".7em" }}>{space}</a>
       </Link>
@@ -68,7 +67,7 @@ const View = ({
       </div>
     </Grid>
     <Grid item lg={3} />
-    <Grid item xs={12} sm={12} md={12} lg={9}>
+    <Grid item xs={12} sm={12} md={12} lg={9} className={styles.storyMain}>
       <article dangerouslySetInnerHTML={{ __html: content }} />
       <Paper>
         <span>
@@ -83,14 +82,7 @@ const View = ({
           </IconButton>
         </span>
         <div>
-          <IconButton color="secondary">
-            <CommentIcon fontSize="inherit" />
-          </IconButton>
-          <span>{shortNumber(comments?.length || 0)}</span>
-          <IconButton color="secondary">
-            <VisibilityIcon fontSize="inherit" />
-          </IconButton>
-          <span>{shortNumber(viewers)}</span>
+          <span>{`${shortNumber(totalUpvote)} upvote${totalUpvote > 1 && "s"}`}</span>
           <IconButton color="inherit" onClick={moreActionsHandler}>
             <MoreVertIcon />
           </IconButton>
@@ -98,10 +90,9 @@ const View = ({
       </Paper>
       {/* <CommentsContainer {...{ online, view, profile }} /> */}
     </Grid>
-    <>
-      <Drawer title={title} list={moreActions} displayDrawer={moreActions} setDisplayDrawer={setMoreActions} />
+    <Drawer title={title} list={moreActions} displayDrawer={moreActions} setDisplayDrawer={setMoreActions} />
 
-      {/* {reportView && (
+    {/* {reportView && (
         <Dialog
           proceed="report"
           handler={reportHandler}
@@ -112,7 +103,6 @@ const View = ({
           message={`Reporting this view, will automatically add it to your blacklist. Moderators won't receive your profile details; Do you wish to proceed.`}
         />
       )} */}
-    </>
   </>
 );
 

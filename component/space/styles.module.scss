@@ -71,7 +71,7 @@
     & > div {
       @include flexCenter(row);
       justify-content: space-between;
-      border-bottom: 1px solid color(light);
+      border-bottom: 1px solid var(--dim);
 
       & > span {
         @include flexCenter(row);
@@ -274,7 +274,7 @@
       // border: 3px solid red;
       @include flexCenter(column);
       width: initial;
-      background-color: color(light);
+      background-color: var(--dim);
       padding: 5px 10px 10px;
       margin: 10px 0;
       border-radius: 5px;
@@ -328,7 +328,7 @@
       background-color: color(primary);
     }
     & > article {
-      border: 1px solid color(light);
+      border: 1px solid var(--dim);
       border-radius: 10px;
       padding: 10px;
       margin: 10px 0;
@@ -342,7 +342,7 @@
       }
     }
     & > div:nth-of-type(3) {
-      border: 1px solid color(light);
+      border: 1px solid var(--dim);
       border-radius: 10px;
       padding: 5px;
       margin: 0 0 5px;

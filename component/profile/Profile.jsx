@@ -1,21 +1,16 @@
-import { CoverPic } from "@component/others";
-import { Alert, FixedIcon } from "@component/others";
-import { styles, MyArticlesContainer, MyIntroContainer, TimelineContainer } from "/";
-
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
-import Paper from "@material-ui/core/Paper";
+import { Alert } from "@component/others";
 import PersonPinIcon from "@material-ui/icons/PersonPin";
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import FingerprintIcon from "@material-ui/icons/Fingerprint";
+import { styles, MyArticlesContainer, MyIntroContainer, TimelineContainer } from "/";
 
 const Profile = ({
   token,
   online,
-  classes,
   tabValue,
   TabPanel,
-  articles,
   myProfile,
   viewerData,
   viewerHistory,
@@ -23,41 +18,28 @@ const Profile = ({
   profileWarning,
   enqueueSnackbar,
   setProfileWarning,
-  
 }) => (
   <div className={styles.profile}>
-    <CoverPic
-      {...{
-        imgSrcA: viewerData?.coverPicture || "/images/viewChest-cover.webp",
-        imgAltA: viewerData?.displayName || "viewChest cover picture",
-        imgSrcB: viewerData?.profilePicture || "/images/viewChest.webp",
-        imgAltB: viewerData?.displayName || "viewChest logo",
-      }}
-    />
-
-    <Paper className={classes.root}>
-      <Tabs value={tabValue} onChange={handleTabChange} indicatorColor="primary" textColor="primary" scrollButtons="on" centered>
-        <Tab label="Profile" icon={<PersonPinIcon />} />
-        <Tab label="View" icon={<AssignmentIcon />} />
-        <Tab label="Timeline" icon={<FingerprintIcon />} />
-      </Tabs>
-      <TabPanel value={tabValue} index={0}>
-        <MyIntroContainer {...{ online, myProfile, viewerData, viewerHistory, token, }} />
-        {/* <MyArticlesContainer {...{ articles: viewerData.published, token, myProfile, enqueueSnackbar }} /> */}
-      </TabPanel>
-      <TabPanel value={tabValue} index={1}>
-        <MyArticlesContainer {...{ articles: viewerData.published, token, myProfile, enqueueSnackbar }} />
-      </TabPanel>
-      <TabPanel value={tabValue} index={2}>
-        <TimelineContainer
-          {...{
-            viewerHistory,
-            profileCreated: viewerData?.stat?.profileCreated,
-            enqueueSnackbar,
-          }}
-        />
-      </TabPanel>
-    </Paper>
+    <Tabs value={tabValue} onChange={handleTabChange} indicatorColor="primary" textColor="primary" scrollButtons="on" centered>
+      {/* <Tab label="Profile" icon={<PersonPinIcon />} /> */}
+      <Tab label="Published" icon={<AssignmentIcon />} />
+      <Tab label="Timeline" icon={<FingerprintIcon />} />
+    </Tabs>
+    {/* <TabPanel value={tabValue} index={0}>
+      <MyIntroContainer {...{ online, myProfile, viewerData, viewerHistory, token }} />
+    </TabPanel> */}
+    <TabPanel value={tabValue} index={0}>
+      <MyArticlesContainer {...{ articles: viewerData.published, token, myProfile, enqueueSnackbar }} />
+    </TabPanel>
+    <TabPanel value={tabValue} index={1}>
+      <TimelineContainer
+        {...{
+          viewerHistory,
+          profileCreated: viewerData?.stat?.profileCreated,
+          enqueueSnackbar,
+        }}
+      />
+    </TabPanel>
 
     {profileWarning && myProfile && (
       <Alert

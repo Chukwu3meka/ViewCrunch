@@ -153,19 +153,19 @@ export const view = name3.map((title) => ({
 
 export const news = [
   {
-    flash: `SoccerMASS.com set to release awesome Interface and Experience`,
+    flash: `SoccerMASS.com set to release awesome Interface and Experience; Full remodeling of football and player activies being discussed`,
     source: "SoccerMASS",
     newsLink: "https://www.soccermass.com",
     date: date(),
   },
   {
-    flash: `'Not Justice': Anger in Louisville after Breonna Taylor charges`,
+    flash: `'Not Justice': Anger in Louisville after Breonna Taylor charges; Court silence provokes justice`,
     source: "france24",
     newsLink: "https://www.france24.com",
     date: date(),
   },
   {
-    flash: "Persucution around the world",
+    flash: "Persucution around the world, from third world countries to full democratic nations",
     source: "viewChest",
     newsLink: "https://www.viewchest.com",
     date: date(),
@@ -177,7 +177,8 @@ export const news = [
     date: date(),
   },
   {
-    flash: "How do we tackle an 'infodemic' amid a pandemic?",
+    flash:
+      "How do we tackle an 'infodemic' amid a pandemic?; Approaching two years since the onset of Covid-19, yet no lasting solution",
     source: "Aljazeera",
     newsLink: "https://www.aljazeera.com",
     date: date(),

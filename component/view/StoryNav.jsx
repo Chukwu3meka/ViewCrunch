@@ -7,6 +7,7 @@ import Button from "@material-ui/core/Button";
 import Hidden from "@material-ui/core/Hidden";
 import Typography from "@material-ui/core/Typography";
 
+import { styles } from "/";
 import { toId } from "@utils/clientFunctions";
 import { SocialShare, LineText } from "@component/others";
 
@@ -22,7 +23,7 @@ const StoryNav = ({
   facebookHandle,
 }) => (
   <Hidden mdDown>
-    <Grid item lg={3}>
+    <Grid item lg={3} className={styles.storyNav}>
       <Paper>
         <div>
           <Image src={profilePicture} layout="fill" />

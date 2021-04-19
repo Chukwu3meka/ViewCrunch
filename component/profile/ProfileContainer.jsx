@@ -5,16 +5,16 @@ import { useSnackbar } from "notistack";
 import { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles({
-  root: {
-    padding: 0,
-    flexGrow: 1,
-    width: "100%",
-    marginTop: "20px",
-    maxWidth: "1000px",
-    minWidth: "100px",
-  },
-});
+// const useStyles = makeStyles({
+//   root: {
+//     padding: 0,
+//     flexGrow: 1,
+//     width: "100%",
+//     marginTop: "20px",
+//     maxWidth: "1000px",
+//     minWidth: "100px",
+//   },
+// });
 
 const ProfileContainer = (props) => {
   const { enqueueSnackbar } = useSnackbar();
@@ -24,8 +24,8 @@ const ProfileContainer = (props) => {
     setOnline(props.online);
   }, [props.online]);
 
-  const classes = useStyles(),
-    [tabValue, setTabValue] = useState(0),
+  // classes = useStyles(),
+  const [tabValue, setTabValue] = useState(0),
     [online, setOnline] = useState(props.online),
     // [profileWarning, setProfileWarning] = useState(myProfile);
     [profileWarning, setProfileWarning] = useState(false);
@@ -46,7 +46,7 @@ const ProfileContainer = (props) => {
         viewerHistory,
         token,
         online,
-        classes,
+        // classes,
         tabValue,
         TabPanel,
         myProfile,

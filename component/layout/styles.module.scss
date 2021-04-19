@@ -173,15 +173,13 @@
   @include flexCenter(column);
   padding: 10px 5px 5px !important;
   text-align: center;
-  // border-radius: 5px;
   & > div:last-of-type {
-    // position: relative;
     @include flexCenter(row);
     flex-wrap: wrap;
     font-size: 0.8em;
     justify-content: space-evenly;
-    border-top: 1px solid color(light);
-    border-bottom: 1px solid color(light);
+    border-top: 1px solid var(--dim);
+    border-bottom: 1px solid var(--dim);
     margin: 10px 0;
     & > span {
       @include flexCenter(row);
@@ -199,9 +197,9 @@
       width: 40px;
       height: 40px;
       padding: 5px;
-      background-color: color(light);
+      background-color: var(--dim);
       border-radius: 50%;
-      border: 3px solid color(light);
+      border: 3px solid var(--dim);
     }
   }
 }

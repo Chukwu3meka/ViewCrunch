@@ -26,14 +26,14 @@ const SecBody = ({ content = [], deviceWidth, label, loading, getMorePost, fetch
                   </div>
                 </div>
                 <div>
-                  <Typography variant="body1" color="textSecondary">
+                  <Typography variant="button" color="textSecondary">
                     {title}
                   </Typography>
-                  <Typography variant="body2" dangerouslySetInnerHTML={{ __html: htmlToString(content) }} />
+                  <article dangerouslySetInnerHTML={{ __html: htmlToString(content) }} />
                   <div>
                     <div>
                       <Avatar alt={displayName} src={profilePicture} size="small" />
-                      <Typography variant="subtitle1" color="textSecondary">
+                      <Typography variant="body2" color="textSecondary">
                         {deviceWidth <= 350
                           ? trimString(displayName, 10)
                           : deviceWidth <= 600
@@ -42,7 +42,7 @@ const SecBody = ({ content = [], deviceWidth, label, loading, getMorePost, fetch
                       </Typography>
                     </div>
                     <div>
-                      <Typography variant="subtitle2" color="textSecondary">
+                      <Typography variant="caption" color="textSecondary">
                         {`${shortNumber(upvote)} upvote${upvote > 1 && "s"}
                         | ${deviceWidth <= 350 ? trimString(space, 8) : deviceWidth <= 600 ? trimString(space, 10) : space}`}
                       </Typography>

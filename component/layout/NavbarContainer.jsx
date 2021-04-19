@@ -21,6 +21,7 @@ const NavbarContainer = (props) => {
       ["Favourite", "/favourite", <TimelineIcon />],
       ["Notification", "/notification", myNotification ? <NotificationsActiveIcon /> : <NotificationsOffIcon />],
       ["My Space", "/space", <ImportantDevicesIcon />],
+      ["Portfolio", `/${myHandle ? myHandle : "unauthenticated"}`, <AssignmentIndIcon />],
       // ["Chat", "/chat", <AssignmentIndIcon />],
     ];
 
