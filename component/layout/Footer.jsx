@@ -3,7 +3,7 @@ import Link from "next/link";
 import { AuthFirebase } from "@component/page";
 import Typography from "@material-ui/core/Typography";
 
-const Footer = () => (
+const Footer = ({ scrollTop }) => (
   <div className={styles.footer}>
     <AuthFirebase />
     <div>
@@ -21,7 +21,7 @@ const Footer = () => (
         </Link>
       </span>
 
-      <img src="/images/viewChest.webp" alt="viewChest footer icon" />
+      <img src="/images/viewChest.webp" alt="viewChest footer icon" onClick={scrollTop} />
 
       <span>
         <Link href="/control/contact">

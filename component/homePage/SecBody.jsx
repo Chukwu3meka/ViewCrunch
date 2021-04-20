@@ -1,11 +1,10 @@
-import { styles } from "/";
 import React from "react";
+import { styles } from "/";
 import Link from "next/link";
 import Image from "next/image";
 import Fade from "react-reveal/Fade";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
-import UpvoteIcon from "@material-ui/icons/ThumbUp";
 import Typography from "@material-ui/core/Typography";
 import { Loading, LineText, Avatar } from "@component/others";
 import { shortNumber, trimString, htmlToString, toId } from "@utils/clientFunctions";
@@ -20,11 +19,6 @@ const SecBody = ({ content = [], deviceWidth, label, loading, getMorePost, fetch
           <Link href={`/${author}/${toId(title)}`}>
             <a>
               <Paper>
-                <div>
-                  <div>
-                    <Image src={pryImage} alt={title} layout="fill" />
-                  </div>
-                </div>
                 <div>
                   <Typography variant="button" color="textSecondary">
                     {title}
@@ -44,10 +38,13 @@ const SecBody = ({ content = [], deviceWidth, label, loading, getMorePost, fetch
                     <div>
                       <Typography variant="caption" color="textSecondary">
                         {`${shortNumber(upvote)} upvote${upvote > 1 && "s"}
-                        | ${deviceWidth <= 350 ? trimString(space, 8) : deviceWidth <= 600 ? trimString(space, 10) : space}`}
+                        | ${deviceWidth <= 600 ? trimString(space, 9) : space}`}
                       </Typography>
                     </div>
                   </div>
+                </div>
+                <div>
+                  <Image src={pryImage} alt={title} layout="fill" />
                 </div>
               </Paper>
             </a>

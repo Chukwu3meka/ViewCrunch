@@ -60,6 +60,7 @@ export default async (req, res) => {
 
     // return res.status(200).json(profile);
   } catch (error) {
+    console.log(error);
     return res.status(401).send(undefined);
   }
 };

@@ -8,8 +8,8 @@ const followHandler = ({ myHandle, follow, viewer }) => {
     .update({
       "chat.following": firebaseAdmin.firestore.FieldValue[follow ? arrayUnion : arrayRemove](viewer),
     })
-    .catch((err) => {
-      // console.log(err)
+    .catch((error) => {
+      throw new TypeError(error);
     });
 };
 
@@ -20,6 +20,7 @@ export default async (req, res) => {
     // await followHandler({ myHandle, follow, viewer });
     return res.status(200).send(true);
   } catch (error) {
+    console.log(error);
     return res.status(401).send(false);
   }
 };

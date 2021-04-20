@@ -48,7 +48,7 @@ const FavouritesContainer = (props) => {
 
   return (
     <Grid container className={styles.favourite}>
-      <Grid item xs={12} sm={12} md={12} lg={6}>
+      <Grid item xs={12} sm={12} md={12} lg={8}>
         <Button onClick={() => setSwitchView(!switchView)} variant="outlined" color="secondary">{`Switch to ${
           switchView ? "Blacklist" : "Favourite"
         }`}</Button>
@@ -59,7 +59,7 @@ const FavouritesContainer = (props) => {
         </div>
       </Grid>
       <Hidden mdDown>
-        <Grid item lg={6}>
+        <Grid item lg={4}>
           <div>
             <Image src="/images/2.png" layout="fill" />
           </div>

@@ -77,7 +77,10 @@ const retouchArticle = async ({ author: { myAuthorID }, title, tag, content, mar
       imageUrl: pryImageURL[0] || `/images/${tag}.png`,
       markdown,
     })
-    .catch((err) => {});
+    .then()
+    .catch((error) => {
+      throw new TypeError(error);
+    });
 
   return "success";
 };
@@ -91,7 +94,8 @@ export default async (req, res) => {
     const status = await retouchArticle({ author, title, tag, content, formerImagesUrl, articleId });
     if (status !== "success") throw new TypeError("Unable to create article");
     return res.status(200).json({ status: "success", articleLink: articleId });
-  } catch (err) {
+  } catch (error) {
+    console.log(error);
     return res.status(401).json({ status: "failed" });
   }
 };

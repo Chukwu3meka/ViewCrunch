@@ -9,8 +9,6 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import DownvoteIcon from "@material-ui/icons/ThumbDown";
-import VisibilityIcon from "@material-ui/icons/Visibility";
-import CommentIcon from "@material-ui/icons/RateReviewRounded";
 
 import { CommentsContainer, styles } from "/";
 import { Avatar } from "@component/others";
@@ -18,35 +16,21 @@ import { time2read, trimString, shortNumber, toId, dateCalculator } from "@utils
 import { SocialShare, Drawer, Dialog } from "@component/others";
 
 const View = ({
-  online,
-  view,
   date,
   space,
   title,
   author: { author, displayName, profilePicture },
-
-  // upvote,
   content,
-  profile,
-  comments,
-
   upvote: { length: totalUpvote },
-  upvote,
-  downvote: { length: totalDownvote },
-  downvote,
   moreActionsHandler,
-
   moreActions,
   setMoreActions,
-  // forceRefresh,
-  // reportView,
-  // setReportView,
-  // view: { title, displayName, author },
-  // viewInFavourite,
-  // viewInBlacklist,
-  // favouriteHandler,
-  // blacklistHandler,
-  // reportHandler,
+  upvoted,
+  downvoted,
+  reportHandler,
+  reportView,
+  voteHandler,
+  setReportView,
 }) => (
   <>
     <Grid item xs={12} sm={12} md={12} lg={9} className={styles.storyHeader}>
@@ -71,13 +55,10 @@ const View = ({
       <article dangerouslySetInnerHTML={{ __html: content }} />
       <Paper>
         <span>
-          <IconButton color={upvote.includes(profile?.handle) ? "#1197c0" : "default"}>
+          <IconButton style={{ color: upvoted ? "#1197c0" : "" }} onClick={voteHandler(true)}>
             <UpvoteIcon fontSize="inherit" />
           </IconButton>
-          <Typography component="span" color="inherit">
-            {shortNumber(totalUpvote)}
-          </Typography>
-          <IconButton color={downvote.includes(profile?.handle) ? "#b91818" : "default"}>
+          <IconButton style={{ color: downvoted ? "#b91818" : "" }} onClick={voteHandler(false)}>
             <DownvoteIcon fontSize="inherit" />
           </IconButton>
         </span>
@@ -90,19 +71,18 @@ const View = ({
       </Paper>
       {/* <CommentsContainer {...{ online, view, profile }} /> */}
     </Grid>
+
     <Drawer title={title} list={moreActions} displayDrawer={moreActions} setDisplayDrawer={setMoreActions} />
 
-    {/* {reportView && (
-        <Dialog
-          proceed="report"
-          handler={reportHandler}
-          title={`Report View`}
-          // forceRefresh={forceRefresh}
-          cancelHandler={() => setReportView(false)}
-          feedback={true}
-          message={`Reporting this view, will automatically add it to your blacklist. Moderators won't receive your profile details; Do you wish to proceed.`}
-        />
-      )} */}
+    <Dialog
+      dialogTitle="Report view"
+      dialogBody={`Reporting this view, will automatically add it to your blacklist, pending when an action is taken. Space Moderators won't receive your profile details; Do you wish to proceed. Help us know what's wrong with the view below.`}
+      dialogHandler={reportHandler}
+      displayDialog={reportView}
+      setDisplayDialog={setReportView}
+      compareText="feedback"
+      proceed="report"
+    />
   </>
 );
 

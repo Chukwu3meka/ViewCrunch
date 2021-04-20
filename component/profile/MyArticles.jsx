@@ -77,11 +77,11 @@ const MyArticles = ({
                         </Tooltip>
                       </a>
                     </Link> */}
-                    <Tooltip title={views < 100 ? "Delete" : "Retain"}>
+                    {/* <Tooltip title={views < 100 ? "Delete" : "Retain"}>
                       <IconButton aria-label="delete" onClick={() => deleteArticle({ id, space, views, title, upvote })}>
                         <DeleteIcon />
                       </IconButton>
-                    </Tooltip>
+                    </Tooltip> */}
                   </div>
                 )}
               </div>

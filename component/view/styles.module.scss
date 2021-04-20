@@ -1,9 +1,10 @@
 @import "@source/_variables.scss";
 
+.story {
+  padding: 0 !important;
+}
 .storyHeader {
-  border: 3px solid red;
-  // margin-bottom: -80px;
-  // margin-bottom: -40px;
+  margin: -10px 0 -35px !important;
   & > h1 {
     font-size: calc(1.8em + 1vw) !important;
     text-align: center;
@@ -22,7 +23,7 @@
 .storyMain {
   & > article {
     border-radius: 5px;
-    padding: 10px;
+    padding: 5px;
     text-align: left;
     word-wrap: break-word;
     word-break: normal;
@@ -36,12 +37,11 @@
       max-width: 100%;
       max-height: 300px;
     }
-
     code {
       background: var(--dim);
       border-radius: 10px;
-      padding: 10px 20px;
-      margin: 10px 0;
+      padding: 5px 10px;
+      margin: 5px 0;
       text-align: left;
       page-break-inside: avoid;
       max-width: 100%;
@@ -58,34 +58,25 @@
       @include flexCenter(row);
       width: fit-content;
       border: 1px solid var(--dim);
-      border-radius: 20px;
+      border-radius: 10px;
       & > button {
         padding: 5px 7px;
-        font-size: 1.2em !important;
-      }
-      & > span {
-        font-size: 0.9em;
-        padding-right: 7px;
-        border-right: 1px solid var(--dim);
+        font-size: 1em !important;
       }
     }
     & > div {
       @include flexCenter(row);
       width: fit-content;
-      font-size: 0.8em;
-      & > button:nth-of-type(1),
-      & > button:nth-of-type(2),
-      & > button:nth-of-type(3) {
-        padding: 0;
+      & > button {
+        padding: 5px;
       }
       & > span {
+        font-size: 0.8em;
         margin: 0 5px 0 3px;
-      }
-      & > button:nth-of-type(1) {
-        font-size: 1.3em;
       }
     }
   }
+  // comments
   & > div:nth-of-type(2) {
     margin: 5px auto;
     // max-width: 1000px;
@@ -221,6 +212,6 @@
 
 @media screen and (min-width: 1280px) {
   .storyHeader {
-    // margin-bottom: -40px;
+    margin-bottom: -20px !important;
   }
 }

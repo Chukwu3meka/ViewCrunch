@@ -1,4 +1,5 @@
 import firebaseAdmin from "@utils/firebaseServer";
+import error from "@store/reducers/error";
 
 const createProfileHandler = async ({ displayName, profilePicture, profileCreated, handle }) => {
   return await firebaseAdmin
@@ -37,7 +38,9 @@ const createProfileHandler = async ({ displayName, profilePicture, profileCreate
       },
     })
     .then()
-    .catch();
+    .catch((error) => {
+      throw new TypeError(error);
+    });
 };
 
 export default async (req, res) => {
@@ -69,6 +72,7 @@ export default async (req, res) => {
     await createProfileHandler(profile);
     return res.status(200).send(true);
   } catch (error) {
+    console.log(error);
     return res.status(401).send(false);
   }
 };

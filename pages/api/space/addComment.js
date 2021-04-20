@@ -16,7 +16,9 @@ const addComment = async ({ myAuthorID, newComment, articleId }) => {
       }),
     })
     .then(() => "success")
-    .catch((err) => "failed to add to articles read");
+    .catch((error) => {
+      throw new TypeError(error);
+    });
 };
 
 export default async (req, res) => {
@@ -28,6 +30,7 @@ export default async (req, res) => {
     if (result !== "success") throw new TypeError("error updating");
     return res.status(200).json({ status: "success" });
   } catch (error) {
+    console.log(error);
     return res.status(401).json({ status: "failed" });
   }
 };

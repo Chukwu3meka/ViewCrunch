@@ -85,7 +85,9 @@ const publishHandler = async ({ profile: { myHandle }, title, description, conte
 
       await deleteTempImage(myHandle);
     })
-    .catch(() => {});
+    .catch((error) => {
+      throw new TypeError(error);
+    });
 
   return JSON.stringify(`/${viewURL}`);
 };

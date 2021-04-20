@@ -1,12 +1,12 @@
 import firebaseAdmin from "@utils/firebaseServer";
 
-const upvoteHandler = async ({ view, myHandle, upvote, removeVote }) => {
+const voteHandler = async ({ view, myHandle, vote }) => {
   await firebaseAdmin
     .firestore()
     .collection("view")
     .doc(view)
     .update({
-      [upvote ? "upvote" : "downvote"]: firebaseAdmin.firestore.FieldValue[removeVote ? "arrayRemove" : "arrayUnion"](view),
+      [vote ? "upvote" : "downvote"]: firebaseAdmin.firestore.FieldValue[vote ? "arrayUnion" : "arrayRemove"](myHandle),
     })
     .then(async () => {
       await firebaseAdmin
@@ -24,10 +24,12 @@ const upvoteHandler = async ({ view, myHandle, upvote, removeVote }) => {
       throw new TypeError(error);
     });
 };
+
 export default async (req, res) => {
   try {
-    const { view, myHandle, upvote, removeVote } = req.body;
-    // await upvoteHandler({ view, myHandle, upvote, removeVote });
+    // view: "id of view",  vote: "upvote or downvote"
+    const { view, myHandle, vote } = req.body;
+    await voteHandler({ view, myHandle, vote });
     return res.status(200).send(true);
   } catch (error) {
     console.log(error);

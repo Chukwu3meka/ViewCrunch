@@ -12,17 +12,17 @@ const favouriteHandler = async ({ myHandle, view, mode }) => {
       favourite: mode ? firebaseAdmin.firestore.FieldValue.arrayUnion(view) : firebaseAdmin.firestore.FieldValue.arrayRemove(view),
     })
     .catch((error) => {
-      console.log(error, "errror");
+      throw new TypeError(error);
     });
 };
 
 export default async (req, res) => {
   try {
     const { myHandle, view, mode } = req.body;
-    const status = await favouriteHandler({ myHandle, view, mode });
-    console.log(status, "fgsdgfd");
+    await favouriteHandler({ myHandle, view, mode });
     return res.status(200).send(true);
   } catch (error) {
+    console.log(error);
     return res.status(401).send(false);
   }
 };

@@ -1,16 +1,15 @@
 import { Layout } from "/";
-import { useRouter } from "next/router";
 import { connect } from "react-redux";
-import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import { useState, useEffect, useRef } from "react";
 import { setBottomScroll, setDisplayHeader, setDeviceWidth } from "@store/actions";
 
 const LayoutContainer = (props) => {
-  const [style, setStyle] = useState({}),
+  const scrollRef = useRef(null),
+    [style, setStyle] = useState({}),
     [lastScrollPos, setLastScrollPos] = useState(0),
     [userAtBottom, setUserAtBottom] = useState(false),
     { children, setBottomScroll, setDisplayHeader, setDeviceWidth, setAppTheme } = props;
-
-  // console.log(props.theme);
 
   const pathname = useRouter().pathname;
 
@@ -21,7 +20,6 @@ const LayoutContainer = (props) => {
       "--sec": props.theme === "light" ? "#424242" : "#fff",
       // "--dark": props.theme === "light" ? "#0000008a" : "#ffffffb3",
       "--dim": props.theme === "light" ? "#b1b1b18a" : "#ffffffb3",
-      // "--light": props.theme === "light" ? "#0000008a" : "#ffffffb3",
     });
   }, [props.theme]);
 
@@ -48,7 +46,11 @@ const LayoutContainer = (props) => {
     setLastScrollPos(e.target.scrollTop);
   };
 
-  return <Layout {...{ handleScroll, children, style, pathname }} />;
+  const scrollTop = () => {
+    scrollRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  return <Layout {...{ handleScroll, children, style, pathname, scrollRef, scrollTop }} />;
 };
 
 const mapStateToProps = (state) => ({

@@ -8,8 +8,8 @@ const changeTheme = ({ myHandle, myTheme }) => {
     .set({
       "stat.theme": myTheme,
     })
-    .catch((err) => {
-      // console.log(err)
+    .catch((error) => {
+      throw new TypeError(error);
     });
 };
 
@@ -20,6 +20,7 @@ export default async (req, res) => {
     await changeTheme({ myHandle, myTheme });
     return res.status(200).json({});
   } catch (error) {
+    console.log(error);
     return res.status(401).json({});
   }
 };
