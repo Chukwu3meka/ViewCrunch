@@ -1,5 +1,4 @@
 import firebaseAdmin from "@utils/firebaseServer";
-import error from "@store/reducers/error";
 
 const createProfileHandler = async ({ displayName, profilePicture, profileCreated, handle }) => {
   return await firebaseAdmin

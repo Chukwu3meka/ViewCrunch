@@ -1,4 +1,4 @@
-import firebaseAdmin, { verifyIdToken } from "@utils/firebaseServer";
+import firebaseAdmin from "@utils/firebaseServer";
 
 const followCrunchHandler = ({ title, myHandle, follow }) => {
   firebaseAdmin

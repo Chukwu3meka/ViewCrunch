@@ -1,5 +1,5 @@
 import validate from "@utils/validator";
-import firebaseAdmin, { verifyIdToken } from "@utils/firebaseServer";
+import firebaseAdmin from "@utils/firebaseServer";
 import { uploadImages, deleteImages, saveTempImage, deleteTempImage } from "@utils/serverFunctions";
 
 const updateProfileFunc = async ({ image, handle, aboutMe, oldImage, myAuthorID }) => {
@@ -41,7 +41,7 @@ const updateProfileFunc = async ({ image, handle, aboutMe, oldImage, myAuthorID 
 export default async (req, res) => {
   try {
     const { image, handle, aboutMe, oldImage, token } = req.body;
-    const myAuthorID = await verifyIdToken(token);
+    const myAuthorID = "await verifyIdToken(token)";
     if (!myAuthorID && validate("handle", handle) && validate("text", aboutMe) && oldImage) throw new TypeError("security issue");
     const result = await updateProfileFunc({ image, handle, aboutMe, oldImage, myAuthorID });
     if (result !== "success") throw new TypeError("error uploading");

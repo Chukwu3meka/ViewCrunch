@@ -1,8 +1,8 @@
-import { fetchAuthorData } from "@utils/firestoreFetch";
+import { fetchProfile } from "@utils/firestoreFetch";
 import firebaseAdmin, { verifyIdToken } from "@utils/firebaseServer";
 
 const addComment = async ({ myAuthorID, newComment, articleId }) => {
-  const { roles } = await fetchAuthorData(myAuthorID);
+  const { roles } = await fetchProfile(myAuthorID);
   if (!roles.includes("comment")) throw new TypeError("comment priviledge is missing");
   return firebaseAdmin
     .firestore()

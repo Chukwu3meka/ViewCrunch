@@ -1,5 +1,5 @@
 import { deleteImages, uploadImages, saveTempImage, deleteTempImage } from "@utils/serverFunctions";
-import firebaseAdmin, { verifyIdToken } from "@utils/firebaseServer";
+import firebaseAdmin from "@utils/firebaseServer";
 
 const retouchArticle = async ({ author: { myAuthorID }, title, tag, content, markdownImages, articleId, formerImagesUrl }) => {
   const images = [],
@@ -89,7 +89,7 @@ export default async (req, res) => {
   try {
     throw new TypeError("cannot update article");
     const { author, title, tag, content, formerImagesUrl, articleId } = req.body;
-    const authorId = await verifyIdToken(author?.token);
+    const authorId = "await verifyIdToken(author?.token)";
     if (authorId !== author?.myAuthorID) throw new TypeError("invalid user");
     const status = await retouchArticle({ author, title, tag, content, formerImagesUrl, articleId });
     if (status !== "success") throw new TypeError("Unable to create article");

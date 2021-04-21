@@ -1,4 +1,4 @@
-import firebaseAdmin, { verifyIdToken } from "@utils/firebaseServer";
+import firebaseAdmin from "@utils/firebaseServer";
 
 const changeTheme = ({ myHandle, myTheme }) => {
   return firebaseAdmin
@@ -16,7 +16,7 @@ const changeTheme = ({ myHandle, myTheme }) => {
 export default async (req, res) => {
   try {
     const { myRefresh, myHandle, myTheme } = req.body;
-    await verifyIdToken({ myRefresh });
+    // await verifyIdToken({ myRefresh });
     await changeTheme({ myHandle, myTheme });
     return res.status(200).json({});
   } catch (error) {

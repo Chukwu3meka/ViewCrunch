@@ -1,4 +1,4 @@
-import firebaseAdmin, { verifyIdToken } from "@utils/firebaseServer";
+import firebaseAdmin from "@utils/firebaseServer";
 
 const followHandler = ({ myHandle, follow, viewer }) => {
   return firebaseAdmin

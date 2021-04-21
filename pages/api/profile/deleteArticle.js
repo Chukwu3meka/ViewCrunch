@@ -1,7 +1,7 @@
 import { fetchArticle } from "@utils/firestoreFetch";
 import { deleteImages } from "@utils/serverFunctions";
 // import { extractMarkdownImages } from "@utils/clientFunctions";
-import firebaseAdmin, { verifyIdToken } from "@utils/firebaseServer";
+import firebaseAdmin from "@utils/firebaseServer";
 
 // const deleteArticle = async ({ articleId }) => {
 //   const { content } = await fetchArticle({ articleId });
@@ -26,8 +26,8 @@ import firebaseAdmin, { verifyIdToken } from "@utils/firebaseServer";
 export default async (req, res) => {
   try {
     const { articleId, token } = req.body;
-    console.log(token);
-    const authorId = await verifyIdToken(token);
+    // console.log(token);
+    const authorId = "await verifyIdToken(token)";
     if (!authorId) throw new TypeError("invalid user");
     // const deleted = await deleteArticle({ articleId });
     // if (deleted !== "success") throw new TypeError("Unable to delete article");
