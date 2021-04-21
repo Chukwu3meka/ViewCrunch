@@ -125,7 +125,7 @@ export const fetchProfileData = async (handle) => {
           link: `/${handle}/${toId(sortRating[0].title)}`,
           title: `${sortRating[0].title} @ ${shortNumber(sortRating[0].upvote)}`,
         },
-        worstRating: {
+        leastRating: {
           link: `/${handle}/${toId(sortRating[totalView].title)}`,
           title: `${sortRating[totalView].title} @ ${shortNumber(sortRating[totalView].upvote)}`,
         },
@@ -137,16 +137,12 @@ export const fetchProfileData = async (handle) => {
         },
       };
     } else {
-      const emptyHistory = {
-        link: null,
-        title: null,
-        label: 0,
-      };
+      const emptyHistory = { link: null, title: null, label: 0 };
       return {
         firstArticle: emptyHistory,
         lastArticle: emptyHistory,
         highestRating: emptyHistory,
-        worstRating: emptyHistory,
+        leastRating: emptyHistory,
         mostView: emptyHistory,
         leastView: emptyHistory,
       };

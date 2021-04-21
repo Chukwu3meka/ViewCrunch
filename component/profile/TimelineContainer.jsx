@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const TimelineContainer = ({
-  viewerHistory: { firstArticle, lastArticle, highestRating, worstRating, mostView, leastView },
+  viewerHistory: { firstArticle, lastArticle, highestRating, leastRating, mostView, leastView },
   profileCreated,
 }) => {
   const classes = useStyles(),
@@ -73,10 +73,10 @@ const TimelineContainer = ({
           </TimelineDot>,
         ],
         [
-          "Worst Rating",
+          "Least Rating",
           <>
-            <Link href={{ pathname: worstRating?.link || "/profile" }}>
-              <a>{worstRating?.title}</a>
+            <Link href={{ pathname: leastRating?.link || "/profile" }}>
+              <a>{leastRating?.title}</a>
             </Link>
             <br />
             <Rating name="pristine" value={1} />
