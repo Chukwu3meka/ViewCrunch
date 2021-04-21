@@ -5,7 +5,7 @@ const muiTheme = (theme) => {
     palette: {
       type: theme,
       primary: {
-        main: "#c28c17",
+        main: "#e2ad26",
       },
       secondary: {
         main: "#1197c0",
