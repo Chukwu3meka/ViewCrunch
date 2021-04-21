@@ -39,8 +39,8 @@ const Header = ({ classes, hidden, hamburger, handleMenu, anchorEl, handleClose,
         </MenuItem>
       </Menu>
       <Link href="/">
-        <Button style={{ textTransform: "none" }} component="h1" aria-label="viewChest">
-          viewChest
+        <Button style={{ textTransform: "none" }} component="h1" aria-label="ViewCrunch">
+          ViewCrunch
         </Button>
       </Link>
     </div>

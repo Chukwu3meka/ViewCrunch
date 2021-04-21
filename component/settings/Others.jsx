@@ -1,5 +1,4 @@
 import EmailIcon from "@material-ui/icons/Email";
-import { styles } from "/";
 import { useState } from "react";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
@@ -30,7 +29,7 @@ const Others = ({ setTheme: setReduxTheme }) => {
   // setState = ({ state, stateName }) => setPrivacySettings({ ...privacySettings, [stateName]: state });
 
   return (
-    <Paper elevation={4} className={styles.settings}>
+    <Paper elevation={4}>
       <Typography variant="h5" color="textSecondary">
         Others
       </Typography>

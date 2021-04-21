@@ -1,5 +1,4 @@
 import EmailIcon from "@material-ui/icons/Email";
-import { styles } from "/";
 import { useState } from "react";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
@@ -18,39 +17,31 @@ const Privacy = ({}) => {
     setState = ({ state, stateName }) => setPrivacySettings({ ...privacySettings, [stateName]: state });
 
   return (
-    <Paper elevation={4} className={styles.settings}>
-      <Typography variant="h5">Privacy</Typography>
+    <Paper elevation={4}>
+      <Typography variant="h5">Account Privacy</Typography>
       <div>
-        <div>
+        <span>
           <Typography variant="body1" color="textSecondary">
             Request account info
           </Typography>
-          <IconButton aria-label="delete" onClick={() => console.log("hey")} className={styles.icon}>
+          <IconButton aria-label="delete" onClick={() => console.log("hey")}>
             <EmailIcon />
           </IconButton>
-        </div>
-        <div>
+        </span>
+        <span>
           <Typography variant="body1" color="textSecondary">
             Delete my account
           </Typography>
-          <IconButton aria-label="delete" onClick={() => console.log("hey")} className={styles.icon}>
+          <IconButton aria-label="delete" onClick={() => console.log("hey")}>
             <DeleteIcon />
           </IconButton>
-        </div>
+        </span>
         <IOSSwitch
           {...{
             setState,
-            title: "Auto reject friend request",
+            title: "Auto-block follow request",
             stateName: "autoRejectFriendRequest",
             state: privacySettings.autoRejectFriendRequest,
-          }}
-        />
-        <IOSSwitch
-          {...{
-            setState,
-            title: "Allow comment on views",
-            stateName: "allowCommentOnVviews",
-            state: privacySettings.allowCommentOnVviews,
           }}
         />
       </div>

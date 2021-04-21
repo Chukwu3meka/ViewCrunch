@@ -27,15 +27,15 @@ export const fetchProfile = (handle) => {
   return db.viewer.find((x) => x.handle === handle);
 };
 
-export const fetchSpaces = async (handle) => {
+export const fetchCrunches = async (handle) => {
   const {
-    spaces,
+    crunches,
     chat: { following },
     error,
   } = await fetchProfile(handle);
-  if (error || !spaces?.length) return { error: true };
+  if (error || !crunches?.length) return { error: true };
 
-  const spacesDetails = spaces?.map(({ title }) => ({
+  const crunchesDetails = crunches?.map(({ title }) => ({
     id: `${title.replace(/ /g, "-").toLowerCase()}`,
     title,
     coverPicture: `/images/${range(0, 40)}.png`,
@@ -44,11 +44,11 @@ export const fetchSpaces = async (handle) => {
     dateCreated: db.date(),
     about: `
         Occaecat eu laboris in reprehenderit esse sit labore velit minim tempor exercitation dolore commodo. Cupidatat ex ex minim velit irure labore cillum cillum deserunt magna cillum. Mollit voluptate est culpa ex in dolor irure aute cupidatat labore tempor nostrud esse et. Quis labore ea velit do commodo culpa laboris aliqua veniam magna. Eu pariatur veniam aliquip est duis ullamco tempor anim. Adipisicing dolore ex aute anim anim ex incididunt cillum magna exercitation enim nostrud adipisicing.`,
-    moderators: db.name1.map((name) => `@${name.replace(/ /g, "_").toLowerCase()}`.substr(0, 13)).slice(0, 3),
-    followers: db.name1.map((name) => `@${name.replace(/ /g, "_").toLowerCase()}`.substr(0, 13)),
+    moderators: db.name1.map((name) => toId(`@${name}`)).slice(0, 3),
+    followers: db.name1.map((name) => toId(`@${name}`)),
   }));
 
-  return { spaces: spacesDetails, myFollowing: following, error: false };
+  return { crunches: crunchesDetails, myFollowing: following, error: false };
 };
 
 export const isTitleTaken = async (title) => {
@@ -174,7 +174,7 @@ export const fetchChat = async ({ handle }) => {
   return { followers, following, blocked };
 };
 
-export const fetchArticles = async ({ limit = 5, navTag, lastVisible, articlesRead }) => {
+export const fetchArticles = async ({ limit = 5, navTag, lastVisible }) => {
   // const articles = [],
   //   docRef = navTag
   //     ? await articleRef
@@ -231,7 +231,7 @@ export const fetchArticles = async ({ limit = 5, navTag, lastVisible, articlesRe
   const articles = db.view.map((x) => {
     const {
       content,
-      space,
+      crunch,
       pryImage,
       author,
       upvote: { length: upvote },
@@ -244,7 +244,7 @@ export const fetchArticles = async ({ limit = 5, navTag, lastVisible, articlesRe
       title,
       pryImage,
       content,
-      space,
+      crunch,
       author,
       upvote,
       displayName,
@@ -314,7 +314,7 @@ export const fetchArticle = async ({ author, viewHref, myHandle }) => {
   // const full_view = db.view?.find((x) => x.author === author);
 
   const {
-    space,
+    crunch,
     title: { data: title },
     date,
     content,
@@ -369,7 +369,7 @@ export const fetchArticle = async ({ author, viewHref, myHandle }) => {
     pryImage,
     description,
     keywords,
-    space,
+    crunch,
     comments: [],
     date,
     upvote,
@@ -505,17 +505,17 @@ export const fetchHomeData = async () => {
           title: { data: title },
           date,
           author,
-          space,
+          crunch,
           pryImage,
         } = doc;
         const { displayName, profilePicture } = db.viewer?.find((x) => x.handle === author);
-        return { title, date, space, pryImage, displayName, profilePicture, author };
+        return { title, date, crunch, pryImage, displayName, profilePicture, author };
       }),
   };
 };
 
 export const fetchViewscape = async (viewscapeId) => {
-  const spaceDetails = {
+  const crunchDetails = {
     id: `${viewscapeId.replace(/ /g, "-").toLowerCase()}`,
     title: viewscapeId,
     coverPicture: `/images/${range(0, 40)}.png`,
@@ -531,10 +531,10 @@ export const fetchViewscape = async (viewscapeId) => {
   const views = db.view.map((x) => {
     const {
       content,
-      space,
+      crunch,
       pryImage,
       author,
-      viewers: { length: viewers },
+      upvote: { length: upvote },
       title: { data: title },
     } = x;
 
@@ -544,14 +544,13 @@ export const fetchViewscape = async (viewscapeId) => {
       title,
       pryImage,
       content,
-      space,
+      crunch,
       author,
-      viewers,
+      upvote,
       displayName,
       profilePicture,
     };
   });
 
-  const limit = 7;
-  return { spaceDetails, views: views.slice(0, limit), propsLastVisible: limit, error: !spaceDetails || !views.length || null };
+  return { crunchDetails, views: views.slice(0, 7), propsLastVisible: 7, error: !crunchDetails || !views.length || null };
 };

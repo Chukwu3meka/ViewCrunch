@@ -23,12 +23,8 @@ export const getServerSideProps = async (ctx) => {
   const myHandle = await extractHandle(ctx.req.headers.cookie);
   if (myHandle === "Network connectivity issue") return errorProp(408, "Network connectivity issue");
 
-  const {
-    stat: { seen = [] },
-  } = myHandle ? await fetchProfile(myHandle) : [];
-
   const homeData = await fetchHomeData();
-  const profileData = await fetchArticles({ limit: 10, seen });
+  const profileData = await fetchArticles({ limit: 10 });
   if (profileData.error || homeData.error) return errorProp(400, "Difficulty fetching data");
 
   return {

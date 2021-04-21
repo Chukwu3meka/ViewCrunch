@@ -23,7 +23,8 @@ export const name1 = [
   "Spray",
   "Ocean",
   "Yung",
-  "Benjamin Franklin",
+  "Benjamin",
+  "Franklin",
   "Roosevelt",
   "Ward",
   "Tyga",
@@ -31,7 +32,7 @@ export const name1 = [
   "Silva",
   "Future",
   "Morning Dew",
-  "viewChest",
+  "ViewCrunch",
 ];
 const name2 = [
   "Universal",
@@ -42,7 +43,7 @@ const name2 = [
   "Cyber Security",
   "Politics",
   "Warfare",
-  "Catholic",
+  "Catholic Church",
   "Investment",
 ];
 const name3 = [
@@ -84,13 +85,13 @@ const profession = [
 ];
 
 export const viewer = name1.map((name) => ({
-  handle: toId(`@${name}`).substr(0, 13),
+  handle: toId(`@${name}`),
   profilePicture: `/images/${range(0, 40)}.png`,
   coverPicture: `/images/${range(0, 40)}.png`,
   about:
     "Adipisicing nulla adipisicing irure culpa aute cillum. Commodo nulla culpa proident id commodo esse fugiat officia velit. Cillum qui                reprehenderit adipisicing id.",
   roles: ["comment", "vote", "enabled", "moderate", "share"],
-  spaces: name2.map((title) => ({ title, roles: ["publish", "delete", "modify", "share", "moderate"] })),
+  crunches: name2.map((title) => ({ title, roles: ["publish", "delete", "modify", "share", "moderate"] })),
   displayName: name,
   profession: profession[range(0, profession.length - 1)],
   notification: [],
@@ -103,7 +104,7 @@ export const viewer = name1.map((name) => ({
     pryImage: `/images/${range(0, 40)}.png`,
     upvote: range(0, 700000),
     downvote: range(0, 100000),
-    space: range(0, name2.length - 1),
+    crunch: range(0, name2.length - 1),
   })),
   chat: {
     blocked: name1.map((handle) => toId(`@${handle || "Pedro JR"}`)).slice(0, 3),
@@ -111,23 +112,23 @@ export const viewer = name1.map((name) => ({
     followers: name1.map((handle) => toId(`@${handle || "Pedro JR"}`)).slice(20, name1.length - 1),
   },
   social: {
-    twitterHandle: "viewChest",
-    facebookHandle: "viewChest",
-    linkedinHandle: "viewChest",
-    personalWebsite: "https://www.viewchest.com",
+    twitterHandle: "ViewCrunch",
+    facebookHandle: "ViewCrunch",
+    linkedinHandle: "ViewCrunch",
+    personalWebsite: "https://www.ViewCrunch.com",
   },
   stat: {
     voteSent: range(0, 10000000),
     voteReceived: range(0, 10000000),
     audience: range(0, 100000),
     profileCreated: date(),
-    seen: name3.slice(0, 12).map((title) => toId(title)),
+    seen: name3.slice(0, 7).map((title) => toId(title)),
     theme: "dark",
   },
 }));
 
 const generateComment = () => ({
-  author: `@${toId(name1[range(0, name1.length - 1)])}`.substr(0, 13),
+  author: `@${toId(name1[range(0, name1.length - 1)])}`,
   date: date(),
   comment: "nothing much written here, just a sample comment",
 });
@@ -139,8 +140,8 @@ export const view = name3.map((title) => ({
     length: title.split(" ").length,
   },
   date: date(),
-  author: viewer[range(0, viewer.length - 1)].handle.substr(0, 13),
-  space: name2[range(0, name2.length - 1)],
+  author: viewer[range(0, viewer.length - 1)].handle,
+  crunch: name2[range(0, name2.length - 1)],
   pryImage: `/images/${range(1, 40)}.png`,
   content: dbContent[range(0, dbContent.length - 1)],
   keywords: "keywords",
@@ -166,8 +167,8 @@ export const news = [
   },
   {
     flash: "Persucution around the world, from third world countries to full democratic nations",
-    source: "viewChest",
-    newsLink: "https://www.viewchest.com",
+    source: "ViewCrunch",
+    newsLink: "https://www.ViewCrunch.com",
     date: date(),
   },
   {

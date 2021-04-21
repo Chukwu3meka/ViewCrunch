@@ -104,7 +104,7 @@ const TimelineContainer = ({
           </TimelineDot>,
         ],
         [
-          "viewChest",
+          "ViewCrunch",
           "Keep sharing your view on the world, with the world",
           <TimelineDot color="primary">
             <FastfoodIcon />

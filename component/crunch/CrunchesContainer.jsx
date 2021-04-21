@@ -5,7 +5,7 @@ import { useSnackbar } from "notistack";
 import { useState, useEffect } from "react";
 import validate from "@utils/validator";
 
-import { Spaces } from "/";
+import { Crunches } from "/";
 import { chunkArray } from "@utils/clientFunctions";
 import { fetcher, trimString } from "@utils/clientFunctions";
 
@@ -14,7 +14,7 @@ const SocialShare = dynamic(() => import("@component/others/SocialShare"));
 const ViewscapeContainer = (props) => {
   const { enqueueSnackbar } = useSnackbar();
   const {
-      spaces: propsActiveViewscape,
+      crunches: propsActiveViewscape,
       myFollowing,
       author: { handle, myHandle, myRefresh },
     } = props,
@@ -27,7 +27,7 @@ const ViewscapeContainer = (props) => {
     [displayReport, setDisplayReport] = useState(false),
     [displayMembers, setDisplayMembers] = useState(false),
     [confirmUnfollow, setConfirmUnfollow] = useState(false),
-    [activeSpace, setActiveSpace] = useState({}),
+    [activeCrunch, setActiveCrunch] = useState({}),
     [activeViewscape, setActiveViewscape] = useState(propsActiveViewscape),
     activeViewscapeChunk = chunkArray({ array: activeViewscape, chunkSize: Math.ceil(activeViewscape.length / deviceWidth) });
 
@@ -40,26 +40,26 @@ const ViewscapeContainer = (props) => {
   }, [props.deviceWidth]);
 
   const cancelHandler = () => {
-    setActiveSpace({});
+    setActiveCrunch({});
     setDisplayReport(false);
     setConfirmUnfollow(false);
   };
 
-  const activeSpaceHandler = ({ id, title, moderators, followers, more }) => () => {
+  const activeCrunchHandler = ({ id, title, moderators, followers, more }) => () => {
     if (more) {
-      setActiveSpace({
+      setActiveCrunch({
         title,
         list: [
           {
-            label: `Report`,
+            label: `Report ${title} Crunch`,
             handler: () => {
               setDisplayReport(true);
               setViewscapeData({ id, title, moderators });
             },
           },
-          { label: `${title} Followers`, handler: () => setDisplayMembers("followers") },
+          { label: `Subscribers`, handler: () => setDisplayMembers("followers") },
           { label: "Admin and Moderators", handler: () => setDisplayMembers("moderators") },
-          { jsx: <SocialShare space={id} />, handler: "link" },
+          { jsx: <SocialShare crunch={id} />, handler: "link" },
         ],
         id,
         title,
@@ -69,35 +69,36 @@ const ViewscapeContainer = (props) => {
       });
       setMoreActions(true);
     } else {
-      setActiveSpace({ id, title, moderators, followers });
-      if ("universal" === id) return enqueueSnackbar(`You can't unfollow Universal space`, { variant: "warning" });
-      setConfirmUnfollow(true);
+      enqueueSnackbar(`Currently disabled`, { variant: "info" });
+      // setActiveCrunch({ id, title, moderators, followers });
+      // if ("universal" === id) return enqueueSnackbar(`You can't unfollow Universal crunch`, { variant: "warning" });
+      // setConfirmUnfollow(true);
     }
   };
 
   const unfollowHandler = async () => {
     if (myHandle && myRefresh && online) {
       const status = await fetcher(
-        "/api/space/followSpace",
-        JSON.stringify({ title: activeSpace.title, myHandle, myRefresh, follow: false })
+        "/api/crunch/followCrunch",
+        JSON.stringify({ title: activeCrunch.title, myHandle, myRefresh, follow: false })
       );
       if (status) {
-        setActiveViewscape(activeViewscape.filter((x) => x.id !== activeSpace.id));
+        setActiveViewscape(activeViewscape.filter((x) => x.id !== activeCrunch.id));
       } else {
         enqueueSnackbar(`Please, Try again. Server unable to handle request.`, { variant: "error" });
       }
     } else {
       enqueueSnackbar(`Network connectivity issue.`, { variant: "info" });
     }
-    setActiveSpace(false);
+    setActiveCrunch(false);
   };
 
   const reportHandler = async (feedback) => {
     const validated = validate("text", feedback);
     if (validated) {
       const status = await fetcher(
-        "/api/space/reportSpace",
-        JSON.stringify({ report: validated, id: activeSpace.id, myHandle, myRefresh })
+        "/api/crunch/reportCrunch",
+        JSON.stringify({ report: validated, id: activeCrunch.id, myHandle, myRefresh })
       );
       if (status) {
         enqueueSnackbar(`We'll review your report`, { variant: "success" });
@@ -122,11 +123,11 @@ const ViewscapeContainer = (props) => {
   };
 
   return (
-    <Spaces
+    <Crunches
       {...{
-        activeSpaceHandler,
-        activeSpace,
-        setActiveSpace,
+        activeCrunchHandler,
+        activeCrunch,
+        setActiveCrunch,
         activeViewscape,
         confirmUnfollow,
         unfollowHandler,
@@ -142,6 +143,7 @@ const ViewscapeContainer = (props) => {
         setDisplayMembers,
         setDisplayShare,
         displayShare,
+        enqueueSnackbar,
         setDisplayReport,
         displayReport,
         activeViewscapeChunk,

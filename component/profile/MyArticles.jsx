@@ -34,7 +34,7 @@ const MyArticles = ({
 }) => (
   <div className={styles.myArticles}>
     <div>
-      {authorArticlesChunk().map(({ id, date, title, upvote, pryImage, views, space }, index) => {
+      {authorArticlesChunk().map(({ id, date, title, upvote, pryImage, views, crunch }, index) => {
         return (
           <Accordion expanded={expanded === id} onChange={handleChange(id)} key={index}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1bh-content" id="panel1bh-header">
@@ -47,7 +47,7 @@ const MyArticles = ({
                 </div>
                 <div>
                   <Link href={id}>
-                    <a>{`https://viewchest.com${id}`}</a>
+                    <a>{`https://ViewCrunch.com${id}`}</a>
                   </Link>
                   <div>
                     <Typography variant="subtitle2" color="textSecondary">
@@ -68,7 +68,7 @@ const MyArticles = ({
                         <FileCopyIcon />
                       </IconButton>
                     </Tooltip>
-                    {/* <Link href={{ pathname: `/space/retouch`, query: { id: toId(title) } }}>
+                    {/* <Link href={{ pathname: `/crunch/retouch`, query: { id: toId(title) } }}>
                       <a>
                         <Tooltip title="Edit">
                           <IconButton aria-label="edit">
@@ -78,7 +78,7 @@ const MyArticles = ({
                       </a>
                     </Link> */}
                     {/* <Tooltip title={views < 100 ? "Delete" : "Retain"}>
-                      <IconButton aria-label="delete" onClick={() => deleteArticle({ id, space, views, title, upvote })}>
+                      <IconButton aria-label="delete" onClick={() => deleteArticle({ id, crunch, views, title, upvote })}>
                         <DeleteIcon />
                       </IconButton>
                     </Tooltip> */}

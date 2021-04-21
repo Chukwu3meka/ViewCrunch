@@ -34,17 +34,7 @@ const App = ({ Component, pageProps }) => {
       if (isNaN(profile.myHandle) && profile.myHandle.startsWith("@")) {
         setAppTheme(profile.myTheme);
         store.dispatch(setTheme(profile.myTheme));
-        store.dispatch(
-          setProfileAction({
-            myHandle: profile.myHandle,
-            myTheme: profile.myTheme,
-            myNotification: profile.myNotification,
-            myProfilePicture: profile.myProfilePicture,
-            myCoverPicture: profile.myCoverPicture,
-            myDisplayName: profile.myDisplayName,
-            myProfession: profile.myProfession,
-          })
-        );
+        store.dispatch(setProfileAction(profile));
       } else {
         setChooseHandle(true);
       }

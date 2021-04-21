@@ -45,20 +45,28 @@ const verifyRefresh = async (myRefresh) => {
 
 export default async (req, res) => {
   try {
-    // return res.status(200).json({ myHandle: 34253454343 });
     return res.status(200).json({
       myHandle: "@pedro",
       myTheme: "dark",
-      myNotification: 7,
+      myNotification: 13,
       myProfilePicture: "/images/20.png",
       myCoverPicture: "/images/9.png",
       myDisplayName: "Pedro JR",
       myProfession: "React Developer",
+      mySeen: [
+        "what-is-the-use-of-dynamics-routes-in-next-js-without-creating-the-popular-custom-server-and-limiting-the-capabilities-of-next-js",
+        "my-favorite-top--10-daily-life-hacks-that-keeps-me-going,-are-not-limited-to-safety,-performance,-rules-playing-but---satisfaction-and-efficiency",
+        "in-sint-ex-est-nulla-ad.",
+        "proident-aliquip-do-sunt-et-sint-consequat-aute.",
+        "culpa-nostrud-dolor-anim-non-ut-est-do-ea-aute-amet-dolor-pariatur-ea.",
+        "ea-sunt-eu-non-irure.",
+        "nostrud-laboris-aute-fugiat-ullamco-ipsum-et-eiusmod-amet-reprehenderit-fugiat-deserunt.",
+      ],
     });
 
-    // const profile = await verifyRefresh(req.body.myRefresh);
+    const profile = await verifyRefresh(req.body.myRefresh);
 
-    // return res.status(200).json(profile);
+    return res.status(200).json(profile);
   } catch (error) {
     console.log(error);
     return res.status(401).send(undefined);

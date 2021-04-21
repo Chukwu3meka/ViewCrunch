@@ -32,14 +32,14 @@ const NavBar = ({
           {/* <div> */}
           <CoverPic
             {...{
-              imgSrcA: myCoverPicture || "/images/viewChest-cover.webp",
-              imgAltA: myDisplayName || "viewChest cover picture",
-              imgSrcB: myProfilePicture || "/images/viewChest.webp",
-              imgAltB: myDisplayName || "viewChest logo",
+              imgSrcA: myCoverPicture || "/images/ViewCrunch-cover.webp",
+              imgAltA: myDisplayName || "ViewCrunch cover picture",
+              imgSrcB: myProfilePicture || "/images/ViewCrunch.webp",
+              imgAltB: myDisplayName || "ViewCrunch logo",
             }}
           />
           <div>
-            <Typography variant="body2">{myDisplayName ? trimString(myDisplayName, 15) : "viewChest"}</Typography>
+            <Typography variant="body2">{myDisplayName ? trimString(myDisplayName, 15) : "ViewCrunch"}</Typography>
             <Typography variant="caption">{myProfession ? trimString(myProfession, 30) : new Date().toDateString()}</Typography>
           </div>
           {/* </div> */}
@@ -70,10 +70,9 @@ const NavBar = ({
                             left: "15px",
                             top: "-5px",
                             color: "white",
-                            fontSize: ".7em",
-                            textAlign: "center",
+                            fontSize: ".65em",
                             borderRadius: "50%",
-                            padding: "3px 5px 2px",
+                            padding: "3px 5px 4px 3px",
                             backgroundColor: "rgb(185, 24, 24)",
                           }}>
                           {myNotification}

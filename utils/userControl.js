@@ -6,12 +6,12 @@ const useUser = () => {
   const [myRefresh, setMyRefresh] = useState("");
 
   const logout = async () => {
-    cookies.remove("viewChest");
+    cookies.remove("ViewCrunch");
     return firebase.auth().signOut();
   };
 
   useEffect(() => {
-    const cookie = cookies.get("viewChest");
+    const cookie = cookies.get("ViewCrunch");
     if (cookie) setMyRefresh(cookie);
   }, []);
 

@@ -1,14 +1,14 @@
 import { ErrorPage, SeoHead } from "@component/page";
-import { SpaceContainer } from "@component/space";
+import { CrunchContainer } from "@component/crunch";
 import { fetchViewscape } from "@utils/firestoreFetch";
 
-const Index = ({ spaceDetails, views, space, error }) => {
+const Index = ({ crunchDetails, views, crunch, error }) => {
   if (error) return <ErrorPage statusCode={error.code} title={error.title} />;
 
   return (
     <>
       <SeoHead />
-      <SpaceContainer {...{ spaceDetails, views, space }} />
+      <CrunchContainer {...{ crunchDetails, views, crunch }} />
     </>
   );
 };
@@ -16,7 +16,7 @@ const Index = ({ spaceDetails, views, space, error }) => {
 export default Index;
 
 export const getServerSideProps = async ({
-  query: { "@space": space },
+  query: { crunch },
   req: {
     headers: { cookie },
   },
@@ -27,11 +27,11 @@ export const getServerSideProps = async ({
   // // const { myAuthorID } = await extractHandle("cookiePedroView", cookie);
   // // if (!myAuthorID) return errorProp(400, "User not logged in");
 
-  const { spaceDetails, views, error } = await fetchViewscape(space);
+  const { crunchDetails, views, error } = await fetchViewscape(crunch);
 
   if (error) return errorProp(400, "Unable to fetch data now");
 
   return {
-    props: { space, spaceDetails, views },
+    props: { crunch, crunchDetails, views },
   };
 };

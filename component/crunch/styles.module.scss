@@ -1,6 +1,6 @@
 @import "@source/_variables.scss";
 
-.spaces {
+.crunches {
   @include flexCenter(row);
   align-items: flex-start;
   flex-wrap: wrap;
@@ -87,7 +87,7 @@
   }
 }
 
-.space {
+.crunch {
   & > div:first-of-type > div {
     @include flexCenter(column);
     & > div:first-of-type {
@@ -373,7 +373,7 @@
 }
 
 @media screen and (min-width: 600px) {
-  .space {
+  .crunch {
     & > div:first-of-type > div {
       @include flexCenter(row);
 
@@ -421,7 +421,7 @@
 }
 
 @media screen and (min-width: 970px) {
-  .spaces {
+  .crunches {
     & > div > div > div > div {
       max-width: 470px;
     }

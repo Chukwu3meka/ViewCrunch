@@ -16,12 +16,12 @@ import { Dialog, Drawer } from "@component/others";
 // import { MembersContainer, ShareContainer } from "/";
 import { SecBodyContainer } from "@component/homePage";
 
-const Space = ({
+const Crunch = ({
   moreActions,
   displayMembers,
   setDisplayMembers,
   cancelHandler,
-  space,
+  crunch,
   title,
   about,
   follow,
@@ -39,14 +39,14 @@ const Space = ({
   dateCreated,
   views,
 }) => (
-  <Grid container alignContent="flex-start" className={styles.space}>
+  <Grid container alignContent="flex-start" className={styles.crunch}>
     <Grid item xs={12} sm={12} md={12} />
     {/* <Grid item xs={12} sm={12} md={12}>
       <Paper elevation={3}>
         <div>
           <Typography component="div" variant="body2">{`${shortNumber(members)} members 💗 Created ${dateCreated}`}</Typography>
-          <img src={coverPicture || "/images/viewChest-cover.webp"} alt={title || "viewChest cover picture"} />
-          <img src={primaryPicture || "/images/viewChest.webp"} alt={title || "viewChest logo"} />
+          <img src={coverPicture || "/images/ViewCrunch-cover.webp"} alt={title || "ViewCrunch cover picture"} />
+          <img src={primaryPicture || "/images/ViewCrunch.webp"} alt={title || "ViewCrunch logo"} />
         </div>
         <div>
           <div>{title}</div>
@@ -64,7 +64,7 @@ const Space = ({
             <Typography variant="body1" color="textSecondary" onClick={moreActionsHandler}>
               ●●●
             </Typography>
-            <Link href={`/space/publish?id=${space}`}>
+            <Link href={`/crunch/publish?id=${crunch}`}>
               <Button variant="outlined" size="small" color="secondary">
                 publish
               </Button>
@@ -98,7 +98,7 @@ const Space = ({
                   setDisplayReport(true);
                 },
               },
-              { jsx: <SocialShare postUrl={`https://viewchest.com/space/${space}`} title={title} author={title} />, handler: "link" },
+              { jsx: <SocialShare postUrl={`https://ViewCrunch.com/crunch/${crunch}`} title={title} author={title} />, handler: "link" },
               { label: "Moderators", handler: () => setDisplayMembers("moderators") },
             ],
           }}
@@ -111,7 +111,7 @@ const Space = ({
           title={`Report ${title}`}
           cancelHandler={cancelHandler}
           feedback={true}
-          message={`If you report ${title}, moderators won't be notified and cannot receive your profile details. viewChest will review ${title} before taking any action.`}
+          message={`If you report ${title}, moderators won't be notified and cannot receive your profile details. ViewCrunch will review ${title} before taking any action.`}
         />
       )}
        {displayShare && <ShareContainer {...{ moreActions, setDisplayShare }} />} 
@@ -124,4 +124,4 @@ const Space = ({
   </Grid>
 );
 
-export default Space;
+export default Crunch;

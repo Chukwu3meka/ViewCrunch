@@ -1,4 +1,3 @@
-import { styles } from "/";
 import { useState } from "react";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
@@ -17,7 +16,7 @@ const EmailNotification = () => {
     setState = ({ state, stateName }) => setEmailNotifSettings({ ...emailNotifSettings, [stateName]: state });
 
   return (
-    <Paper elevation={4} className={styles.settings}>
+    <Paper elevation={4}>
       <Typography variant="h5" color="textSecondary">
         Email Notification
       </Typography>
@@ -33,7 +32,7 @@ const EmailNotification = () => {
         <IOSSwitch
           {...{
             setState,
-            title: "Space Role",
+            title: "Crunch Role",
             stateName: "viewscapeRole",
             state: emailNotifSettings.viewscapeRole,
           }}

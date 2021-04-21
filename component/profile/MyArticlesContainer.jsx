@@ -24,7 +24,7 @@ const MyArticlesContainer = ({ articles, token, myProfile, enqueueSnackbar }) =>
   const [verifiedArticle, setVerifiedArticle] = useState(false);
 
   const copyHandler = (id) => () => {
-    navigator.clipboard.writeText(`https://viewchest.com${id}`);
+    navigator.clipboard.writeText(`https://ViewCrunch.com${id}`);
     enqueueSnackbar("Copied to clipboard", { variant: "info" });
   };
 

@@ -1,7 +1,7 @@
 {
-  "name": "viewchest",
+  "name": "ViewCrunch",
   "version": "1.0.0",
-  "description": "viewChest blog",
+  "description": "ViewCrunch blog",
   "main": "index.js",
   "scripts": {
     "dev": "next dev",
@@ -10,9 +10,9 @@
     "export": "next export"
   },
   "keywords": [
-    "viewChest blog"
+    "ViewCrunch blog"
   ],
-  "author": "viewChest",
+  "author": "ViewCrunch",
   "license": "MIT",
   "dependencies": {
     "@material-ui/core": "^4.11.3",

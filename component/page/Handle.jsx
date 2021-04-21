@@ -42,7 +42,7 @@ const Handle = (props) => {
     if (!handleError && handle?.length) {
       const profileStatus = await fetcher("/api/profile/createProfile", JSON.stringify({ handle, myRefresh: props.myRefresh }));
       if (profileStatus) {
-        cookie.set("viewChest", props.myRefresh, { expires: 183, path: "" });
+        cookie.set("ViewCrunch", props.myRefresh, { expires: 183, path: "" });
         Router.reload();
       } else {
         enqueueSnackbar(`Unable to save handle, Please try again later`, { variant: "error" });

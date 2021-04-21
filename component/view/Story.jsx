@@ -17,7 +17,7 @@ import { SocialShare, Drawer, Dialog } from "@component/others";
 
 const View = ({
   date,
-  space,
+  crunch,
   title,
   author: { author, displayName, profilePicture },
   content,
@@ -34,8 +34,8 @@ const View = ({
 }) => (
   <>
     <Grid item xs={12} sm={12} md={12} lg={9} className={styles.storyHeader}>
-      <Link href={{ pathname: `/space/${toId(space)}` }}>
-        <a style={{ fontSize: ".7em" }}>{space}</a>
+      <Link href={{ pathname: `/crunch/${toId(crunch)}` }}>
+        <a style={{ fontSize: ".7em" }}>{crunch}</a>
       </Link>
       <h1>
         <Fade right>{title}</Fade>
@@ -76,7 +76,7 @@ const View = ({
 
     <Dialog
       dialogTitle="Report view"
-      dialogBody={`Reporting this view, will automatically add it to your blacklist, pending when an action is taken. Space Moderators won't receive your profile details; Do you wish to proceed. Help us know what's wrong with the view below.`}
+      dialogBody={`Reporting this view, will automatically add it to your blacklist, pending when an action is taken. Crunch Moderators won't receive your profile details; Do you wish to proceed. Help us know what's wrong with the view below.`}
       dialogHandler={reportHandler}
       displayDialog={reportView}
       setDisplayDialog={setReportView}

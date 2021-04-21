@@ -21,7 +21,7 @@ export const extractHandle = async (cookie) => {
   let myRefresh;
   await cookie?.split("; ").forEach((x) => {
     console.log(x.split("=")[0]);
-    if (x.split("=")[0] === "viewChest") {
+    if (x.split("=")[0] === "ViewCrunch") {
       myRefresh = x.split("=")[1];
     }
   });
@@ -56,14 +56,14 @@ export const saveTempImage = async ({ image, location, handle }) => {
   const base64 = image.replace(/\s/g, "").split(";base64,").pop();
 
   try {
-    fs.statSync(`./pages/api/space/uploads/${handle}`).isDirectory();
+    fs.statSync(`./pages/api/crunch/uploads/${handle}`).isDirectory();
   } catch {
-    fs.mkdir(`./pages/api/space/uploads/${handle}`, { recursive: true }, () => {});
+    fs.mkdir(`./pages/api/crunch/uploads/${handle}`, { recursive: true }, () => {});
   }
 
-  fs.writeFile(`./pages/api/space/uploads/${location}`, base64, { flag: "w", encoding: "base64" }, () => {});
+  fs.writeFile(`./pages/api/crunch/uploads/${location}`, base64, { flag: "w", encoding: "base64" }, () => {});
 
-  return `./pages/api/space/uploads/${location}`;
+  return `./pages/api/crunch/uploads/${location}`;
 };
 
 export const uploadImages = async ({ tempLocation, myHandle, title }) => {
@@ -122,7 +122,7 @@ export const deleteImages = async ({ downloadUrl }) => {
 
 export const deleteTempImage = async (handle) => {
   const fs = require("fs"),
-    location = `./pages/api/space/uploads/${handle}`;
+    location = `./pages/api/crunch/uploads/${handle}`;
 
   try {
     fs.statSync(location).isDirectory();

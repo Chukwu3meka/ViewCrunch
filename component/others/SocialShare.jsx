@@ -8,35 +8,35 @@ import { toId } from "@utils/clientFunctions";
 
 const SocialShare = ({
   share,
-  space,
+  crunch,
   viewHref = "/",
   title = "title",
-  author = "viewChest",
-  linkedinHandle = "viewchest",
-  twitterHandle = "viewchest",
+  author = "ViewCrunch",
+  linkedinHandle = "ViewCrunch",
+  twitterHandle = "ViewCrunch",
   facebookHandle = "thepedroview",
 }) =>
-  share || space ? (
+  share || crunch ? (
     <div className={styles.socialShare}>
-      <a href={`https://www.facebook.com/sharer/sharer.php?u=https://viewchest.com${space ? `/space/${toId(space)}` : viewHref}`}>
+      <a href={`https://www.facebook.com/sharer/sharer.php?u=https://ViewCrunch.com${crunch ? `/crunch/${toId(crunch)}` : viewHref}`}>
         <Facebook fontSize="inherit" />
       </a>
       <a
-        href={`https://twitter.com/home?status=https://viewchest.com${
-          space ? `/space/${toId(space)}` : `${viewHref} ${`${title} written by ${author}`}`
+        href={`https://twitter.com/home?status=https://ViewCrunch.com${
+          crunch ? `/crunch/${toId(crunch)}` : `${viewHref} ${`${title} written by ${author}`}`
         }`}>
         <Twitter fontSize="inherit" />
       </a>
-      <a href={`https://api.whatsapp.com/send?text=https://viewchest.com${space ? `/space/${toId(space)}` : viewHref} ${space}`}>
+      <a href={`https://api.whatsapp.com/send?text=https://ViewCrunch.com${crunch ? `/crunch/${toId(crunch)}` : viewHref} ${crunch}`}>
         <WhatsApp fontSize="inherit" />
       </a>
-      <a href={`https://reddit.com/submit?url=https://viewchest.com${space ? `/space/${toId(space)}` : viewHref}&title=${space}`}>
+      <a href={`https://reddit.com/submit?url=https://ViewCrunch.com${crunch ? `/crunch/${toId(crunch)}` : viewHref}&title=${crunch}`}>
         <Reddit fontSize="inherit" />
       </a>
       <a
-        href={`https://www.linkedin.com/shareArticle?url=https://viewchest.com${
-          space ? `/space/${toId(space)}` : viewHref
-        }&title=${space}`}>
+        href={`https://www.linkedin.com/shareArticle?url=https://ViewCrunch.com${
+          crunch ? `/crunch/${toId(crunch)}` : viewHref
+        }&title=${crunch}`}>
         <LinkedIn fontSize="inherit" />
       </a>
     </div>

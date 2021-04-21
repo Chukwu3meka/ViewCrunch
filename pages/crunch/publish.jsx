@@ -1,9 +1,9 @@
 import { ErrorPage } from "@component/page";
-import { PublishContainer } from "@component/space";
+import { PublishContainer } from "@component/crunch";
 
-const Publish = ({ space, error }) => {
+const Publish = ({ crunch, error }) => {
   if (error) return <ErrorPage statusCode={error.code} title={error.title} />;
-  return <PublishContainer space={space} />;
+  return <PublishContainer crunch={crunch} />;
 };
 export default Publish;
 
@@ -15,6 +15,6 @@ export const getServerSideProps = async (ctx) => {
   if (!myHandle) return errorProp(401, "User not logged in");
 
   return {
-    props: { space: ctx.query.id },
+    props: { crunch: ctx.query.id },
   };
 };

@@ -1,5 +1,5 @@
 import { ErrorPage } from "@component/page";
-import { PublishContainer } from "@component/space";
+import { PublishContainer } from "@component/crunch";
 
 const BlogPost = ({ error, viewToBeModified }) => {
   if (error) return <ErrorPage statusCode={error.code} title={error.title} />;

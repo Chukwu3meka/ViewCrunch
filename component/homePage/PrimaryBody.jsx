@@ -8,7 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import { trimString, toId, dateCalculator } from "@utils/clientFunctions";
 
 const PrimaryBody = ({ primaryPost = [], deviceWidth }) =>
-  primaryPost.map(({ title, date, author, space, pryImage, displayName, profilePicture }, index) => (
+  primaryPost.map(({ title, date, author, crunch, pryImage, displayName, profilePicture }, index) => (
     <Fade left key={index}>
       <Link href={`/${author}/${toId(title)}`}>
         <a>
@@ -18,7 +18,7 @@ const PrimaryBody = ({ primaryPost = [], deviceWidth }) =>
             </div>
             <div>
               <Typography variant="button" color="textSecondary">
-                {space}
+                {crunch}
               </Typography>
               <Typography variant="h6">{title}</Typography>
               <div>

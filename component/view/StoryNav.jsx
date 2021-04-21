@@ -58,9 +58,9 @@ const StoryNav = ({
           <div>
             <Image src={advert?.image || "/images/no-image.webp"} layout="fill" />
           </div>
-          <Typography variant="body2">{advert?.description || "Save a space today on our blog and reach more people"}</Typography>
+          <Typography variant="body2">{advert?.description || "Save a crunch today on our blog and reach more people"}</Typography>
           <Typography variant="caption" color="textSecondary">
-            Ads via viewChest
+            Ads via ViewCrunch
           </Typography>
         </a>
       </Paper>

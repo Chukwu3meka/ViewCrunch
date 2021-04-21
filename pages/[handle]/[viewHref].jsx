@@ -29,7 +29,7 @@ export const getServerSideProps = async (ctx) => {
   if (myHandle === "Network connectivity issue") return errorProp(408, "Network connectivity issue");
 
   const { view, advert, error } = await fetchArticle({
-    author: ctx.query.handle.substr(0, 13),
+    author: ctx.query.handle,
     viewHref: ctx.query.viewHref,
     myHandle,
   });

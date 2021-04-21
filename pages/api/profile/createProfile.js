@@ -10,11 +10,11 @@ const createProfileHandler = async ({ displayName, profilePicture, profileCreate
       profilePicture,
       about: "new Viewer and Writer",
       roles: ["comment", "upload", "active", "vote", "create", "publish", "moderate"],
-      coverPicture: "/images/viewChest-cover.webp",
+      coverPicture: "/images/ViewCrunch-cover.webp",
       displayName,
       profession: "Viewer and Writter",
       notification: [],
-      space: [],
+      crunch: [],
       favourite: [],
       blacklist: [],
       published: [],
@@ -63,7 +63,7 @@ export default async (req, res) => {
       .auth()
       .getUser(uid)
       .then((user) => ({
-        displayName: user.displayName.replace(/viewChest_new-user_/g, ""),
+        displayName: user.displayName.replace(/ViewCrunch_new-user_/g, ""),
         profilePicture: user.photoURL,
         profileCreated: user.metadata.creationTime,
         handle: `@${handle}`,

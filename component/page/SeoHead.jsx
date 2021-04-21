@@ -2,16 +2,16 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 
 const SeoHead = ({ seo_title, seo_hashtag, seo_quote, seo_image, seo_keywords, seo_description }) => {
-  const currentUrl = `https://viewchest.com${useRouter().asPath}`,
-    title = seo_title || "viewChest",
-    hashtag = seo_hashtag || "#viewChest",
+  const currentUrl = `https://ViewCrunch.com${useRouter().asPath}`,
+    title = seo_title || "ViewCrunch",
+    hashtag = seo_hashtag || "#ViewCrunch",
     quote = seo_quote || "Sharing your Views",
-    image = seo_image || "/images/viewChest.webp",
+    image = seo_image || "/images/ViewCrunch.webp",
     keywords =
-      seo_keywords || "viewChest, Technology, Lifehack &amp; health, Entertainment, Business &amp; Finance, Miscellaneous, NEWS",
+      seo_keywords || "ViewCrunch, Technology, Lifehack &amp; health, Entertainment, Business &amp; Finance, Miscellaneous, NEWS",
     description =
       seo_description ||
-      "viewChest covers a wide range of Fascinating and Captivating contents, with an option to share your views with the world; Latest trends in technology, blog, space, trending news";
+      "ViewCrunch covers a wide range of Fascinating and Captivating contents, with an option to share your views with the world; Latest trends in technology, blog, crunch, trending news";
 
   return (
     <Head>
@@ -33,14 +33,14 @@ const SeoHead = ({ seo_title, seo_hashtag, seo_quote, seo_image, seo_keywords, s
       <meta property="og:hashtag" content={hashtag} />
       <meta property="og:image:width" content="300" />
       <meta property="og:image:height" content="180" />
-      <meta property="og:site_name" content="viewChest" />
+      <meta property="og:site_name" content="ViewCrunch" />
       <meta property="og:description" content={description} />
       <meta property="og:image:alt" content={`${title} Image`} />
       <meta property="og:image" itemProp="image" content={image} />
 
       {/* Twitter */}
-      <meta name="twitter:site" content="@viewChest" />
-      <meta name="twitter:creator" content="@viewChest" />
+      <meta name="twitter:site" content="@ViewCrunch" />
+      <meta name="twitter:creator" content="@ViewCrunch" />
       <meta name="twitter:image:alt" content={`${title} Image`} />
 
       <meta property="twitter:title" content={title} />

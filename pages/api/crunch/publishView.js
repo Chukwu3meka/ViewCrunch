@@ -2,7 +2,7 @@ import { uploadImages, saveTempImage, deleteTempImage, verifyRefresh } from "@ut
 import firebaseAdmin from "@utils/firebaseServer";
 import { toId } from "@utils/clientFunctions";
 
-const publishHandler = async ({ profile: { myHandle }, title, description, content, keywords, space }) => {
+const publishHandler = async ({ profile: { myHandle }, title, description, content, keywords, crunch }) => {
   const images = [],
     imagesURL = [],
     pryImageURL = [],
@@ -48,7 +48,7 @@ const publishHandler = async ({ profile: { myHandle }, title, description, conte
     },
     date: firebaseAdmin.firestore.Timestamp.now(),
     author: myHandle,
-    space,
+    crunch,
     pryImage: pryImageURL[0] || `/images/no-image.webp`,
     content: viewContent,
     keywords,
@@ -59,7 +59,7 @@ const publishHandler = async ({ profile: { myHandle }, title, description, conte
     downvote: [],
     keywords,
     description,
-    space,
+    crunch,
     disabled: false,
   };
 
@@ -94,9 +94,9 @@ const publishHandler = async ({ profile: { myHandle }, title, description, conte
 
 export default async (req, res) => {
   try {
-    const { description, profile, title, content, keywords, space } = req.body;
+    const { description, profile, title, content, keywords, crunch } = req.body;
     // profile.myHandle = await verifyRefresh({ myRefresh: profile.myRefresh });
-    const viewURL = await publishHandler({ profile, title, description, content, keywords, space });
+    const viewURL = await publishHandler({ profile, title, description, content, keywords, crunch });
     return res.status(200).json(viewURL);
   } catch (error) {
     console.log(error);

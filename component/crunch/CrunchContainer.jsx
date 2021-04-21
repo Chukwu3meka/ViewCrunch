@@ -15,14 +15,14 @@ import Grid from "@material-ui/core/Grid";
 import { Dialog, Drawer } from "@component/others";
 import { MembersContainer } from "/";
 import { SecBodyContainer } from "@component/homePage";
-import { Space } from "/";
+import { Crunch } from "/";
 
 const ViewscapeContainer = (props) => {
   const { enqueueSnackbar } = useSnackbar();
   const {
-      spaceDetails,
+      crunchDetails = [],
       views,
-      space,
+      crunch,
       myFollowing,
       author: { handle, token },
     } = props,
@@ -32,14 +32,14 @@ const ViewscapeContainer = (props) => {
     [displayShare, setDisplayShare] = useState(false),
     [displayReport, setDisplayReport] = useState(false),
     [displayMembers, setDisplayMembers] = useState(false),
-    [follow, setFollow] = useState(spaceDetails?.followers?.includes(handle)),
+    [follow, setFollow] = useState(crunchDetails?.followers?.includes(handle)),
     [confirmUnfollow, setConfirmUnfollow] = useState(false);
 
   useEffect(() => {
     setOnline(props.online);
   }, [props.online]);
 
-  const { about, coverPicture, dateCreated, followers, id, members, moderators, primaryPicture, title } = spaceDetails;
+  const { about, coverPicture, dateCreated, followers, id, members, moderators, primaryPicture, title } = crunchDetails;
 
   const closeDialog = () => {
     setDisplayReport(false);
@@ -53,7 +53,7 @@ const ViewscapeContainer = (props) => {
 
   const unfollowHandler = async () => {
     if (token && online) {
-      const { status, followStat } = await fetcher("/api/space/unfollowViewscape", JSON.stringify({ id, token, follow }));
+      const { status, followStat } = await fetcher("/api/crunch/unfollowViewscape", JSON.stringify({ id, token, follow }));
 
       if (status === "success") {
         setFollow(followStat ? true : false);
@@ -69,7 +69,7 @@ const ViewscapeContainer = (props) => {
 
   const reportHandler = async (feedback) => {
     if (token && online) {
-      const { status } = await fetcher("/api/space/reportViewscape", JSON.stringify({ id, token, feedback }));
+      const { status } = await fetcher("/api/crunch/reportViewscape", JSON.stringify({ id, token, feedback }));
       if (status === "success") {
         enqueueSnackbar(`Suit filed against ${title}`, { variant: "success" });
       } else {
@@ -83,11 +83,11 @@ const ViewscapeContainer = (props) => {
 
   const moreActionsHandler = () => {
     setForceRefresh(Math.random() * 1000);
-    setMoreActions(spaceDetails);
+    setMoreActions(crunchDetails);
   };
 
   return (
-    <Space
+    <Crunch
       {...{
         displayShare,
         moreActions,
@@ -111,7 +111,7 @@ const ViewscapeContainer = (props) => {
         primaryPicture,
         members,
         dateCreated,
-        space,
+        crunch,
       }}
     />
   );

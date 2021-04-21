@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const PublishContainer = (props) => {
-  const { profile, viewToBeModified = {}, space } = props,
+  const { profile, viewToBeModified = {}, crunch } = props,
     classes = useStyles(),
     scrollRef = useRef(null),
     { enqueueSnackbar } = useSnackbar(),
@@ -101,7 +101,7 @@ const PublishContainer = (props) => {
     )
       viewErrorHandler(`Article should have at least 100 words or 10 images and at most 10,000 words or 30MB`);
 
-    await sleep(3);
+    await sleep(1);
     setLoading(false);
     if (!viewError) setPreview(true);
   };
@@ -173,7 +173,7 @@ const PublishContainer = (props) => {
         keywords,
         keywordsError,
         keywordsHandler,
-        space,
+        crunch,
       }}
     />
   );

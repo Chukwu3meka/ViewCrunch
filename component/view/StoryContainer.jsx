@@ -28,7 +28,7 @@ const StoryContainer = (props) => {
 
   const reportHandler = async (report) => {
     const status = await fetcher(
-      "/api/space/report",
+      "/api/crunch/report",
       JSON.stringify({ myHandle: profile.myHandle, id: view.id, report, section: "view" })
     );
     enqueueSnackbar(status ? "success" : "failed", { variant: status ? "success" : "error" });
@@ -37,14 +37,14 @@ const StoryContainer = (props) => {
 
   const favouriteHandler = async () => {
     const mode = !viewInFavourite;
-    const status = await fetcher("/api/space/favourite", JSON.stringify({ view: view.id, myHandle: profile.myHandle, mode }));
+    const status = await fetcher("/api/crunch/favourite", JSON.stringify({ view: view.id, myHandle: profile.myHandle, mode }));
     enqueueSnackbar(status ? "success" : "failed", { variant: status ? "success" : "error" });
     setViewInFavourite(status);
   };
 
   const blacklistHandler = async () => {
     const mode = !viewInBlacklist;
-    const status = await fetcher("/api/space/blacklist", JSON.stringify({ view: view.id, myHandle: profile.myHandle, mode }));
+    const status = await fetcher("/api/crunch/blacklist", JSON.stringify({ view: view.id, myHandle: profile.myHandle, mode }));
     enqueueSnackbar(status ? "success" : "failed", { variant: status ? "success" : "error" });
     setViewInBlacklist(status);
   };
@@ -54,7 +54,7 @@ const StoryContainer = (props) => {
       setMoreActions([
         { label: viewInBlacklist ? "Whitelist" : "Blacklist", handler: blacklistHandler },
         { label: viewInFavourite ? "Remove from favourite" : "Add to favourite", handler: favouriteHandler },
-        { label: "Report view to Moderators and viewChest", handler: () => setReportView(true) },
+        { label: "Report view to Moderators and ViewCrunch", handler: () => setReportView(true) },
         {
           jsx: (
             <SocialShare
@@ -74,7 +74,7 @@ const StoryContainer = (props) => {
   };
 
   const voteHandler = (vote) => async () => {
-    const status = await fetcher("/api/space/voteView", JSON.stringify({ view: view.id, myHandle: profile.myHandle, vote }));
+    const status = await fetcher("/api/crunch/voteView", JSON.stringify({ view: view.id, myHandle: profile.myHandle, vote }));
 
     if (status) {
       if (vote) {

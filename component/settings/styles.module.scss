@@ -1,19 +1,23 @@
 @import "@source/_variables.scss";
 
 .settings {
-  margin: 20px 0 10px;
-  & > div:last-of-type {
-    @include flexCenter(column);
-    padding-left: 10px;
-    & > div {
-      @include flexCenter(row);
-      padding: 0 10px;
-      justify-content: space-between;
-      border-bottom: 1px solid var(--dim);
-      margin-top: 10px;
+  @include flexCenter(column);
+  & > div {
+    margin: 20px 0 10px;
+    width: 100%;
+    & > div:last-of-type {
+      @include flexCenter(column);
+      padding-left: 10px;
+      & > span {
+        @include flexCenter(row);
+        padding: 0 10px;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--dim);
+        margin-top: 10px;
+        & > button {
+          padding-right: 35px !important;
+        }
+      }
     }
   }
-}
-.icon {
-  padding-right: 35px !important;
 }

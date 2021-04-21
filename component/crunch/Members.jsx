@@ -7,7 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 
-const Members = ({ setDisplayMembers, title, listChunk, list, chunkSize, page, setPage, activeSpace, followHandler }) => {
+const Members = ({ setDisplayMembers, title, listChunk, list, chunkSize, page, setPage, activeCrunch, followHandler }) => {
   return (
     <div className={styles.members}>
       <IconButton aria-label="close" color="inherit" onClick={() => setDisplayMembers(false)}>
@@ -23,8 +23,8 @@ const Members = ({ setDisplayMembers, title, listChunk, list, chunkSize, page, s
             </span>
             <IconButton
               aria-label="send follow request"
-              onClick={followHandler({ follow: !activeSpace?.myFollowing?.includes(handle), viewer: handle })}>
-              <PersonAddIcon fontSize="small" color={activeSpace?.myFollowing?.includes(handle) ? "secondary" : "inherit"} />
+              onClick={followHandler({ follow: !activeCrunch?.myFollowing?.includes(handle), viewer: handle })}>
+              <PersonAddIcon fontSize="small" color={activeCrunch?.myFollowing?.includes(handle) ? "secondary" : "inherit"} />
             </IconButton>
           </div>
         ))}

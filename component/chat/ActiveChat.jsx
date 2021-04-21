@@ -61,7 +61,7 @@ const ActiveChat = ({ person, blocked, following, chatScrollRef, setMobile }) =>
         <Typography variant="body1" align="center">
           {about}
         </Typography>
-        <Typography variant="caption" color="textSecondary">{`Joined viewChest ${profileCreated}.`}</Typography>
+        <Typography variant="caption" color="textSecondary">{`Joined ViewCrunch ${profileCreated}.`}</Typography>
         <div>
           <span>
             Avg Audience <br />

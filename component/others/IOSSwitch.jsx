@@ -75,7 +75,7 @@ const IOSSwitchJsx = ({ state, stateName, setState, title, color = "#935" }) => 
   }, [focus]);
 
   return (
-    <div onClick={() => setFocus(true)}>
+    <span onClick={() => setFocus(true)}>
       <FormLabel component="legend" color="secondary" style={{ color: focus ? "#335" : "" }}>
         {title}
       </FormLabel>
@@ -84,7 +84,7 @@ const IOSSwitchJsx = ({ state, stateName, setState, title, color = "#935" }) => 
           <IOSSwitch color={color} checked={state} onChange={(e) => setState({ state: e.target.checked, stateName })} name={title} />
         }
       />
-    </div>
+    </span>
   );
 };
 

@@ -31,7 +31,7 @@ const Publish = ({
   descriptionHandler,
   formatContentArray,
   keywords,
-  space,
+  crunch,
   keywordsError,
   keywordsHandler,
 }) => (
@@ -121,7 +121,7 @@ const Publish = ({
     <FixedIcon icon="publish" clickHandler={{ image: imageHandler, down: () => scroll2Ref("end"), up: () => scroll2Ref("start") }} />
     {preview && (
       <PreviewContainer
-        {...{ title, description, content: [...contentArray, contentText], setPreview, viewToBeModified, profile, keywords, space }}
+        {...{ title, description, content: [...contentArray, contentText], setPreview, viewToBeModified, profile, keywords, crunch }}
       />
     )}
   </div>

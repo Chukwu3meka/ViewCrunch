@@ -1,24 +1,15 @@
 import { addError, removeError } from "./error";
 
-export const setProfileAction = ({
-  myProfilePicture,
-  myCoverPicture,
-  myHandle,
-  myDisplayName,
-  myToken,
-  myProfession,
-  myNotification,
-  myRefresh,
-}) => {
+export const setProfileAction = (profile) => {
   return async (dispatch) => {
     try {
       dispatch({
         type: "SET_PROFILE",
-        payload: { myProfilePicture, myCoverPicture, myHandle, myDisplayName, myToken, myProfession, myNotification, myRefresh },
+        payload: { ...profile },
       });
-      dispatch(removeError("author not valid"));
+      dispatch(removeError("profile not valid"));
     } catch {
-      dispatch(addError("author not valid"));
+      dispatch(addError("profile not valid"));
     }
   };
 };

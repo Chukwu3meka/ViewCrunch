@@ -45,14 +45,14 @@
       text-align: left;
       page-break-inside: avoid;
       max-width: 100%;
-      white-space: pre-wrap;
+      white-crunch: pre-wrap;
       display: block;
       word-wrap: break-word;
     }
   }
   & > div:nth-of-type(1) {
     @include flexCenter(row);
-    justify-content: space-between;
+    justify-content: crunch-between;
     margin: 5px 0;
     & > span {
       @include flexCenter(row);

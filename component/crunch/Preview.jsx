@@ -41,7 +41,7 @@ const Preview = ({
         <Fade bottom>
           <div>
             <span>
-              <Avatar alt={myDisplayName} src={myProfilePicture || "/images/viewChest.webp"} size="small" />
+              <Avatar alt={myDisplayName} src={myProfilePicture || "/images/ViewCrunch.webp"} size="small" />
               <Typography>{`by ${trimString(myDisplayName, 15)}`}</Typography>
             </span>
             <Typography color="textSecondary">{`${new Date().toDateString()} ● ${time2read(view)}`}</Typography>
@@ -63,11 +63,11 @@ const Preview = ({
         <div>
           <span>
             <div>
-              <Image src="/images/viewChest.webp" alt="viewChest" layout="fill" />
+              <Image src="/images/ViewCrunch.webp" alt="ViewCrunch" layout="fill" />
             </div>
             &nbsp;
             <Typography component="span" variant="caption" color="textSecondary">
-              {`viewChest.com/${myHandle}/${toId(title)}`}
+              {`ViewCrunch.com/${myHandle}/${toId(title)}`}
             </Typography>
           </span>
           <Typography variant="h6" color="secondary">

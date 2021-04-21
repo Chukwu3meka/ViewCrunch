@@ -14,13 +14,13 @@ import NotificationsActiveIcon from "@material-ui/icons/NotificationsActive";
 const NavbarContainer = (props) => {
   const { profile, setTheme } = props,
     [currentTheme, setCurrentTheme] = useState(props.theme),
-    [selectedNavBar, setSelectedNavBar] = useState("https://viewchest.com"),
+    [selectedNavBar, setSelectedNavBar] = useState("https://ViewCrunch.com"),
     { myCoverPicture, myDisplayName, myProfession, myHandle, myProfilePicture, myNotification, myRefresh } = profile || [],
     navBar = [
       ["Home", "/", <HomeIcon />],
       ["Favourite", "/favourite", <TimelineIcon />],
       ["Notification", "/notification", myNotification ? <NotificationsActiveIcon /> : <NotificationsOffIcon />],
-      ["My Space", "/space", <ImportantDevicesIcon />],
+      ["My Crunch", "/crunch", <ImportantDevicesIcon />],
       ["Portfolio", `/${myHandle ? myHandle : "unauthenticated"}`, <AssignmentIndIcon />],
       // ["Chat", "/chat", <AssignmentIndIcon />],
     ];

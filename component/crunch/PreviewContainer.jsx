@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { fetcher } from "@utils/clientFunctions";
 import { useSnackbar } from "notistack";
 
-const PreviewContainer = ({ setPreview, content, title, profile, articleId, viewToBeModified, description, keywords, space }) => {
+const PreviewContainer = ({ setPreview, content, title, profile, articleId, viewToBeModified, description, keywords, crunch }) => {
   const scrollRef = useRef(null);
 
   const router = useRouter(),
@@ -28,8 +28,8 @@ const PreviewContainer = ({ setPreview, content, title, profile, articleId, view
       enqueueSnackbar("Please wait, Your view is being published", { variant: "info" });
 
       const publishStatus = await fetcher(
-        viewToBeModified.title ? "/api/space/retouchView" : "/api/space/publishView",
-        JSON.stringify({ description, profile, title, content, keywords, space })
+        viewToBeModified.title ? "/api/crunch/retouchView" : "/api/crunch/publishView",
+        JSON.stringify({ description, profile, title, content, keywords, crunch })
       );
 
       console.log("publishHandler", publishStatus);

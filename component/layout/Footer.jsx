@@ -21,7 +21,7 @@ const Footer = ({ scrollTop }) => (
         </Link>
       </span>
 
-      <img src="/images/viewChest.webp" alt="viewChest footer icon" onClick={scrollTop} />
+      <img src="/images/ViewCrunch.webp" alt="ViewCrunch footer icon" onClick={scrollTop} />
 
       <span>
         <Link href="/control/contact">
@@ -38,7 +38,7 @@ const Footer = ({ scrollTop }) => (
       </span>
     </div>
     <Typography variant="body2" color="textSecondary">
-      ● © 2018 ~ {new Date().getFullYear()} viewChest ●
+      ● © 2018 ~ {new Date().getFullYear()} ViewCrunch ●
     </Typography>
   </div>
 );

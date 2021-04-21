@@ -2,4 +2,4 @@ User-agent:*
 
 Disallow: 
 
-Sitemap: https://www.viewchest.com/sitemap.xml
+Sitemap: https://www.ViewCrunch.com/sitemap.xml

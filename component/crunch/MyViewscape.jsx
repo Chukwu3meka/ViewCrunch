@@ -48,7 +48,7 @@ const CoverPicUpdate = ({
     { icon: <PetsIcon />, label: "Logs" },
     { icon: <AssignmentIcon />, label: "Moderators" },
     { icon: <ContactsIcon />, label: "Manage Members" },
-    { icon: <DeleteForeverIcon />, label: "Delete Space" },
+    { icon: <DeleteForeverIcon />, label: "Delete Crunch" },
   ];
 
   return (
@@ -109,22 +109,22 @@ const CoverPicUpdate = ({
 
 const MyViewscape = ({}) => {
   const [viewscapePic, setViewscapePic] = useState("/images/no-image.webp");
-  const [viewscapeCover, setViewscapeCover] = useState("/images/viewChest-cover.webp");
-  const [viewscapeTitle, setViewscapeTitle] = useState("Space Title");
-  const [viewscapeAbout, setViewscapeAbout] = useState("Space about");
+  const [viewscapeCover, setViewscapeCover] = useState("/images/ViewCrunch-cover.webp");
+  const [viewscapeTitle, setViewscapeTitle] = useState("Crunch Title");
+  const [viewscapeAbout, setViewscapeAbout] = useState("Crunch about");
   const [modifyViewscape, setModifyViewscape] = useState(false);
 
   const createdViewscape = [
     {
       image: "/images/no-image.webp",
-      cover: "/images/viewChest-cover.webp",
+      cover: "/images/ViewCrunch-cover.webp",
       title: "Commerce",
       id: "dfsgdgf",
       about:
         "Tempor consequat enim in non ex culpa commodo dolor labore Lorem. Sint in cupidatat laboris adipisicing deserunt tempor esse. Consectetur aliquip ipsum ut sint dolore non in eiusmod anim qui laborum nisi do. Veniam ea duis cillum aute velit est et sunt tempor et est. Enim qui aute eiusmod ullamco. Nulla fugiat excepteur pariatur irure eiusmod nisi do quis eiusmod deserunt nulla sint exercitation.",
     },
     {
-      image: "/images/viewChest-cover.webp",
+      image: "/images/ViewCrunch-cover.webp",
       cover: "/images/no-image.webp",
       title: "NEWS set",
       id: "23qwe",
@@ -133,9 +133,14 @@ const MyViewscape = ({}) => {
     },
   ];
 
-  const initializeCreateViewscapeHandler = (space) => () => {
-    const { image = "/images/no-image.webp", cover = "/images/viewChest-cover.webp", title = "Space Title", about = "Space about", id } =
-      createdViewscape.find((x) => space === x.id) || [];
+  const initializeCreateViewscapeHandler = (crunch) => () => {
+    const {
+      image = "/images/no-image.webp",
+      cover = "/images/ViewCrunch-cover.webp",
+      title = "Crunch Title",
+      about = "Crunch about",
+      id,
+    } = createdViewscape.find((x) => crunch === x.id) || [];
     setViewscapePic(image);
     setViewscapeCover(cover);
     setViewscapeTitle(title);
@@ -156,7 +161,7 @@ const MyViewscape = ({}) => {
         ))}
         {createdViewscape.length < 3 &&
           [...Array(3 - createdViewscape.length).keys()].map((x, index) => (
-            <IconButton key={index} aria-label="create space" onClick={initializeCreateViewscapeHandler(null)}>
+            <IconButton key={index} aria-label="create crunch" onClick={initializeCreateViewscapeHandler(null)}>
               <AddIcon fontSize="large" />
             </IconButton>
           ))}

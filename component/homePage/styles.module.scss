@@ -77,21 +77,22 @@
   border-radius: 20px 5px 15px 10px;
   justify-content: space-evenly;
   @include flexCenter(row);
-  padding: 20px 10px;
+  padding: 40px 10px;
   flex-wrap: wrap;
-  margin: 40px 0;
+  margin: 20px 0;
   gap: 15px;
   & > * > a > div {
     @include flexCenter(row);
     justify-content: space-evenly;
-    gap: 10px;
     max-width: 320px;
     border-left: 3px solid color(secondary);
+
     & > div:first-of-type {
+      padding: 10px;
       @include flexCenter(column);
       & > span {
         @include flexCenter(row);
-        gap: 5px;
+        gap: 10px;
       }
       text-align: center;
     }
@@ -99,7 +100,7 @@
       position: relative;
       border-radius: 0 5px 5px 0;
       overflow: hidden;
-      height: 70px;
+      height: 80px;
       width: 100px;
     }
   }
@@ -109,11 +110,12 @@
   @include flexCenter(column);
   max-width: 1000px !important;
   & > * > a > div {
+    position: relative;
     margin: 5px 0;
     @include flexCenter(column);
     justify-content: flex-start;
     flex-direction: column-reverse;
-    & > div:first-of-type {
+    & > div:nth-of-type(1) {
       @include flexCenter(column);
       align-items: flex-start;
       overflow: hidden;
@@ -139,18 +141,37 @@
         @include flexCenter(row);
         justify-content: space-between;
         flex-wrap: wrap;
+        & > button {
+          padding: 0;
+        }
         & > div {
           @include flexCenter(row);
           width: fit-content;
         }
       }
     }
-    & > div:last-of-type {
+    & > div:nth-of-type(2) {
       border-radius: 5px;
       overflow: hidden;
       height: 150px;
       position: relative;
       width: 100%;
+      .seen {
+        position: absolute;
+        height: 50px;
+        width: 75px;
+        left: 50%;
+        margin: -25px 0 0 -33px;
+        top: 50%;
+      }
+    }
+    & > div:nth-of-type(3) {
+      position: absolute;
+      top: 0;
+      height: 100%;
+      width: 100%;
+      background-color: var(--sec);
+      opacity: 0.13;
     }
   }
 }
@@ -175,11 +196,11 @@
     & > * > a > div {
       @include flexCenter(row);
       align-items: stretch;
-      & > div:first-of-type {
+      & > div:nth-of-type(1) {
         justify-content: space-between;
         padding-right: 5px;
       }
-      & > div:last-of-type {
+      & > div:nth-of-type(2) {
         width: 200px;
         max-height: 140px;
       }

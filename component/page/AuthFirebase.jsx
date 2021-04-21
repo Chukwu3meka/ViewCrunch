@@ -72,7 +72,7 @@
 //             "/api/profile/initProfile",
 //             JSON.stringify({
 //               uid: authDetail.uid,
-//               handle: `viewChest_new-user_${authDetail.displayName}`,
+//               handle: `ViewCrunch_new-user_${authDetail.displayName}`,
 //               photoURL: authDetail.photoURL,
 //             })
 //           );
@@ -94,7 +94,7 @@
 //                 myTheme: profile.theme,
 //               };
 
-//               await cookie.set("viewChest", authDetail.myRefresh, {
+//               await cookie.set("ViewCrunch", authDetail.myRefresh, {
 //                 expires: 183,
 //                 path: "",
 //               });

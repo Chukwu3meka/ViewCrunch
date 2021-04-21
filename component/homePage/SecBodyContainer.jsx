@@ -5,7 +5,7 @@ import { sleep } from "@utils/clientFunctions";
 import { getMoreArticlesAction } from "@store/actions";
 
 const NavPageContainer = (props) => {
-  const { articles, propsLastVisible, propsArticlesRead, navTag, deviceWidth, getMoreArticlesAction } = props,
+  const { articles, propsLastVisible, propsArticlesRead, navTag, deviceWidth, getMoreArticlesAction, mySeen } = props,
     [loading, setLoading] = useState(false),
     [content, setContent] = useState(articles),
     [online, setOnline] = useState(props?.online),
@@ -58,13 +58,14 @@ const NavPageContainer = (props) => {
     setter(false);
   };
 
-  return <SecBody {...{ navTag, content, loading, deviceWidth, getMorePost, fetchFailed }} />;
+  return <SecBody {...{ navTag, content, loading, deviceWidth, getMorePost, fetchFailed, mySeen }} />;
 };
 
 const mapStateToProps = (state) => ({
     online: state?.device?.online,
     deviceWidth: state.device?.deviceWidth,
     lastVisible: state?.article?.lastVisible,
+    mySeen: state.profile?.mySeen || [],
     bottomScroll: state.device?.bottomScroll,
     articlesRead: state?.article?.articlesRead || [],
     moreArticles: state?.article?.moreArticles || [],
