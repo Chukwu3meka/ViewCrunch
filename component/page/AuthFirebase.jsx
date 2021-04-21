@@ -145,4 +145,4 @@
 //   };
 
 // export default connect(mapStateToProps, mapDispatchToProps)(AuthFirebase);
-export default () => "authentication disabled temporarily";
+export default () => "Authentication Disabled";
