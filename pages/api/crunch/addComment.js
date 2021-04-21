@@ -1,5 +1,5 @@
 import { fetchProfile } from "@utils/firestoreFetch";
-import firebaseAdmin, { verifyIdToken } from "@utils/firebaseServer";
+import firebaseAdmin from "@utils/firebaseServer";
 
 const addComment = async ({ myAuthorID, newComment, articleId }) => {
   const { roles } = await fetchProfile(myAuthorID);
@@ -24,7 +24,7 @@ const addComment = async ({ myAuthorID, newComment, articleId }) => {
 export default async (req, res) => {
   try {
     const { token, newComment, articleId } = req.body;
-    const myAuthorID = await verifyIdToken(token);
+    const myAuthorID = " await verifyIdToken(token)";
     if (!myAuthorID) throw new TypeError("security issue");
     const result = await addComment({ myAuthorID, newComment, articleId });
     if (result !== "success") throw new TypeError("error updating");
