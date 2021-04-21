@@ -93,9 +93,9 @@ const App = ({ Component, pageProps }) => {
         <meta name="csrf_token" content="" />
         <meta name="robots" content="noodp" />
         <meta name="robots" content="index, follow" />
-        <meta name="theme-color" content="#c28c17" />
+        <meta name="theme-color" content="#e2ad26" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <meta name="msapplication-TileColor" content="#c28c17" />
+        <meta name="msapplication-TileColor" content="#e2ad26" />
         <meta name="msapplication-TileImage" content="/favicon-32x32.png" />
 
         <link rel="manifest" href="/manifest.json" />

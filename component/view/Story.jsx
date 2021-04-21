@@ -44,7 +44,7 @@ const View = ({
         <Avatar alt={displayName} src={profilePicture} family={"blink"} pathname={author} />
         <div>
           <Link href={{ pathname: author }}>
-            <Typography component="a" variant="inherit" style={{ color: "white" }}>{`by ${trimString(displayName, 15)}`}</Typography>
+            <Typography component="a" variant="inherit" color="secondary">{`by ${trimString(displayName, 15)}`}</Typography>
           </Link>
           <Typography color="secondary" variant="subtitle2">{`${dateCalculator({ date })} ● ${time2read(content)}`}</Typography>
         </div>
