@@ -7,7 +7,7 @@ const sanitize = (value) => {
 const validate = (valueType, value) => {
   switch (valueType) {
     case "handle": {
-      const handle = value?.trim().startsWith("@") ? value.substr(1).toLowerCase() : undefined;
+      const handle = value?.trim().startsWith("@") ? value.substr(1).toLowerCase() : "";
       const status = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.\s@!~#^$*']{2,14}$/gim.test(handle);
       if (status) return value;
       return undefined;

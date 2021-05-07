@@ -17,7 +17,7 @@ const verifyRefresh = async (myRefresh) => {
         .getUser(decodedToken?.uid)
         .then((user) => user.displayName);
 
-      if (!handle.startsWith("@")) return { myHandle };
+      if (!handle.startsWith("@")) return { myHandle: handle };
       if (!handle) throw new TypeError("invalid user");
 
       const profile = await firebaseAdmin
@@ -25,50 +25,33 @@ const verifyRefresh = async (myRefresh) => {
         .collection("profile")
         .doc(handle)
         .get()
-        .then((querySnapshot) => querySnapshot.docs[0])
-        .catch();
+        .then((snapshot) => snapshot.data())
+        .catch((error) => {
+          throw new TypeError(error);
+        });
 
       return {
         myHandle: handle,
-        myTheme: profile.data().stat?.theme,
-        myNotification: profile.data().notification?.length,
-        myProfilePicture: profile.data().profilePicture,
-        myCoverPicture: profile.data().coverPicture,
-        myDisplayName: profile.data().displayName,
-        myProfession: profile.data().profession,
+        myTheme: profile.stat?.theme,
+        myNotification: profile.notification?.length,
+        myProfilePicture: profile.profilePicture,
+        myCoverPicture: profile.coverPicture,
+        myDisplayName: profile.displayName,
+        myProfession: profile.profession,
+        mySeen: profile.stat?.seen,
       };
     })
     .catch((error) => {
-      console.log(error);
+      throw new TypeError(error);
     });
 };
 
 export default async (req, res) => {
   try {
-    return res.status(200).json({
-      myHandle: "@pedro",
-      myTheme: "dark",
-      myNotification: 13,
-      myProfilePicture: "/images/20.png",
-      myCoverPicture: "/images/9.png",
-      myDisplayName: "Pedro JR",
-      myProfession: "React Developer",
-      mySeen: [
-        "what-is-the-use-of-dynamics-routes-in-next-js-without-creating-the-popular-custom-server-and-limiting-the-capabilities-of-next-js",
-        "my-favorite-top--10-daily-life-hacks-that-keeps-me-going,-are-not-limited-to-safety,-performance,-rules-playing-but---satisfaction-and-efficiency",
-        "in-sint-ex-est-nulla-ad.",
-        "proident-aliquip-do-sunt-et-sint-consequat-aute.",
-        "culpa-nostrud-dolor-anim-non-ut-est-do-ea-aute-amet-dolor-pariatur-ea.",
-        "ea-sunt-eu-non-irure.",
-        "nostrud-laboris-aute-fugiat-ullamco-ipsum-et-eiusmod-amet-reprehenderit-fugiat-deserunt.",
-      ],
-    });
-
     const profile = await verifyRefresh(req.body.myRefresh);
-
     return res.status(200).json(profile);
   } catch (error) {
-    console.log(error);
-    return res.status(401).send(undefined);
+    // console.log(error);
+    return res.status(401).json({});
   }
 };

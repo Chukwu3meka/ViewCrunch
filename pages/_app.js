@@ -42,10 +42,8 @@ const App = ({ Component, pageProps }) => {
   };
 
   useEffect(() => {
-    // store.dispatch(setOnlineAction(window.navigator.onLine));
-    // setOnline(window.navigator.onLine);
-    store.dispatch(setOnlineAction(true));
-    setOnline(true);
+    store.dispatch(setOnlineAction(window.navigator.onLine));
+    setOnline(window.navigator.onLine);
   });
 
   useEffect(() => {

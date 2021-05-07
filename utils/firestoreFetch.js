@@ -11,8 +11,8 @@ export const isHandleTaken = async (handle) => {
     .doc(handle)
     .get()
     .then((docSnapshot) => (docSnapshot.exists ? true : false))
-    .catch();
-  // .catch((err) => console.log(err));
+    // .catch();
+    .catch((err) => console.log(err));
 };
 
 export const fetchProfile = (handle) => {

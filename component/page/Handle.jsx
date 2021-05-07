@@ -25,7 +25,7 @@ const Handle = (props) => {
   useEffect(() => {
     if (handle && online) {
       const verifyHandle = async () => {
-        const validated = validate("handle", handle);
+        const validated = validate("handle", `@${handle}`);
         if (validated) {
           const handleTaken = await isHandleTaken(handle);
           if (!handleTaken && online) return setHandleError(false);
