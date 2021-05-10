@@ -12,47 +12,43 @@ import { Favourite, styles } from "/";
 import { fetcher } from "@utils/clientFunctions";
 
 const FavouritesContainer = (props) => {
-  const [switchView, setSwitchView] = useState(true);
-  const {
-      author: { handle, token },
-      blacklist: propsBlacklist,
-      favourites: propsFavourites,
-    } = props,
+  const { myHandle } = props,
     router = useRouter(),
     { enqueueSnackbar } = useSnackbar(),
     [online, setOnline] = useState(props.online),
-    [favourites, setFavourite] = useState(propsFavourites || []),
-    [blacklist, setBlacklist] = useState(propsBlacklist || []);
+    [switchView, setSwitchView] = useState(true),
+    [favourites, setFavourite] = useState(props.favourites || []),
+    [blacklist, setBlacklist] = useState(props.blacklist || []);
 
   useEffect(() => {
     setOnline(props.online);
   }, [props.online]);
 
-  const removeView = ({ id, title, listType }) => async () => {
-    if (token && online) {
-      const { status } = await fetcher("/api/favourites/removeView", JSON.stringify({ id, token, listType }));
+  const removeView = ({ link, title, listType }) => async () => {
+    if (myHandle && online) {
+      const { status } = await fetcher("/api/profile/removeFavourite", JSON.stringify({ link, title, myHandle, listType }));
       if (status === "success") {
-        listType === "favourite"
-          ? setFavourite(favourites.filter((x) => x.id !== id))
-          : setBlacklist(blacklist.filter((x) => x.id !== id));
+        listType === "Favourite"
+          ? setFavourite(favourites.filter((x) => x.link !== link))
+          : setBlacklist(blacklist.filter((x) => x.link !== link));
         enqueueSnackbar(`${title} removed from ${listType}`, { variant: "success" });
       } else {
         enqueueSnackbar(`Please, Try again. Error occured.`, { variant: "error" });
       }
     } else {
-      enqueueSnackbar(`Network connectivity issue.`, { variant: "warning" });
+      enqueueSnackbar(`Network connectivity or Authentication issue.`, { variant: "warning" });
     }
   };
 
-  const openView = (id) => () => router.push(id);
+  const openView = (link) => () => router.push(link);
 
   return (
     <Grid container className={styles.favourite}>
       <Grid item xs={12} sm={12} md={12} lg={8}>
-        <Button onClick={() => setSwitchView(!switchView)} variant="outlined" color="secondary">{`Switch to ${
-          switchView ? "Blacklist" : "Favourite"
-        }`}</Button>
         <div>
+          <Button onClick={() => setSwitchView(!switchView)} variant="outlined" color="secondary">{`Switch to ${
+            switchView ? "Blacklist" : "Favourite"
+          }`}</Button>
           <Favourite
             {...{ list: switchView ? favourites : blacklist, openView, removeView, listType: switchView ? "Favourite" : "Blacklist" }}
           />
@@ -70,8 +66,8 @@ const FavouritesContainer = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-    author: state?.profile,
-    online: state?.device?.online,
+    myHandle: state.profile?.myHandle,
+    online: state.device?.online,
   }),
   mapDispatchToProps = {};
 

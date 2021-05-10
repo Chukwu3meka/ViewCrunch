@@ -12,7 +12,6 @@ const connected = fetch("https://google.com", {
   .catch(() => false);
 
 export const extractHandle = async (cookie) => {
-  return "@pedro";
   const noNetwork = !(await connected);
   if (noNetwork) return "Network connectivity issue";
 
@@ -20,7 +19,6 @@ export const extractHandle = async (cookie) => {
 
   let myRefresh;
   await cookie?.split("; ").forEach((x) => {
-    console.log(x.split("=")[0]);
     if (x.split("=")[0] === "ViewCrunch") {
       myRefresh = x.split("=")[1];
     }
@@ -44,7 +42,8 @@ export const extractHandle = async (cookie) => {
           .auth()
           .getUser(decodedToken?.uid)
           .then((user) => user.displayName)
-    );
+    )
+    .catch();
 
   return handle.startsWith("@") ? handle : undefined;
 };

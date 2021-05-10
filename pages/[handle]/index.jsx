@@ -19,7 +19,7 @@ export const getServerSideProps = async (ctx) => {
   if (!myHandle) return errorProp(401, "User not logged in");
   const handle = await validate("handle", ctx.query.handle.toLowerCase());
 
-  if (!handle) return errorProp(404, "Invalid handle provided");
+  if (!handle) return errorProp(404, "Invalid handle supplied");
 
   const { viewerData, viewerHistory, error = false } = await fetchProfileData(handle);
   if (error) return errorProp();

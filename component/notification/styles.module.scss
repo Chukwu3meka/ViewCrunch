@@ -3,11 +3,12 @@
 .notification {
   @include flexCenter(column);
   height: 100% !important;
-  padding: 20px 10px !important;
+  padding: 3px !important;
   & > div:first-of-type {
-    opacity: 0.8;
+    width: 100%;
+    opacity: 0.93;
     background: var(--pry);
-    border-radius: 25px 10px !important;
+    // border-radius: 25px 10px !important;
     overflow: hidden;
     z-index: 1;
     position: relative;

@@ -11,20 +11,19 @@ export const isHandleTaken = async (handle) => {
     .doc(handle)
     .get()
     .then((docSnapshot) => (docSnapshot.exists ? true : false))
-    // .catch();
-    .catch((err) => console.log(err));
+    .catch();
 };
 
 export const fetchProfile = (handle) => {
-  // return profileRef
-  //   .doc(handle)
-  //   .get()
-  //   .then((snapshot) => {
-  //     if (snapshot.exists) return snapshot.data();
-  //     return [];
-  //   });
-  if (!db.viewer) return { error: true };
-  return db.viewer.find((x) => x.handle === handle);
+  return profileRef
+    .doc(handle)
+    .get()
+    .then((snapshot) => {
+      if (snapshot.exists) return snapshot.data();
+      return [];
+    });
+  // if (!db.viewer) return { error: true };
+  // return db.viewer.find((x) => x.handle === handle);
 };
 
 export const fetchCrunches = async (handle) => {

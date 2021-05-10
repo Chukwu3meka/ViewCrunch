@@ -32,7 +32,21 @@ const createProfileHandler = async ({ handle, myRefresh }) => {
           coverPicture: "/images/ViewCrunch-cover.webp",
           displayName,
           profession: "Viewer and Writter",
-          notification: [],
+          notification: [
+            {
+              body: "To understand more on what ViewCrunch is all about visit this page at anytime",
+              link: "/control/faq#about",
+              title: "About ViewCrunch",
+            },
+            {
+              body:
+                "Visit the link at the bottom of any page on ViewCrunch to read more on our 'terms and condition' and 'privacy policy'",
+              link: "/control/faq",
+              title: "FAQ: Frequently Asked Question",
+            },
+            { body: "Have a product or service to advertise on ViewCrunch", link: "/control/adverise", title: "Advertise" },
+            { body: "Make suggestions here, or contact the developer", link: "/control/contact", title: "Contact Us" },
+          ],
           crunch: [],
           favourite: [],
           blacklist: [],

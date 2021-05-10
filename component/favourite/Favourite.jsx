@@ -15,15 +15,15 @@ const Favourites = ({ list, openView, removeView, listType }) => {
   return list?.length ? (
     <List dense={false}>
       <TransitionGroup {...{ appear: false, enter: true, exit: true }}>
-        {list.map(({ id, title }, index) => (
-          <Fade key={id} collapse bottom>
+        {list.map(({ link, title }, index) => (
+          <Fade key={link} collapse bottom>
             <ListItem>
               <ListItemIcon>
                 <Typography>{index + 1}</Typography>
               </ListItemIcon>
-              <ListItemText primary={title} onClick={openView(id)} />
+              <ListItemText primary={title} onClick={openView(link)} />
               <ListItemSecondaryAction>
-                <IconButton edge="end" aria-label="delete" onClick={removeView({ id, title, listType })}>
+                <IconButton edge="end" aria-label="delete" onClick={removeView({ link, title, listType })}>
                   <DeleteIcon />
                 </IconButton>
               </ListItemSecondaryAction>

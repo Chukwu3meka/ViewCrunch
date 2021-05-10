@@ -22,7 +22,7 @@ const App = ({ Component, pageProps }) => {
   config({ ssrFadeout: true });
   const store = useStore(pageProps.initialReduxState),
     { myRefresh } = userControl(),
-    [online, setOnline] = useState(false),
+    [online, setOnline] = useState(true),
     [pageReady, setPageReady] = useState(false),
     [appTheme, setAppTheme] = useState("light"),
     [chooseHandle, setChooseHandle] = useState(false);

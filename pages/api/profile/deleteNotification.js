@@ -1,11 +1,14 @@
 import firebaseAdmin from "@utils/firebaseServer";
 
-const Handler = async ({ id, myHandle }) => {
+const Handler = async ({ myHandle, title, body, link }) => {
   await firebaseAdmin
     .firestore()
     .collection("profile")
     .doc(myHandle)
-    .update({ [`notification.${id}`]: firebaseAdmin.firestore.FieldValue.delete() })
+    .update({
+      notification: firebaseAdmin.firestore.FieldValue.arrayRemove({ title, body, link }),
+    })
+    .then()
     .catch((error) => {
       throw new TypeError(error);
     });
@@ -13,11 +16,11 @@ const Handler = async ({ id, myHandle }) => {
 
 export default async (req, res) => {
   try {
-    const { id, myHandle } = req.body;
-    await Handler({ id, myHandle });
-    return res.status(200).send(true);
+    const { myHandle, title, body, link } = req.body;
+    await Handler({ myHandle, title, body, link });
+    return res.status(200).json({ status: "success" });
   } catch (error) {
     console.log(error);
-    return res.status(401).send(false);
+    return res.status(401).json({ status: "failed" });
   }
 };

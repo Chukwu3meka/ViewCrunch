@@ -34,6 +34,7 @@ export const name1 = [
   "Morning Dew",
   "ViewCrunch",
 ];
+
 const name2 = [
   "Universal",
   "Lifehack",
@@ -46,6 +47,7 @@ const name2 = [
   "Catholic Church",
   "Investment",
 ];
+
 const name3 = [
   "What is the use of dynamics routes in Next JS without creating the popular custom server and limiting the capabilities of Next JS",
   "My Favorite Top  10 daily life hacks that keeps me going, are not limited to Safety, Performance, Rules Playing but   Satisfaction and Efficiency",
@@ -72,6 +74,7 @@ const name3 = [
   "Countries with the best data",
   "latest trend in tech",
 ];
+
 const profession = [
   "React developer",
   "Student",
@@ -94,9 +97,28 @@ export const viewer = name1.map((name) => ({
   crunches: name2.map((title) => ({ title, roles: ["publish", "delete", "modify", "share", "moderate"] })),
   displayName: name,
   profession: profession[range(0, profession.length - 1)],
-  notification: [],
-  favourite: name3.slice(0, 9).map((title) => toId(title)),
-  blacklist: name3.slice(10, 14).map((title) => toId(title)),
+  notification: [
+    {
+      body: "To understand more on what ViewCrunch is all about visit this page at anytime",
+      link: "/control/faq#about",
+      title: "About ViewCrunch",
+    },
+    {
+      body: "Visit the link at the bottom of any page on ViewCrunch to read more on our 'terms and condition' and 'privacy policy'",
+      link: "/control/faq",
+      title: "FAQ: Frequently Asked Question",
+    },
+    { body: "Have a product or service to advertise on ViewCrunch", link: "/control/adverise", title: "Advertise" },
+    { body: "Make suggestions here, or contact the developer", link: "/control/contact", title: "Contact Us" },
+  ],
+  favourite: [
+    { link: "/control/adverise", title: "Have a product or service to advertise on ViewCrunch" },
+    { link: "/control/contact", title: "Make suggestions here, or contact the developer" },
+  ],
+  blacklist: [
+    { link: "/control/adverise", title: "Have a product or service to advertise on ViewCrunch" },
+    { link: "/control/contact", title: "Make suggestions here, or contact the developer" },
+  ],
   published: name3.map((title) => ({
     title,
     date: date(),

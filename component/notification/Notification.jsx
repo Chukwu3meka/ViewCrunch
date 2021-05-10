@@ -25,7 +25,7 @@ const Notification = ({ notification, deleteNotification, expanded, handleChange
                 <Typography component="i" color="textSecondary">{`${index + 1}. `}</Typography>
                 {title}
               </Typography>
-              <IconButton edge="end" aria-label="delete" onClick={deleteNotification(body)}>
+              <IconButton edge="end" aria-label="delete" onClick={deleteNotification({ title, body, link })}>
                 <DeleteIcon />
               </IconButton>
             </AccordionSummary>

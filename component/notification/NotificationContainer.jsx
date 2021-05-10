@@ -1,19 +1,16 @@
 import { Notification } from "/";
-import { fetcher } from "@utils/clientFunctions";
-
 import { connect } from "react-redux";
 import { useSnackbar } from "notistack";
 import { useState, useEffect } from "react";
+import { fetcher } from "@utils/clientFunctions";
+import { setProfileAction } from "@store/actions";
 
 const NotificationContainer = (props) => {
-  const {
-      notification: propsNotification,
-      profile: { handle, token },
-    } = props,
-    { enqueueSnackbar } = useSnackbar(),
+  const { enqueueSnackbar } = useSnackbar(),
+    { profile, setProfileAction } = props,
     [expanded, setExpanded] = useState(false),
     [online, setOnline] = useState(props.online),
-    [notification, setNotification] = useState(propsNotification || []);
+    [notification, setNotification] = useState(props.notification);
 
   useEffect(() => {
     setOnline(props.online);
@@ -23,13 +20,17 @@ const NotificationContainer = (props) => {
     setExpanded(newExpanded ? panel : false);
   };
 
-  const deleteNotification = (body) => async () => {
-    if (token && !online) {
-      const { status } = await fetcher("/api/notification/deleteNotification", JSON.stringify({ body, token }));
+  const deleteNotification = ({ title, body, link }) => async () => {
+    if (profile.myHandle && online) {
+      const { status } = await fetcher(
+        "/api/profile/deleteNotification",
+        JSON.stringify({ myHandle: profile.myHandle, title, body, link })
+      );
       if (status === "success") {
         setExpanded(false);
-        setNotification(notification.filter((x) => x.body !== body));
+        setNotification(notification.filter((x) => x.title !== title));
         enqueueSnackbar(`Notification deleted`, { variant: "success" });
+        setProfileAction({ ...profile, myNotification: notification.length - 1 });
       } else {
         enqueueSnackbar(`Please, Try again. Error occured.`, { variant: "error" });
       }
@@ -54,6 +55,6 @@ const mapStateToProps = (state) => ({
     profile: state?.profile,
     online: state?.device?.online,
   }),
-  mapDispatchToProps = {};
+  mapDispatchToProps = { setProfileAction };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NotificationContainer);
