@@ -20,7 +20,7 @@ export default async (req, res) => {
     await Handler({ myHandle, title, body, link });
     return res.status(200).json({ status: "success" });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return res.status(401).json({ status: "failed" });
   }
 };

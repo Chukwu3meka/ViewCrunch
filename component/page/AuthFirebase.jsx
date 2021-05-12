@@ -54,7 +54,8 @@ const AuthFirebase = (props) => {
     [online, setOnline] = useState(false),
     [authDetail, setAuthDetail] = useState({}),
     [renderAuth, setRenderAuth] = useState(false),
-    [chooseHandle, setChooseHandle] = useState(false);
+    [chooseHandle, setChooseHandle] = useState(false),
+    [authenticated, setAuthenticated] = useState(props.authenticated);
 
   useEffect(() => {
     setOnline(props.online);
@@ -66,6 +67,10 @@ const AuthFirebase = (props) => {
     }
     return () => setRenderAuth(false);
   }, []);
+
+  useEffect(() => {
+    setAuthenticated(!!props.authenticated);
+  }, [props.authenticated]);
 
   useEffect(() => {
     if (authDetail.myRefresh && authDetail.uid && online) {
@@ -86,13 +91,13 @@ const AuthFirebase = (props) => {
             const profile = await fetchProfile(handle);
             if (profile) {
               const viewer = {
-                myProfilePicture: profile.profilePicture,
-                myCoverPicture: profile.coverPicture,
                 myHandle: handle,
-                myDisplayName: profile.displayName,
-                myProfession: profile.profession,
-                myNotification: profile.notification,
                 myTheme: profile.theme,
+                myProfession: profile.profession,
+                myDisplayName: profile.displayName,
+                myNotification: profile.notification,
+                myCoverPicture: profile.coverPicture,
+                myProfilePicture: profile.profilePicture,
               };
 
               await cookie.set("ViewCrunch", authDetail.myRefresh, {
@@ -101,7 +106,7 @@ const AuthFirebase = (props) => {
               });
 
               await props.setProfileAction({ ...viewer });
-              Router.reload();
+              // Router.reload();
             }
           }
 
@@ -120,16 +125,16 @@ const AuthFirebase = (props) => {
   return (
     <div>
       {online ? (
-        renderAuth && !props.loggedIn ? (
+        renderAuth && !authenticated ? (
           <StyledFirebaseAuth uiConfig={firebaseAuthConfig({ setAuthDetail })} firebaseAuth={firebase.auth()} />
         ) : (
           <Button
             size="small"
             variant="outlined"
             color="secondary"
-            onClick={async () => {
+            onClick={() => {
+              props.setProfileAction({});
               logout();
-              await props.setProfileAction({});
             }}>
             Logout
           </Button>
@@ -141,7 +146,7 @@ const AuthFirebase = (props) => {
 
 const mapStateToProps = (state) => ({
     online: state.device?.online,
-    loggedIn: state.profile?.myHandle,
+    authenticated: state.profile?.myHandle,
   }),
   mapDispatchToProps = {
     setProfileAction,

@@ -1,11 +1,9 @@
 import { Publish } from "/";
-import { connect } from "react-redux";
 import { useState, useRef } from "react";
+import { useSnackbar } from "notistack";
+import validate from "@utils/validator";
 import { makeStyles } from "@material-ui/core/styles";
 import { imageObject, sleep } from "@utils/clientFunctions";
-import { isTitleTaken } from "@utils/firestoreFetch";
-import validate from "@utils/validator";
-import { useSnackbar } from "notistack";
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -22,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const PublishContainer = (props) => {
-  const { profile, viewToBeModified = {}, crunch } = props,
+  const { viewToBeModified = {}, crunch, published } = props,
     classes = useStyles(),
     scrollRef = useRef(null),
     { enqueueSnackbar } = useSnackbar(),
@@ -34,20 +32,20 @@ const PublishContainer = (props) => {
     [descriptionError, setDescriptionError] = useState(false),
     [title, setTitle] = useState(viewToBeModified.title || "Title of view"),
     [contentArray, setContentArray] = useState(viewToBeModified.content || []),
+    [description, setDescription] = useState(
+      viewToBeModified.description ||
+        "Describe what view is about, and how it should appear in search engines. Description should be between 50 to 200 letters "
+    ),
     [keywords, setKeywords] = useState(
       viewToBeModified.keywords || "All Keywords used in view separated by comma. Characters should be within 4 to 110"
-    ),
-    [description, setDescription] = useState(
-      viewToBeModified.description || "Describe what view is about, and how it should appear in search engines"
     );
 
   const titleHandler = async (value) => {
     if (!viewToBeModified.title) {
       setTitle(value);
       setTitleError(!validate("title", value));
-
-      const titleTaken = await isTitleTaken(title);
-      if (titleTaken) {
+      if (title === "Title of view") setTitleError(true);
+      if (published.includes(title)) {
         setTitleError(true);
         enqueueSnackbar(`Duplicate title`, { variant: "error" });
       }
@@ -82,24 +80,24 @@ const PublishContainer = (props) => {
       enqueueSnackbar(error, { variant: "error" });
     };
 
-    if (!title?.length && titleError)
-      viewErrorHandler(
-        "Make sure title is not taken and within the range of 3 to 20 words, 13 to 150 letters and special characters [ - : ( ) ]."
-      );
-    if (!description?.length && descriptionError)
-      viewErrorHandler("Description can only contain 50 to 200 letters and special characters [ - : ( ) , ; ].");
-    if (!keywords?.length && keywordsError)
-      viewErrorHandler("Keywords can only contain letters within 4 to 100 characters separated by comma and special characters [ , ].");
-    if (
-      !(
-        (fullArticleWord?.join(" ")?.split(" ")?.length >= 100 &&
-          fullArticleWord?.join(" ")?.split(" ")?.length <= 10000 &&
-          fullArticleWord.join(" ").length >= 1000 &&
-          fullArticleWord.join(" ").length <= 1000000) ||
-        (fullArticleImage?.length >= 10 && fullArticleImage?.length <= 30)
-      )
-    )
-      viewErrorHandler(`Article should have at least 100 words or 10 images and at most 10,000 words or 30MB`);
+    // if (!title?.length && titleError)
+    //   viewErrorHandler(
+    //     "Make sure title is not taken and within the range of 3 to 20 words, 13 to 150 letters and special characters [ - : ( ) ]."
+    //   );
+    // if (!description?.length || descriptionError || description.includes("Describe what view is about"))
+    //   viewErrorHandler("Description can only contain 50 to 200 letters and special characters [ - : ( ) , ; ].");
+    // if (!keywords?.length || keywordsError || keywords.includes("Keywords used in view separated by comma"))
+    //   viewErrorHandler("Keywords can only contain letters within 4 to 100 characters separated by comma and special characters [ , ].");
+    // if (
+    //   !(
+    //     (fullArticleWord?.join(" ")?.split(" ")?.length >= 100 &&
+    //       fullArticleWord?.join(" ")?.split(" ")?.length <= 10000 &&
+    //       fullArticleWord.join(" ").length >= 1000 &&
+    //       fullArticleWord.join(" ").length <= 1000000) ||
+    //     (fullArticleImage?.length >= 10 && fullArticleImage?.length <= 30)
+    //   )
+    // )
+    //   viewErrorHandler(`Article should have at least 100 words or 10 images and at most 10,000 words or 30MB`);
 
     await sleep(1);
     setLoading(false);
@@ -147,11 +145,9 @@ const PublishContainer = (props) => {
     <Publish
       {...{
         title,
-        profile,
         classes,
         loading,
         preview,
-        setTitle,
         scrollRef,
         setPreview,
         scroll2Ref,
@@ -160,29 +156,21 @@ const PublishContainer = (props) => {
         description,
         imageHandler,
         contentArray,
-        setDescription,
         setContentText,
+        descriptionError,
         previewHandler,
         setContentArray,
         viewToBeModified,
         titleHandler,
+        descriptionHandler,
         formatContentArray,
         keywords,
-        descriptionHandler,
-        descriptionError,
-        keywords,
+        crunch,
         keywordsError,
         keywordsHandler,
-        crunch,
       }}
     />
   );
 };
 
-const mapStateToProps = (state) => ({
-    profile: state?.profile,
-    online: state?.device?.online,
-  }),
-  mapDispatchToProps = {};
-
-export default connect(mapStateToProps, mapDispatchToProps)(PublishContainer);
+export default PublishContainer;

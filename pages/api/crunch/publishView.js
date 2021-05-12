@@ -1,6 +1,6 @@
-import { uploadImages, saveTempImage, deleteTempImage, verifyRefresh } from "@utils/serverFunctions";
-import firebaseAdmin from "@utils/firebaseServer";
 import { toId } from "@utils/clientFunctions";
+import firebaseAdmin from "@utils/firebaseServer";
+import { uploadImages, saveTempImage, deleteTempImage } from "@utils/serverFunctions";
 
 const publishHandler = async ({ profile: { myHandle }, title, description, content, keywords, crunch }) => {
   const images = [],
@@ -25,7 +25,9 @@ const publishHandler = async ({ profile: { myHandle }, title, description, conte
         .then((url) => {
           imagesURL.push(url);
         })
-        .catch(() => {});
+        .catch((error) => {
+          throw new TypeError(error);
+        });
     }
   }
 
@@ -89,18 +91,18 @@ const publishHandler = async ({ profile: { myHandle }, title, description, conte
       throw new TypeError(error);
     });
 
-  return JSON.stringify(`/${viewURL}`);
+  return viewURL;
 };
 
 export default async (req, res) => {
   try {
     const { description, profile, title, content, keywords, crunch } = req.body;
-    // profile.myHandle = await verifyRefresh({ myRefresh: profile.myRefresh });
-    const viewURL = await publishHandler({ profile, title, description, content, keywords, crunch });
-    return res.status(200).json(viewURL);
+    const link = await publishHandler({ profile, title, description, content, keywords, crunch });
+    // return res.status(200).json({ link });
+    return res.status(401).json({ link: false });
   } catch (error) {
     console.log(error);
-    return res.status(401).send(false);
+    return res.status(401).json({ link: false });
   }
 };
 

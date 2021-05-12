@@ -5,7 +5,7 @@ import { fetcher } from "@utils/clientFunctions";
 import { chunkArray } from "@utils/clientFunctions";
 import { fetchProfile } from "@utils/firestoreFetch";
 
-const MembersContainer = ({ activeCrunch, setActiveCrunch, displayMembers, setDisplayMembers, myHandle, myRefresh }) => {
+const MembersContainer = ({ activeCrunch, setActiveCrunch, displayMembers, setDisplayMembers, myHandle }) => {
   const chunkSize = 100;
   const [page, setPage] = useState(1);
   const [list, setList] = useState([]);
@@ -29,7 +29,7 @@ const MembersContainer = ({ activeCrunch, setActiveCrunch, displayMembers, setDi
   }, []);
 
   const followHandler = ({ follow, viewer }) => async () => {
-    const status = await fetcher("/api/profile/followViewer ", JSON.stringify({ follow, viewer, myHandle, myRefresh }));
+    const status = await fetcher("/api/profile/followViewer ", JSON.stringify({ follow, viewer, myHandle }));
     if (status) {
       if (follow) {
         setActiveCrunch({ ...activeCrunch, myFollowing: [...activeCrunch?.myFollowing, viewer] });
@@ -60,7 +60,6 @@ const MembersContainer = ({ activeCrunch, setActiveCrunch, displayMembers, setDi
 
 const mapStateToProps = (state) => ({
     myHandle: state?.profile?.myHandle,
-    myRefresh: state?.profile?.myRefresh,
   }),
   mapDispatchToProps = {};
 

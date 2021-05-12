@@ -22,7 +22,7 @@ export const getServerSideProps = async (ctx) => {
   if (!myHandle) return errorProp(401, "User not logged in");
 
   const { crunches, myFollowing, error } = await fetchCrunches(myHandle);
-  if (!crunches?.length || error) return errorProp(400, "Unable to fetch crunches");
+  if (error) return errorProp(400, "Unable to fetch crunches");
 
   return {
     props: {

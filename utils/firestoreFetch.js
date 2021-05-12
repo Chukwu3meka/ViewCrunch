@@ -1,5 +1,6 @@
 const newsRef = firestore.collection("news");
-const articleRef = firestore.collection("article");
+const viewRef = firestore.collection("view");
+const crunchRef = firestore.collection("crunch");
 const profileRef = firestore.collection("profile");
 
 import * as db from "@source/tempdb";
@@ -21,41 +22,41 @@ export const fetchProfile = (handle) => {
     .then((snapshot) => {
       if (snapshot.exists) return snapshot.data();
       return [];
+    })
+    .catch((error) => {
+      return null;
+      // console.log(error)
     });
-  // if (!db.viewer) return { error: true };
-  // return db.viewer.find((x) => x.handle === handle);
 };
 
 export const fetchCrunches = async (handle) => {
   const {
-    crunches,
-    chat: { following },
-    error,
+    crunches: myCrunches,
+    chat: { following: myFollowing },
   } = await fetchProfile(handle);
-  if (error || !crunches?.length) return { error: true };
 
-  const crunchesDetails = crunches?.map(({ title }) => ({
-    id: `${title.replace(/ /g, "-").toLowerCase()}`,
-    title,
-    coverPicture: `/images/${range(0, 40)}.png`,
-    primaryPicture: `/images/${range(0, 40)}.png`,
-    members: range(700, 7000000),
-    dateCreated: db.date(),
-    about: `
-        Occaecat eu laboris in reprehenderit esse sit labore velit minim tempor exercitation dolore commodo. Cupidatat ex ex minim velit irure labore cillum cillum deserunt magna cillum. Mollit voluptate est culpa ex in dolor irure aute cupidatat labore tempor nostrud esse et. Quis labore ea velit do commodo culpa laboris aliqua veniam magna. Eu pariatur veniam aliquip est duis ullamco tempor anim. Adipisicing dolore ex aute anim anim ex incididunt cillum magna exercitation enim nostrud adipisicing.`,
-    moderators: db.name1.map((name) => toId(`@${name}`)).slice(0, 3),
-    followers: db.name1.map((name) => toId(`@${name}`)),
-  }));
+  if (typeof myCrunches !== "object") return { error: true };
 
-  return { crunches: crunchesDetails, myFollowing: following, error: false };
-};
+  const crunches = [];
 
-export const isTitleTaken = async (title) => {
-  return false; // return await articleRef
-  //   .doc(toId(title, "-"))
-  //   .get()
-  //   .then((docSnapshot) => (docSnapshot.exists ? true : false));
-  // // .catch((err) => console.log(err));
+  for (const [key, value] of Object.entries(myCrunches)) {
+    const crunch = {
+      id: key,
+      roles: value,
+      ...(await crunchRef
+        .doc(key)
+        .get()
+        .then((snapshot) => ({
+          ...snapshot.data(),
+          dateCreated: snapshot.data().dateCreated.toDate().toDateString(),
+        }))
+        .catch()),
+    };
+
+    crunches.push(crunch);
+  }
+
+  return { crunches, myFollowing, error: false };
 };
 
 export const fetchProfileData = async (handle) => {

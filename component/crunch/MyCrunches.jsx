@@ -107,7 +107,7 @@ const CoverPicUpdate = ({
   );
 };
 
-const MyViewscape = ({}) => {
+const MyCrunches = ({}) => {
   const [viewscapePic, setViewscapePic] = useState("/images/no-image.webp");
   const [viewscapeCover, setViewscapeCover] = useState("/images/ViewCrunch-cover.webp");
   const [viewscapeTitle, setViewscapeTitle] = useState("Crunch Title");
@@ -187,4 +187,4 @@ const MyViewscape = ({}) => {
   );
 };
 
-export default MyViewscape;
+export default MyCrunches;

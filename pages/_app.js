@@ -16,7 +16,7 @@ import { Loading } from "@component/others";
 import userControl from "@utils/userControl";
 import LayoutContainer from "@component/layout";
 import { fetcher } from "@utils/clientFunctions";
-import { setDisplayHeader, setOnlineAction, setProfileAction, setTheme } from "@store/actions";
+import { setDisplayHeader, setOnlineAction, setProfileAction } from "@store/actions";
 
 const App = ({ Component, pageProps }) => {
   config({ ssrFadeout: true });
@@ -33,7 +33,6 @@ const App = ({ Component, pageProps }) => {
     if (profile?.myHandle) {
       if (isNaN(profile.myHandle) && profile.myHandle.startsWith("@")) {
         setAppTheme(profile.myTheme);
-        store.dispatch(setTheme(profile.myTheme));
         store.dispatch(setProfileAction(profile));
       } else {
         setChooseHandle(true);

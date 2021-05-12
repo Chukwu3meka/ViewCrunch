@@ -5,7 +5,7 @@ const changeTheme = ({ myHandle, myTheme }) => {
     .firestore()
     .collection("profile")
     .doc(myHandle)
-    .set({
+    .update({
       "stat.theme": myTheme,
     })
     .catch((error) => {
@@ -15,12 +15,11 @@ const changeTheme = ({ myHandle, myTheme }) => {
 
 export default async (req, res) => {
   try {
-    const { myRefresh, myHandle, myTheme } = req.body;
-    // await verifyIdToken({ myRefresh });
+    const { myHandle, myTheme } = req.body;
     await changeTheme({ myHandle, myTheme });
-    return res.status(200).json({});
+    return res.status(200).send(true);
   } catch (error) {
-    console.log(error);
-    return res.status(401).json({});
+    // console.log(error);
+    return res.status(401).send(false);
   }
 };

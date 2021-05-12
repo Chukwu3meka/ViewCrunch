@@ -1,4 +1,18 @@
+import { toId } from "@utils/clientFunctions";
 import firebaseAdmin from "@utils/firebaseServer";
+
+const initialCrunches = [
+  "Universal",
+  "Lifehack",
+  "Career 101",
+  "Justnow",
+  "Software Developers",
+  "Cyber Security",
+  "Politics",
+  "Warfare",
+  "Catholic Church",
+  "Investment",
+];
 
 const createProfileHandler = async ({ handle, myRefresh }) => {
   const { access_token: token } = await fetch(`https://securetoken.googleapis.com/v1/token?key=${process.env.FIREBASE_API_KEY}`, {
@@ -17,7 +31,7 @@ const createProfileHandler = async ({ handle, myRefresh }) => {
     .auth()
     .getUser(uid)
     .then(async (user) => {
-      const profilePicture = user.photoURL,
+      const profilePicture = user.photoURL || "ViewCrunch.webp",
         profileCreated = user.metadata.creationTime,
         displayName = user.displayName.replace(/ViewCrunch_new-user_/g, "");
 
@@ -28,7 +42,6 @@ const createProfileHandler = async ({ handle, myRefresh }) => {
         .set({
           profilePicture,
           about: "new Viewer and Writer",
-          roles: ["comment", "upload", "active", "vote", "create", "publish", "moderate"],
           coverPicture: "/images/ViewCrunch-cover.webp",
           displayName,
           profession: "Viewer and Writter",
@@ -47,19 +60,35 @@ const createProfileHandler = async ({ handle, myRefresh }) => {
             { body: "Have a product or service to advertise on ViewCrunch", link: "/control/adverise", title: "Advertise" },
             { body: "Make suggestions here, or contact the developer", link: "/control/contact", title: "Contact Us" },
           ],
-          crunch: [],
+
+          roles: { comment: true, vote: true, disabled: false, moderate: true, createCrunch: true },
+          crunches: [
+            "Universal",
+            "Lifehack",
+            "Career 101",
+            "Justnow",
+            "Software Developers",
+            "Cyber Security",
+            "Politics",
+            "Warfare",
+            "Catholic Church",
+            "Investment",
+          ]
+            .map((title) => ({ id: toId(title), roles: { publish: true, retouch: true, moderate: false } }))
+            .reduce((acc, cur) => ({ ...acc, [cur.id]: cur.roles }), {}),
+
           favourite: [],
           blacklist: [],
           published: [],
           chat: {
-            followers: [],
+            followers: ["@maduekwepedro"],
             blocked: [],
-            following: [],
+            following: ["@maduekwepedro"],
           },
           social: {
-            twitterHandle: "MaduekwePedro",
-            facebookHandle: "MaduekwePedro",
-            linkedinHandle: "MaduekwePedro",
+            twitterHandle: handle,
+            facebookHandle: handle,
+            linkedinHandle: handle,
           },
           stat: {
             voteSent: 0,
@@ -76,7 +105,36 @@ const createProfileHandler = async ({ handle, myRefresh }) => {
             .updateUser(uid, {
               displayName: `@${handle}`,
             })
-            .then()
+            .then(async () => {
+              for (const x of initialCrunches) {
+                await firebaseAdmin
+                  .firestore()
+                  .collection("crunch")
+                  .doc(toId(x))
+                  .set({
+                    title: x,
+                    coverPicture: "ViewCrunch-cover.webp",
+                    primaryPicture: "ViewCrunch.webp",
+                    dateCreated: firebaseAdmin.firestore.Timestamp.now(),
+                    about: `${x} was invented by Maduekwe Pedro for all`,
+                    moderators: ["@maduekwepedro"],
+                    followers: ["@maduekwepedro"],
+                    inventor: ["@maduekwepedro"],
+                  });
+
+                await firebaseAdmin
+                  .firestore()
+                  .collection("crunch")
+                  .doc(toId(x))
+                  .update({
+                    followers: firebaseAdmin.firestore.FieldValue.arrayUnion(`@${handle}`),
+                  })
+                  .then()
+                  .catch((error) => {
+                    throw new TypeError(error);
+                  });
+              }
+            })
             .catch((error) => {
               throw new TypeError(error);
             });

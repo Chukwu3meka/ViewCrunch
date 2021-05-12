@@ -93,8 +93,9 @@ export const viewer = name1.map((name) => ({
   coverPicture: `/images/${range(0, 40)}.png`,
   about:
     "Adipisicing nulla adipisicing irure culpa aute cillum. Commodo nulla culpa proident id commodo esse fugiat officia velit. Cillum qui                reprehenderit adipisicing id.",
-  roles: ["comment", "vote", "enabled", "moderate", "share"],
-  crunches: name2.map((title) => ({ title, roles: ["publish", "delete", "modify", "share", "moderate"] })),
+
+  roles: { comment: true, vote: true, disabled: false, moderate: true, createCrunch: true },
+  crunches: name2.map((title) => ({ title: toId(title), roles: { publish: true, delete: true, retouch: true, moderate: false } })),
   displayName: name,
   profession: profession[range(0, profession.length - 1)],
   notification: [
@@ -115,12 +116,10 @@ export const viewer = name1.map((name) => ({
     { link: "/control/adverise", title: "Have a product or service to advertise on ViewCrunch" },
     { link: "/control/contact", title: "Make suggestions here, or contact the developer" },
   ],
-  blacklist: [
-    { link: "/control/adverise", title: "Have a product or service to advertise on ViewCrunch" },
-    { link: "/control/contact", title: "Make suggestions here, or contact the developer" },
-  ],
+  blacklist: [],
   published: name3.map((title) => ({
     title,
+    id: toId(title),
     date: date(),
     views: range(0, 4000000),
     pryImage: `/images/${range(0, 40)}.png`,

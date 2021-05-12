@@ -1,13 +1,11 @@
 import dynamic from "next/dynamic";
-
 import { connect } from "react-redux";
 import { useSnackbar } from "notistack";
-import { useState, useEffect } from "react";
 import validate from "@utils/validator";
-
-import { Crunches } from "/";
+import { useState, useEffect } from "react";
+import { fetcher } from "@utils/clientFunctions";
+import { Crunches, MyCrunchesContainer } from "/";
 import { chunkArray } from "@utils/clientFunctions";
-import { fetcher, trimString } from "@utils/clientFunctions";
 
 const SocialShare = dynamic(() => import("@component/others/SocialShare"));
 
@@ -16,18 +14,15 @@ const ViewscapeContainer = (props) => {
   const {
       crunches: propsActiveViewscape,
       myFollowing,
-      author: { handle, myHandle, myRefresh },
+      profile: { myHandle },
     } = props,
     [online, setOnline] = useState(props.online),
-    [deviceWidth, setDeviceWidth] = useState(props.deviceWidth),
-    [forceRefresh, setForceRefresh] = useState(0),
+    [activeCrunch, setActiveCrunch] = useState({}),
     [moreActions, setMoreActions] = useState(false),
-    [viewscapeData, setViewscapeData] = useState({}),
-    [displayShare, setDisplayShare] = useState(false),
     [displayReport, setDisplayReport] = useState(false),
     [displayMembers, setDisplayMembers] = useState(false),
     [confirmUnfollow, setConfirmUnfollow] = useState(false),
-    [activeCrunch, setActiveCrunch] = useState({}),
+    [deviceWidth, setDeviceWidth] = useState(props.deviceWidth),
     [activeViewscape, setActiveViewscape] = useState(propsActiveViewscape),
     activeViewscapeChunk = chunkArray({ array: activeViewscape, chunkSize: Math.ceil(activeViewscape.length / deviceWidth) });
 
@@ -39,12 +34,6 @@ const ViewscapeContainer = (props) => {
     setDeviceWidth(props.deviceWidth);
   }, [props.deviceWidth]);
 
-  const cancelHandler = () => {
-    setActiveCrunch({});
-    setDisplayReport(false);
-    setConfirmUnfollow(false);
-  };
-
   const activeCrunchHandler = ({ id, title, moderators, followers, more }) => () => {
     if (more) {
       setActiveCrunch({
@@ -52,109 +41,91 @@ const ViewscapeContainer = (props) => {
         list: [
           {
             label: `Report ${title} Crunch`,
-            handler: () => {
-              setDisplayReport(true);
-              setViewscapeData({ id, title, moderators });
-            },
+            handler: () => setDisplayReport(true),
           },
           { label: `Subscribers`, handler: () => setDisplayMembers("followers") },
           { label: "Admin and Moderators", handler: () => setDisplayMembers("moderators") },
           { jsx: <SocialShare crunch={id} />, handler: "link" },
         ],
         id,
-        title,
         followers,
         moderators,
         myFollowing,
       });
       setMoreActions(true);
     } else {
-      enqueueSnackbar(`Currently disabled`, { variant: "info" });
-      // setActiveCrunch({ id, title, moderators, followers });
-      // if ("universal" === id) return enqueueSnackbar(`You can't unfollow Universal crunch`, { variant: "warning" });
-      // setConfirmUnfollow(true);
+      setActiveCrunch({ id, title, moderators, followers });
+      if ("universal" === id) return enqueueSnackbar(`You can't unfollow Universal Crunch`, { variant: "warning" });
+      setConfirmUnfollow(true);
     }
   };
 
   const unfollowHandler = async () => {
-    if (myHandle && myRefresh && online) {
-      const status = await fetcher(
-        "/api/crunch/followCrunch",
-        JSON.stringify({ title: activeCrunch.title, myHandle, myRefresh, follow: false })
-      );
+    if (myHandle && online) {
+      const status = await fetcher("/api/crunch/followCrunch", JSON.stringify({ id: activeCrunch.id, myHandle, follow: false }));
       if (status) {
         setActiveViewscape(activeViewscape.filter((x) => x.id !== activeCrunch.id));
       } else {
         enqueueSnackbar(`Please, Try again. Server unable to handle request.`, { variant: "error" });
       }
     } else {
-      enqueueSnackbar(`Network connectivity issue.`, { variant: "info" });
+      enqueueSnackbar(`User not logged in or Network connectivity issue.`, { variant: "info" });
     }
     setActiveCrunch(false);
   };
 
   const reportHandler = async (feedback) => {
-    const validated = validate("text", feedback);
-    if (validated) {
-      const status = await fetcher(
-        "/api/crunch/reportCrunch",
-        JSON.stringify({ report: validated, id: activeCrunch.id, myHandle, myRefresh })
-      );
-      if (status) {
-        enqueueSnackbar(`We'll review your report`, { variant: "success" });
+    if (myHandle && online) {
+      const report = validate("text", feedback);
+      if (report) {
+        const status = await fetcher(
+          "/api/crunch/reportCrunch",
+          JSON.stringify({ report, link: activeCrunch.id, section: "crunch", myHandle })
+        );
+        if (status) {
+          enqueueSnackbar(`We'll review your report`, { variant: "success" });
+        } else {
+          enqueueSnackbar(`Unable to reach server`, { variant: "error" });
+        }
       } else {
-        enqueueSnackbar(`Unable to reach server`, { variant: "error" });
+        enqueueSnackbar(`Invalid report: Seems your exceeded 200 characters, or includes characters other than alphabet`, {
+          variant: "warning",
+        });
       }
     } else {
-      enqueueSnackbar(
-        `Unable to validate report. Please, make sure you have a stable connection and your report did not exceed 200 characters, and include only alphabet`,
-        { variant: "warning" }
-      );
+      enqueueSnackbar(`Please, make sure you have a stable connection and your'e logged in`, { variant: "warning" });
     }
-    // if (token && online) {
-    //   if (status === "success") {
-    //   } else {
-    //     enqueueSnackbar(`Please, Try again. Error occured.`, { variant: "error" });
-    //   }
-    // } else {
-    //   enqueueSnackbar(`Network connectivity issue.`, { variant: "warning" });
-    // }
-    // cancelHandler();
   };
 
   return (
-    <Crunches
-      {...{
-        activeCrunchHandler,
-        activeCrunch,
-        setActiveCrunch,
-        activeViewscape,
-        confirmUnfollow,
-        unfollowHandler,
-        viewscapeData,
-        cancelHandler,
-        reportHandler,
-        handle,
-        moreActions,
-        setMoreActions,
-        forceRefresh,
-        setConfirmUnfollow,
-        displayMembers,
-        setDisplayMembers,
-        setDisplayShare,
-        displayShare,
-        enqueueSnackbar,
-        setDisplayReport,
-        displayReport,
-        activeViewscapeChunk,
-      }}
-    />
+    <>
+      <MyCrunchesContainer />
+      <Crunches
+        {...{
+          myHandle,
+          moreActions,
+          activeCrunch,
+          reportHandler,
+          displayReport,
+          setMoreActions,
+          displayMembers,
+          setActiveCrunch,
+          confirmUnfollow,
+          unfollowHandler,
+          setDisplayReport,
+          setDisplayMembers,
+          setConfirmUnfollow,
+          activeCrunchHandler,
+          activeViewscapeChunk,
+        }}
+      />
+    </>
   );
 };
 
 const mapStateToProps = (state) => ({
-    author: state?.profile,
-    online: state?.device?.online,
+    profile: state.profile,
+    online: state.device?.online,
     deviceWidth: state.device?.deviceWidth,
   }),
   mapDispatchToProps = {};

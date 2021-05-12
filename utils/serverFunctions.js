@@ -90,23 +90,6 @@ export const uploadImages = async ({ tempLocation, myHandle, title }) => {
     });
 };
 
-export const getHandleViaRefresh = async (myRefresh) => {
-  return "@pedro";
-  // return await firebaseAdmin
-  //   .auth()
-  //   .verifyIdToken(myRefresh)
-  //   .then(
-  //     async (decodedToken) =>
-  //       await firebaseAdmin
-  //         .auth()
-  //         .getUser(decodedToken?.uid)
-  //         .then((user) => user.displayName)
-  //   )
-  //   .catch((error) => {
-  //     console.log(error);
-  //   });
-};
-
 export const deleteImages = async ({ downloadUrl }) => {
   const httpsRef = storage.refFromURL(downloadUrl).fullPath;
   return await bucket
@@ -129,6 +112,7 @@ export const deleteTempImage = async (handle) => {
   } catch {}
 };
 
+// here
 export const convertContentToArray = async (content) => {
   const contentArray = [],
     formerImagesUrl = [];

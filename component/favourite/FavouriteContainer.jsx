@@ -26,7 +26,7 @@ const FavouritesContainer = (props) => {
 
   const removeView = ({ link, title, listType }) => async () => {
     if (myHandle && online) {
-      const { status } = await fetcher("/api/profile/removeFavourite", JSON.stringify({ link, title, myHandle, listType }));
+      const { status } = await fetcher("/api/profile/favourite", JSON.stringify({ link, title, myHandle, listType }));
       if (status === "success") {
         listType === "Favourite"
           ? setFavourite(favourites.filter((x) => x.link !== link))

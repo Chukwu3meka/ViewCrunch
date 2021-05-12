@@ -9,8 +9,8 @@ const Index = ({ favourites, blacklist, error }) => {
 export default Index;
 
 export const getServerSideProps = async (ctx) => {
-  const { extractHandle, errorProp } = require("@utils/serverFunctions");
   const { fetchProfile } = require("@utils/firestoreFetch");
+  const { extractHandle, errorProp } = require("@utils/serverFunctions");
 
   const myHandle = await extractHandle(ctx.req.headers.cookie);
   if (myHandle === "Network connectivity issue") return errorProp(408, "Network connectivity issue");

@@ -54,7 +54,7 @@ const LayoutContainer = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-    theme: state.device?.theme || "light",
+    theme: state.profile?.myTheme || "light",
   }),
   mapDispatchToProps = {
     setBottomScroll,

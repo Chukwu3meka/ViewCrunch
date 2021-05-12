@@ -3,13 +3,14 @@ import Crunches from "./Crunches";
 import Members from "./Members";
 import Preview from "./Preview";
 import Publish from "./Publish";
-import MyViewscape from "./MyViewscape";
+import MyCrunches from "./MyCrunches";
 import styles from "./styles.module.scss";
 import CrunchContainer from "./CrunchContainer";
-import CrunchesContainer from "./CrunchesContainer";
 import MembersContainer from "./MembersContainer";
 import PreviewContainer from "./PreviewContainer";
 import PublishContainer from "./PublishContainer";
+import CrunchesContainer from "./CrunchesContainer";
+import MyCrunchesContainer from "./MyCrunchesContainer";
 
 export {
   Crunch,
@@ -18,10 +19,11 @@ export {
   Preview,
   Publish,
   Members,
-  MyViewscape,
+  MyCrunches,
   CrunchContainer,
   MembersContainer,
   PublishContainer,
   PreviewContainer,
+  MyCrunchesContainer,
   CrunchesContainer as default,
 };

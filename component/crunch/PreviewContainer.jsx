@@ -1,19 +1,20 @@
 import { Preview } from "/";
+import { connect } from "react-redux";
 import { useRouter } from "next/router";
-import { useState, useEffect, useRef } from "react";
-import { fetcher } from "@utils/clientFunctions";
 import { useSnackbar } from "notistack";
+import { fetcher } from "@utils/clientFunctions";
+import { useState, useEffect, useRef } from "react";
 
-const PreviewContainer = ({ setPreview, content, title, profile, articleId, viewToBeModified, description, keywords, crunch }) => {
-  const scrollRef = useRef(null);
-
-  const router = useRouter(),
-    [forceRefresh, setForceRefresh] = useState(0),
-    [publishFailed, setPublishFailed] = useState(false),
+const PreviewContainer = (props) => {
+  const { setPreview, content, title, articleId, viewToBeModified, description, keywords, crunch, profile } = props,
+    router = useRouter(),
+    scrollRef = useRef(null),
     { enqueueSnackbar } = useSnackbar(),
-    [publishing, setPublishing] = useState(false);
+    [online, setOnline] = useState(props.online),
+    [publishing, setPublishing] = useState(false),
+    [scrollPosition, setScrollPosition] = useState(true);
 
-  const [scrollPosition, setScrollPosition] = useState(true);
+  useEffect(() => setOnline(props.online), [props.online]);
 
   const view = content
     .map((x) => {
@@ -24,46 +25,51 @@ const PreviewContainer = ({ setPreview, content, title, profile, articleId, view
     .join("");
 
   const publishHandler = async () => {
-    if (profile.myRefresh && profile.myHandle && title && content?.length) {
+    if (publishing) return enqueueSnackbar("Please wait, Your view is being published", { variant: "info" });
+    setPublishing(true);
+    if (profile.myHandle && title && content?.length && online) {
       enqueueSnackbar("Please wait, Your view is being published", { variant: "info" });
 
-      const publishStatus = await fetcher(
+      const { link } = await fetcher(
         viewToBeModified.title ? "/api/crunch/retouchView" : "/api/crunch/publishView",
         JSON.stringify({ description, profile, title, content, keywords, crunch })
       );
 
-      console.log("publishHandler", publishStatus);
-
-      if (publishStatus) {
+      if (link) {
         enqueueSnackbar(`Published succesfully`, { variant: "success" });
-        router.push(publishStatus);
+        setPublishing(false);
+        router.push(link);
       } else {
         enqueueSnackbar("Unable to publish view now; make sure you're connected and try again.", { variant: "error" });
       }
+    } else {
+      enqueueSnackbar("Make sure you're connected and logged in, then try again.", { variant: "error" });
+      setPublishing(false);
     }
-    setPublishing(false);
   };
 
   return (
     <Preview
       {...{
-        setPreview,
-        title,
         view,
-        setPublishing,
+        title,
         profile,
-        publishFailed,
-        forceRefresh,
-        publishing,
         articleId,
-        description,
         scrollRef,
+        setPreview,
+        description,
         scrollPosition,
-        setScrollPosition,
         publishHandler,
+        setScrollPosition,
       }}
     />
   );
 };
 
-export default PreviewContainer;
+const mapStateToProps = (state) => ({
+    profile: state?.profile,
+    online: state?.device?.online,
+  }),
+  mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PreviewContainer);

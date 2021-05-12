@@ -1,12 +1,12 @@
 import firebaseAdmin from "@utils/firebaseServer";
 
-const handler = async ({ myHandle, title, link, listType }) => {
+const handler = async ({ id, myHandle, follow }) => {
   await firebaseAdmin
     .firestore()
     .collection("profile")
     .doc(myHandle)
     .update({
-      [listType === "Favourite" ? "favourite" : "blacklist"]: firebaseAdmin.firestore.FieldValue.arrayRemove({ title, link }),
+      [`crunches.${id}`]: follow ? { publish: true, retouch: true, moderate: false } : firebaseAdmin.firestore.FieldValue.delete(),
     })
     .then()
     .catch((error) => {
@@ -16,8 +16,8 @@ const handler = async ({ myHandle, title, link, listType }) => {
 
 export default async (req, res) => {
   try {
-    const { myHandle, title, link, listType } = req.body;
-    await handler({ myHandle, title, link, listType });
+    const { myHandle, id, follow } = req.body;
+    await handler({ myHandle, id, follow });
     return res.status(200).send(true);
   } catch (error) {
     console.log(error);

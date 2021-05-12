@@ -10,7 +10,6 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 
 const Publish = ({
   title,
-  profile,
   classes,
   loading,
   preview,
@@ -121,7 +120,7 @@ const Publish = ({
     <FixedIcon icon="publish" clickHandler={{ image: imageHandler, down: () => scroll2Ref("end"), up: () => scroll2Ref("start") }} />
     {preview && (
       <PreviewContainer
-        {...{ title, description, content: [...contentArray, contentText], setPreview, viewToBeModified, profile, keywords, crunch }}
+        {...{ title, description, content: [...contentArray, contentText], setPreview, viewToBeModified, keywords, crunch }}
       />
     )}
   </div>

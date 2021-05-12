@@ -16,19 +16,16 @@ import PreviousIcon from "@material-ui/icons/KeyboardBackspace";
 import PublishIcon from "@material-ui/icons/Brush";
 
 const Preview = ({
-  setPreview,
-  title,
   view,
-  markd,
-  setPublishing,
+  title,
   profile,
-  description,
-  publishing,
   articleId,
   scrollRef,
+  setPreview,
+  description,
   scrollPosition,
-  setScrollPosition,
   publishHandler,
+  setScrollPosition,
 }) => {
   const { myHandle, myProfilePicture, myDisplayName } = profile;
   return (
@@ -76,16 +73,16 @@ const Preview = ({
           <Typography variant="caption">{description}</Typography>
         </div>
 
-        {/* {!publishing && ( */}
-        <ButtonGroup variant="contained" aria-label="contained primary button group" color="secondary" align="center">
-          <Button startIcon={<PreviousIcon />} onClick={() => setPreview(false)}>
-            back
-          </Button>
-          <Button endIcon={<PublishIcon />} onClick={publishHandler}>
-            {articleId ? "Update" : "Publish"}
-          </Button>
-        </ButtonGroup>
-        {/* )} */}
+        <div>
+          <ButtonGroup variant="contained" aria-label="contained primary button group" color="secondary" align="center">
+            <Button startIcon={<PreviousIcon />} onClick={() => setPreview(false)}>
+              back
+            </Button>
+            <Button endIcon={<PublishIcon />} onClick={publishHandler}>
+              {articleId ? "Update" : "Publish"}
+            </Button>
+          </ButtonGroup>
+        </div>
       </div>
     </div>
   );
