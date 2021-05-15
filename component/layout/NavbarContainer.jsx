@@ -1,6 +1,6 @@
 import { Navbar } from "/";
+import { useRouter } from "next/router";
 import { connect } from "react-redux";
-import { useSnackbar } from "notistack";
 import { useState, useEffect } from "react";
 import { fetcher } from "@utils/clientFunctions";
 import { setProfileAction } from "@store/actions";
@@ -14,7 +14,8 @@ import NotificationsActiveIcon from "@material-ui/icons/NotificationsActive";
 
 const NavbarContainer = (props) => {
   const { profile, setProfileAction } = props,
-    { enqueueSnackbar } = useSnackbar(),
+    router = useRouter(),
+    // { enqueueSnackbar } = useSnackbar(),
     [online, setOnline] = useState(props.online),
     [currentTheme, setCurrentTheme] = useState(profile.myTheme || "light"),
     [selectedNavBar, setSelectedNavBar] = useState("https://ViewCrunch.com"),
@@ -29,8 +30,21 @@ const NavbarContainer = (props) => {
     ];
 
   useEffect(() => {
-    setSelectedNavBar(window.location.pathname);
-  }, []);
+    const link = router.pathname.split("/"),
+      linkLen = link.length;
+
+    setSelectedNavBar(
+      linkLen === 1
+        ? "Home"
+        : linkLen === 2 && link[1] === "favourite"
+        ? "Favourite"
+        : linkLen === 2 && link[1] === "notification"
+        ? "Notification"
+        : linkLen === 2 && link[1].startsWith("@")
+        ? "Portfolio"
+        : "My Crunch"
+    );
+  }, [router]);
 
   useEffect(() => {
     setOnline(props.online);
@@ -42,9 +56,6 @@ const NavbarContainer = (props) => {
     setProfileAction({ ...profile, myTheme });
     online && fetcher("/api/profile/changeTheme", JSON.stringify({ myHandle, myTheme }));
   };
-
-  if (online) enqueueSnackbar(`Back Online`, { variant: "info" });
-  if (!online) enqueueSnackbar(`Connection lost`, { variant: "info" });
 
   return (
     <Navbar

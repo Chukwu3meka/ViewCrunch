@@ -1,14 +1,8 @@
-import Image from "next/image";
+import { Favourite } from "/";
 import { connect } from "react-redux";
 import { useRouter } from "next/router";
 import { useSnackbar } from "notistack";
 import { useState, useEffect } from "react";
-
-import Grid from "@material-ui/core/Grid";
-import Hidden from "@material-ui/core/Hidden";
-import Button from "@material-ui/core/Button";
-
-import { Favourite, styles } from "/";
 import { fetcher } from "@utils/clientFunctions";
 
 const FavouritesContainer = (props) => {
@@ -17,7 +11,7 @@ const FavouritesContainer = (props) => {
     { enqueueSnackbar } = useSnackbar(),
     [online, setOnline] = useState(props.online),
     [switchView, setSwitchView] = useState(true),
-    [favourites, setFavourite] = useState(props.favourites || []),
+    [favourites, setFavourite] = useState(props.favourite || []),
     [blacklist, setBlacklist] = useState(props.blacklist || []);
 
   useEffect(() => {
@@ -26,8 +20,8 @@ const FavouritesContainer = (props) => {
 
   const removeView = ({ link, title, listType }) => async () => {
     if (myHandle && online) {
-      const { status } = await fetcher("/api/profile/favourite", JSON.stringify({ link, title, myHandle, listType }));
-      if (status === "success") {
+      const status = await fetcher("/api/profile/favourite", JSON.stringify({ link, title, myHandle, listType, remove: true }));
+      if (status) {
         listType === "Favourite"
           ? setFavourite(favourites.filter((x) => x.link !== link))
           : setBlacklist(blacklist.filter((x) => x.link !== link));
@@ -43,25 +37,16 @@ const FavouritesContainer = (props) => {
   const openView = (link) => () => router.push(link);
 
   return (
-    <Grid container className={styles.favourite}>
-      <Grid item xs={12} sm={12} md={12} lg={8}>
-        <div>
-          <Button onClick={() => setSwitchView(!switchView)} variant="outlined" color="secondary">{`Switch to ${
-            switchView ? "Blacklist" : "Favourite"
-          }`}</Button>
-          <Favourite
-            {...{ list: switchView ? favourites : blacklist, openView, removeView, listType: switchView ? "Favourite" : "Blacklist" }}
-          />
-        </div>
-      </Grid>
-      <Hidden mdDown>
-        <Grid item lg={4}>
-          <div>
-            <Image src="/images/2.png" layout="fill" />
-          </div>
-        </Grid>
-      </Hidden>
-    </Grid>
+    <Favourite
+      {...{
+        list: switchView ? favourites : blacklist,
+        openView,
+        removeView,
+        listType: switchView ? "Favourite" : "Blacklist",
+        switchView,
+        setSwitchView,
+      }}
+    />
   );
 };
 

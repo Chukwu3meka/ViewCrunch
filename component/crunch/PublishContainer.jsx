@@ -1,7 +1,7 @@
 import { Publish } from "/";
-import { useState, useRef } from "react";
 import { useSnackbar } from "notistack";
 import validate from "@utils/validator";
+import { useState, useRef } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { imageObject, sleep } from "@utils/clientFunctions";
 
@@ -26,7 +26,7 @@ const PublishContainer = (props) => {
     [loading, setLoading] = useState(false),
     [preview, setPreview] = useState(false),
     [contentText, setContentText] = useState(""),
-    { viewToBeModified = {}, crunch, published } = props,
+    { viewToBeModified = {}, crunch, published, moderator } = props,
     [title, setTitle] = useState(viewToBeModified.title || ""),
     [keywords, setKeywords] = useState(viewToBeModified.keywords || ""),
     [contentArray, setContentArray] = useState(viewToBeModified.content || []),
@@ -52,22 +52,35 @@ const PublishContainer = (props) => {
   };
 
   const descriptionHandler = (value) => {
+    const error1 = "Description can only contain 50 to 200 letters",
+      error2 = "Description must be between 3 - 70 words",
+      error3 = "Invalid characters; Only Letters, Numbers and special characters like '-', ':', '(', ')', ',', and ';' are valid",
+      errorHandler = (errorNo) => {
+        enqueueSnackbar(errorNo, { variant: "error" });
+        return true;
+      };
+
     setDescription(value);
-    if (!validate("description", value)) {
-      enqueueSnackbar("Description can only contain 50 to 200 letters and special characters  '-', ':', '(', ')', ',', and ';'", {
-        variant: "error",
-      });
-      return true;
-    }
+    if (value.length < 50 || value.length > 213) return errorHandler(error1);
+    if (value.split(" ").length < 3 || value.split(" ").length > 70) return errorHandler(error2);
+    if (!validate("description", value)) return errorHandler(error3);
+
     return false;
   };
 
   const keywordsHandler = (value) => {
+    const error1 = "Keywords can only contain 3 to 100 letters",
+      error2 = "Keywords must be between 1 - 5 words seapareted by comma",
+      error3 = "only ',' and Alphanumeric characters allowed. Example: 'Gadets 2018, Smart Phones, ball, schools'",
+      errorHandler = (errorNo) => {
+        enqueueSnackbar(errorNo, { variant: "error" });
+        return true;
+      };
+
     setKeywords(value);
-    if (!validate("keywords", value)) {
-      enqueueSnackbar("Keywords used in view separated by comma. eg 'gadets, phones, ball, schools'", { variant: "error" });
-      return true;
-    }
+    if (value.length < 3 || value.length > 100) return errorHandler(error1);
+    if (value.split(",").length < 1 || value.split(",").length > 5) return errorHandler(error2);
+    if (!validate("keywords", value)) return errorHandler(error3);
     return false;
   };
 
@@ -84,20 +97,20 @@ const PublishContainer = (props) => {
     await sleep(1.5);
     setLoading(false);
 
-    // if (
-    //   !(
-    //     (fullArticleWord?.join(" ")?.split(" ")?.length >= 100 &&
-    //       fullArticleWord?.join(" ")?.split(" ")?.length <= 10000 &&
-    //       fullArticleWord.join(" ").length >= 1000 &&
-    //       fullArticleWord.join(" ").length <= 1000000) ||
-    //     (fullArticleImage?.length >= 10 && fullArticleImage?.length <= 30)
-    //   )
-    // )
-    //   return enqueueSnackbar(`Article should have at least 100 words or 10 images and at most 10,000 words or 30MB`, {
-    //     variant: "error",
-    //   });
+    if (
+      !(
+        (fullArticleWord?.join(" ")?.split(" ")?.length >= 100 &&
+          fullArticleWord?.join(" ")?.split(" ")?.length <= 10000 &&
+          fullArticleWord.join(" ").length >= 1000 &&
+          fullArticleWord.join(" ").length <= 1000000) ||
+        (fullArticleImage?.length >= 10 && fullArticleImage?.length <= 30)
+      )
+    )
+      return enqueueSnackbar(`Article should have at least 100 words or 10 images and at most 10,000 words or 30MB`, {
+        variant: "error",
+      });
 
-    // if (titleHandler(title) || descriptionHandler(description) || keywordsHandler(keywords)) return;
+    if (titleHandler(title) || descriptionHandler(description) || keywordsHandler(keywords)) return;
 
     setPreview(true);
   };
@@ -162,6 +175,7 @@ const PublishContainer = (props) => {
         formatContentArray,
         keywords,
         crunch,
+        moderator,
         keywordsHandler,
       }}
     />

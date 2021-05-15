@@ -14,13 +14,21 @@ const Index = ({ crunchDetails, views, crunch, error }) => {
 
 export default Index;
 
-export const getServerSideProps = async ({
-  query: { crunch },
-  req: {
-    headers: { cookie },
-  },
-}) => {
+export const getServerSideProps = async (ctx) => {
+  // const { fetchCrunches } = require("@utils/firestoreFetch");
+  const { extractHandle, errorProp } = require("@utils/serverFunctions");
+
+  const myHandle = await extractHandle(ctx.req.headers.cookie);
+  if (myHandle === "Network connectivity issue") return errorProp(408, "Network connectivity issue");
+  if (!myHandle) return errorProp(401, "User not logged in");
+
+  const crunch = ctx.query.crunch;
+
   return errorProp(500, "Temporarily Server issue");
+
+  // const { crunches, myFollowing, error } = await fetchCrunches(myHandle);
+  // if (error) return errorProp(400, "Unable to fetch crunches");
+
   // const { extractHandle, errorProp, connected } = require("@utils/serverFunctions");
   // // // const noNetwork = !(await connected);
   // // // if (noNetwork) return errorProp(400, "Network connectivity issue");

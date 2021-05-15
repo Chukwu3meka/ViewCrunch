@@ -21,7 +21,7 @@ const View = ({
   title,
   author: { author, displayName, profilePicture },
   content,
-  upvote: { length: totalUpvote },
+  totalUpvote,
   moreActionsHandler,
   moreActions,
   setMoreActions,
@@ -63,7 +63,7 @@ const View = ({
           </IconButton>
         </span>
         <div>
-          <span>{`${shortNumber(totalUpvote)} upvote${totalUpvote > 1 ? "s" : ""}`}</span>
+          <span>{`${shortNumber(totalUpvote.length)} upvote${totalUpvote.length > 1 ? "s" : ""}`}</span>
           <IconButton color="inherit" onClick={moreActionsHandler}>
             <MoreVertIcon />
           </IconButton>

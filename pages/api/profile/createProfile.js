@@ -62,7 +62,10 @@ const createProfileHandler = async ({ handle, myRefresh }) => {
           ],
           roles: { comment: true, vote: true, suspended: false, moderate: true, createCrunch: true },
           crunches: initialCrunches
-            .map((title) => ({ id: toId(title), roles: { publish: true, retouch: true, moderate: false } }))
+            .map((title) => ({
+              id: toId(title),
+              roles: { publish: true, retouch: true, moderate: handle === "maduekwepedro" ? true : false },
+            }))
             .reduce((acc, cur) => ({ ...acc, [cur.id]: cur.roles }), {}),
           favourite: [],
           blacklist: [],

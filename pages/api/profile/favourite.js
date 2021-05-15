@@ -19,11 +19,12 @@ const handler = async ({ myHandle, title, link, listType, remove }) => {
 
 export default async (req, res) => {
   try {
-    const { myHandle, title, link, listType, remove = "true" } = req.body;
+    const { myHandle, title, link, listType, remove } = req.body;
+    console.log({ myHandle, title, link, listType, remove });
     await handler({ myHandle, title, link, listType, remove });
     return res.status(200).send(true);
   } catch (error) {
-    // console.log(error);
+    console.log(error);
     return res.status(401).send(false);
   }
 };

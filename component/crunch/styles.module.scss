@@ -5,12 +5,13 @@
   align-items: flex-start;
   flex-wrap: wrap;
   & > div {
-    margin: 20px auto 0;
+    flex: 1;
+    margin: 20px 10px 0;
     & > div > div > div {
-      margin: auto;
-      position: relative;
       max-width: 600px;
-      width: 100%;
+      min-width: 290px;
+      margin: 0 auto;
+      position: relative;
       & > div:nth-of-type(1) {
         position: relative;
         & > div:nth-of-type(1) {
@@ -32,7 +33,7 @@
           border-radius: 5px;
           display: -webkit-box;
           padding: 5px 0;
-          -webkit-line-clamp: 3;
+          -webkit-line-clamp: 1;
           -webkit-box-orient: vertical;
           overflow: hidden;
         }
@@ -86,6 +87,7 @@
 .crunch {
   & > div:first-of-type > div {
     @include flexCenter(column);
+
     & > div:first-of-type {
       @include flexCenter(column);
       position: relative;
@@ -254,6 +256,7 @@
   justify-content: flex-start;
   max-width: 1000px !important;
   padding: 20px 10px 10px !important;
+  height: 100% !important;
   & > div:nth-of-type(2),
   & > span:nth-of-type(1) {
     margin-top: 10px;
@@ -264,6 +267,11 @@
     justify-content: flex-start;
     padding: 10px;
     margin: 0 0 20px;
+    height: 100% !important;
+    & > div:last-of-type > * {
+      height: 100% !important;
+      align-items: flex-start !important;
+    }
     border-radius: 5px;
     min-height: calc(100vh - 340px);
     & > span {
@@ -341,7 +349,8 @@
       border: 1px solid var(--dim);
       border-radius: 5px;
       padding: 5px;
-      margin: 10px 0 20px;
+      margin: 10px auto 20px;
+      max-width: 500px;
       & > span:nth-of-type(1) {
         @include flexCenter(row, initial);
         justify-content: flex-start;
@@ -371,7 +380,6 @@
   .crunch {
     & > div:first-of-type > div {
       @include flexCenter(row);
-
       & > div:first-of-type {
         max-width: 300px;
         & > div:nth-of-type(1) {
@@ -416,9 +424,8 @@
 }
 
 @media screen and (min-width: 970px) {
-  .crunches {
-    & > div > div > div > div {
-      max-width: 470px;
-    }
+  .crunches > div > div > div > div {
+    min-width: 450px;
+    max-width: 470px;
   }
 }

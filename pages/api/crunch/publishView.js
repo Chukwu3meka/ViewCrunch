@@ -2,11 +2,14 @@ import { toId } from "@utils/clientFunctions";
 import firebaseAdmin from "@utils/firebaseServer";
 import { uploadImages, saveTempImage, deleteTempImage } from "@utils/serverFunctions";
 
-const publishHandler = async ({ profile: { myHandle }, title, description, content, keywords, crunch }) => {
+const publishHandler = async ({ profile: { myHandle }, title, description, content, keywords, crunch, moderator }) => {
   const images = [],
     imagesURL = [],
     pryImageURL = [],
-    viewURL = `${myHandle}/${toId(title)}`;
+    viewURL = `${myHandle}/${toId(title)}`,
+    viewID = toId(`${myHandle}~${title}`),
+    viewRef = firebaseAdmin.firestore().collection("view").doc(viewID),
+    profileRef = firebaseAdmin.firestore().collection("profile").doc(myHandle);
 
   for (const x of content) {
     if (typeof x === "object")
@@ -56,34 +59,28 @@ const publishHandler = async ({ profile: { myHandle }, title, description, conte
     keywords,
     description,
     comments: [],
-    viewers: [myHandle],
     upvote: [],
     downvote: [],
     keywords,
     description,
     crunch,
-    visible: false,
+    visible: moderator ? true : false,
   };
 
-  firebaseAdmin
-    .firestore()
-    .collection("view")
-    .doc(toId(title))
+  viewRef
     .set({ ...newView })
     .then(async () => {
-      await firebaseAdmin
-        .firestore()
-        .collection("profile")
-        .doc(myHandle)
-        .update({
-          [`published.${toId(title)}`]: {
-            title,
-            date: firebaseAdmin.firestore.Timestamp.now(),
-            views: 1,
-            pryImage: pryImageURL[0] || `/images/no-image.webp`,
-          },
-          "stat.seen": firebaseAdmin.firestore.FieldValue.arrayUnion(toId(title)),
-        });
+      await firebaseAdmin;
+      profileRef.set({
+        [`published.${viewID}`]: {
+          title,
+          date: firebaseAdmin.firestore.Timestamp.now(),
+          pryImage: pryImageURL[0] || `/images/no-image.webp`,
+          upvote: 0,
+          downvote: 0,
+        },
+        "stat.seen": firebaseAdmin.firestore.FieldValue.arrayUnion(viewID),
+      });
 
       await deleteTempImage(myHandle);
     })
@@ -96,8 +93,8 @@ const publishHandler = async ({ profile: { myHandle }, title, description, conte
 
 export default async (req, res) => {
   try {
-    const { description, profile, title, content, keywords, crunch } = req.body;
-    const link = await publishHandler({ profile, title, description, content, keywords, crunch });
+    const { description, profile, title, content, keywords, crunch, moderator } = req.body;
+    const link = await publishHandler({ profile, title, description, content, keywords, crunch, moderator });
     return res.status(200).json({ link });
   } catch (error) {
     // console.log(error);

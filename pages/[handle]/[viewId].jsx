@@ -29,14 +29,15 @@ export const getServerSideProps = async (ctx) => {
   const myHandle = await extractHandle(ctx.req.headers.cookie);
   if (myHandle === "Network connectivity issue") return errorProp(408, "Network connectivity issue");
 
-  const { view, advert } = await fetchArticle({
+  const { view, advert, error } = await fetchArticle({
     myHandle,
     author: ctx.query.handle,
     viewId: ctx.query.viewId,
   }).catch((error) => {
     console.log("error from server", error);
-    return errorProp();
   });
+
+  if (error) return errorProp(500, error);
 
   return {
     props: { view, advert },

@@ -18,13 +18,13 @@ const validate = (valueType, value) => {
       return undefined;
     }
     case "description": {
-      let status = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.\s\-:(),;]{49,201}$/gim.test(value.trim());
-      if (status && value.split(" ").length >= 3 && value.split(" ").length <= 20) return value;
+      let status = /^(?!.*\.\.)(?!.*\.$)[^\W][\w+.\s\-:(),;]{49,214}$/gim.test(value.trim());
+      if (status && value.split(" ").length >= 3 && value.split(" ").length <= 70) return value;
       return undefined;
     }
     case "keywords": {
-      let status = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.\s,]{3,101}$/gim.test(value.trim());
-      if (status && value.split(" ").length >= 3 && value.split(" ").length <= 20) return value;
+      let status = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.\s,]{2,101}$/gim.test(value.trim());
+      if (status && value.split(",").length >= 1 && value.split(",").length <= 5) return value;
       return undefined;
     }
     case "text": {

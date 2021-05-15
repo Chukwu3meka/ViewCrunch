@@ -1,17 +1,18 @@
 @import "@source/_variables.scss";
 
 .favourite {
-  background: linear-gradient(to bottom right, var(--pry), var(--dim));
   height: calc(100vh - 50px) !important;
   padding: 0 !important;
   overflow: hidden;
   & > div:nth-of-type(1) {
+    background: linear-gradient(to bottom right, var(--pry), var(--dim));
     height: 100% !important;
     @include flexCenter(column);
     justify-content: flex-start;
     position: relative;
     padding: 10px !important;
     & > div:last-of-type {
+      background-color: var(--pry);
       margin-top: 10px;
       border: 1px solid var(--dim);
       border-radius: 5px;
@@ -26,6 +27,11 @@
       & > button:first-of-type {
         display: block;
         margin: 10px auto 0px;
+      }
+      & > ul > div > div > div > li > div > div > span:hover {
+        cursor: pointer;
+        transition-delay: 200ms;
+        color: darken($color: color(primary), $amount: 10);
       }
     }
   }

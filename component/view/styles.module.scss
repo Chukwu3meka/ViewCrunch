@@ -45,7 +45,7 @@
       text-align: left;
       page-break-inside: avoid;
       max-width: 100%;
-      white-crunch: pre-wrap;
+      white-space: pre-wrap;
       display: block;
       word-wrap: break-word;
     }
@@ -163,8 +163,10 @@
     & > div:nth-of-type(4) {
       align-items: flex-start;
       margin: 20px 0;
+      width: 100%;
       & > a {
         font-size: 0.9em;
+        display: block;
       }
       & > * {
         margin: 5px 0;

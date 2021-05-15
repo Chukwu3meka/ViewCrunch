@@ -62,9 +62,9 @@ const Handle = (props) => {
             <Link href="/control/faq/handle">
               <a>Reasons why future handle update are disabled</a>
             </Link>
-            . Handle can only contain 13 Alphanumeric characters, underscores included.&nbsp;
+            . Handle can only contain 13 Alphanumeric characters and underscore.&nbsp;
             <Link href="/control/faq/naming_convention">
-              <a>Read more here on our naming convention</a>
+              <a>Read more on our naming convention</a>
             </Link>
             .
           </>

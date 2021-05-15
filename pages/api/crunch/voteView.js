@@ -1,35 +1,44 @@
 import firebaseAdmin from "@utils/firebaseServer";
 
-const voteHandler = async ({ view, myHandle, vote }) => {
-  await firebaseAdmin
-    .firestore()
-    .collection("view")
-    .doc(view)
-    .update({
-      [vote ? "upvote" : "downvote"]: firebaseAdmin.firestore.FieldValue[vote ? "arrayUnion" : "arrayRemove"](myHandle),
-    })
-    .then(async () => {
-      await firebaseAdmin
-        .firestore()
-        .collection("profile")
-        .doc(myHandle)
+const handler = async ({ viewId, myHandle, vote }) => {
+  try {
+    const viewRef = firebaseAdmin.firestore().collection("view").doc(viewId);
+    const profileRef = firebaseAdmin.firestore().collection("profile").doc(myHandle);
+
+    await firebaseAdmin.firestore().runTransaction(async (t) => {
+      const doc = await t.get(viewRef);
+      const { upvote, downvote } = doc.data();
+
+      const newUpvote = vote ? (upvote.includes(myHandle) ? upvote.filter((x) => x !== myHandle) : [...upvote, myHandle]) : upvote;
+      const newDownvote = !vote
+        ? downvote.includes(myHandle)
+          ? downvote.filter((x) => x !== myHandle)
+          : [...downvote, myHandle]
+        : downvote;
+
+      t.update(viewRef, { upvote: newUpvote, downvote: newDownvote });
+
+      await profileRef
         .update({
-          [upvote ? "published.upvote" : "published.downvote"]: firebaseAdmin.firestore.FieldValue.increment(removeVote ? -1 : 1),
+          [`published.${viewId}`]: {
+            upvote: upvote.length,
+            downvote: downvote.length,
+          },
         })
         .catch((error) => {
           throw new TypeError(error);
         });
-    })
-    .catch((error) => {
-      throw new TypeError(error);
     });
+  } catch (error) {
+    throw new TypeError(error);
+  }
 };
 
 export default async (req, res) => {
   try {
-    // view: "id of view",  vote: "upvote or downvote"
-    const { view, myHandle, vote } = req.body;
-    await voteHandler({ view, myHandle, vote });
+    // view: "id of view",  vote: "true or false"
+    const { viewId, myHandle, vote } = req.body;
+    await handler({ viewId, myHandle, vote });
     return res.status(200).send(true);
   } catch (error) {
     console.log(error);

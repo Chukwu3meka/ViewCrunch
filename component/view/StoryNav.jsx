@@ -8,8 +8,8 @@ import Hidden from "@material-ui/core/Hidden";
 import Typography from "@material-ui/core/Typography";
 
 import { styles } from "/";
-import { toId } from "@utils/clientFunctions";
 import { SocialShare, LineText } from "@component/others";
+import profile from "@store/reducers/profile";
 
 const StoryNav = ({
   author,
@@ -21,6 +21,7 @@ const StoryNav = ({
   profilePicture,
   linkedinHandle,
   facebookHandle,
+  profile,
 }) => (
   <Hidden mdDown>
     <Grid item lg={3} className={styles.storyNav}>
@@ -33,24 +34,30 @@ const StoryNav = ({
         </Typography>
         <SocialShare {...{ linkedinHandle, twitterHandle, facebookHandle }} />
         <div>
-          {featuredPost?.length && (
+          {featuredPost?.length ? (
             <>
               <hr width="120px" />
               <Typography variant="button" color="textSecondary">
                 Featured posts
               </Typography>
-              {featuredPost.map((title, index) => (
-                <Link href={{ pathname: `/@${author}/${title.toLowerCase()}` }} key={index}>
+              {featuredPost.map(({ title, id }) => (
+                <Link href={{ pathname: `/${author}/${id}` }} key={id}>
                   <a>~ {title}</a>
                 </Link>
               ))}
               <hr width="120px" />
             </>
+          ) : (
+            ""
           )}
         </div>
-        <Button variant="contained" size="small" color="secondary">
-          Follow me
-        </Button>
+        {profile.myHandle !== author ? (
+          <Button variant="contained" size="small" color="secondary">
+            Follow me
+          </Button>
+        ) : (
+          ""
+        )}{" "}
       </Paper>
       <Paper>
         <a href={advert?.href}>
@@ -67,16 +74,19 @@ const StoryNav = ({
       {similarPost?.length ? (
         <Paper>
           <span>Similar view</span>
-          {similarPost.map(({ author, title, pryImage }, index) => (
-            <Link href={{ pathname: `/${author}/${toId(title)}` }} key={index}>
-              <a>
-                <div>
-                  <Image src={pryImage || "/images/no-image.webp"} layout="fill" />
-                </div>
-                <Typography variant="caption">{title || "View title"}</Typography>
-              </a>
-            </Link>
-          ))}
+          {
+            // console.log(similarPost)
+            similarPost.map(({ author, title, pryImage, id }, index) => (
+              <Link href={{ pathname: `/${author}/${id}` }} key={index}>
+                <a>
+                  <div>
+                    <Image src={pryImage || "/images/no-image.webp"} layout="fill" />
+                  </div>
+                  <Typography variant="caption">{title || "View title"}</Typography>
+                </a>
+              </Link>
+            ))
+          }
         </Paper>
       ) : (
         ""

@@ -6,7 +6,7 @@ import { fetcher } from "@utils/clientFunctions";
 import { useState, useEffect, useRef } from "react";
 
 const PreviewContainer = (props) => {
-  const { setPreview, content, title, articleId, viewToBeModified, description, keywords, crunch, profile } = props,
+  const { setPreview, content, title, articleId, viewToBeModified, description, keywords, crunch, profile, moderator } = props,
     router = useRouter(),
     scrollRef = useRef(null),
     { enqueueSnackbar } = useSnackbar(),
@@ -32,7 +32,7 @@ const PreviewContainer = (props) => {
 
       const { link } = await fetcher(
         viewToBeModified.title ? "/api/crunch/retouchView" : "/api/crunch/publishView",
-        JSON.stringify({ description, profile, title, content, keywords, crunch })
+        JSON.stringify({ description, profile, title, content, keywords, crunch, moderator })
       );
 
       if (link) {

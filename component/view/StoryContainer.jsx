@@ -13,10 +13,11 @@ const StoryContainer = (props) => {
     [online, setOnline] = useState(props.online),
     [reportView, setReportView] = useState(false),
     [moreActions, setMoreActions] = useState(false),
-    [upvoted, setUpvoted] = useState(view.upvote.includes(profile?.myHandle)),
+    [totalUpvote, setTotalUpvote] = useState(view.upvote),
+    [upvoted, setUpvoted] = useState(!!view.upvote.includes(profile?.myHandle)),
     [viewInFavourite, setViewInFavourite] = useState(view.viewer.viewInFavourite),
     [viewInBlacklist, setViewInBlacklist] = useState(view.viewer.viewInBlacklist),
-    [downvoted, setDownvoted] = useState(view.downvote.includes(profile?.myHandle));
+    [downvoted, setDownvoted] = useState(!!view.downvote.includes(profile?.myHandle));
 
   useEffect(() => {
     setOnline(props.online);
@@ -74,10 +75,15 @@ const StoryContainer = (props) => {
   };
 
   const voteHandler = (vote) => async () => {
-    const status = await fetcher("/api/crunch/voteView", JSON.stringify({ view: view.id, myHandle: profile.myHandle, vote }));
+    const status = await fetcher("/api/crunch/voteView", JSON.stringify({ viewId: view.id, myHandle: profile.myHandle, vote }));
 
     if (status) {
       if (vote) {
+        setTotalUpvote(
+          totalUpvote.includes(profile?.myHandle)
+            ? totalUpvote.filter((x) => x !== profile?.myHandle)
+            : [...totalUpvote, profile?.myHandle]
+        );
         setUpvoted(!upvoted);
         setDownvoted(false);
       } else {
@@ -101,6 +107,7 @@ const StoryContainer = (props) => {
           moreActions,
           setMoreActions,
           reportHandler,
+          totalUpvote,
           reportView,
           setReportView,
           voteHandler,
@@ -108,7 +115,7 @@ const StoryContainer = (props) => {
           downvoted,
         }}
       />
-      <StoryNav {...{ ...view.author, ...view.post, advert }} />
+      <StoryNav {...{ ...view.author, ...view.post, advert, profile }} />
     </Grid>
   );
 };

@@ -53,7 +53,9 @@ export const fetchCrunches = async (handle) => {
           ...snapshot.data(),
           dateCreated: snapshot.data().dateCreated.toDate().toDateString(),
         }))
-        .catch()),
+        .catch((error) => {
+          // console.log(error)
+        })),
     };
 
     crunches.push(crunch);
@@ -256,64 +258,18 @@ export const fetchArticles = async ({ limit = 5, navTag, lastVisible }) => {
 
 export const fetchArticle = async ({ author, viewId, myHandle }) => {
   const validAuthor = await isHandleTaken(author);
-  if (!validAuthor) throw new TypeError("Author does not exist");
+  if (!validAuthor) return { error: "Author does not exist" };
 
   const full_view = await viewRef
     .doc(viewId)
     .get()
-    .then(
-      (snapshot) => {
-        if (snapshot.exists) return snapshot.data();
-        throw new TypeError("View not found");
-      }
-      //   const {
-      //     tag,
-      //     date,
-      //     markdown,
-      //     comments: fullComments,
-      //     imageUrl,
-      //     authorId,
-      //     title: { data: title },
-      //     view: { length: viewLength, data: viewData },
-      //     rating: { data: ratingData, average: avgRating, length: noOfRating },
-      //   } =
-      // const { handle, profilePicture } = await fetchAuthorData(authorId);
-      // const comments = [];
-      // if (fullComments.length) {
-      //   for (const { authorId, comment, date } of fullComments) {
-      //     const { handle, profilePicture } = await fetchAuthorData(authorId);
-      //     comments.push({ comment, date: date.toDate().toDateString(), handle, profilePicture });
-      //   }
-      // }
-      // content = {
-      //   tag,
-      //   title,
-      //   handle,
-      //   markdown,
-      //   authorId,
-      //   imageUrl,
-      //   viewData,
-      //   avgRating,
-      //   ratingData,
-      //   noOfRating,
-      //   viewLength,
-      //   profilePicture,
-      //   date: date.toDate().toDateString(),
-      //   comments,
-      // };
-      // }
-    )
+    .then((snapshot) => {
+      if (snapshot.exists) return snapshot.data();
+      return { error: "View not found" };
+    })
     .catch((error) => {
-      throw new TypeError(error);
+      // console.log(error);
     });
-
-  // const w = db.view?.filter((x) => x.title.data == viewId.replace(/-/g, " "));
-
-  // db.view.forEach((x) => {
-  //   console.log(viewId.replace(/-/g, " "), x.title.data.toLowerCase(), );
-  // });
-
-  // const full_view = db.view?.find((x) => x.author === author);
 
   const {
     crunch,
@@ -328,9 +284,8 @@ export const fetchArticle = async ({ author, viewId, myHandle }) => {
     keywords,
   } = full_view;
 
-  // full_view.date = full_view.date.toDate().toDateString();
-
-  if (full_view.visible) throw new TypeError("View is hidden");
+  if (!full_view.visible) return { error: "View is hidden" };
+  if (author !== full_view.author) return { error: "Wrong Author specified" };
 
   const {
     displayName,
@@ -340,9 +295,8 @@ export const fetchArticle = async ({ author, viewId, myHandle }) => {
     roles: { suspended },
     published,
   } = await fetchProfile(author);
-  if (suspended) throw new TypeError("Author is suspended");
+  if (suspended) return { error: "Author is suspended" };
 
-  // // console.log(commentsList);
   // const comments = [];
   // if (commentsList?.length) {
   //   for (const { author, comment, date } of commentsList) {
@@ -351,35 +305,14 @@ export const fetchArticle = async ({ author, viewId, myHandle }) => {
   //   }
   // }
 
-  // published: name3.map((title) => ({
-  //   title,
-  //   id: toId(title),
-  //   date: date(),
-  //   views: range(0, 4000000),
-  //   pryImage: `/images/${range(0, 40)}.png`,
-  //   upvote: range(0, 700000),
-  //   downvote: range(0, 100000),
-  //   crunch: range(0, name2.length - 1),
-  // })),
+  const featuredPost = [];
+  const publishedViews = [];
+  for (const [key, value] of Object.entries(published)) {
+    publishedViews.push({ title: value.title, id: key });
+  }
 
-  let featuredPost = [];
-  // published?.length && featuredPost.push(published[range(0, published.length - 1)]);
-  // published?.length > 1 && featuredPost.push(published[range(0, published.length - 1)]);
-  // featuredPost = featuredPost?.length && featuredPost.filter((v, i, a) => a.indexOf(v) === i);
-
-  // const getSimilarPost = (index) => ({
-  //   author: db.view[index].author,
-  //   title: db.view[index].title.data,
-  //   pryImage: db.view[index].pryImage,
-  // });
-
-  const similarPost = [
-    // getSimilarPost(range(0, db.view.length - 1)),
-    // getSimilarPost(range(0, db.view.length - 1)),
-    // getSimilarPost(range(0, db.view.length - 1)),
-  ];
-
-  // console.log(similarPost);
+  publishedViews?.length && featuredPost.push(publishedViews[range(0, publishedViews.length - 1)]);
+  publishedViews?.length > 1 && featuredPost.push(publishedViews[range(0, publishedViews.length - 1)]);
 
   const view = {
     id: toId(title),
@@ -398,14 +331,13 @@ export const fetchArticle = async ({ author, viewId, myHandle }) => {
       displayName,
       profilePicture,
       about,
-
       linkedinHandle,
       twitterHandle,
       facebookHandle,
     },
     post: {
-      featuredPost,
-      similarPost,
+      featuredPost: featuredPost.filter((x) => x.id !== viewId).filter((v, i, a) => a.indexOf(v) === i),
+      similarPost: [],
     },
   };
 
@@ -414,19 +346,51 @@ export const fetchArticle = async ({ author, viewId, myHandle }) => {
 
     view.viewer = profile
       ? {
+          seen: profile?.stat?.seen,
+          blacklist: profile?.blacklist,
           viewInFavourite: profile?.blacklist?.includes(toId(title)) ? true : false,
           viewInBlacklist: profile?.favourite?.includes(toId(title)) ? true : false,
         }
       : {};
   }
 
-  if (!view) throw new TypeError("Error occured while fetching view");
+  await viewRef
+    .where("crunch", "==", crunch)
+    .where("visible", "==", true)
+    .orderBy("date", "desc")
+    .limit(7)
+    .get()
+    .then((snapshot) => {
+      if (!snapshot?.docs?.length) return;
+
+      for (const doc of snapshot.docs) {
+        const id = doc.id,
+          {
+            author,
+            title: { data: title },
+            pryImage,
+          } = doc.data();
+
+        if (
+          view.post.similarPost.length < 3 ||
+          view.viewer.seen.some((x) => x.viewId !== id) ||
+          view.viewer.blacklist.some((x) => x.title !== title)
+        ) {
+          view.post.similarPost.push({ author, title, pryImage, id });
+        }
+      }
+    })
+    .catch((error) => {
+      // console.log(error);
+    });
+
+  view.post.similarPost = view.post.similarPost.filter((x) => x.id !== viewId);
+  if (!view) return { error: "Error occured while fetching view" };
 
   const advert = {
     company: "SoccerMASS",
-    description:
-      "Reprehenderit id commodo cupidatat excepteur dolore. Pariatur eu consequat pariatur voluptate aliquip culpa exercitation consectetur aliquip dolor.",
-    image: `/images/${range(0, 40)}.png`,
+    description: "No. 1 free competitive online Soccer Manager game, with added tactics and realistic transfer.",
+    image: `/images/ads/soccermass.webp`,
     href: "https://www.soccermass.com",
   };
 

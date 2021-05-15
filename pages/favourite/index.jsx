@@ -1,9 +1,9 @@
 import { ErrorPage } from "@component/page";
 import FavouriteContainer from "@component/favourite";
 
-const Index = ({ favourites, blacklist, error }) => {
+const Index = ({ favourite, blacklist, error }) => {
   if (error) return <ErrorPage statusCode={error.code} title={error.title} />;
-  return <FavouriteContainer favourites={favourites} blacklist={blacklist} />;
+  return <FavouriteContainer favourite={favourite} blacklist={blacklist} />;
 };
 
 export default Index;
@@ -17,6 +17,7 @@ export const getServerSideProps = async (ctx) => {
   if (!myHandle) return errorProp(401, "User not logged in");
 
   const { favourite, blacklist } = await fetchProfile(myHandle);
+
   if (typeof favourite !== "object" && blacklist !== "object") return errorProp(404, "Favourite and Blacklist not found");
 
   return {

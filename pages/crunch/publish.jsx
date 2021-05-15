@@ -1,9 +1,9 @@
 import { ErrorPage } from "@component/page";
 import { PublishContainer } from "@component/crunch";
 
-const Publish = ({ crunch, published, error }) => {
+const Publish = ({ crunch, published, moderator, error }) => {
   if (error) return <ErrorPage statusCode={error.code} title={error.title} />;
-  return <PublishContainer crunch={crunch} published={published} />;
+  return <PublishContainer crunch={crunch} published={published} moderator={moderator} />;
 };
 export default Publish;
 
@@ -28,6 +28,6 @@ export const getServerSideProps = async (ctx) => {
   }
 
   return {
-    props: { crunch, published },
+    props: { crunch, published, moderator: crunches[crunch].moderate },
   };
 };

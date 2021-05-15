@@ -30,12 +30,13 @@ const Publish = ({
   keywords,
   crunch,
   keywordsHandler,
+  moderator,
 }) => (
   <div className={styles.publish} ref={scrollRef}>
     <TextField
       fullWidth
       autoFocus
-      error={title.length && titleHandler(title)}
+      error={title.length && !!titleHandler(title)}
       label="Title"
       placeholder="Title of view"
       value={title}
@@ -44,7 +45,7 @@ const Publish = ({
 
     <TextField
       fullWidth
-      error={description.length && descriptionHandler(description)}
+      error={description.length && !!descriptionHandler(description)}
       label="Description"
       value={description}
       variant="outlined"
@@ -53,7 +54,9 @@ const Publish = ({
       onChange={(e) => descriptionHandler(e.target.value.trimStart().replace(/\s+/g, " "))}
     />
 
-    <Typography variant="caption">View</Typography>
+    <Typography variant="caption" color="secondary">
+      View
+    </Typography>
     <div>
       {formatContentArray()?.map((x, index, loopArray) =>
         typeof x === "object" ? (
@@ -102,7 +105,7 @@ const Publish = ({
 
     <TextField
       fullWidth
-      error={keywords.length && keywordsHandler(keywords)}
+      error={keywords.length && !!keywordsHandler(keywords)}
       label="Keywords"
       value={keywords}
       variant="outlined"
@@ -120,7 +123,7 @@ const Publish = ({
     <FixedIcon icon="publish" clickHandler={{ image: imageHandler, down: () => scroll2Ref("end"), up: () => scroll2Ref("start") }} />
     {preview && (
       <PreviewContainer
-        {...{ title, description, content: [...contentArray, contentText], setPreview, viewToBeModified, keywords, crunch }}
+        {...{ title, description, content: [...contentArray, contentText], setPreview, viewToBeModified, keywords, crunch, moderator }}
       />
     )}
   </div>

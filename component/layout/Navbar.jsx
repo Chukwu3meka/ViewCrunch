@@ -54,8 +54,10 @@ const NavBar = ({
               <a>
                 <ListItem
                   button
-                  selected={selectedNavBar === link || (selectedNavBar.includes(link) && link !== "/")}
-                  onClick={() => setSelectedNavBar(link)}>
+                  // selected={selectedNavBar === link || (selectedNavBar.includes(link) && link !== "/")}
+                  selected={selectedNavBar === label}
+                  // onClick={() => setSelectedNavBar(link)}
+                >
                   <ListItemIcon>
                     <IconButton
                       size="small"
@@ -81,9 +83,12 @@ const NavBar = ({
                     </IconButton>
                   </ListItemIcon>
                   <ListItemText id={label} primary={label} />
-                  {(selectedNavBar === link || (selectedNavBar.includes(link) && link !== "/")) && (
-                    <span style={{ backgroundColor: "rgb(255, 215, 0)", borderRadius: "50%", height: "8px", width: "8px" }} />
-                  )}
+                  {
+                    // (selectedNavBar === link || (selectedNavBar.includes(link) && link !== "/")
+                    selectedNavBar === label && (
+                      <span style={{ backgroundColor: "rgb(255, 215, 0)", borderRadius: "50%", height: "8px", width: "8px" }} />
+                    )
+                  }
                 </ListItem>
               </a>
             </Link>

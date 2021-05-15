@@ -126,6 +126,16 @@ export const viewer = name1.map((name) => ({
     upvote: range(0, 700000),
     downvote: range(0, 100000),
     crunch: range(0, name2.length - 1),
+
+    // [`published.${viewId}`]: {
+    //   title,
+    //   date: firebaseAdmin.firestore.Timestamp.now(),
+    //   pryImage: pryImageURL[0] || `/images/no-image.webp`,
+    //   title,
+    //   upvote: 0,
+    //   downvote: 0,
+    //   crunch,
+    // },
   })),
   chat: {
     blocked: name1.map((handle) => toId(`@${handle || "Pedro JR"}`)).slice(0, 3),
