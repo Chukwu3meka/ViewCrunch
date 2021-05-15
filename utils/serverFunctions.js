@@ -33,6 +33,8 @@ export const extractHandle = async (cookie) => {
     credentials: "same-origin",
   }).then((res) => res.json());
 
+  if (!token) return undefined;
+
   const handle = await firebaseAdmin
     .auth()
     .verifyIdToken(token)
@@ -43,7 +45,9 @@ export const extractHandle = async (cookie) => {
           .getUser(decodedToken?.uid)
           .then((user) => user.displayName)
     )
-    .catch();
+    .catch((error) => {
+      throw new TypeError(error);
+    });
 
   return handle.startsWith("@") ? handle : undefined;
 };
@@ -96,9 +100,8 @@ export const deleteImages = async ({ downloadUrl }) => {
     .file(httpsRef)
     .delete()
     .then(() => "success")
-    .catch((err) => {
-      // console.log(err, "cannot delete missing file");
-      // throw new TypeError("error deleting file");
+    .catch((error) => {
+      throw new TypeError(error);
     });
 };
 

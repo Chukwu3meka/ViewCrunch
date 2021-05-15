@@ -12,10 +12,10 @@ import { fetcher } from "@utils/clientFunctions";
 import { isHandleTaken } from "@utils/firestoreFetch";
 
 const Handle = (props) => {
-  const [handleError, setHandleError] = useState(false);
-  const [handle, setHandle] = useState("");
-  const [online, setOnline] = useState(false);
-  const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar(),
+    [handle, setHandle] = useState(""),
+    [online, setOnline] = useState(props.online),
+    [handleError, setHandleError] = useState(false);
 
   useEffect(() => {
     setOnline(props.online);

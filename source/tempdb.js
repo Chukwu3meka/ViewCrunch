@@ -94,7 +94,7 @@ export const viewer = name1.map((name) => ({
   about:
     "Adipisicing nulla adipisicing irure culpa aute cillum. Commodo nulla culpa proident id commodo esse fugiat officia velit. Cillum qui                reprehenderit adipisicing id.",
 
-  roles: { comment: true, vote: true, disabled: false, moderate: true, createCrunch: true },
+  roles: { comment: true, vote: true, suspended: false, moderate: true, createCrunch: true },
   crunches: name2.map((title) => ({ title: toId(title), roles: { publish: true, delete: true, retouch: true, moderate: false } })),
   displayName: name,
   profession: profession[range(0, profession.length - 1)],
@@ -143,7 +143,7 @@ export const viewer = name1.map((name) => ({
     voteReceived: range(0, 10000000),
     audience: range(0, 100000),
     profileCreated: date(),
-    seen: name3.slice(0, 7).map((title) => toId(title)),
+    seen: name3.slice(0, 7).map((title) => ({ viewId: toId(title), author: "@maduekwepedro" })),
     theme: "dark",
   },
 }));
@@ -170,7 +170,7 @@ export const view = name3.map((title) => ({
   comments: [...Array(range(0, 100)).keys()].map(() => generateComment()),
   upvote: [...Array(range(0, 10000)).keys()].map(() => "@pedro"),
   downvote: [...Array(range(0, 10000)).keys()].map(() => "@pedro"),
-  disabled: false,
+  visible: false,
 }));
 
 export const news = [

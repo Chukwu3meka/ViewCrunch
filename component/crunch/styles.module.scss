@@ -5,46 +5,43 @@
   align-items: flex-start;
   flex-wrap: wrap;
   & > div {
-    margin: 0 auto;
-    & > div > div {
-      padding: 20px 0;
-      & > div {
-        margin: auto;
+    margin: 20px auto 0;
+    & > div > div > div {
+      margin: auto;
+      position: relative;
+      max-width: 600px;
+      width: 100%;
+      & > div:nth-of-type(1) {
         position: relative;
-        max-width: 600px;
-        width: 100%;
         & > div:nth-of-type(1) {
-          position: relative;
-          & > div:nth-of-type(1) {
-            position: absolute;
-            z-index: 1;
-            background-color: var(--sec);
-            color: var(--pry);
-            opacity: 0.8;
-            border-bottom-left-radius: 50%;
-            width: 100%;
-            text-align: center;
-          }
-          & > div:nth-of-type(3) {
-            margin: -7px 0 0;
-            text-align: left;
-          }
-          & > div:nth-of-type(4) {
-            word-wrap: break-word;
-            border-radius: 5px;
-            display: -webkit-box;
-            padding: 5px 0;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-          }
+          position: absolute;
+          z-index: 1;
+          background-color: var(--sec);
+          color: var(--pry);
+          opacity: 0.8;
+          border-bottom-left-radius: 50%;
+          width: 100%;
+          text-align: center;
         }
-        & > div:nth-of-type(2) {
-          @include flexCenter(row);
-          justify-content: space-between;
-          margin-top: 10px;
-          padding: 5px 0 0;
+        & > div:nth-of-type(3) {
+          margin: -7px 0 0;
+          text-align: left;
         }
+        & > div:nth-of-type(4) {
+          word-wrap: break-word;
+          border-radius: 5px;
+          display: -webkit-box;
+          padding: 5px 0;
+          -webkit-line-clamp: 3;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+      }
+      & > div:nth-of-type(2) {
+        @include flexCenter(row);
+        justify-content: space-between;
+        margin-top: 10px;
+        padding: 5px 0 0;
       }
     }
   }
@@ -52,10 +49,9 @@
 
 .members {
   position: fixed;
-  top: 0;
-  bottom: 0;
-  right: 0;
+  top: -20px;
   left: 0;
+  height: 100vh;
   z-index: 10001;
   background-color: var(--pry);
   opacity: 0.9;
@@ -320,7 +316,7 @@
     }
     & > button:nth-of-type(1) {
       position: fixed;
-      left: 10px;
+      right: 10px;
       top: 49vh;
       z-index: 15;
       padding: 5px !important;

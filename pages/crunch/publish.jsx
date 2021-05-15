@@ -15,10 +15,19 @@ export const getServerSideProps = async (ctx) => {
   if (myHandle === "Network connectivity issue") return errorProp(408, "Network connectivity issue");
   if (!myHandle) return errorProp(401, "User not logged in");
 
-  const { published: publishedArray } = await fetchProfile(myHandle);
-  const published = !publishedArray.length ? [] : publishedArray.map((x) => x.title);
+  const published = [],
+    crunch = ctx.query.id,
+    { published: publishedArray, roles, crunches } = await fetchProfile(myHandle);
+
+  if (roles.suspended) return errorProp(401, "Account is suspended, Please, contact ViewCrunch");
+  if (!crunches[crunch].publish) return errorProp(401, "Temporarily banned from publishing to this Crunch");
+  if (Object.keys(publishedArray).length !== 0) {
+    for (const x in publishedArray) {
+      published.push(publishedArray[x].title);
+    }
+  }
 
   return {
-    props: { crunch: ctx.query.id, published },
+    props: { crunch, published },
   };
 };

@@ -20,74 +20,70 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const PublishContainer = (props) => {
-  const { viewToBeModified = {}, crunch, published } = props,
+  const { enqueueSnackbar } = useSnackbar(),
     classes = useStyles(),
     scrollRef = useRef(null),
-    { enqueueSnackbar } = useSnackbar(),
     [loading, setLoading] = useState(false),
     [preview, setPreview] = useState(false),
     [contentText, setContentText] = useState(""),
-    [titleError, setTitleError] = useState(false),
-    [keywordsError, setKeywordsError] = useState(false),
-    [descriptionError, setDescriptionError] = useState(false),
-    [title, setTitle] = useState(viewToBeModified.title || "Title of view"),
+    { viewToBeModified = {}, crunch, published } = props,
+    [title, setTitle] = useState(viewToBeModified.title || ""),
+    [keywords, setKeywords] = useState(viewToBeModified.keywords || ""),
     [contentArray, setContentArray] = useState(viewToBeModified.content || []),
-    [description, setDescription] = useState(
-      viewToBeModified.description ||
-        "Describe what view is about, and how it should appear in search engines. Description should be between 50 to 200 letters "
-    ),
-    [keywords, setKeywords] = useState(
-      viewToBeModified.keywords || "All Keywords used in view separated by comma. Characters should be within 4 to 110"
-    );
+    [description, setDescription] = useState(viewToBeModified.description || "");
 
-  const titleHandler = async (value) => {
+  const titleHandler = (value) => {
+    const error1 =
+        "Title can only have letters and special characters such as '-', ':' '(' and ')'. Also make sure title is within the range of 3 to 20 words and 13 to 150 characters",
+      error2 = "You already have a view with the same title",
+      errorHandler = (errorNo) => {
+        enqueueSnackbar(errorNo, { variant: "error" });
+        return true;
+      };
+
     if (!viewToBeModified.title) {
       setTitle(value);
-      setTitleError(!validate("title", value));
-      if (title === "Title of view") setTitleError(true);
-      if (published.includes(title)) {
-        setTitleError(true);
-        enqueueSnackbar(`Duplicate title`, { variant: "error" });
-      }
+      if (!validate("title", value)) return errorHandler(error1);
+      if (published.includes(value)) return errorHandler(error2);
     } else {
-      enqueueSnackbar(`Title cannot be changed`, { variant: "warning" });
+      enqueueSnackbar("Title cannot be modified when retouching view", { variant: "error" });
     }
+    return false;
   };
 
-  const descriptionHandler = async (value) => {
+  const descriptionHandler = (value) => {
     setDescription(value);
-    setDescriptionError(!validate("description", value));
+    if (!validate("description", value)) {
+      enqueueSnackbar("Description can only contain 50 to 200 letters and special characters  '-', ':', '(', ')', ',', and ';'", {
+        variant: "error",
+      });
+      return true;
+    }
+    return false;
   };
 
-  const keywordsHandler = async (value) => {
+  const keywordsHandler = (value) => {
     setKeywords(value);
-    setKeywordsError(!validate("keywords", value));
+    if (!validate("keywords", value)) {
+      enqueueSnackbar("Keywords used in view separated by comma. eg 'gadets, phones, ball, schools'", { variant: "error" });
+      return true;
+    }
+    return false;
   };
 
   const previewHandler = async () => {
     setLoading(true);
-    const fullArticleWord = [contentText];
-    const fullArticleImage = [];
+    setPreview(false);
+    const fullArticleImage = [],
+      fullArticleWord = [contentText];
     contentArray.forEach((x) => {
       if (typeof x === "string") return fullArticleWord.push(x.replace(/\s+/g, " "));
       if (typeof x === "object") return fullArticleImage.push(x);
     });
 
-    let viewError = false;
+    await sleep(1.5);
+    setLoading(false);
 
-    const viewErrorHandler = (error) => {
-      viewError = true;
-      enqueueSnackbar(error, { variant: "error" });
-    };
-
-    // if (!title?.length && titleError)
-    //   viewErrorHandler(
-    //     "Make sure title is not taken and within the range of 3 to 20 words, 13 to 150 letters and special characters [ - : ( ) ]."
-    //   );
-    // if (!description?.length || descriptionError || description.includes("Describe what view is about"))
-    //   viewErrorHandler("Description can only contain 50 to 200 letters and special characters [ - : ( ) , ; ].");
-    // if (!keywords?.length || keywordsError || keywords.includes("Keywords used in view separated by comma"))
-    //   viewErrorHandler("Keywords can only contain letters within 4 to 100 characters separated by comma and special characters [ , ].");
     // if (
     //   !(
     //     (fullArticleWord?.join(" ")?.split(" ")?.length >= 100 &&
@@ -97,11 +93,13 @@ const PublishContainer = (props) => {
     //     (fullArticleImage?.length >= 10 && fullArticleImage?.length <= 30)
     //   )
     // )
-    //   viewErrorHandler(`Article should have at least 100 words or 10 images and at most 10,000 words or 30MB`);
+    //   return enqueueSnackbar(`Article should have at least 100 words or 10 images and at most 10,000 words or 30MB`, {
+    //     variant: "error",
+    //   });
 
-    await sleep(1);
-    setLoading(false);
-    if (!viewError) setPreview(true);
+    // if (titleHandler(title) || descriptionHandler(description) || keywordsHandler(keywords)) return;
+
+    setPreview(true);
   };
 
   const formatContentArray = () => {
@@ -151,13 +149,11 @@ const PublishContainer = (props) => {
         scrollRef,
         setPreview,
         scroll2Ref,
-        titleError,
         contentText,
         description,
         imageHandler,
         contentArray,
         setContentText,
-        descriptionError,
         previewHandler,
         setContentArray,
         viewToBeModified,
@@ -166,7 +162,6 @@ const PublishContainer = (props) => {
         formatContentArray,
         keywords,
         crunch,
-        keywordsError,
         keywordsHandler,
       }}
     />

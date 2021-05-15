@@ -8,6 +8,8 @@ const verifyRefresh = async (myRefresh) => {
     credentials: "same-origin",
   }).then((res) => res.json());
 
+  if (!token) return "invalid user";
+
   return await firebaseAdmin
     .auth()
     .verifyIdToken(token)
@@ -51,7 +53,7 @@ export default async (req, res) => {
     const profile = await verifyRefresh(req.body.myRefresh);
     return res.status(200).json(profile);
   } catch (error) {
-    // console.log(error);
+    console.log(error);
     return res.status(401).json({});
   }
 };

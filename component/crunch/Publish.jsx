@@ -16,13 +16,11 @@ const Publish = ({
   scrollRef,
   setPreview,
   scroll2Ref,
-  titleError,
   contentText,
   description,
   imageHandler,
   contentArray,
   setContentText,
-  descriptionError,
   previewHandler,
   setContentArray,
   viewToBeModified,
@@ -31,25 +29,26 @@ const Publish = ({
   formatContentArray,
   keywords,
   crunch,
-  keywordsError,
   keywordsHandler,
 }) => (
   <div className={styles.publish} ref={scrollRef}>
     <TextField
       fullWidth
       autoFocus
-      error={title.length && titleError}
+      error={title.length && titleHandler(title)}
       label="Title"
+      placeholder="Title of view"
       value={title}
       onChange={(e) => titleHandler(e.target.value.trimStart().replace(/\s+/g, " "))}
     />
 
     <TextField
       fullWidth
-      error={description.length && descriptionError}
+      error={description.length && descriptionHandler(description)}
       label="Description"
       value={description}
       variant="outlined"
+      placeholder="Describe what view is about, and how it should appear in search engines. Description should be between 50 to 200 letters "
       multiline
       onChange={(e) => descriptionHandler(e.target.value.trimStart().replace(/\s+/g, " "))}
     />
@@ -103,11 +102,12 @@ const Publish = ({
 
     <TextField
       fullWidth
-      error={keywords.length && keywordsError}
+      error={keywords.length && keywordsHandler(keywords)}
       label="Keywords"
       value={keywords}
       variant="outlined"
       multiline
+      placeholder="All Keywords used in view separated by comma. Characters should be within 4 to 110"
       onChange={(e) => keywordsHandler(e.target.value.trimStart().replace(/\s+/g, " "))}
     />
 

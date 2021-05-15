@@ -64,7 +64,7 @@ const StoryNav = ({
           </Typography>
         </a>
       </Paper>
-      {similarPost?.length && (
+      {similarPost?.length ? (
         <Paper>
           <span>Similar view</span>
           {similarPost.map(({ author, title, pryImage }, index) => (
@@ -78,6 +78,8 @@ const StoryNav = ({
             </Link>
           ))}
         </Paper>
+      ) : (
+        ""
       )}
     </Grid>
   </Hidden>

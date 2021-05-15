@@ -25,16 +25,18 @@ export default Index;
 export const getServerSideProps = async (ctx) => {
   const { fetchArticle } = require("@utils/firestoreFetch");
   const { extractHandle, errorProp } = require("@utils/serverFunctions");
+
   const myHandle = await extractHandle(ctx.req.headers.cookie);
   if (myHandle === "Network connectivity issue") return errorProp(408, "Network connectivity issue");
 
-  const { view, advert, error } = await fetchArticle({
-    author: ctx.query.handle,
-    viewHref: ctx.query.viewHref,
+  const { view, advert } = await fetchArticle({
     myHandle,
+    author: ctx.query.handle,
+    viewId: ctx.query.viewId,
+  }).catch((error) => {
+    console.log("error from server", error);
+    return errorProp();
   });
-
-  if (error) return errorProp();
 
   return {
     props: { view, advert },

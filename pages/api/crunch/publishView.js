@@ -62,7 +62,7 @@ const publishHandler = async ({ profile: { myHandle }, title, description, conte
     keywords,
     description,
     crunch,
-    disabled: false,
+    visible: false,
   };
 
   firebaseAdmin
@@ -91,17 +91,16 @@ const publishHandler = async ({ profile: { myHandle }, title, description, conte
       throw new TypeError(error);
     });
 
-  return viewURL;
+  return `/${viewURL}`;
 };
 
 export default async (req, res) => {
   try {
     const { description, profile, title, content, keywords, crunch } = req.body;
     const link = await publishHandler({ profile, title, description, content, keywords, crunch });
-    // return res.status(200).json({ link });
-    return res.status(401).json({ link: false });
+    return res.status(200).json({ link });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return res.status(401).json({ link: false });
   }
 };

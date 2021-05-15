@@ -31,7 +31,7 @@ const createProfileHandler = async ({ handle, myRefresh }) => {
     .auth()
     .getUser(uid)
     .then(async (user) => {
-      const profilePicture = user.photoURL || "ViewCrunch.webp",
+      const profilePicture = handle === "maduekwepedro" ? "/images/ViewCrunch.webp" : user.photoURL || "/images/ViewCrunch.webp",
         profileCreated = user.metadata.creationTime,
         displayName = user.displayName.replace(/ViewCrunch_new-user_/g, "");
 
@@ -60,30 +60,17 @@ const createProfileHandler = async ({ handle, myRefresh }) => {
             { body: "Have a product or service to advertise on ViewCrunch", link: "/control/adverise", title: "Advertise" },
             { body: "Make suggestions here, or contact the developer", link: "/control/contact", title: "Contact Us" },
           ],
-
-          roles: { comment: true, vote: true, disabled: false, moderate: true, createCrunch: true },
-          crunches: [
-            "Universal",
-            "Lifehack",
-            "Career 101",
-            "Justnow",
-            "Software Developers",
-            "Cyber Security",
-            "Politics",
-            "Warfare",
-            "Catholic Church",
-            "Investment",
-          ]
+          roles: { comment: true, vote: true, suspended: false, moderate: true, createCrunch: true },
+          crunches: initialCrunches
             .map((title) => ({ id: toId(title), roles: { publish: true, retouch: true, moderate: false } }))
             .reduce((acc, cur) => ({ ...acc, [cur.id]: cur.roles }), {}),
-
           favourite: [],
           blacklist: [],
           published: [],
           chat: {
-            followers: ["@maduekwepedro"],
+            followers: handle === "maduekwepedro" ? [] : ["@maduekwepedro"],
             blocked: [],
-            following: ["@maduekwepedro"],
+            following: handle === "maduekwepedro" ? [] : ["@maduekwepedro"],
           },
           social: {
             twitterHandle: handle,
@@ -96,7 +83,7 @@ const createProfileHandler = async ({ handle, myRefresh }) => {
             audience: 0,
             profileCreated,
             seen: [],
-            theme: "light",
+            theme: handle === "maduekwepedro" ? "dark" : "light",
           },
         })
         .then(async () => {
@@ -107,21 +94,22 @@ const createProfileHandler = async ({ handle, myRefresh }) => {
             })
             .then(async () => {
               for (const x of initialCrunches) {
-                await firebaseAdmin
-                  .firestore()
-                  .collection("crunch")
-                  .doc(toId(x))
-                  .set({
-                    title: x,
-                    coverPicture: "ViewCrunch-cover.webp",
-                    primaryPicture: "ViewCrunch.webp",
-                    dateCreated: firebaseAdmin.firestore.Timestamp.now(),
-                    about: `${x} was invented by Maduekwe Pedro for all`,
-                    moderators: ["@maduekwepedro"],
-                    followers: ["@maduekwepedro"],
-                    inventor: ["@maduekwepedro"],
-                  });
-
+                if (handle === "maduekwepedro") {
+                  await firebaseAdmin
+                    .firestore()
+                    .collection("crunch")
+                    .doc(toId(x))
+                    .set({
+                      title: x,
+                      coverPicture: "/images/ViewCrunch-cover.webp",
+                      primaryPicture: "/images/ViewCrunch.webp",
+                      dateCreated: firebaseAdmin.firestore.Timestamp.now(),
+                      about: `${x} was invented by Maduekwe Pedro for all`,
+                      moderators: ["@maduekwepedro"],
+                      followers: ["@maduekwepedro"],
+                      inventor: ["@maduekwepedro"],
+                    });
+                }
                 await firebaseAdmin
                   .firestore()
                   .collection("crunch")

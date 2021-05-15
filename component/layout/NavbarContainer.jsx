@@ -24,8 +24,8 @@ const NavbarContainer = (props) => {
       // ["Chat", "/chat", <AssignmentIndIcon />],
       ["Favourite", "/favourite", <TimelineIcon />],
       ["My Crunch", "/crunch", <ImportantDevicesIcon />],
-      ["Portfolio", `/${myHandle ? myHandle : "unauthenticated"}`, <AssignmentIndIcon />],
       ["Notification", "/notification", myNotification ? <NotificationsActiveIcon /> : <NotificationsOffIcon />],
+      ["Portfolio", `/${myHandle ? myHandle : "unauthenticated"}`, <AssignmentIndIcon />],
     ];
 
   useEffect(() => {
