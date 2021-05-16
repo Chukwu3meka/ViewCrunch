@@ -9,20 +9,24 @@ const handler = async ({ viewId, myHandle, vote }) => {
       const doc = await t.get(viewRef);
       const { upvote, downvote } = doc.data();
 
-      const newUpvote = vote ? (upvote.includes(myHandle) ? upvote.filter((x) => x !== myHandle) : [...upvote, myHandle]) : upvote;
+      const newUpvote = vote
+        ? upvote.includes(myHandle)
+          ? upvote.filter((x) => x !== myHandle)
+          : [...upvote, myHandle]
+        : upvote.filter((x) => x !== myHandle);
       const newDownvote = !vote
         ? downvote.includes(myHandle)
           ? downvote.filter((x) => x !== myHandle)
           : [...downvote, myHandle]
-        : downvote;
+        : downvote.filter((x) => x !== myHandle);
 
       t.update(viewRef, { upvote: newUpvote, downvote: newDownvote });
 
       await profileRef
         .update({
           [`published.${viewId}`]: {
-            upvote: upvote.length,
-            downvote: downvote.length,
+            upvote: newUpvote.length,
+            downvote: newDownvote.length,
           },
         })
         .catch((error) => {

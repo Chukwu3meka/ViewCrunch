@@ -21,9 +21,10 @@ export const getServerSideProps = async (ctx) => {
 
   if (roles.suspended) return errorProp(401, "Account is suspended, Please, contact ViewCrunch");
   if (!crunches[crunch].publish) return errorProp(401, "Temporarily banned from publishing to this Crunch");
+
   if (Object.keys(publishedArray).length !== 0) {
     for (const x in publishedArray) {
-      published.push(publishedArray[x].title);
+      published.push(publishedArray[x]?.title || "error");
     }
   }
 

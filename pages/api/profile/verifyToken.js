@@ -51,9 +51,10 @@ const verifyRefresh = async (myRefresh) => {
 export default async (req, res) => {
   try {
     const profile = await verifyRefresh(req.body.myRefresh);
+    if (profile === "invalid user") throw new TypeError("Invalid User");
     return res.status(200).json(profile);
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return res.status(401).json({});
   }
 };

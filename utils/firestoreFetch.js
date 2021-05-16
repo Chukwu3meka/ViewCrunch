@@ -18,7 +18,7 @@ export const isHandleTaken = async (handle) => {
     });
 };
 
-export const fetchProfile = (handle) => {
+export const fetchProfile = async (handle) => {
   return profileRef
     .doc(handle)
     .get()
@@ -176,6 +176,17 @@ export const fetchChat = async ({ handle }) => {
 };
 
 export const fetchArticles = async ({ limit = 5, navTag, lastVisible }) => {
+  // await firestore
+  //   .collection("view")
+  //   .where("crunch", "array-contains-any", ["lifehack", "career-101"])
+  //   .get()
+  //   .then(async (querySnapshot) => {
+  //     for (const doc of querySnapshot.docs) {
+  //       console.log(doc.data());
+  //     }
+  //   })
+  //   .catch((e) => console.log(e));
+
   // const articles = [],
   //   docRef = navTag
   //     ? await articleRef
@@ -256,12 +267,15 @@ export const fetchArticles = async ({ limit = 5, navTag, lastVisible }) => {
   return { articles: articles.slice(0, limit), propsLastVisible: limit };
 };
 
-export const fetchArticle = async ({ author, viewId, myHandle }) => {
-  const validAuthor = await isHandleTaken(author);
+export const fetchArticle = async ({ author, view, myHandle }) => {
+  const validAuthor = await isHandleTaken(author),
+    url = toId(`${author}/${view}`);
+  view = toId(author, view);
+
   if (!validAuthor) return { error: "Author does not exist" };
 
   const full_view = await viewRef
-    .doc(viewId)
+    .doc(view)
     .get()
     .then((snapshot) => {
       if (snapshot.exists) return snapshot.data();
@@ -311,32 +325,35 @@ export const fetchArticle = async ({ author, viewId, myHandle }) => {
     publishedViews.push({ title: value.title, id: key });
   }
 
+  // console.log(publishedViews, published);
+
   publishedViews?.length && featuredPost.push(publishedViews[range(0, publishedViews.length - 1)]);
   publishedViews?.length > 1 && featuredPost.push(publishedViews[range(0, publishedViews.length - 1)]);
 
-  const view = {
-    id: toId(title),
+  const data = {
+    id: view,
+    url,
     title,
     content,
     pryImage,
     description,
     keywords,
-    crunch,
+    crunch: crunch[0],
     comments: [],
     date: date.toDate().toDateString(),
     upvote,
     downvote,
     author: {
+      about,
       author,
       displayName,
-      profilePicture,
-      about,
-      linkedinHandle,
       twitterHandle,
+      profilePicture,
+      linkedinHandle,
       facebookHandle,
     },
     post: {
-      featuredPost: featuredPost.filter((x) => x.id !== viewId).filter((v, i, a) => a.indexOf(v) === i),
+      featuredPost: featuredPost.filter((x) => x.id !== view).filter((v, i, a) => a.indexOf(v) === i),
       similarPost: [],
     },
   };
@@ -344,18 +361,19 @@ export const fetchArticle = async ({ author, viewId, myHandle }) => {
   if (myHandle) {
     const profile = await fetchProfile(myHandle);
 
-    view.viewer = profile
+    data.viewer = profile
       ? {
           seen: profile?.stat?.seen,
           blacklist: profile?.blacklist,
-          viewInFavourite: profile?.blacklist?.includes(toId(title)) ? true : false,
-          viewInBlacklist: profile?.favourite?.includes(toId(title)) ? true : false,
+          viewInFavourite: profile?.favourite?.find((x) => x.url === url) ? true : false,
+          viewInBlacklist: profile?.blacklist?.find((x) => x.url === url) ? true : false,
         }
       : {};
   }
 
+  // .where("crunch", "==", crunch[0])
   await viewRef
-    .where("crunch", "==", crunch)
+    .where("crunch", "array-contains-any", crunch)
     .where("visible", "==", true)
     .orderBy("date", "desc")
     .limit(7)
@@ -372,11 +390,11 @@ export const fetchArticle = async ({ author, viewId, myHandle }) => {
           } = doc.data();
 
         if (
-          view.post.similarPost.length < 3 ||
-          view.viewer.seen.some((x) => x.viewId !== id) ||
-          view.viewer.blacklist.some((x) => x.title !== title)
+          data.post.similarPost.length < 3 ||
+          data.viewer.seen.some((x) => x.view !== id) ||
+          data.viewer.blacklist.some((x) => x.title !== title)
         ) {
-          view.post.similarPost.push({ author, title, pryImage, id });
+          data.post.similarPost.push({ author, title, pryImage, id });
         }
       }
     })
@@ -384,8 +402,11 @@ export const fetchArticle = async ({ author, viewId, myHandle }) => {
       // console.log(error);
     });
 
-  view.post.similarPost = view.post.similarPost.filter((x) => x.id !== viewId);
-  if (!view) return { error: "Error occured while fetching view" };
+  data.post.similarPost = data.post.similarPost.filter((x) => x.id !== view);
+  if (!data) return { error: "Error occured while fetching data" };
+
+  // console.log(data);
+  // return { error: "Error occured while fetching data" };
 
   const advert = {
     company: "SoccerMASS",
@@ -395,7 +416,7 @@ export const fetchArticle = async ({ author, viewId, myHandle }) => {
   };
 
   return {
-    view,
+    view: data,
     advert,
   };
 };

@@ -1,5 +1,4 @@
 import cookie from "js-cookie";
-import Router from "next/router";
 import { connect } from "react-redux";
 import { useEffect, useState } from "react";
 import Button from "@material-ui/core/Button";
@@ -95,7 +94,7 @@ const AuthFirebase = (props) => {
                 myTheme: profile.theme,
                 myProfession: profile.profession,
                 myDisplayName: profile.displayName,
-                myNotification: profile.notification,
+                myNotification: profile.notification.length,
                 myCoverPicture: profile.coverPicture,
                 myProfilePicture: profile.profilePicture,
               };
@@ -104,9 +103,7 @@ const AuthFirebase = (props) => {
                 expires: 183,
                 path: "",
               });
-
               await props.setProfileAction({ ...viewer });
-              // Router.reload();
             }
           }
 
@@ -139,7 +136,9 @@ const AuthFirebase = (props) => {
             Logout
           </Button>
         )
-      ) : null}
+      ) : (
+        ""
+      )}
     </div>
   );
 };

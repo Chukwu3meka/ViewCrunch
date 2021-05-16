@@ -17,6 +17,7 @@ import userControl from "@utils/userControl";
 import LayoutContainer from "@component/layout";
 import { fetcher } from "@utils/clientFunctions";
 import { setDisplayHeader, setOnlineAction, setProfileAction } from "@store/actions";
+import validate from "@utils/validator";
 
 const App = ({ Component, pageProps }) => {
   config({ ssrFadeout: true });
@@ -31,12 +32,16 @@ const App = ({ Component, pageProps }) => {
     const profile = await fetcher("/api/profile/verifyToken", JSON.stringify({ myRefresh }));
 
     if (profile?.myHandle) {
-      if (isNaN(profile.myHandle) && profile.myHandle.startsWith("@")) {
+      if (validate("handle", profile?.myHandle)) {
         setAppTheme(profile.myTheme);
         store.dispatch(setProfileAction(profile));
-      } else {
+      }
+      if (!isNaN(profile?.myHandle)) {
+        store.dispatch(setProfileAction({}));
         setChooseHandle(true);
       }
+    } else {
+      store.dispatch(setProfileAction({}));
     }
   };
 
@@ -46,7 +51,7 @@ const App = ({ Component, pageProps }) => {
   });
 
   useEffect(() => {
-    if (myRefresh && online && !store.getState().profile?.myHandle) persistUser();
+    if (myRefresh && online) persistUser();
   }, [myRefresh]);
 
   useEffect(() => {

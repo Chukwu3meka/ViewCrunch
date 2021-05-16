@@ -6,8 +6,8 @@ const publishHandler = async ({ profile: { myHandle }, title, description, conte
   const images = [],
     imagesURL = [],
     pryImageURL = [],
+    viewID = toId(myHandle, title),
     viewURL = `${myHandle}/${toId(title)}`,
-    viewID = toId(`${myHandle}~${title}`),
     viewRef = firebaseAdmin.firestore().collection("view").doc(viewID),
     profileRef = firebaseAdmin.firestore().collection("profile").doc(myHandle);
 
@@ -53,36 +53,37 @@ const publishHandler = async ({ profile: { myHandle }, title, description, conte
     },
     date: firebaseAdmin.firestore.Timestamp.now(),
     author: myHandle,
-    crunch,
     pryImage: pryImageURL[0] || `/images/no-image.webp`,
     content: viewContent,
-    keywords,
-    description,
     comments: [],
     upvote: [],
     downvote: [],
     keywords,
     description,
-    crunch,
+    crunch: [crunch],
     visible: moderator ? true : false,
   };
 
-  viewRef
+  await viewRef
     .set({ ...newView })
     .then(async () => {
-      await firebaseAdmin;
-      profileRef.set({
-        [`published.${viewID}`]: {
-          title,
-          date: firebaseAdmin.firestore.Timestamp.now(),
-          pryImage: pryImageURL[0] || `/images/no-image.webp`,
-          upvote: 0,
-          downvote: 0,
-        },
-        "stat.seen": firebaseAdmin.firestore.FieldValue.arrayUnion(viewID),
-      });
-
-      await deleteTempImage(myHandle);
+      await profileRef
+        .update({
+          [`published.${viewID}`]: {
+            title,
+            date: firebaseAdmin.firestore.Timestamp.now(),
+            pryImage: pryImageURL[0] || `/images/no-image.webp`,
+            upvote: 0,
+            downvote: 0,
+          },
+          "stat.seen": firebaseAdmin.firestore.FieldValue.arrayUnion(viewID),
+        })
+        .then(async () => {
+          await deleteTempImage(myHandle);
+        })
+        .catch((error) => {
+          throw new TypeError(error);
+        });
     })
     .catch((error) => {
       throw new TypeError(error);
@@ -97,7 +98,7 @@ export default async (req, res) => {
     const link = await publishHandler({ profile, title, description, content, keywords, crunch, moderator });
     return res.status(200).json({ link });
   } catch (error) {
-    // console.log(error);
+    console.log(error);
     return res.status(401).json({ link: false });
   }
 };

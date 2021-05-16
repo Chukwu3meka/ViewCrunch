@@ -1,17 +1,9 @@
-import Image from "next/image";
-import Grid from "@material-ui/core/Grid";
-import Hidden from "@material-ui/core/Hidden";
-
-import { styles } from "@component/notification";
-
 import Link from "next/link";
-
+import { EmptyPage } from "@component/page";
+import { styles } from "@component/notification";
 import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
-
-import { LineText } from "@component/others";
-import { EmptyPage } from "@component/page";
 import { Accordion, AccordionSummary, AccordionDetails } from "/";
 
 const Notification = ({ notification, deleteNotification, expanded, handleChange }) => (

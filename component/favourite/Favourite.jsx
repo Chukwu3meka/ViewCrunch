@@ -27,15 +27,15 @@ const Favourites = ({ list, openView, removeView, listType, setSwitchView, switc
         {list?.length ? (
           <List dense={false}>
             <TransitionGroup {...{ appear: false, enter: true, exit: true }}>
-              {list.map(({ link, title }, index) => (
-                <Fade key={link} collapse bottom>
+              {list.map(({ url, title }, index) => (
+                <Fade key={url} collapse bottom>
                   <ListItem>
                     <ListItemIcon>
                       <Typography>{index + 1}</Typography>
                     </ListItemIcon>
-                    <ListItemText primary={title} onClick={openView(link)} />
+                    <ListItemText primary={title} onClick={openView(url)} />
                     <ListItemSecondaryAction>
-                      <IconButton edge="end" aria-label="delete" onClick={removeView({ link, title, listType })}>
+                      <IconButton edge="end" aria-label="delete" onClick={removeView({ url, title, listType })}>
                         <DeleteIcon />
                       </IconButton>
                     </ListItemSecondaryAction>

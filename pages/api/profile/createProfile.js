@@ -31,9 +31,10 @@ const createProfileHandler = async ({ handle, myRefresh }) => {
     .auth()
     .getUser(uid)
     .then(async (user) => {
-      const profilePicture = handle === "maduekwepedro" ? "/images/ViewCrunch.webp" : user.photoURL || "/images/ViewCrunch.webp",
+      const profilePicture = handle === "maduekwepedro" ? "/images/ViewCrunch-cover.webp" : user.photoURL || "/images/ViewCrunch.webp",
         profileCreated = user.metadata.creationTime,
-        displayName = user.displayName.replace(/ViewCrunch_new-user_/g, "");
+        displayName = user.providerData[0].displayName;
+      // displayName = user.displayName.replace(/ViewCrunch_new-user_/g, "");
 
       await firebaseAdmin
         .firestore()
@@ -69,7 +70,7 @@ const createProfileHandler = async ({ handle, myRefresh }) => {
             .reduce((acc, cur) => ({ ...acc, [cur.id]: cur.roles }), {}),
           favourite: [],
           blacklist: [],
-          published: [],
+          published: {},
           chat: {
             followers: handle === "maduekwepedro" ? [] : ["@maduekwepedro"],
             blocked: [],
@@ -139,7 +140,7 @@ const createProfileHandler = async ({ handle, myRefresh }) => {
 export default async (req, res) => {
   try {
     const { handle, myRefresh } = req.body;
-
+    if (handle === "maduekwepedro") throw new TypeError("Reserved handle");
     await createProfileHandler({ handle, myRefresh });
     return res.status(200).send(true);
   } catch (error) {

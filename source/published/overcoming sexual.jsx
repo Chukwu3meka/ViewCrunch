@@ -1,7 +1,7 @@
 const title = "Overcoming Sexual Sin",
   description =
     "You are not a man or woman because of your freedom to do whatever you like, but your ability to control your emotions. Its hard, and its not always about you, its against principalities and powers",
-  keywords = "sex, immorality, holiness, sin, moals",
+  keywords = "sex, immorality, holiness, sin, morals",
   content = (
     <>
       <p>
@@ -85,7 +85,7 @@ const title = "Overcoming Sexual Sin",
         </li>
       </ol>
       <p>
-        ### Bonus tip: > If you're a Christian or you belief permits you, when this sexual urge comes up, take any picture of Christ
+        ### Bonus tip: If you're a Christian or you belief permits you, when this sexual urge comes up, take any picture of Christ
         crucifixion and while you stare, meditate on his passions/agony. You can also save this picture on your phone and use it any
         time.
       </p>

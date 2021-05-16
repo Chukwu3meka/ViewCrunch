@@ -33,9 +33,9 @@ const PublishContainer = (props) => {
     [description, setDescription] = useState(viewToBeModified.description || "");
 
   const titleHandler = (value) => {
-    const error1 =
-        "Title can only have letters and special characters such as '-', ':' '(' and ')'. Also make sure title is within the range of 3 to 20 words and 13 to 150 characters",
-      error2 = "You already have a view with the same title",
+    const error1 = "Title should be within the range of 3 to 20 words and 13 to 150 characters at most",
+      error2 = "Title can only have letters and special characters such as '-', ':', '(' and ')'",
+      error3 = "You already have a view with the same title",
       errorHandler = (errorNo) => {
         enqueueSnackbar(errorNo, { variant: "error" });
         return true;
@@ -43,8 +43,11 @@ const PublishContainer = (props) => {
 
     if (!viewToBeModified.title) {
       setTitle(value);
-      if (!validate("title", value)) return errorHandler(error1);
-      if (published.includes(value)) return errorHandler(error2);
+
+      if (value.length < 13 || value.length > 150 || value.split(" ").length < 3 || value.split(" ").length > 20)
+        return errorHandler(error1);
+      if (!validate("title", value)) return errorHandler(error2);
+      if (published.includes(value)) return errorHandler(error3);
     } else {
       enqueueSnackbar("Title cannot be modified when retouching view", { variant: "error" });
     }
@@ -52,9 +55,9 @@ const PublishContainer = (props) => {
   };
 
   const descriptionHandler = (value) => {
-    const error1 = "Description can only contain 50 to 200 letters",
+    const error1 = "Description can have between 50 to 200 letters",
       error2 = "Description must be between 3 - 70 words",
-      error3 = "Invalid characters; Only Letters, Numbers and special characters like '-', ':', '(', ')', ',', and ';' are valid",
+      error3 = "Invalid characters; Only Letters, Numbers and special characters like '-', ':', '(', ')', ',', ''',  and ';' are valid",
       errorHandler = (errorNo) => {
         enqueueSnackbar(errorNo, { variant: "error" });
         return true;

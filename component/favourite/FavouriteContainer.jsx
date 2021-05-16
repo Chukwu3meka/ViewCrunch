@@ -11,20 +11,30 @@ const FavouritesContainer = (props) => {
     { enqueueSnackbar } = useSnackbar(),
     [online, setOnline] = useState(props.online),
     [switchView, setSwitchView] = useState(true),
-    [favourites, setFavourite] = useState(props.favourite || []),
+    [favourite, setFavourite] = useState(props.favourite || []),
     [blacklist, setBlacklist] = useState(props.blacklist || []);
 
   useEffect(() => {
     setOnline(props.online);
   }, [props.online]);
 
-  const removeView = ({ link, title, listType }) => async () => {
+  const removeView = ({ url, title, listType }) => async () => {
     if (myHandle && online) {
-      const status = await fetcher("/api/profile/favourite", JSON.stringify({ link, title, myHandle, listType, remove: true }));
+      const { status, favourite, blacklist } = await fetcher(
+        "/api/profile/favourite",
+        JSON.stringify({
+          myHandle,
+          title,
+          url,
+          list: listType === "Favourite" ? "favourite" : blacklist,
+          append: false,
+        })
+      );
+
       if (status) {
         listType === "Favourite"
-          ? setFavourite(favourites.filter((x) => x.link !== link))
-          : setBlacklist(blacklist.filter((x) => x.link !== link));
+          ? setFavourite(favourite.filter((x) => x.url !== url))
+          : setBlacklist(blacklist.filter((x) => x.url !== url));
         enqueueSnackbar(`${title} removed from ${listType}`, { variant: "success" });
       } else {
         enqueueSnackbar(`Please, Try again. Error occured.`, { variant: "error" });
@@ -34,12 +44,12 @@ const FavouritesContainer = (props) => {
     }
   };
 
-  const openView = (link) => () => router.push(link);
+  const openView = (url) => () => router.push(url);
 
   return (
     <Favourite
       {...{
-        list: switchView ? favourites : blacklist,
+        list: switchView ? favourite : blacklist,
         openView,
         removeView,
         listType: switchView ? "Favourite" : "Blacklist",

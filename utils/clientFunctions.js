@@ -115,4 +115,4 @@ export const dateCalculator = ({ date, days }) => {
   }
 };
 
-export const toId = (string) => string.replace(/ /g, "-").toLowerCase();
+export const toId = (a, b) => (b ? `${a}@${b}`.replace(/ /g, "-").toLowerCase() : a.replace(/ /g, "-").toLowerCase());

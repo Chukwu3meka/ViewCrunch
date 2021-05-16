@@ -8,7 +8,9 @@ const validate = (valueType, value) => {
   switch (valueType) {
     case "handle": {
       const handle = value?.trim().startsWith("@") ? value.substr(1).toLowerCase() : "";
-      const status = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.\s@!~#^$*']{2,14}$/gim.test(handle);
+      // const status = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.\s@!~#^$*']{2,14}$/gim.test(handle);
+      // const status = /^(?!.*\.\.)(?!.*\.$)[^\W][\w]{2,14}$/gim.test(handle);
+      const status = /^[a-zA-Z0-9_]{3,13}$/gim.test(handle);
       if (status) return value;
       return undefined;
     }
@@ -18,7 +20,7 @@ const validate = (valueType, value) => {
       return undefined;
     }
     case "description": {
-      let status = /^(?!.*\.\.)(?!.*\.$)[^\W][\w+.\s\-:(),;]{49,214}$/gim.test(value.trim());
+      let status = /^(?!.*\.\.)(?!.*\.$)[^\W][\w+.\s\-:(),';]{49,214}$/gim.test(value.trim());
       if (status && value.split(" ").length >= 3 && value.split(" ").length <= 70) return value;
       return undefined;
     }

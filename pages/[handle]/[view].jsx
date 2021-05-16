@@ -32,9 +32,7 @@ export const getServerSideProps = async (ctx) => {
   const { view, advert, error } = await fetchArticle({
     myHandle,
     author: ctx.query.handle,
-    viewId: ctx.query.viewId,
-  }).catch((error) => {
-    console.log("error from server", error);
+    view: ctx.query.view,
   });
 
   if (error) return errorProp(500, error);

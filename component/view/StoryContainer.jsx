@@ -28,33 +28,45 @@ const StoryContainer = (props) => {
   }, []);
 
   const reportHandler = async (report) => {
-    const status = await fetcher(
-      "/api/crunch/report",
-      JSON.stringify({ myHandle: profile.myHandle, id: view.id, report, section: "view" })
-    );
-    enqueueSnackbar(status ? "success" : "failed", { variant: status ? "success" : "error" });
-    setReportView(false);
+    if (online && profile.myHandle) {
+      const status = await fetcher(
+        "/api/crunch/report",
+        JSON.stringify({ myHandle: profile.myHandle, id: view.id, report, section: "view" })
+      );
+      enqueueSnackbar(status ? "success" : "failed", { variant: status ? "success" : "error" });
+      setReportView(false);
+    } else {
+      enqueueSnackbar("Network or Authentication error", { variant: "warning" });
+    }
   };
 
-  const favouriteHandler = async () => {
-    const mode = !viewInFavourite;
-    const status = await fetcher("/api/crunch/favourite", JSON.stringify({ view: view.id, myHandle: profile.myHandle, mode }));
-    enqueueSnackbar(status ? "success" : "failed", { variant: status ? "success" : "error" });
-    setViewInFavourite(status);
-  };
+  const favouriteHandler = async (list, append) => {
+    if (online && profile.myHandle) {
+      const { status, favourite, blacklist } = await fetcher(
+        "/api/profile/favourite",
+        JSON.stringify({ url: view.url, title: view.title, myHandle: profile.myHandle, list, append })
+      );
 
-  const blacklistHandler = async () => {
-    const mode = !viewInBlacklist;
-    const status = await fetcher("/api/crunch/blacklist", JSON.stringify({ view: view.id, myHandle: profile.myHandle, mode }));
-    enqueueSnackbar(status ? "success" : "failed", { variant: status ? "success" : "error" });
-    setViewInBlacklist(status);
+      if (status) {
+        setViewInFavourite(favourite.find((x) => x.url === view.url) ? true : false);
+        setViewInBlacklist(blacklist.find((x) => x.url === view.url) ? true : false);
+        enqueueSnackbar("Successful", { variant: "success" });
+      } else {
+        enqueueSnackbar("Error occured", { variant: "error" });
+      }
+    } else {
+      enqueueSnackbar("Network or Authentication error", { variant: "error" });
+    }
   };
 
   const moreActionsHandler = () => {
     if (online) {
       setMoreActions([
-        { label: viewInBlacklist ? "Whitelist" : "Blacklist", handler: blacklistHandler },
-        { label: viewInFavourite ? "Remove from favourite" : "Add to favourite", handler: favouriteHandler },
+        { label: viewInBlacklist ? "Whitelist" : "Blacklist", handler: () => favouriteHandler("blacklist", !viewInBlacklist) },
+        {
+          label: viewInFavourite ? "Remove from favourite" : "Add to favourite",
+          handler: () => favouriteHandler("favourite", !viewInFavourite),
+        },
         { label: "Report view to Moderators and ViewCrunch", handler: () => setReportView(true) },
         {
           jsx: (
@@ -75,23 +87,27 @@ const StoryContainer = (props) => {
   };
 
   const voteHandler = (vote) => async () => {
-    const status = await fetcher("/api/crunch/voteView", JSON.stringify({ viewId: view.id, myHandle: profile.myHandle, vote }));
+    if (online && profile.myHandle) {
+      const status = await fetcher("/api/crunch/voteView", JSON.stringify({ viewId: view.id, myHandle: profile.myHandle, vote }));
 
-    if (status) {
-      if (vote) {
-        setTotalUpvote(
-          totalUpvote.includes(profile?.myHandle)
-            ? totalUpvote.filter((x) => x !== profile?.myHandle)
-            : [...totalUpvote, profile?.myHandle]
-        );
-        setUpvoted(!upvoted);
-        setDownvoted(false);
+      if (status) {
+        if (vote) {
+          setTotalUpvote(
+            totalUpvote.includes(profile?.myHandle)
+              ? totalUpvote.filter((x) => x !== profile?.myHandle)
+              : [...totalUpvote, profile?.myHandle]
+          );
+          setUpvoted(!upvoted);
+          setDownvoted(false);
+        } else {
+          setDownvoted(!downvoted);
+          setUpvoted(false);
+        }
       } else {
-        setDownvoted(!downvoted);
-        setUpvoted(false);
+        enqueueSnackbar("Error occured", { variant: "warning" });
       }
     } else {
-      enqueueSnackbar("Network Connectivity issue", { variant: status ? "success" : "warning" });
+      enqueueSnackbar("Network or Authentication error", { variant: "warning" });
     }
   };
 
