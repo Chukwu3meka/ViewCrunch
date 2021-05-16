@@ -24,10 +24,8 @@ const handler = async ({ viewId, myHandle, vote }) => {
 
       await profileRef
         .update({
-          [`published.${viewId}`]: {
-            upvote: newUpvote.length,
-            downvote: newDownvote.length,
-          },
+          [`published.${viewId}.upvote`]: newUpvote.length,
+          [`published.${viewId}.downvote`]: newDownvote.length,
         })
         .catch((error) => {
           throw new TypeError(error);

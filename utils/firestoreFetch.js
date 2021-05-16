@@ -298,7 +298,9 @@ export const fetchArticle = async ({ author, view, myHandle }) => {
     keywords,
   } = full_view;
 
-  if (!full_view.visible) return { error: "View is hidden" };
+  if (!full_view.visible.status && full_view.visible.moderator !== "ViewCrunch" && full_view.visible.data !== "just published")
+    return { error: "View is hidden" };
+
   if (author !== full_view.author) return { error: "Wrong Author specified" };
 
   const {
@@ -325,10 +327,10 @@ export const fetchArticle = async ({ author, view, myHandle }) => {
     publishedViews.push({ title: value.title, id: key });
   }
 
-  // console.log(publishedViews, published);
-
   publishedViews?.length && featuredPost.push(publishedViews[range(0, publishedViews.length - 1)]);
   publishedViews?.length > 1 && featuredPost.push(publishedViews[range(0, publishedViews.length - 1)]);
+
+  // console.log({ publishedViews, published });
 
   const data = {
     id: view,
@@ -374,11 +376,12 @@ export const fetchArticle = async ({ author, view, myHandle }) => {
   // .where("crunch", "==", crunch[0])
   await viewRef
     .where("crunch", "array-contains-any", crunch)
-    .where("visible", "==", true)
+    // .where("visible", "==", true)
     .orderBy("date", "desc")
     .limit(7)
     .get()
     .then((snapshot) => {
+      console.log(snapshot?.docs?.length);
       if (!snapshot?.docs?.length) return;
 
       for (const doc of snapshot.docs) {

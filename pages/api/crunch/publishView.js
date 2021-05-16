@@ -61,7 +61,12 @@ const publishHandler = async ({ profile: { myHandle }, title, description, conte
     keywords,
     description,
     crunch: [crunch],
-    visible: moderator ? true : false,
+    visible: {
+      moderator: "ViewCrunch",
+      date: firebaseAdmin.firestore.Timestamp.now(),
+      status: false,
+      data: "just published",
+    },
   };
 
   await viewRef
