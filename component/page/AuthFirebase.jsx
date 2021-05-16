@@ -1,4 +1,5 @@
 import cookie from "js-cookie";
+import Router from "next/router";
 import { connect } from "react-redux";
 import { useEffect, useState } from "react";
 import Button from "@material-ui/core/Button";
@@ -9,7 +10,6 @@ import userControl from "@utils/userControl";
 import firebase from "@utils/firebaseClient";
 import { fetcher } from "@utils/clientFunctions";
 import { setProfileAction } from "@store/actions";
-import { fetchProfile } from "@utils/firestoreFetch";
 
 const firebaseAuthConfig = ({ setAuthDetail }) => ({
   signInFlow: "popup",
@@ -87,26 +87,9 @@ const AuthFirebase = (props) => {
         } else {
           const handle = firebase.auth().currentUser.displayName;
           if (handle?.startsWith("@")) {
-            const profile = await fetchProfile(handle);
-            if (profile) {
-              const viewer = {
-                myHandle: handle,
-                myTheme: profile.theme,
-                myProfession: profile.profession,
-                myDisplayName: profile.displayName,
-                myNotification: profile.notification.length,
-                myCoverPicture: profile.coverPicture,
-                myProfilePicture: profile.profilePicture,
-              };
-
-              await cookie.set("ViewCrunch", authDetail.myRefresh, {
-                expires: 183,
-                path: "",
-              });
-              await props.setProfileAction({ ...viewer });
-            }
+            cookie.set("ViewCrunch", authDetail.myRefresh, { expires: 183, path: "" });
+            Router.reload();
           }
-
           if (handle?.startsWith("ViewCrunch_new-user_")) {
             setChooseHandle(true);
           }

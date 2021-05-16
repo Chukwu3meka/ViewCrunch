@@ -267,12 +267,20 @@ export const fetchArticles = async ({ limit = 5, navTag, lastVisible }) => {
   return { articles: articles.slice(0, limit), propsLastVisible: limit };
 };
 
-export const fetchArticle = async ({ author, view, myHandle }) => {
-  const validAuthor = await isHandleTaken(author),
-    url = toId(`${author}/${view}`);
-  view = toId(author, view);
+export const fetchArticle = async ({ author, view: id, myHandle }) => {
+  const view = toId(author, id),
+    url = toId(`${author}/${id}`),
+    authorData = await fetchProfile(author);
 
-  if (!validAuthor) return { error: "Author does not exist" };
+  if (!authorData) return { error: "Author does not exist" };
+  if (authorData.suspended) return { error: "Author is suspended" };
+  const {
+    about,
+    published,
+    displayName,
+    profilePicture,
+    social: { linkedinHandle, twitterHandle, facebookHandle },
+  } = authorData;
 
   const full_view = await viewRef
     .doc(view)
@@ -282,6 +290,7 @@ export const fetchArticle = async ({ author, view, myHandle }) => {
       return { error: "View not found" };
     })
     .catch((error) => {
+      return { error: "View not found" };
       // console.log(error);
     });
 
@@ -300,18 +309,7 @@ export const fetchArticle = async ({ author, view, myHandle }) => {
 
   if (!full_view.visible.status && full_view.visible.moderator !== "ViewCrunch" && full_view.visible.data !== "just published")
     return { error: "View is hidden" };
-
   if (author !== full_view.author) return { error: "Wrong Author specified" };
-
-  const {
-    displayName,
-    profilePicture,
-    social: { linkedinHandle, twitterHandle, facebookHandle },
-    about,
-    roles: { suspended },
-    published,
-  } = await fetchProfile(author);
-  if (suspended) return { error: "Author is suspended" };
 
   // const comments = [];
   // if (commentsList?.length) {
@@ -321,16 +319,15 @@ export const fetchArticle = async ({ author, view, myHandle }) => {
   //   }
   // }
 
-  const featuredPost = [];
-  const publishedViews = [];
+  const featuredPost1 = [];
   for (const [key, value] of Object.entries(published)) {
-    publishedViews.push({ title: value.title, id: key });
+    featuredPost1.push({ title: value.title, id: key });
   }
-
-  publishedViews?.length && featuredPost.push(publishedViews[range(0, publishedViews.length - 1)]);
-  publishedViews?.length > 1 && featuredPost.push(publishedViews[range(0, publishedViews.length - 1)]);
-
-  // console.log({ publishedViews, published });
+  const featuredPost2 = featuredPost1.filter((x) => x.id !== view),
+    featuredPost3 = [
+      featuredPost2?.length && featuredPost2.splice(range(0, featuredPost2.length - 1), 1),
+      featuredPost2?.length && featuredPost2.splice(range(0, featuredPost2.length - 1), 1),
+    ].flat(Infinity);
 
   const data = {
     id: view,
@@ -355,7 +352,7 @@ export const fetchArticle = async ({ author, view, myHandle }) => {
       facebookHandle,
     },
     post: {
-      featuredPost: featuredPost.filter((x) => x.id !== view).filter((v, i, a) => a.indexOf(v) === i),
+      featuredPost: featuredPost3,
       similarPost: [],
     },
   };
@@ -373,15 +370,13 @@ export const fetchArticle = async ({ author, view, myHandle }) => {
       : {};
   }
 
-  // .where("crunch", "==", crunch[0])
   await viewRef
     .where("crunch", "array-contains-any", crunch)
-    // .where("visible", "==", true)
-    .orderBy("date", "desc")
-    .limit(7)
+    .where("visible.status", "==", true)
+    .orderBy("visible.date", "desc")
+    .limit(5)
     .get()
     .then((snapshot) => {
-      console.log(snapshot?.docs?.length);
       if (!snapshot?.docs?.length) return;
 
       for (const doc of snapshot.docs) {
@@ -407,9 +402,6 @@ export const fetchArticle = async ({ author, view, myHandle }) => {
 
   data.post.similarPost = data.post.similarPost.filter((x) => x.id !== view);
   if (!data) return { error: "Error occured while fetching data" };
-
-  // console.log(data);
-  // return { error: "Error occured while fetching data" };
 
   const advert = {
     company: "SoccerMASS",

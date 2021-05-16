@@ -8,7 +8,6 @@ const verifyRefresh = async (myRefresh) => {
     credentials: "same-origin",
   }).then((res) => res.json());
 
-  console.log("handle string", token, myRefresh);
   if (!token) return "invalid user";
 
   return await firebaseAdmin
@@ -41,7 +40,6 @@ const verifyRefresh = async (myRefresh) => {
         myCoverPicture: profile.coverPicture,
         myDisplayName: profile.displayName,
         myProfession: profile.profession,
-        mySeen: profile.stat?.seen,
       };
     })
     .catch((error) => {

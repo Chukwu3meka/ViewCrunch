@@ -1,4 +1,3 @@
-import dbContent from "./dbContent";
 import { range, toId } from "@utils/clientFunctions";
 export const date = () => new Date(range(2018, 2020), range(0, 11), range(0, 30)).toDateString();
 
@@ -87,6 +86,45 @@ const profession = [
   "Qui ea labore non aliquip labore.",
 ];
 
+const content = `<b>Wealth advice: The rules of wealth</b>
+<h2>we are there</h2>
+  <ol>
+        <li>
+          Anybody can make money - it isn't selective or discriminatory 
+          <Image src="/images/${range(0, 10)}.png" alt="title" layout="fill" />
+        </li>
+<code>console.log("hey")
+const jass = "Jazza"
+// this is an oustanding code block design
+jass.map()
+</code>
+        <li>Decide your definition of wealth </li>
+        <li> Most people are too lazy to be lazy </li>
+        <li> Understand your money is a consequence, not a reward <Image src="/images/${range(
+          11,
+          15
+        )}.png" alt="title" layout="fill" /> </li>
+        <li> If you see money as the solution you'll find it becomes the problem  </li>
+        <li> You can make lots of money, you can enjoy your job, and sleep nights </li>
+        <li> Know the differnces between price and value </li>
+        <li> It harder to manage yourself than it is to manage your money </li>
+        <li> It's never to late to start getting wealthy <Image src="/images/${range(16, 20)}.png" alt="title" layout="fill" /> </li>
+        <li> You have to work hard to get rich enough not to have to work hard </li>
+        <li> Small economies won't make you wealthy but they will make you miserable</li>
+        <li> Spend less than you earn</li>
+        <li> Don't borrow money - unless you really, really have to</li>
+        <li> Cultivate a skill and it'll repay you over and over again <Image src="/images/${range(
+          21,
+          30
+        )}.png" alt="title" layout="fill" /></li>
+        <li> Don't be to busy earning a living to make some money </li>
+        <li> Don't believe you can always win </li>
+        <li> Don't answer ads that promise get-rich-quick schemes - it won't be you who get rich quick</li>
+        <li> Don't ever believe you are only worth what you are being paid</li>
+        <li> Shop for quality <Image src="/images/${range(31, 40)}.png" alt="title" layout="fill" /></li>
+        <li> Never lend money to friends or family unless you are prepared to write it off</li>
+      </ol>`;
+
 export const viewer = name1.map((name) => ({
   handle: toId(`@${name}`),
   profilePicture: `/images/${range(0, 40)}.png`,
@@ -174,7 +212,7 @@ export const view = name3.map((title) => ({
   author: viewer[range(0, viewer.length - 1)].handle,
   crunch: name2[range(0, name2.length - 1)],
   pryImage: `/images/${range(1, 40)}.png`,
-  content: dbContent[range(0, dbContent.length - 1)],
+  content,
   keywords: "keywords",
   description: "description",
   comments: [...Array(range(0, 100)).keys()].map(() => generateComment()),

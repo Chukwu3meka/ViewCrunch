@@ -5,7 +5,7 @@ const handler = async ({ viewId, myHandle, vote }) => {
     const viewRef = firebaseAdmin.firestore().collection("view").doc(viewId);
     const profileRef = firebaseAdmin.firestore().collection("profile").doc(myHandle);
 
-    await firebaseAdmin.firestore().runTransaction(async (t) => {
+    return await firebaseAdmin.firestore().runTransaction(async (t) => {
       const doc = await t.get(viewRef);
       const { upvote, downvote } = doc.data();
 
@@ -30,6 +30,8 @@ const handler = async ({ viewId, myHandle, vote }) => {
         .catch((error) => {
           throw new TypeError(error);
         });
+
+      return { newTotalUpvote: newUpvote.length, status: true };
     });
   } catch (error) {
     throw new TypeError(error);
@@ -40,10 +42,10 @@ export default async (req, res) => {
   try {
     // view: "id of view",  vote: "true or false"
     const { viewId, myHandle, vote } = req.body;
-    await handler({ viewId, myHandle, vote });
-    return res.status(200).send(true);
+    const result = await handler({ viewId, myHandle, vote });
+    return res.status(200).json(result);
   } catch (error) {
-    console.log(error);
-    return res.status(401).send(false);
+    // console.log(error);
+    return res.status(401).json({ status: false });
   }
 };

@@ -13,7 +13,7 @@ const StoryContainer = (props) => {
     [online, setOnline] = useState(props.online),
     [reportView, setReportView] = useState(false),
     [moreActions, setMoreActions] = useState(false),
-    [totalUpvote, setTotalUpvote] = useState(view.upvote),
+    [totalUpvote, setTotalUpvote] = useState(view?.upvote?.length),
     [upvoted, setUpvoted] = useState(!!view.upvote.includes(profile?.myHandle)),
     [viewInFavourite, setViewInFavourite] = useState(view.viewer.viewInFavourite),
     [viewInBlacklist, setViewInBlacklist] = useState(view.viewer.viewInBlacklist),
@@ -88,15 +88,17 @@ const StoryContainer = (props) => {
 
   const voteHandler = (vote) => async () => {
     if (online && profile.myHandle) {
-      const status = await fetcher("/api/crunch/voteView", JSON.stringify({ viewId: view.id, myHandle: profile.myHandle, vote }));
+      const { status, newTotalUpvote } = await fetcher(
+        "/api/crunch/voteView",
+        JSON.stringify({ viewId: view.id, myHandle: profile.myHandle, vote })
+      );
 
       if (status) {
         if (vote) {
-          setTotalUpvote(
-            totalUpvote.includes(profile?.myHandle)
-              ? totalUpvote.filter((x) => x !== profile?.myHandle)
-              : [...totalUpvote, profile?.myHandle]
-          );
+          setTotalUpvote(newTotalUpvote);
+          // totalUpvote.includes(profile?.myHandle)
+          //   ? totalUpvote.filter((x) => x !== profile?.myHandle)
+          //   : [...totalUpvote, profile?.myHandle]
           setUpvoted(!upvoted);
           setDownvoted(false);
         } else {
