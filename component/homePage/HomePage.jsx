@@ -2,10 +2,10 @@ import { connect } from "react-redux";
 import Grid from "@material-ui/core/Grid";
 import { PrimaryBody, NewsFlash, Highlight, styles } from "@component/homePage";
 
-const HomePage = ({ highlight, newsFlash, primaryArticles, deviceWidth }) => (
+const HomePage = ({ highlight, newsFlash, primary, deviceWidth }) => (
   <Grid container alignItems="center" spacing={3}>
     <Grid item xs={12} lg={8} className={styles.primaryBody}>
-      <PrimaryBody primaryPost={primaryArticles} deviceWidth={deviceWidth} />
+      <PrimaryBody primary={primary} deviceWidth={deviceWidth} />
     </Grid>
     <Grid item xs={12} lg={4} className={styles.newsFlash}>
       <NewsFlash newsFlash={newsFlash} />

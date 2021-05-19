@@ -7,8 +7,8 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import { trimString, toId, dateCalculator } from "@utils/clientFunctions";
 
-const PrimaryBody = ({ primaryPost = [], deviceWidth }) =>
-  primaryPost.map(({ title, date, author, crunch, pryImage, displayName, profilePicture }, index) => (
+const PrimaryBody = ({ primary = [], deviceWidth }) =>
+  primary.map(({ title, date, author, crunch, pryImage, displayName, profilePicture }, index) => (
     <Fade left key={index}>
       <Link href={`/${author}/${toId(title)}`}>
         <a>

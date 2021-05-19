@@ -1,10 +1,10 @@
 import { addError, removeError } from "./error";
-import { fetchArticles } from "@utils/firestoreFetch";
+import { fetchViews } from "@utils/firestoreFetch";
 
 export const getMoreArticlesAction = async ({ navTag, lastVisible, articlesRead }) => {
   return async (dispatch) => {
     try {
-      const { articles, propsArticlesRead, propsLastVisible } = await fetchArticles({
+      const { articles, propsArticlesRead, propsLastVisible } = await fetchViews({
         navTag,
         lastVisible,
         articlesRead,

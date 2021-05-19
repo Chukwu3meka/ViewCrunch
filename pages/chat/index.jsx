@@ -1,5 +1,5 @@
 import { ErrorPage, SeoHead } from "@component/page";
-import { fetchChat, fetchArticle, fetchArticles, fetchAuthorData } from "@utils/firestoreFetch";
+import { fetchChat, fetchView, fetchViews, fetchAuthorData } from "@utils/firestoreFetch";
 
 import ChatContainer from "@component/chat";
 

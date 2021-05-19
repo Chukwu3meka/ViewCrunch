@@ -4,7 +4,7 @@
   padding: 0 !important;
 }
 .storyHeader {
-  margin: -10px 0 -35px !important;
+  margin: -10px 0 -25px !important;
   & > h1 {
     font-size: calc(1.8em + 1vw) !important;
     text-align: center;
@@ -21,6 +21,7 @@
 }
 
 .storyMain {
+  padding: 0 !important;
   & > article {
     border-radius: 5px;
     padding: 5px;
@@ -209,6 +210,15 @@
         overflow: hidden;
       }
     }
+  }
+}
+
+@media screen and (min-width: 420px) {
+  .storyMain {
+    padding: 10px !important;
+  }
+  .storyHeader {
+    margin-bottom: -35px !important;
   }
 }
 

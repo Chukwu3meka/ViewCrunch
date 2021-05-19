@@ -175,7 +175,7 @@ export const fetchChat = async ({ handle }) => {
   return { followers, following, blocked };
 };
 
-export const fetchArticles = async ({ limit = 5, navTag, lastVisible }) => {
+export const fetchViews = async ({ limit = 5, navTag, lastVisible }) => {
   // await firestore
   //   .collection("view")
   //   .where("crunch", "array-contains-any", ["lifehack", "career-101"])
@@ -267,7 +267,7 @@ export const fetchArticles = async ({ limit = 5, navTag, lastVisible }) => {
   return { articles: articles.slice(0, limit), propsLastVisible: limit };
 };
 
-export const fetchArticle = async ({ author, view: id, myHandle }) => {
+export const fetchView = async ({ author, view: id, myHandle }) => {
   const view = toId(author, id),
     url = toId(`${author}/${id}`),
     authorData = await fetchProfile(author);
@@ -373,7 +373,7 @@ export const fetchArticle = async ({ author, view: id, myHandle }) => {
   await viewRef
     .where("crunch", "array-contains-any", crunch)
     .where("visible.status", "==", true)
-    .orderBy("visible.date", "desc")
+    .orderBy("date", "desc")
     .limit(5)
     .get()
     .then((snapshot) => {
@@ -416,102 +416,173 @@ export const fetchArticle = async ({ author, view: id, myHandle }) => {
   };
 };
 
-export const fetchHomeData = async () => {
-  // const newsFlash = [],
-  //   highlight = [],
-  //   quoteOfTheDay = {},
-  //   primaryArticles = [];
+export const fetchHomeData = async (myHandle) => {
+  // crunch = [
+  //   "universal",
+  //   "lifehack",
+  //   "career-101",
+  //   "justnow",
+  //   "software-developers",
+  //   "cyber-security",
+  //   "politics",
+  //   "warfare",
+  //   "catholic-church",
+  //   "investment",
+  // ],
+  // blacklist = [{ url: "ViewCrunch-blacklist", title: "ViewCrunch-blacklist" }],
 
-  // await articleRef
-  //   .where("title.length", ">=", 15)
-  //   .orderBy("title.length")
-  //   .orderBy("date", "desc")
-  //   .limit(5)
-  //   .get()
-  //   .then(async (querySnapshot) => {
-  //     for (const doc of querySnapshot.docs) {
-  //       const articleId = doc.id,
-  //         {
-  //           title: { data: title },
-  //           date,
-  //           authorId,
-  //           tag,
-  //           imageUrl,
-  //         } = doc.data();
-  //       const { handle, profilePicture } = await fetchAuthorData(authorId);
-  //       primaryArticles.push({ articleId, title, date: date.toDate().toDateString(), tag, imageUrl, handle, profilePicture });
-  //     }
-  //   });
+  let crunch,
+    blacklist = [],
+    profile = myHandle ? await fetchProfile(myHandle) : [];
 
-  // await newsRef
-  //   .orderBy("date", "desc")
-  //   .limit(5)
-  //   .get()
-  //   .then((querySnapshot) => {
-  //     for (const doc of querySnapshot.docs) {
-  //       const { flash, source, newsLink, date } = doc.data();
-  //       newsFlash.push({ flash, source, newsLink, date: date.toDate().toDateString() });
-  //     }
-  //   });
+  if (profile) {
+    if (typeof profile.crunches === "object") {
+      const crunches = [];
 
-  // await articleRef
-  //   .where("title.length", "==", 3)
-  //   .orderBy("date", "desc")
-  //   .limit(3)
-  //   .get()
-  //   .then((querySnapshot) => {
-  //     for (const doc of querySnapshot.docs) {
-  //       const articleId = doc.id,
-  //         {
-  //           title: { data: title },
-  //           view: { length: viewLength },
-  //           imageUrl,
-  //         } = doc.data();
-  //       highlight.push({ articleId, title, imageUrl, viewLength });
-  //     }
-  //   });
+      for (const [key] of Object.entries(profile.crunches)) {
+        crunches.push(key);
+      }
 
-  // await quoteRef
-  //   .limit(1)
-  //   .get()
-  //   .then((querySnapshot) => {
-  //     for (const quote of querySnapshot.docs) {
-  //       const { phrase, author } = quote.data();
-  //       quoteOfTheDay.phrase = phrase;
-  //       quoteOfTheDay.author = author;
-  //     }
-  //   });
+      crunch = crunch ? null : crunches;
+      blacklist = profile.blacklist.map((x) => x.url);
+    }
+  }
 
-  // return { highlight, newsFlash, primaryArticles, quoteOfTheDay };
+  const primary = [],
+    highlight = [];
+  let lastVisible;
 
-  return {
-    highlight: db.view
-      .filter((x) => x.title.length === 3)
-      .slice(0, 3)
-      .map(({ author, title: { data: title }, upvote: { length: upvote }, pryImage }) => ({
+  const viewsRef = crunch
+    ? await viewRef
+        .where("crunch", "array-contains-any", crunch)
+        .where("visible.status", "==", true)
+        .where("title.length", ">=", 7)
+        .orderBy("title.length")
+        .orderBy("date", "desc")
+        .limit(4 - primary.length)
+    : await viewRef
+        .where("visible.status", "==", true)
+        .where("title.length", ">=", 7)
+        .orderBy("title.length")
+        .orderBy("date", "desc")
+        .limit(4 - primary.length);
+
+  const highlightRef = crunch
+    ? await viewRef
+        .where("crunch", "array-contains-any", crunch)
+        .where("visible.status", "==", true)
+        .where("title.length", "==", 3)
+        .orderBy("date", "desc")
+        .limit(3 - highlight.length)
+    : await viewRef
+        .where("visible.status", "==", true)
+        .where("title.length", "==", 3)
+        .orderBy("date", "desc")
+        .limit(3 - highlight.length);
+
+  const getViews = async (querySnapshot) => {
+    if (!querySnapshot?.docs?.length) {
+      lastVisible = "no other article";
+      return;
+    }
+
+    // lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1].ref.path;
+    lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+
+    for (const doc of querySnapshot.docs) {
+      const {
+        title: { data: title, path },
+        date,
         author,
-        title,
+        crunch,
         pryImage,
-        upvote,
-      })),
+      } = doc.data();
 
-    newsFlash: db.news.map(({ flash, source, newsLink, date }) => ({ flash, source, newsLink, date })),
+      if (!blacklist.includes(path)) {
+        const { displayName, profilePicture } = await fetchProfile(author);
 
-    primaryArticles: db.view
-      .filter((x) => x.title.length >= 10)
-      .slice(0, 4)
-      .map((doc) => {
-        const {
-          title: { data: title },
-          date,
-          author,
+        blacklist.push(path);
+        primary.push({
+          title,
+          date: date.toDate().toDateString(),
           crunch,
+          path,
           pryImage,
-        } = doc;
-        const { displayName, profilePicture } = db.viewer?.find((x) => x.handle === author);
-        return { title, date, crunch, pryImage, displayName, profilePicture, author };
-      }),
+          displayName,
+          profilePicture,
+          author,
+        });
+      }
+    }
   };
+
+  const getHighlight = async (querySnapshot) => {
+    if (!querySnapshot?.docs?.length) {
+      lastVisible = "no other article";
+      return;
+    }
+
+    // lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1].ref.path;
+    lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+
+    for (const doc of querySnapshot.docs) {
+      const {
+        title: { data: title, path },
+        upvote: { length: upvote },
+        pryImage,
+      } = doc.data();
+
+      if (!blacklist.includes(path)) {
+        blacklist.push(path);
+        highlight.push({ title, pryImage, upvote, path });
+      }
+    }
+  };
+
+  let i = 0;
+  while (primary.length < 4 && lastVisible !== "no other article" && i < 4) {
+    i++;
+    await ref(viewsRef, lastVisible)
+      .then(async (querySnapshot) => {
+        await getViews(querySnapshot);
+      })
+      .catch((e) => {
+        // console.log(e);
+      });
+  }
+
+  i = 0;
+  lastVisible = undefined;
+  while (highlight.length < 3 && lastVisible !== "no other article" && i < 3) {
+    i++;
+    await ref(highlightRef, lastVisible)
+      .then(async (querySnapshot) => {
+        await getHighlight(querySnapshot);
+      })
+      .catch((e) => {
+        // console.log(e);
+      });
+  }
+
+  const newsFlash = await newsRef
+    .orderBy("date", "desc")
+    .limit(5)
+    .get()
+    .then((querySnapshot) => {
+      const tempArray = [];
+
+      for (const doc of querySnapshot.docs) {
+        const { flash, source, newsLink, date } = doc.data();
+        tempArray.push({ flash, source, newsLink, date: date.toDate().toDateString() });
+      }
+
+      return tempArray;
+    })
+    .catch((e) => null);
+
+  console.log({ blacklist, lastVisible });
+
+  return { highlight, newsFlash, primary };
 };
 
 // export const fetchViewscape = async (viewscapeId) => {

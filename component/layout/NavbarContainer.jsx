@@ -34,7 +34,7 @@ const NavbarContainer = (props) => {
       linkLen = link.length;
 
     setSelectedNavBar(
-      linkLen === 1
+      link[1] === ""
         ? "Home"
         : linkLen === 2 && link[1] === "favourite"
         ? "Favourite"

@@ -4,7 +4,7 @@ import { fetchProfileData } from "@utils/firestoreFetch";
 
 import { useRouter } from "next/router";
 // import NavPageContainer from "@component/navPage";
-// import { fetchArticles, fetchAuthorData } from "@utils/firestoreFetch";
+// import { fetchViews, fetchAuthorData } from "@utils/firestoreFetch";
 
 const NavPages = ({ articles, propsLastVisible, propsArticlesRead, navTag, error }) => {
   // if (error) return <ErrorPage statusCode={error.code} title={error.title} />;

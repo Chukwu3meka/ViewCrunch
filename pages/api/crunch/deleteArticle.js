@@ -1,10 +1,10 @@
-import { fetchArticle } from "@utils/firestoreFetch";
+import { fetchView } from "@utils/firestoreFetch";
 import { deleteImages } from "@utils/serverFunctions";
 // import { extractMarkdownImages } from "@utils/clientFunctions";
 import firebaseAdmin from "@utils/firebaseServer";
 
 // const deleteArticle = async ({ articleId }) => {
-//   const { content } = await fetchArticle({ articleId });
+//   const { content } = await fetchView({ articleId });
 //   if (!content.markdown) throw new TypeError("invalid content id");
 
 //   const images = (await extractMarkdownImages({ markdown: content.markdown })) || [];

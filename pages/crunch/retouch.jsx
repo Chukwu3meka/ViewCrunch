@@ -9,7 +9,7 @@ const BlogPost = ({ error, viewToBeModified }) => {
 export default BlogPost;
 
 export const getServerSideProps = async (ctx) => {
-  const { fetchArticle } = require("@utils/firestoreFetch");
+  const { fetchView } = require("@utils/firestoreFetch");
   const { extractHandle, errorProp, convertContentToArray } = require("@utils/serverFunctions");
 
   if (!ctx.query.id) return errorProp(404, "View not found");
@@ -18,7 +18,7 @@ export const getServerSideProps = async (ctx) => {
   if (myHandle === "Network connectivity issue") return errorProp(408, "Network connectivity issue");
   if (!myHandle) return errorProp(401, "User not logged in");
 
-  const { view, error } = await fetchArticle({ author: myHandle, viewHref: `${ctx.query.id}`, myHandle });
+  const { view, error } = await fetchView({ author: myHandle, viewHref: `${ctx.query.id}`, myHandle });
   if (error || view.author !== myHandle) return errorProp(404, "View does not exist");
 
   const viewToBeModified = {};
