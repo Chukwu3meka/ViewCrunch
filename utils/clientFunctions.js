@@ -9,9 +9,9 @@ export const trimString = (string = "undefined", lenght = 0) => {
   return string.length > lenght ? `${string.substring(0, lenght).trim()}...` : string;
 };
 
-export const time2read = (article = "") => {
-  // article = htmlToString(article);
-  const wordCount = noOfWord(article);
+export const time2read = (view = "") => {
+  // view = htmlToString(view);
+  const wordCount = noOfWord(view);
   const estimatedTime = (wordCount / 200).toFixed(2);
   const seconds = (Number(estimatedTime.split(".")[1]) * 0.6).toPrecision(2);
   const minutes = Math.round(Number(estimatedTime));
@@ -43,7 +43,15 @@ export const fetcher = (url, data) => {
   }).then((res) => res.json());
 };
 
-export const ref = (docRef, lastVisible) => (lastVisible ? docRef.startAfter(lastVisible) : docRef).get();
+export const viewIdToPath = (viewId) => `/@${viewId.substr(1).replace(/@/g, "/")}`;
+
+// let i = 0;
+// viewId = viewId.replace(/@/g, function (match) {
+//   i++;
+//   retuen((i = 0)) ? "/" : match;
+// });
+
+// export const ref = (docRef, lastVisible) => (lastVisible ? docRef.startAfter(lastVisible) : docRef).get();
 
 const imageObjectConverter = (blob) => {
   return new Promise((resolve, reject) => {
@@ -68,23 +76,22 @@ export const imageObject = async (image) => {
 //   return await markdown.match(/(?<=!\[(.*?)]\()(.*?)(?=\s*\))/gi);
 // };
 
-export const htmlToString = (content = <div>nothing to convert</div>) => {
-  return content.replace(/<[^>]+>/g, "");
-  // const server = require("react-dom/server");
-  // // return content;
-  // return server
-  //   .renderToStaticMarkup(content)
-  //   .replace(/<[^>]+>/g, "")
-  //   .replace(/<img (.*?)\/>/g, "")
-  //   .replace(/<!--(.*?)-->/g, "");
-  //   .trim()
-  //   .replace(/&amp;/g, "&")
-  //   .replace(/&lt;/g, "<")
-  //   .replace(/&gt;/g, ">")
-  //   .replace(/&quot;/g, '"')
-  //   .replace(/&#x27;/g, "'")
-  //   .replace(/&#x2F;/g, "/");
-};
+// export const htmlToString = (content = <div>nothing to convert</div>) => {
+//   // const server = require("react-dom/server");
+//   // // return content;
+//   // return server
+//   //   .renderToStaticMarkup(content)
+//   //   .replace(/<[^>]+>/g, "")
+//   //   .replace(/<img (.*?)\/>/g, "")
+//   //   .replace(/<!--(.*?)-->/g, "");
+//   //   .trim()
+//   //   .replace(/&amp;/g, "&")
+//   //   .replace(/&lt;/g, "<")
+//   //   .replace(/&gt;/g, ">")
+//   //   .replace(/&quot;/g, '"')
+//   //   .replace(/&#x27;/g, "'")
+//   //   .replace(/&#x2F;/g, "/");
+// };
 
 export const chunkArray = ({ array = [], chunkSize = 13 }) => {
   if (!array.length) return [];
@@ -117,5 +124,4 @@ export const dateCalculator = ({ date, days }) => {
 
 export const toId = (a, b) => (b ? `${a}@${b}`.replace(/ /g, "-").toLowerCase() : a.replace(/ /g, "-").toLowerCase());
 
-
-  //filter to remove duplicate .filter((v, i, a) => a.indexOf(v) === i);
+//filter to remove duplicate .filter((v, i, a) => a.indexOf(v) === i);

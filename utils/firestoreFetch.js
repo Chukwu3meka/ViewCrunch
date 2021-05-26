@@ -5,7 +5,7 @@ const profileRef = firestore.collection("profile");
 
 import * as db from "@source/tempdb";
 import { firestore } from "@utils/firebaseClient";
-import { ref, htmlToString, range, toId, shortNumber } from "@utils/clientFunctions";
+import { range, toId, shortNumber, viewIdToPath } from "@utils/clientFunctions";
 
 export const isHandleTaken = async (handle) => {
   return await profileRef
@@ -24,7 +24,7 @@ export const fetchProfile = async (handle) => {
     .get()
     .then((snapshot) => {
       if (snapshot.exists) return snapshot.data();
-      return [];
+      return null;
     })
     .catch((error) => {
       // console.log(error)
@@ -63,6 +63,47 @@ export const fetchCrunches = async (handle) => {
 
   return { crunches, myFollowing, error: false };
 };
+
+// export const fetchCrunch = async (viewscapeId) => {
+//   const crunchDetails = {
+//     id: `${viewscapeId.replace(/ /g, "-").toLowerCase()}`,
+//     title: viewscapeId,
+//     coverPicture: `/images/${range(0, 40)}.png`,
+//     primaryPicture: `/images/${range(0, 40)}.png`,
+//     members: range(700, 7000000),
+//     dateCreated: db.date(),
+//     about: `
+//       Occaecat eu laboris in reprehenderit esse sit labore velit minim tempor exercitation dolore commodo. Cupidatat ex ex minim velit irure labore cillum cillum deserunt magna cillum. Mollit voluptate est culpa ex in dolor irure aute cupidatat labore tempor nostrud esse et. Quis labore ea velit do commodo culpa laboris aliqua veniam magna. Eu pariatur veniam aliquip est duis ullamco tempor anim. Adipisicing dolore ex aute anim anim ex incididunt cillum magna exercitation enim nostrud adipisicing.`,
+//     moderators: db.name1.map((name) => `@${name.replace(/ /g, "_").toLowerCase()}`).slice(0, 3),
+//     followers: db.name1.map((name) => `@${name.replace(/ /g, "_").toLowerCase()}`),
+//   };
+
+//   const views = db.view.map((x) => {
+//     const {
+//       content,
+//       crunch,
+//       pryImage,
+//       author,
+//       upvote: { length: upvote },
+//       title: { data: title },
+//     } = x;
+
+//     const { displayName, profilePicture } = db.viewer?.find((x) => x.handle === author);
+
+//     return {
+//       title,
+//       pryImage,
+//       content,
+//       crunch,
+//       author,
+//       upvote,
+//       displayName,
+//       profilePicture,
+//     };
+//   });
+
+//   return { crunchDetails, views: views.slice(0, 7), propsLastVisible: 7, error: !crunchDetails || !views.length || null };
+// };
 
 export const fetchProfileData = async (handle) => {
   const viewerData = await fetchProfile(handle);
@@ -175,102 +216,12 @@ export const fetchChat = async ({ handle }) => {
   return { followers, following, blocked };
 };
 
-export const fetchViews = async ({ limit = 5, navTag, lastVisible }) => {
-  // await firestore
-  //   .collection("view")
-  //   .where("crunch", "array-contains-any", ["lifehack", "career-101"])
-  //   .get()
-  //   .then(async (querySnapshot) => {
-  //     for (const doc of querySnapshot.docs) {
-  //       console.log(doc.data());
-  //     }
-  //   })
-  //   .catch((e) => console.log(e));
-
-  // const articles = [],
-  //   docRef = navTag
-  //     ? await articleRef
-  //         .where("tag", "==", navTag)
-  //         .orderBy("date", "desc")
-  //         .limit(limit - articles.length)
-  //     : await articleRef.orderBy("date", "desc").limit(limit - articles.length);
-
-  // const getDocs = async (querySnapshot) => {
-  //   if (!querySnapshot?.docs?.length) {
-  //     lastVisible = "no other article";
-  //     return;
-  //   }
-  //   // lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1].ref.path;
-  //   lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
-  //   for (const doc of querySnapshot.docs) {
-  //     const articleId = doc.id,
-  //       {
-  //         markdown,
-  //         imageUrl,
-  //         authorId,
-  //         view: { length: viewLength },
-  //         title: { data: title },
-  //       } = doc.data();
-
-  //     const { handle, profilePicture } = await fetchAuthorData(authorId);
-  //     if (!articlesRead.includes(articleId)) {
-  //       articles.push({
-  //         title,
-  //         handle,
-  //         authorId,
-  //         imageUrl,
-  //         markdown: await formatNavBarMarkdown({ markdown }),
-  //         articleId,
-  //         viewLength,
-  //         profilePicture,
-  //       });
-  //     }
-  //   }
-  // };
-
-  // let i = 1;
-
-  // while (articles.length < limit && lastVisible !== "no other article" && i <= limit) {
-  //   i++;
-  //   await ref(docRef, lastVisible)
-  //     .then(async (querySnapshot) => {
-  //       await getDocs(querySnapshot);
-  //     })
-  //     .catch(() => {});
-  // }
-  // return { articles, propsArticlesRead: articlesRead, propsLastVisible: lastVisible };
-
-  const articles = db.view.map((x) => {
-    const {
-      content,
-      crunch,
-      pryImage,
-      author,
-      upvote: { length: upvote },
-      title: { data: title },
-    } = x;
-
-    const { displayName, profilePicture } = db.viewer?.find((x) => x.handle === author);
-
-    return {
-      title,
-      pryImage,
-      content,
-      crunch,
-      author,
-      upvote,
-      displayName,
-      profilePicture,
-    };
-  });
-
-  return { articles: articles.slice(0, limit), propsLastVisible: limit };
-};
-
 export const fetchView = async ({ author, view: id, myHandle }) => {
   const view = toId(author, id),
     url = toId(`${author}/${id}`),
     authorData = await fetchProfile(author);
+
+  console.log(authorData);
 
   if (!authorData) return { error: "Author does not exist" };
   if (authorData.suspended) return { error: "Author is suspended" };
@@ -416,24 +367,11 @@ export const fetchView = async ({ author, view: id, myHandle }) => {
   };
 };
 
-export const fetchHomeData = async (myHandle) => {
-  // crunch = [
-  //   "universal",
-  //   "lifehack",
-  //   "career-101",
-  //   "justnow",
-  //   "software-developers",
-  //   "cyber-security",
-  //   "politics",
-  //   "warfare",
-  //   "catholic-church",
-  //   "investment",
-  // ],
-  // blacklist = [{ url: "ViewCrunch-blacklist", title: "ViewCrunch-blacklist" }],
+export const fetchViews = async ({ myHandle, lastVisible, crunch = null, blacklist = [] }) => {
+  console.log("0000", { lastVisible });
 
-  let crunch,
-    blacklist = [],
-    profile = myHandle ? await fetchProfile(myHandle) : [];
+  const secondary = [],
+    profile = myHandle && lastVisible !== "no other view" ? await fetchProfile(myHandle) : null;
 
   if (profile) {
     if (typeof profile.crunches === "object") {
@@ -443,46 +381,94 @@ export const fetchHomeData = async (myHandle) => {
         crunches.push(key);
       }
 
-      crunch = crunch ? null : crunches;
+      crunch = crunches;
       blacklist = profile.blacklist.map((x) => x.url);
     }
   }
 
+  const secondaryRef = crunch
+    ? await viewRef.where("crunch", "array-contains-any", crunch).where("visible.status", "==", true).orderBy("date", "desc")
+    : await viewRef.where("visible.status", "==", true).orderBy("date", "desc");
+
+  const getPrimary = async (querySnapshot) => {
+    if (!querySnapshot?.docs?.length) return (lastVisible = "no other view");
+    lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+    // lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1].ref.path;
+
+    for (const doc of querySnapshot.docs) {
+      const {
+        title: { data: title },
+        author,
+        crunch,
+        pryImage,
+        content,
+        upvote: { length: upvote },
+      } = doc.data();
+
+      const path = viewIdToPath(doc.id);
+
+      if (!blacklist.includes(path)) {
+        const { displayName, profilePicture } = await fetchProfile(author);
+
+        secondary.push({
+          crunch,
+          content,
+          title,
+          pryImage,
+          displayName,
+          profilePicture,
+          upvote,
+          path,
+        });
+      }
+    }
+  };
+
+  let i = 0;
+  while (secondary.length < 4 && lastVisible !== "no other view" && i < 3) {
+    i++;
+    await (lastVisible ? secondaryRef.startAfter(lastVisible) : secondaryRef)
+      .limit(5 - secondary.length)
+      .get()
+      .then(async (querySnapshot) => {
+        await getPrimary(querySnapshot).catch((e) => {
+          console.log(e);
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }
+
+  console.log("1111", { lastVisible });
+
+  return {
+    lastVisible: JSON.stringify(lastVisible),
+    // lastVisible,
+    // lastVisible: lastVisible.ref.path,
+    secondary,
+    crunch,
+    blacklist,
+  };
+};
+
+export const fetchHomeData = async ({ crunch, blacklist }) => {
   const primary = [],
     highlight = [];
   let lastVisible;
 
-  const viewsRef = crunch
+  const primaryRef = crunch
     ? await viewRef
         .where("crunch", "array-contains-any", crunch)
         .where("visible.status", "==", true)
         .where("title.length", ">=", 7)
         .orderBy("title.length")
         .orderBy("date", "desc")
-        .limit(4 - primary.length)
-    : await viewRef
-        .where("visible.status", "==", true)
-        .where("title.length", ">=", 7)
-        .orderBy("title.length")
-        .orderBy("date", "desc")
-        .limit(4 - primary.length);
+    : await viewRef.where("visible.status", "==", true).where("title.length", ">=", 7).orderBy("title.length").orderBy("date", "desc");
 
-  const highlightRef = crunch
-    ? await viewRef
-        .where("crunch", "array-contains-any", crunch)
-        .where("visible.status", "==", true)
-        .where("title.length", "==", 3)
-        .orderBy("date", "desc")
-        .limit(3 - highlight.length)
-    : await viewRef
-        .where("visible.status", "==", true)
-        .where("title.length", "==", 3)
-        .orderBy("date", "desc")
-        .limit(3 - highlight.length);
-
-  const getViews = async (querySnapshot) => {
+  const getPrimary = async (querySnapshot) => {
     if (!querySnapshot?.docs?.length) {
-      lastVisible = "no other article";
+      lastVisible = "no other view";
       return;
     }
 
@@ -491,12 +477,14 @@ export const fetchHomeData = async (myHandle) => {
 
     for (const doc of querySnapshot.docs) {
       const {
-        title: { data: title, path },
+        title: { data: title },
         date,
         author,
         crunch,
         pryImage,
       } = doc.data();
+
+      const path = viewIdToPath(doc.id);
 
       if (!blacklist.includes(path)) {
         const { displayName, profilePicture } = await fetchProfile(author);
@@ -516,35 +504,16 @@ export const fetchHomeData = async (myHandle) => {
     }
   };
 
-  const getHighlight = async (querySnapshot) => {
-    if (!querySnapshot?.docs?.length) {
-      lastVisible = "no other article";
-      return;
-    }
-
-    // lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1].ref.path;
-    lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
-
-    for (const doc of querySnapshot.docs) {
-      const {
-        title: { data: title, path },
-        upvote: { length: upvote },
-        pryImage,
-      } = doc.data();
-
-      if (!blacklist.includes(path)) {
-        blacklist.push(path);
-        highlight.push({ title, pryImage, upvote, path });
-      }
-    }
-  };
-
   let i = 0;
-  while (primary.length < 4 && lastVisible !== "no other article" && i < 4) {
+  while (primary.length < 4 && lastVisible !== "no other view" && i < 4) {
     i++;
-    await ref(viewsRef, lastVisible)
+    await (lastVisible ? primaryRef.startAfter(lastVisible) : primaryRef)
+      .limit(4 - primary.length)
+      .get()
       .then(async (querySnapshot) => {
-        await getViews(querySnapshot);
+        await getPrimary(querySnapshot);
+        //     ref(primaryRef, lastVisible)
+        // export const ref = (docRef, lastVisible) => (lastVisible ? docRef.startAfter(lastVisible) : docRef).get();
       })
       .catch((e) => {
         // console.log(e);
@@ -553,11 +522,48 @@ export const fetchHomeData = async (myHandle) => {
 
   i = 0;
   lastVisible = undefined;
-  while (highlight.length < 3 && lastVisible !== "no other article" && i < 3) {
+
+  const highlightRef = crunch
+    ? await viewRef
+        .where("crunch", "array-contains-any", crunch)
+        .where("visible.status", "==", true)
+        .where("title.length", "==", 3)
+        .orderBy("date", "desc")
+    : await viewRef.where("visible.status", "==", true).where("title.length", "==", 3).orderBy("date", "desc");
+
+  const getHighlight = async (querySnapshot) => {
+    if (!querySnapshot?.docs?.length) {
+      lastVisible = "no other view";
+      return;
+    }
+
+    // lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1].ref.path;
+    lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+
+    for (const doc of querySnapshot.docs) {
+      const {
+        title: { data: title },
+        upvote: { length: upvote },
+        pryImage,
+      } = doc.data();
+
+      const path = viewIdToPath(doc.id);
+
+      if (!blacklist.includes(path)) {
+        blacklist.push(path);
+        highlight.push({ title, pryImage, upvote, path });
+      }
+    }
+  };
+
+  while (highlight.length < 3 && lastVisible !== "no other view" && i < 3) {
     i++;
-    await ref(highlightRef, lastVisible)
+    await await (lastVisible ? highlightRef.startAfter(lastVisible) : highlightRef)
+      .limit(3 - highlight.length)
+      .get()
       .then(async (querySnapshot) => {
         await getHighlight(querySnapshot);
+        // ref(highlightRef, lastVisible)
       })
       .catch((e) => {
         // console.log(e);
@@ -580,48 +586,19 @@ export const fetchHomeData = async (myHandle) => {
     })
     .catch((e) => null);
 
-  console.log({ blacklist, lastVisible });
-
   return { highlight, newsFlash, primary };
 };
 
-// export const fetchViewscape = async (viewscapeId) => {
-//   const crunchDetails = {
-//     id: `${viewscapeId.replace(/ /g, "-").toLowerCase()}`,
-//     title: viewscapeId,
-//     coverPicture: `/images/${range(0, 40)}.png`,
-//     primaryPicture: `/images/${range(0, 40)}.png`,
-//     members: range(700, 7000000),
-//     dateCreated: db.date(),
-//     about: `
-//       Occaecat eu laboris in reprehenderit esse sit labore velit minim tempor exercitation dolore commodo. Cupidatat ex ex minim velit irure labore cillum cillum deserunt magna cillum. Mollit voluptate est culpa ex in dolor irure aute cupidatat labore tempor nostrud esse et. Quis labore ea velit do commodo culpa laboris aliqua veniam magna. Eu pariatur veniam aliquip est duis ullamco tempor anim. Adipisicing dolore ex aute anim anim ex incididunt cillum magna exercitation enim nostrud adipisicing.`,
-//     moderators: db.name1.map((name) => `@${name.replace(/ /g, "_").toLowerCase()}`).slice(0, 3),
-//     followers: db.name1.map((name) => `@${name.replace(/ /g, "_").toLowerCase()}`),
-//   };
-
-//   const views = db.view.map((x) => {
-//     const {
-//       content,
-//       crunch,
-//       pryImage,
-//       author,
-//       upvote: { length: upvote },
-//       title: { data: title },
-//     } = x;
-
-//     const { displayName, profilePicture } = db.viewer?.find((x) => x.handle === author);
-
-//     return {
-//       title,
-//       pryImage,
-//       content,
-//       crunch,
-//       author,
-//       upvote,
-//       displayName,
-//       profilePicture,
-//     };
-//   });
-
-//   return { crunchDetails, views: views.slice(0, 7), propsLastVisible: 7, error: !crunchDetails || !views.length || null };
-// };
+// crunch = [
+//   "universal",
+//   "lifehack",
+//   "career-101",
+//   "justnow",
+//   "software-developers",
+//   "cyber-security",
+//   "politics",
+//   "warfare",
+//   "catholic-church",
+//   "investment",
+// ],
+// blacklist = [{ url: "ViewCrunch-blacklist", title: "ViewCrunch-blacklist" }],

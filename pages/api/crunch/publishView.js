@@ -64,7 +64,7 @@ const publishHandler = async ({ profile: { myHandle }, title, description, conte
     visible: {
       moderator: "ViewCrunch",
       date: firebaseAdmin.firestore.Timestamp.now(),
-      status: false,
+      status: moderator ? true : false,
       data: "just published",
     },
   };
@@ -103,7 +103,7 @@ export default async (req, res) => {
     const link = await publishHandler({ profile, title, description, content, keywords, crunch, moderator });
     return res.status(200).json({ link });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return res.status(401).json({ link: false });
   }
 };

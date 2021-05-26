@@ -1,3 +1,3 @@
 export * from "./device";
-export * from "./article";
+export * from "./view";
 export * from "./profile";

@@ -28,7 +28,8 @@ const LayoutContainer = (props) => {
   });
 
   const handleScroll = (e) => {
-    if (!userAtBottom && e.target.clientHeight + 1600 >= e.target.scrollHeight - e.target.scrollTop) {
+    // if (!userAtBottom && e.target.clientHeight + 1600 >= e.target.scrollHeight - e.target.scrollTop) {
+    if (!userAtBottom && e.target.clientHeight + 400 >= e.target.scrollHeight - e.target.scrollTop) {
       setUserAtBottom(true);
       setBottomScroll(true);
     } else {

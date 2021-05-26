@@ -6,7 +6,7 @@ const addComment = async ({ myAuthorID, newComment, articleId }) => {
   if (!roles.includes("comment")) throw new TypeError("comment priviledge is missing");
   return firebaseAdmin
     .firestore()
-    .collection("article")
+    .collection("view")
     .doc(articleId)
     .update({
       comments: firebaseAdmin.firestore.FieldValue.arrayUnion({

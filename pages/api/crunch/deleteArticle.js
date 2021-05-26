@@ -16,7 +16,7 @@ import firebaseAdmin from "@utils/firebaseServer";
 
 //   return firebaseAdmin
 //     .firestore()
-//     .collection("article")
+//     .collection("view")
 //     .doc(articleId)
 //     .delete()
 //     .then(() => "success")
@@ -30,7 +30,7 @@ export default async (req, res) => {
     const authorId = "await verifyIdToken(token)";
     if (!authorId) throw new TypeError("invalid user");
     // const deleted = await deleteArticle({ articleId });
-    // if (deleted !== "success") throw new TypeError("Unable to delete article");
+    // if (deleted !== "success") throw new TypeError("Unable to delete view");
     return res.status(200).json({ status: "success" });
   } catch (error) {
     console.log(error);

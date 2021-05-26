@@ -1,8 +1,6 @@
 import { styles } from "/";
-
-import Button from "@material-ui/core/Button";
 import TerrainIcon from "@material-ui/icons/Terrain";
-import Typography from "@material-ui/core/Typography";
+import { Button, Typography } from "@material-ui/core";
 
 const Loading = ({ loadType, failedText, clickHandler }) => {
   switch (loadType) {

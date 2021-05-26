@@ -122,6 +122,7 @@
       & > *:nth-child(1) {
         text-align: left;
         font-weight: bold;
+        letter-spacing: 0.1em;
         display: -webkit-box;
         -webkit-line-clamp: 1;
         -webkit-box-orient: vertical;
@@ -156,22 +157,6 @@
       height: 150px;
       position: relative;
       width: 100%;
-      .seen {
-        position: absolute;
-        height: 50px;
-        width: 75px;
-        left: 50%;
-        margin: -25px 0 0 -33px;
-        top: 50%;
-      }
-    }
-    & > div:nth-of-type(3) {
-      position: absolute;
-      top: 0;
-      height: 100%;
-      width: 100%;
-      background-color: var(--sec);
-      opacity: 0.13;
     }
   }
 }

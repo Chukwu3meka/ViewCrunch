@@ -92,7 +92,7 @@
   border-radius: 5px;
   @include flexCenter(column);
   justify-content: space-evenly;
-  background-color: lighten($color: #000, $amount: 85);
+  // background-color: lighten($color: #000, $amount: 85);
   & > span {
     @include flexCenter(column);
     & > *:first-child {
@@ -105,7 +105,7 @@
     }
   }
   & > *:nth-child(2) {
-    border: 1px solid white;
+    border: 1px solid var(--dim);
     border-radius: 5px;
     margin: 5px 0 10px;
     position: relative;

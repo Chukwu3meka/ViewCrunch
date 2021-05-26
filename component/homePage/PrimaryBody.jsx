@@ -1,16 +1,15 @@
 import Link from "next/link";
 import Image from "next/image";
 import Fade from "react-reveal/Fade";
-
 import { Avatar } from "@component/others";
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
-import { trimString, toId, dateCalculator } from "@utils/clientFunctions";
+import { Paper, Typography } from "@material-ui/core";
+import { trimString, dateCalculator } from "@utils/clientFunctions";
 
 const PrimaryBody = ({ primary = [], deviceWidth }) =>
-  primary.map(({ title, date, author, crunch, pryImage, displayName, profilePicture }, index) => (
+  primary.map(({ title, date, author, crunch, pryImage, displayName, profilePicture, path }, index) => (
     <Fade left key={index}>
-      <Link href={`/${author}/${toId(title)}`}>
+      {/* <Link href={`/${author}/${toId(title)}`}> */}
+      <Link href={path}>
         <a>
           <Paper elevation={2}>
             <div>

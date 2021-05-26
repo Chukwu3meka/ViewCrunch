@@ -1,75 +1,79 @@
 import { SecBody } from "./";
 import { connect } from "react-redux";
-import { useState, useEffect } from "react";
 import { sleep } from "@utils/clientFunctions";
-import { getMoreArticlesAction } from "@store/actions";
+import { useState, useEffect, useRef } from "react";
+import { getMoreViewAction } from "@store/actions";
 
 const NavPageContainer = (props) => {
-  const { articles, propsLastVisible, propsArticlesRead, navTag, deviceWidth, getMoreArticlesAction, mySeen } = props,
+  const { crunch, blacklist, deviceWidth, getMoreViewAction } = props,
+    scrollRef = useRef(null),
     [loading, setLoading] = useState(false),
-    [content, setContent] = useState(articles),
     [online, setOnline] = useState(props?.online),
-    [fetchFailed, setFetchFailed] = useState(false),
-    [lastVisible, setLastVisible] = useState(propsLastVisible),
-    [articlesRead, setArticlesRead] = useState(propsArticlesRead);
+    [fetchFailed, setFetchFailed] = useState(true),
+    [secondary, setSecondary] = useState(props.secondary),
+    [lastVisible, setLastVisible] = useState(props.lastVisible);
 
   useEffect(() => {
-    if (props?.bottomScroll) getMorePost();
+    setOnline(props?.online);
+  }, [props?.online]);
 
-    // if (props?.bottomScroll && lastVisible !== "no other article") getMorePost();
+  useEffect(() => {
+    if (props?.bottomScroll && lastVisible !== "no other view" && !loading) getMorePost();
   }, [props?.bottomScroll]);
 
   useEffect(() => {
-    if (loading) hideJSX(setLoading);
+    if (loading) stopFetching();
   }, [loading]);
 
   // useEffect(() => {
   //   if (online) {
-  //     if (props?.moreArticles?.length) {
+  //     if (props.moreView?.length) {
   //       setFetchFailed(false);
   //       setLastVisible(props.lastVisible);
-  //       setArticlesRead(props.articlesRead);
-  //       setContent([...content, ...props.moreArticles]);
+  //       setSecondary([...secondary, ...props.moreView]);
   //     } else {
   //       setFetchFailed(true);
   //     }
   //   }
   //   setLoading(false);
-  // }, [props?.moreArticles]);
-
-  // useEffect(() => {
-  //   setOnline(props?.online);
-  // }, [props?.online]);
+  // }, [props?.moreView]);
 
   // useEffect(() => {
   //   if (fetchFailed) hideJSX(setFetchFailed);
   // }, [fetchFailed]);
 
+  const stopFetching = async () => {
+    await sleep(30);
+    setFetchFailed(true);
+    setLoading(false);
+    scrollRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+  };
+
   const getMorePost = async () => {
     setLoading(true);
     setFetchFailed(false);
-    // setLoading(true);
-    // if (online) return getMoreArticlesAction({ navTag, lastVisible, articlesRead });
+    console.log("getMorePost started");
+    // if (online) return getMoreViewAction({ crunch, blacklist, lastVisible });
     // setFetchFailed(true);
   };
 
-  const hideJSX = async (setter) => {
-    await sleep(60);
-    setter(false);
-  };
+  // const hideJSX = async (setter) => {
+  // await sleep(3);
+  // await sleep(1);
+  // setter(false);
+  // };
 
-  return <SecBody {...{ navTag, content, loading, deviceWidth, getMorePost, fetchFailed, mySeen }} />;
+  // return <SecBody {...{ navTag, content, loading, deviceWidth, getMorePost, fetchFailed, mySeen, secondary }} />;
+  return secondary.length ? <SecBody {...{ secondary, deviceWidth, loading, getMorePost, fetchFailed, scrollRef }} /> : "";
 };
 
 const mapStateToProps = (state) => ({
     online: state?.device?.online,
+    moreView: state?.view?.moreView || [],
+    lastVisible: state?.view?.lastVisible,
     deviceWidth: state.device?.deviceWidth,
-    lastVisible: state?.article?.lastVisible,
-    mySeen: state.profile?.mySeen || [],
     bottomScroll: state.device?.bottomScroll,
-    articlesRead: state?.article?.articlesRead || [],
-    moreArticles: state?.article?.moreArticles || [],
   }),
-  mapDispatchToProps = { getMoreArticlesAction };
+  mapDispatchToProps = { getMoreViewAction };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NavPageContainer);

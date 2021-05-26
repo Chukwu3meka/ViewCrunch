@@ -1,7 +1,7 @@
 import { ErrorPage, SeoHead } from "@component/page";
 import HomePage, { SecBodyContainer } from "@component/homePage";
 
-const Index = ({ error, articles, highlight, newsFlash, primary, propsLastVisible, propsArticlesRead }) => {
+const Index = ({ error, highlight, newsFlash, primary, secondary, lastVisible, crunch, blacklist }) => {
   if (error) return <ErrorPage statusCode={error.code} title={error.title} />;
 
   return (
@@ -9,7 +9,7 @@ const Index = ({ error, articles, highlight, newsFlash, primary, propsLastVisibl
       <SeoHead />
       <div style={{ padding: "0 10px 0" }}>
         <HomePage {...{ highlight, newsFlash, primary }} />
-        {/* <SecBodyContainer {...{ articles, propsLastVisible, propsArticlesRead }} /> */}
+        <SecBodyContainer {...{ secondary, lastVisible, crunch, blacklist }} />
       </div>
     </>
   );
@@ -17,24 +17,29 @@ const Index = ({ error, articles, highlight, newsFlash, primary, propsLastVisibl
 export default Index;
 
 export const getServerSideProps = async (ctx) => {
-  const { fetchHomeData } = require("@utils/firestoreFetch"),
+  const { fetchHomeData, fetchViews } = require("@utils/firestoreFetch"),
     { extractHandle, errorProp } = require("@utils/serverFunctions");
 
   const myHandle = await extractHandle(ctx.req.headers.cookie);
   if (myHandle === "Network connectivity issue") return errorProp(408, "Network connectivity issue");
 
-  const { highlight, newsFlash, primary } = await fetchHomeData(myHandle);
+  const { secondary, lastVisible, crunch, blacklist } = await fetchViews({ myHandle }),
+    { highlight, newsFlash, primary } = await fetchHomeData({ crunch, blacklist });
 
-  if (!highlight && !newsFlash && !primary) return errorProp(400, "Unable to fetch");
+  // console.log(secondary);
+
+  if (!highlight && !newsFlash && !primary && !secondary && lastVisible && !crunch && !blacklist)
+    return errorProp(400, "Unable to fetch");
 
   return {
     props: {
       highlight,
       newsFlash,
       primary,
-      // articles: profileData.articles,
-      // propsLastVisible: profileData.propsLastVisible,
-      // propsArticlesRead: [],
+      secondary,
+      lastVisible,
+      crunch,
+      blacklist,
     },
   };
 };
