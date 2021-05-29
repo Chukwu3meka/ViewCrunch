@@ -10,9 +10,10 @@ import { shortNumber, trimString, toId } from "@utils/clientFunctions";
 const SecBody = ({ secondary, deviceWidth, loading, getMorePost, fetchFailed, scrollRef }) => (
   <Grid container alignItems="center">
     <Grid item xs={12} sm={12} className={styles.secBody}>
-      {secondary.map(({ crunch, content, title, author, pryImage, displayName, profilePicture, upvote }, index) => (
+      {secondary.map(({ crunch, content, title, author, pryImage, displayName, profilePicture, upvote, path }, index) => (
         <Fade bottom key={index}>
-          <Link href={`/${author}/${toId(title)}`}>
+          {/* <Link href={`/${author}/${toId(title)}`}> */}
+          <Link href={path}>
             <a>
               <Paper>
                 <div>
@@ -51,7 +52,7 @@ const SecBody = ({ secondary, deviceWidth, loading, getMorePost, fetchFailed, sc
       {loading && <Loading status={loading} />}
       {fetchFailed && (
         <Loading
-          ref={scrollRef}
+          scrollRef={scrollRef}
           loadType="failed"
           failedText="We are unable to find new articles for you; Please, refresh the page or click the button below."
           clickHandler={getMorePost}

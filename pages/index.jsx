@@ -9,7 +9,7 @@ const Index = ({ error, highlight, newsFlash, primary, secondary, lastVisible, c
       <SeoHead />
       <div style={{ padding: "0 10px 0" }}>
         <HomePage {...{ highlight, newsFlash, primary }} />
-        <SecBodyContainer {...{ secondary, lastVisible, crunch, blacklist }} />
+        <SecBodyContainer {...{ secondary, serverLastVisible: lastVisible, crunch, serverBlacklist: blacklist }} />
       </div>
     </>
   );
@@ -17,19 +17,24 @@ const Index = ({ error, highlight, newsFlash, primary, secondary, lastVisible, c
 export default Index;
 
 export const getServerSideProps = async (ctx) => {
-  const { fetchHomeData, fetchViews } = require("@utils/firestoreFetch"),
+  const { fetchHomeViews, fetchViews } = require("@utils/firestoreFetch"),
     { extractHandle, errorProp } = require("@utils/serverFunctions");
 
   const myHandle = await extractHandle(ctx.req.headers.cookie);
   if (myHandle === "Network connectivity issue") return errorProp(408, "Network connectivity issue");
 
   const { secondary, lastVisible, crunch, blacklist } = await fetchViews({ myHandle }),
-    { highlight, newsFlash, primary } = await fetchHomeData({ crunch, blacklist });
+    // { highlight, newsFlash, primary } = (await fetchHomeViews({ crunch, blacklist }));
+    highlight = [],
+    newsFlash = [],
+    primary = [];
+
+  // console.log(lastVisible);
 
   // console.log(secondary);
 
-  if (!highlight && !newsFlash && !primary && !secondary && lastVisible && !crunch && !blacklist)
-    return errorProp(400, "Unable to fetch");
+  if (!secondary || !lastVisible || !crunch || !blacklist) return errorProp(400, "Unable to fetch secondary data");
+  // if (!highlight || !newsFlash || !primary) return errorProp(400, "Unable to fetch primary data");
 
   return {
     props: {

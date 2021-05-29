@@ -2,14 +2,16 @@ import { styles } from "/";
 import TerrainIcon from "@material-ui/icons/Terrain";
 import { Button, Typography } from "@material-ui/core";
 
-const Loading = ({ loadType, failedText, clickHandler }) => {
+const Loading = ({ loadType, failedText, clickHandler, scrollRef }) => {
   switch (loadType) {
     case "failed":
       return (
-        <div className={styles.loadingFailed}>
+        <div className={styles.loadingFailed} ref={scrollRef}>
           <span>
             <TerrainIcon fontSize="large" />
-            <Typography variant="h6">Something went wronG</Typography>
+            <Typography variant="h6" align="center">
+              Something went wronG
+            </Typography>
           </span>
           <Typography variant="body2" color="textSecondary" align="center">
             {failedText}

@@ -87,12 +87,10 @@
 
 .loadingFailed {
   padding: 10px;
-  max-width: 850px;
-  min-height: 150px;
+  margin: 5px 0;
   border-radius: 5px;
   @include flexCenter(column);
-  justify-content: space-evenly;
-  // background-color: lighten($color: #000, $amount: 85);
+  border: 1px solid var(--dim);
   & > span {
     @include flexCenter(column);
     & > *:first-child {
@@ -101,18 +99,14 @@
     h6 {
       position: relative;
       top: -13px;
-      font-size: 1.1em;
+      font-size: 1.3em;
     }
   }
   & > *:nth-child(2) {
-    border: 1px solid var(--dim);
-    border-radius: 5px;
-    margin: 5px 0 10px;
     position: relative;
-    max-width: 350px;
-    font-size: 0.9em;
-    padding: 5px;
     top: -13px;
+    font-size: 1em;
+    border-radius: 5px;
   }
 }
 

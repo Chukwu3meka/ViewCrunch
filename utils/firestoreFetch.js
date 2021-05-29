@@ -4,7 +4,7 @@ const crunchRef = firestore.collection("crunch");
 const profileRef = firestore.collection("profile");
 
 import * as db from "@source/tempdb";
-import { firestore } from "@utils/firebaseClient";
+import firebase, { firestore } from "@utils/firebaseClient";
 import { range, toId, shortNumber, viewIdToPath } from "@utils/clientFunctions";
 
 export const isHandleTaken = async (handle) => {
@@ -368,8 +368,6 @@ export const fetchView = async ({ author, view: id, myHandle }) => {
 };
 
 export const fetchViews = async ({ myHandle, lastVisible, crunch = null, blacklist = [] }) => {
-  console.log("0000", { lastVisible });
-
   const secondary = [],
     profile = myHandle && lastVisible !== "no other view" ? await fetchProfile(myHandle) : null;
 
@@ -390,138 +388,150 @@ export const fetchViews = async ({ myHandle, lastVisible, crunch = null, blackli
     ? await viewRef.where("crunch", "array-contains-any", crunch).where("visible.status", "==", true).orderBy("date", "desc")
     : await viewRef.where("visible.status", "==", true).orderBy("date", "desc");
 
-  const getPrimary = async (querySnapshot) => {
-    if (!querySnapshot?.docs?.length) return (lastVisible = "no other view");
-    lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
-    // lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1].ref.path;
+  const getSecondaryView = async (querySnapshot) => {
+    try {
+      console.log({ querySnapshot: !!querySnapshot, lastVisible: !!lastVisible, lenOfView: querySnapshot?.docs?.length });
 
-    for (const doc of querySnapshot.docs) {
-      const {
-        title: { data: title },
-        author,
-        crunch,
-        pryImage,
-        content,
-        upvote: { length: upvote },
-      } = doc.data();
+      if (!querySnapshot?.docs?.length) return (lastVisible = "no other view");
+      // ? secondaryRef.startAfter(firebase.firestore.Timestamp.fromDate(new Date(lastVisible.date)), lastVisible.path)
+      // lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1].data().title.path;
+      // lastVisible = {
+      //   // date: querySnapshot.docs[querySnapshot.docs.length - 1].data().date.toDate().toDateString(),
+      //   date: querySnapshot.docs[querySnapshot.docs.length - 1].data().date.toDate(),
+      //   path: querySnapshot.docs[querySnapshot.docs.length - 1].data().title.path,
+      // };
+      // lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1].ref.path;
+      lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+      // lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1].data();
+      // lastVisible = querySnapshot.docs;
 
-      const path = viewIdToPath(doc.id);
-
-      if (!blacklist.includes(path)) {
-        const { displayName, profilePicture } = await fetchProfile(author);
-
-        secondary.push({
+      for (const doc of querySnapshot.docs) {
+        const {
+          title: { data: title, path },
+          author,
           crunch,
-          content,
-          title,
           pryImage,
-          displayName,
-          profilePicture,
-          upvote,
-          path,
-        });
+          content,
+          upvote: { length: upvote },
+        } = doc.data();
+
+        if (!blacklist.includes(path)) {
+          blacklist.push(path);
+          const { displayName, profilePicture } = await fetchProfile(author);
+          secondary.push({
+            crunch,
+            content,
+            title,
+            pryImage,
+            displayName,
+            profilePicture,
+            upvote,
+            path,
+          });
+        }
       }
+    } catch (error) {
+      console.log({ error });
     }
   };
 
-  let i = 0;
-  while (secondary.length < 4 && lastVisible !== "no other view" && i < 3) {
+  let i = 1;
+  while (secondary.length < 3 && lastVisible !== "no other view" && i < 3) {
     i++;
+
     await (lastVisible ? secondaryRef.startAfter(lastVisible) : secondaryRef)
-      .limit(5 - secondary.length)
+      .limit(3 - secondary.length)
       .get()
-      .then(async (querySnapshot) => {
-        await getPrimary(querySnapshot).catch((e) => {
-          console.log(e);
-        });
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+      .then(async (querySnapshot) => await getSecondaryView(querySnapshot));
   }
 
-  console.log("1111", { lastVisible });
-
   return {
-    lastVisible: JSON.stringify(lastVisible),
     // lastVisible,
-    // lastVisible: lastVisible.ref.path,
+    lastVisible: JSON.stringify(lastVisible),
     secondary,
-    crunch,
     blacklist,
+    crunch,
   };
 };
 
-export const fetchHomeData = async ({ crunch, blacklist }) => {
-  const primary = [],
-    highlight = [];
-  let lastVisible;
+export const fetchHomeViews = async ({ crunch, blacklist }) => {
+  let i = 0,
+    lastVisible;
 
-  const primaryRef = crunch
-    ? await viewRef
-        .where("crunch", "array-contains-any", crunch)
-        .where("visible.status", "==", true)
-        .where("title.length", ">=", 7)
-        .orderBy("title.length")
-        .orderBy("date", "desc")
-    : await viewRef.where("visible.status", "==", true).where("title.length", ">=", 7).orderBy("title.length").orderBy("date", "desc");
+  const newsFlash = await newsRef
+    .orderBy("date", "desc")
+    .limit(3)
+    .get()
+    .then((querySnapshot) => {
+      const tempArray = [];
 
-  const getPrimary = async (querySnapshot) => {
-    if (!querySnapshot?.docs?.length) {
-      lastVisible = "no other view";
-      return;
-    }
-
-    // lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1].ref.path;
-    lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
-
-    for (const doc of querySnapshot.docs) {
-      const {
-        title: { data: title },
-        date,
-        author,
-        crunch,
-        pryImage,
-      } = doc.data();
-
-      const path = viewIdToPath(doc.id);
-
-      if (!blacklist.includes(path)) {
-        const { displayName, profilePicture } = await fetchProfile(author);
-
-        blacklist.push(path);
-        primary.push({
-          title,
-          date: date.toDate().toDateString(),
-          crunch,
-          path,
-          pryImage,
-          displayName,
-          profilePicture,
-          author,
-        });
+      for (const doc of querySnapshot.docs) {
+        const { flash, source, newsLink, date } = doc.data();
+        tempArray.push({ flash, source, newsLink, date: date.toDate().toDateString() });
       }
-    }
-  };
 
-  let i = 0;
-  while (primary.length < 4 && lastVisible !== "no other view" && i < 4) {
+      return tempArray;
+    })
+    .catch((error) => {
+      //  console.log({ error })
+    });
+
+  const primary = [],
+    primaryRef = crunch
+      ? await viewRef
+          .limit(3 - primary.length)
+          .where("crunch", "array-contains-any", crunch)
+          .where("visible.status", "==", true)
+          .where("title.length", ">=", 7)
+          .orderBy("title.length")
+          .orderBy("title.path", "desc")
+          .orderBy("date", "desc")
+      : await viewRef
+          .limit(3 - primary.length)
+          .where("visible.status", "==", true)
+          .where("title.length", ">=", 7)
+          .orderBy("title.length")
+          .orderBy("title.path", "desc")
+          .orderBy("date", "desc");
+
+  while (primary.length < 3 && lastVisible !== "no other view" && i < 3) {
     i++;
+
     await (lastVisible ? primaryRef.startAfter(lastVisible) : primaryRef)
-      .limit(4 - primary.length)
       .get()
       .then(async (querySnapshot) => {
-        await getPrimary(querySnapshot);
-        //     ref(primaryRef, lastVisible)
-        // export const ref = (docRef, lastVisible) => (lastVisible ? docRef.startAfter(lastVisible) : docRef).get();
+        if (!querySnapshot?.docs?.length) return (lastVisible = "no other view");
+        lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1].data().title.path;
+
+        for (const doc of querySnapshot.docs) {
+          const {
+            title: { data: title, path },
+            date,
+            author,
+            crunch,
+            pryImage,
+          } = doc.data();
+
+          if (!blacklist.includes(path)) {
+            const { displayName, profilePicture } = await fetchProfile(author);
+            blacklist.push(path);
+            primary.push({
+              title,
+              date: date.toDate().toDateString(),
+              crunch,
+              path,
+              pryImage,
+              displayName,
+              profilePicture,
+              author,
+            });
+          }
+        }
       })
-      .catch((e) => {
-        // console.log(e);
+      .catch((error) => {
+        console.log({ error });
       });
   }
-
-  i = 0;
-  lastVisible = undefined;
 
   const highlightRef = crunch
     ? await viewRef
@@ -532,12 +542,7 @@ export const fetchHomeData = async ({ crunch, blacklist }) => {
     : await viewRef.where("visible.status", "==", true).where("title.length", "==", 3).orderBy("date", "desc");
 
   const getHighlight = async (querySnapshot) => {
-    if (!querySnapshot?.docs?.length) {
-      lastVisible = "no other view";
-      return;
-    }
-
-    // lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1].ref.path;
+    if (!querySnapshot?.docs?.length) return (lastVisible = "no other view");
     lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
 
     for (const doc of querySnapshot.docs) {
@@ -556,6 +561,9 @@ export const fetchHomeData = async ({ crunch, blacklist }) => {
     }
   };
 
+  i = 0;
+  const highlight = [];
+
   while (highlight.length < 3 && lastVisible !== "no other view" && i < 3) {
     i++;
     await await (lastVisible ? highlightRef.startAfter(lastVisible) : highlightRef)
@@ -569,22 +577,6 @@ export const fetchHomeData = async ({ crunch, blacklist }) => {
         // console.log(e);
       });
   }
-
-  const newsFlash = await newsRef
-    .orderBy("date", "desc")
-    .limit(5)
-    .get()
-    .then((querySnapshot) => {
-      const tempArray = [];
-
-      for (const doc of querySnapshot.docs) {
-        const { flash, source, newsLink, date } = doc.data();
-        tempArray.push({ flash, source, newsLink, date: date.toDate().toDateString() });
-      }
-
-      return tempArray;
-    })
-    .catch((e) => null);
 
   return { highlight, newsFlash, primary };
 };
