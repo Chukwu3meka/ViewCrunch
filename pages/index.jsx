@@ -9,7 +9,7 @@ const Index = ({ error, highlight, newsFlash, primary, secondary, lastVisible, c
       <SeoHead />
       <div style={{ padding: "0 10px 0" }}>
         <HomePage {...{ highlight, newsFlash, primary }} />
-        <SecBodyContainer {...{ secondary, serverLastVisible: lastVisible, crunch, serverBlacklist: blacklist }} />
+        <SecBodyContainer {...{ serverSecondary: secondary, serverLastVisible: lastVisible, crunch, serverBlacklist: blacklist }} />
       </div>
     </>
   );
@@ -29,22 +29,18 @@ export const getServerSideProps = async (ctx) => {
     newsFlash = [],
     primary = [];
 
-  // console.log(lastVisible);
-
-  // console.log(secondary);
-
   if (!secondary || !lastVisible || !crunch || !blacklist) return errorProp(400, "Unable to fetch secondary data");
-  // if (!highlight || !newsFlash || !primary) return errorProp(400, "Unable to fetch primary data");
+  if (!highlight || !newsFlash || !primary) return errorProp(400, "Unable to fetch primary data");
 
   return {
     props: {
-      highlight,
-      newsFlash,
-      primary,
-      secondary,
-      lastVisible,
       crunch,
+      primary,
       blacklist,
+      highlight,
+      secondary,
+      newsFlash,
+      lastVisible,
     },
   };
 };

@@ -1,22 +1,21 @@
 import { addError, removeError } from "./error";
 import { fetchViews } from "@utils/firestoreFetch";
 
-export const getMoreViewAction = ({ crunch, blacklist: propsBlacklist, lastVisible: propLastVisible }) => {
+export const getMoreViewAction = ({ crunch, reduxBlacklist, reduxLastVisible }) => {
   return async (dispatch) => {
     try {
       const { lastVisible, secondary, blacklist } = await fetchViews({
         crunch,
-        blacklist: propsBlacklist,
-        lastVisible: propLastVisible,
+        blacklist: reduxBlacklist,
+        lastVisible: reduxLastVisible,
       });
 
-      console.log("redux fetch", lastVisible.data().title.path);
-
       dispatch(removeError("error fetching view"));
-      dispatch({ type: "MORE_VIEW", payload: secondary });
+      dispatch({ type: "SECONDARY", payload: secondary });
       dispatch({ type: "LAST_VISIBLE", payload: lastVisible });
       dispatch({ type: "BLACKLIST", payload: blacklist });
-    } catch (err) {
+    } catch (error) {
+      console.log(error);
       dispatch(addError("error fetching articles"));
     }
   };

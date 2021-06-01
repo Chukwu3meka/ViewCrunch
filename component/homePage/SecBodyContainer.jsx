@@ -12,7 +12,7 @@ const NavPageContainer = (props) => {
     [loading, setLoading] = useState(false),
     [online, setOnline] = useState(props?.online),
     [fetchFailed, setFetchFailed] = useState(true),
-    [secondary, setSecondary] = useState(props.secondary),
+    [secondary, setSecondary] = useState(props.serverSecondary),
     [blacklist, setBlacklist] = useState(props.serverBlacklist),
     [lastVisible, setLastVisible] = useState(props.serverLastVisible);
 
@@ -25,29 +25,34 @@ const NavPageContainer = (props) => {
   }, [props?.bottomScroll]);
 
   useEffect(() => {
-    if (loading) stopFetching();
+    if (loading) {
+      const stopFetching = async () => {
+        await sleep(10);
+        setFetchFailed(true);
+        setLoading(false);
+        scrollRef?.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+      };
+      stopFetching();
+    }
+    return () => {
+      setFetchFailed(false);
+      setLoading(true);
+    };
   }, [loading]);
 
   useEffect(() => {
     if (online) {
-      if (props.moreView?.length || props.lastVisible === "no other view") {
+      if (props.secondary?.length || props.lastVisible === "no other view") {
         setFetchFailed(false);
-        setBlacklist(props.blacklist);
-        setLastVisible(props.lastVisible);
-        props.lastVisible !== "no other view" && setSecondary([...secondary, ...props.moreView]);
+        props.blacklist && setBlacklist(props.blacklist);
+        props.lastVisible && setLastVisible(props.lastVisible);
+        props.lastVisible !== "no other view" && setSecondary([...secondary, ...props.secondary]);
       } else {
         setFetchFailed(true);
       }
     }
     setLoading(false);
-  }, [props.moreView]);
-
-  const stopFetching = async () => {
-    await sleep(20);
-    setFetchFailed(true);
-    setLoading(false);
-    scrollRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
-  };
+  }, [props.secondary]);
 
   const getMorePost = async () => {
     if (lastVisible === "no other view") {
@@ -56,7 +61,7 @@ const NavPageContainer = (props) => {
     if (!loading) {
       setLoading(true);
       setFetchFailed(false);
-      if (online) return getMoreViewAction({ crunch, blacklist, lastVisible });
+      if (online) return getMoreViewAction({ crunch, reduxBlacklist: blacklist, reduxLastVisible: lastVisible });
       setFetchFailed(true);
     }
   };
@@ -66,7 +71,7 @@ const NavPageContainer = (props) => {
 
 const mapStateToProps = (state) => ({
     online: state?.device?.online,
-    moreView: state?.view?.moreView,
+    secondary: state?.view?.secondary,
     blacklist: state?.view?.blacklist,
     lastVisible: state?.view?.lastVisible,
     deviceWidth: state.device?.deviceWidth,
