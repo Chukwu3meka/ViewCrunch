@@ -2,7 +2,7 @@ import { SecBody } from "./";
 import { connect } from "react-redux";
 import { useSnackbar } from "notistack";
 import { sleep } from "@utils/clientFunctions";
-import { getMoreViewAction } from "@store/actions";
+import { getMoreViewAction, resetViewAction } from "@store/actions";
 import { useState, useEffect, useRef } from "react";
 
 const NavPageContainer = (props) => {
@@ -21,49 +21,48 @@ const NavPageContainer = (props) => {
   }, [props?.online]);
 
   useEffect(() => {
-    if (props?.bottomScroll) getMorePost();
-  }, [props?.bottomScroll]);
+    if (props?.userAtBottom) getMorePost();
+  }, [props.userAtBottom]);
 
   useEffect(() => {
-    if (loading) {
-      const stopFetching = async () => {
-        await sleep(10);
-        setFetchFailed(true);
-        setLoading(false);
-        scrollRef?.current?.scrollIntoView({ behavior: "smooth", block: "end" });
-      };
-      stopFetching();
-    }
-    return () => {
-      setFetchFailed(false);
-      setLoading(true);
-    };
+    if (loading) stopFetching();
   }, [loading]);
 
   useEffect(() => {
-    if (online) {
-      if (props.secondary?.length || props.lastVisible === "no other view") {
-        setFetchFailed(false);
-        props.blacklist && setBlacklist(props.blacklist);
-        props.lastVisible && setLastVisible(props.lastVisible);
-        props.lastVisible !== "no other view" && setSecondary([...secondary, ...props.secondary]);
-      } else {
-        setFetchFailed(true);
-      }
-    }
     setLoading(false);
-  }, [props.secondary]);
-
-  const getMorePost = async () => {
-    if (lastVisible === "no other view") {
-      enqueueSnackbar(`No more view.`, { variant: "info" });
-    }
-    if (!loading) {
-      setLoading(true);
+    if (props.secondary?.length || props.secondary === "no other view") {
       setFetchFailed(false);
-      if (online) return getMoreViewAction({ crunch, reduxBlacklist: blacklist, reduxLastVisible: lastVisible });
+      if (props.secondary?.length) setSecondary([...secondary, ...props.secondary]);
+    } else {
       setFetchFailed(true);
     }
+  }, [props.secondary]);
+
+  useEffect(() => {
+    if (props.lastVisible || props.lastVisible === "no other view") setLastVisible(props.lastVisible);
+  }, [props.lastVisible]);
+
+  useEffect(() => {
+    if (props.blacklist) setBlacklist(props.blacklist);
+  }, [props.blacklist]);
+
+  const getMorePost = () => {
+    if (lastVisible === "no other view") {
+      enqueueSnackbar(`No more view.`, { variant: "info" });
+    } else {
+      if (!loading && online) {
+        setLoading(true);
+        setFetchFailed(false);
+        getMoreViewAction({ crunch, reduxBlacklist: blacklist, reduxLastVisible: lastVisible });
+      }
+    }
+  };
+
+  const stopFetching = async () => {
+    await sleep(15);
+    setFetchFailed(true);
+    setLoading(false);
+    scrollRef?.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   };
 
   return secondary.length ? <SecBody {...{ secondary, deviceWidth, loading, getMorePost, fetchFailed, scrollRef }} /> : "";
@@ -75,8 +74,8 @@ const mapStateToProps = (state) => ({
     blacklist: state?.view?.blacklist,
     lastVisible: state?.view?.lastVisible,
     deviceWidth: state.device?.deviceWidth,
-    bottomScroll: state.device?.bottomScroll,
+    userAtBottom: state.device?.userAtBottom,
   }),
-  mapDispatchToProps = { getMoreViewAction };
+  mapDispatchToProps = { getMoreViewAction, resetViewAction };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NavPageContainer);

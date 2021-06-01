@@ -2,14 +2,14 @@ import { Layout } from "/";
 import { connect } from "react-redux";
 import { useRouter } from "next/router";
 import { useState, useEffect, useRef } from "react";
-import { setBottomScroll, setDisplayHeader, setDeviceWidth } from "@store/actions";
+import { setUserAtBottom, setDisplayHeader, setDeviceWidth } from "@store/actions";
 
 const LayoutContainer = (props) => {
   const scrollRef = useRef(null),
     [style, setStyle] = useState({}),
     [lastScrollPos, setLastScrollPos] = useState(0),
     [userAtBottom, setUserAtBottom] = useState(false),
-    { children, setBottomScroll, setDisplayHeader, setDeviceWidth, setAppTheme } = props;
+    { children, setDisplayHeader, setDeviceWidth, setAppTheme } = props;
 
   const pathname = useRouter().pathname;
 
@@ -27,24 +27,42 @@ const LayoutContainer = (props) => {
     setDeviceWidth(window.innerWidth);
   });
 
-  const handleScroll = (e) => {
-    // if (!userAtBottom && e.target.clientHeight + 1600 >= e.target.scrollHeight - e.target.scrollTop) {
-    if (!userAtBottom && e.target.clientHeight + 400 >= e.target.scrollHeight - e.target.scrollTop) {
-      setUserAtBottom(true);
-      setBottomScroll(true);
-    } else {
-      setBottomScroll(false);
-    }
+  const userAtBottomHandler = (status) => {
+    setUserAtBottom(status);
+    props.setUserAtBottom(status);
+  };
 
-    if (e.target.scrollTop > lastScrollPos) {
-      setDisplayHeader("hidden");
-    } else {
-      setDisplayHeader("visible");
-      if (userAtBottom && e.target.clientHeight + 1600 < e.target.scrollHeight - e.target.scrollTop) {
-        setUserAtBottom(false);
-      }
-    }
+  const handleScroll = (e) => {
+    // user at bottom
+    if (!userAtBottom && e.target.clientHeight + 400 >= e.target.scrollHeight - e.target.scrollTop) userAtBottomHandler(true);
+    if (userAtBottom && e.target.clientHeight + 400 < e.target.scrollHeight - e.target.scrollTop) userAtBottomHandler(false);
+
+    // bottom scroll
+    if (e.target.scrollTop > lastScrollPos) setDisplayHeader("hidden");
+    if (e.target.scrollTop <= lastScrollPos) setDisplayHeader("visible");
+
     setLastScrollPos(e.target.scrollTop);
+
+    // if (!userAtBottom && e.target.clientHeight + 1600 >= e.target.scrollHeight - e.target.scrollTop) {
+    //   setUserAtBottom(true);
+    //   setBottomScroll(true);
+    //   console.log("user@bottom");
+    //   console.log("bottomScroll true");
+    // } else {
+    //   console.log("bottomScroll false");
+    //   setBottomScroll(false);
+    // }
+
+    // if (e.target.scrollTop > lastScrollPos) {
+    //   setDisplayHeader("hidden");
+    // } else {
+    //   setDisplayHeader("visible");
+    //   if (userAtBottom && e.target.clientHeight + 1600 < e.target.scrollHeight - e.target.scrollTop) {
+    //     console.log("userNot@bottom");
+    //     setUserAtBottom(false);
+    //   }
+    // }
+    // setLastScrollPos(e.target.scrollTop);
   };
 
   const scrollTop = () => {
@@ -58,7 +76,7 @@ const mapStateToProps = (state) => ({
     theme: state.profile?.myTheme || "light",
   }),
   mapDispatchToProps = {
-    setBottomScroll,
+    setUserAtBottom,
     setDisplayHeader,
     setDeviceWidth,
   };

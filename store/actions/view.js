@@ -11,12 +11,13 @@ export const getMoreViewAction = ({ crunch, reduxBlacklist, reduxLastVisible }) 
       });
 
       dispatch(removeError("error fetching view"));
-      dispatch({ type: "SECONDARY", payload: secondary });
-      dispatch({ type: "LAST_VISIBLE", payload: lastVisible });
       dispatch({ type: "BLACKLIST", payload: blacklist });
+      dispatch({ type: "LAST_VISIBLE", payload: lastVisible });
+      dispatch({ type: "SECONDARY", payload: !secondary.length && lastVisible === "no other view" ? "no other view" : secondary });
     } catch (error) {
-      console.log(error);
       dispatch(addError("error fetching articles"));
     }
   };
 };
+
+export const resetViewAction = () => async (dispatch) => dispatch({ type: "SECONDARY", payload: [] });

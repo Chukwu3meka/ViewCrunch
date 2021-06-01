@@ -24,10 +24,7 @@ export const getServerSideProps = async (ctx) => {
   if (myHandle === "Network connectivity issue") return errorProp(408, "Network connectivity issue");
 
   const { secondary, lastVisible, crunch, blacklist } = await fetchViews({ myHandle }),
-    // { highlight, newsFlash, primary } = (await fetchHomeViews({ crunch, blacklist }));
-    highlight = [],
-    newsFlash = [],
-    primary = [];
+    { highlight, newsFlash, primary } = await fetchHomeViews({ crunch, blacklist });
 
   if (!secondary || !lastVisible || !crunch || !blacklist) return errorProp(400, "Unable to fetch secondary data");
   if (!highlight || !newsFlash || !primary) return errorProp(400, "Unable to fetch primary data");

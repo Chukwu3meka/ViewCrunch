@@ -1,4 +1,4 @@
-export const setBottomScroll = (data) => async (dispatch) => dispatch({ type: "USER_AT_BOTTOM", payload: data });
+export const setUserAtBottom = (data) => async (dispatch) => dispatch({ type: "USER_AT_BOTTOM", payload: data });
 
 export const setDisplayHeader = (data) => async (dispatch) => dispatch({ type: "DISPLAY_HEADER", payload: data });
 

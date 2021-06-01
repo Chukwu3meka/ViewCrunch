@@ -1,7 +1,7 @@
 const device = (state = {}, { type, payload }) => {
   switch (type) {
     case "USER_AT_BOTTOM":
-      return { ...state, bottomScroll: payload };
+      return { ...state, userAtBottom: payload };
     case "DISPLAY_HEADER":
       return { ...state, headerDisplay: payload };
     case "DEVICE_WIDTH":
