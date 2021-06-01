@@ -33,6 +33,8 @@ export const fetchProfile = async (handle) => {
 };
 
 export const fetchCrunches = async (handle) => {
+  if (!handle) return { error: true };
+
   const {
     crunches: myCrunches,
     chat: { following: myFollowing },
@@ -54,7 +56,7 @@ export const fetchCrunches = async (handle) => {
           dateCreated: snapshot.data().dateCreated.toDate().toDateString(),
         }))
         .catch((error) => {
-          // console.log(error)
+          // console.log({ crunches: error });
         })),
     };
 
@@ -450,7 +452,7 @@ export const fetchViews = async ({ myHandle, crunch, lastVisible, blacklist }) =
         }
       })
       .catch((error) => {
-        console.log({ secondary: error });
+        // console.log({ secondary: error });
       });
   }
 
@@ -513,7 +515,7 @@ export const fetchHomeViews = async ({ crunch, blacklist }) => {
           path: documentSnapshots.docs[documentSnapshots.docs.length - 1].data().title.path,
         };
 
-        for (const doc of querySnapshot.docs) {
+        for (const doc of documentSnapshots.docs) {
           const {
             title: { data: title, path },
             date,
@@ -540,11 +542,13 @@ export const fetchHomeViews = async ({ crunch, blacklist }) => {
         }
       })
       .catch((error) => {
-        console.log({ primary: error });
+        // console.log({ primary: error });
       });
   }
 
   i = 0;
+  lastVisible = null;
+
   while (highlight.length < 3 && lastVisible !== "no other view" && i < 3) {
     i++;
     await (lastVisible
@@ -562,14 +566,12 @@ export const fetchHomeViews = async ({ crunch, blacklist }) => {
           path: documentSnapshots.docs[documentSnapshots.docs.length - 1].data().title.path,
         };
 
-        for (const doc of querySnapshot.docs) {
+        for (const doc of documentSnapshots.docs) {
           const {
-            title: { data: title },
+            title: { data: title, path },
             upvote: { length: upvote },
             pryImage,
           } = doc.data();
-
-          const path = viewIdToPath(doc.id);
 
           if (!blacklist.includes(path)) {
             blacklist.push(path);
