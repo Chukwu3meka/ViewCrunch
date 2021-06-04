@@ -5,6 +5,7 @@ const sanitize = (value) => {
   return sanitized;
 };
 const validate = (valueType, value) => {
+  value = value.trim();
   switch (valueType) {
     case "handle": {
       const handle = value?.trim().startsWith("@") ? value.substr(1).toLowerCase() : "";
@@ -15,17 +16,17 @@ const validate = (valueType, value) => {
       return undefined;
     }
     case "title": {
-      let status = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.\s\-:()]{12,151}$/gim.test(value.trim());
+      let status = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.\s\-:()]{12,151}$/gim.test(value);
       if (status && value.split(" ").length >= 3 && value.split(" ").length <= 20) return value;
       return undefined;
     }
     case "description": {
-      let status = /^(?!.*\.\.)(?!.*\.$)[^\W][\w+.\s\-:(),?';]{49,214}$/gim.test(value.trim());
+      let status = /^(?!.*\.\.)(?!.*\.$)[^\W][\w+.\s\-:(),?';]{49,214}$/gim.test(value);
       if (status && value.split(" ").length >= 3 && value.split(" ").length <= 70) return value;
       return undefined;
     }
     case "keywords": {
-      let status = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.\s,]{2,101}$/gim.test(value.trim());
+      let status = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.\s,]{2,101}$/gim.test(value);
       if (status && value.split(",").length >= 1 && value.split(",").length <= 5) return value;
       return undefined;
     }

@@ -30,7 +30,7 @@ export default async (req, res) => {
     if (result !== "success") throw new TypeError("error updating");
     return res.status(200).json({ status: "success" });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return res.status(401).json({ status: "failed" });
   }
 };

@@ -13,7 +13,7 @@ const NavPages = ({ articles, propsLastVisible, propsArticlesRead, navTag, error
   const router = useRouter();
   const { "@handle": handle = "not-logged-in" } = router.query;
 
-  console.log(handle);
+  // console.log(handle);
   if (!handle?.startsWith("@")) return "invalid user";
   return `hey ${handle}`;
 

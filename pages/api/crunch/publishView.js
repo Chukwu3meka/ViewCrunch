@@ -50,6 +50,7 @@ const publishHandler = async ({ profile: { myHandle }, title, description, conte
     title: {
       data: title,
       length: title.split(" ").length,
+      path: `/${viewURL}`,
     },
     date: firebaseAdmin.firestore.Timestamp.now(),
     author: myHandle,
@@ -62,10 +63,10 @@ const publishHandler = async ({ profile: { myHandle }, title, description, conte
     description,
     crunch: [crunch],
     visible: {
-      moderator: "ViewCrunch",
+      moderator: myHandle,
       date: firebaseAdmin.firestore.Timestamp.now(),
       status: moderator ? true : false,
-      data: "just published",
+      data: moderator ? "published by a moderator" : "just published",
     },
   };
 

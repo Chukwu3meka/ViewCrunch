@@ -24,7 +24,11 @@ const Privacy = ({}) => {
           <Typography variant="body1" color="textSecondary">
             Request account info
           </Typography>
-          <IconButton aria-label="delete" onClick={() => console.log("hey")}>
+          <IconButton
+            aria-label="delete"
+            onClick={() => {
+              // console.log("hey")
+            }}>
             <EmailIcon />
           </IconButton>
         </span>
@@ -32,7 +36,11 @@ const Privacy = ({}) => {
           <Typography variant="body1" color="textSecondary">
             Delete my account
           </Typography>
-          <IconButton aria-label="delete" onClick={() => console.log("hey")}>
+          <IconButton
+            aria-label="delete"
+            onClick={() => {
+              // console.log("hey")
+            }}>
             <DeleteIcon />
           </IconButton>
         </span>

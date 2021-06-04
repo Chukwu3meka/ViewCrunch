@@ -17,17 +17,17 @@ const Index = ({ error, highlight, newsFlash, primary, secondary, lastVisible, c
 export default Index;
 
 export const getServerSideProps = async (ctx) => {
-  const { fetchHomeViews, fetchViews } = require("@utils/firestoreFetch"),
+  const { fetchViews } = require("@utils/firestoreFetch"),
     { extractHandle, errorProp } = require("@utils/serverFunctions");
 
   const myHandle = await extractHandle(ctx.req.headers.cookie);
   if (myHandle === "Network connectivity issue") return errorProp(408, "Network connectivity issue");
 
-  const { secondary, lastVisible, crunch, blacklist } = await fetchViews({ myHandle }),
-    { highlight, newsFlash, primary } = await fetchHomeViews({ crunch, blacklist });
-
-  if (!secondary || !lastVisible || !crunch || !blacklist) return errorProp(400, "Unable to fetch secondary data");
-  if (!highlight || !newsFlash || !primary) return errorProp(400, "Unable to fetch primary data");
+  const { error, secondary, lastVisible, crunch, blacklist, highlight, newsFlash, primary } = await fetchViews({
+    myHandle,
+    lastVisible: "initial request",
+  });
+  if (error) return errorProp(400, "Unable to fetch secondary data");
 
   return {
     props: {

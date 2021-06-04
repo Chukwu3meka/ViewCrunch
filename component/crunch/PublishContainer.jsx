@@ -57,7 +57,8 @@ const PublishContainer = (props) => {
   const descriptionHandler = (value) => {
     const error1 = "Description can have between 50 to 200 letters",
       error2 = "Description must be between 3 - 70 words",
-      error3 = "Invalid characters; Only Letters, Numbers and special characters like '-', ':', '(', ')', ',', ''', '?',  and ';' are valid",
+      error3 =
+        "Invalid characters; Only Letters, Numbers and special characters like '-', ':', '(', ')', ',', ''', '?',  and ';' are valid",
       errorHandler = (errorNo) => {
         enqueueSnackbar(errorNo, { variant: "error" });
         return true;

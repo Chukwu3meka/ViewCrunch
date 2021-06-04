@@ -36,7 +36,7 @@ const Publish = ({
     <TextField
       fullWidth
       autoFocus
-      error={title.length && !!titleHandler(title)}
+      error={title.length && !!titleHandler(title) ? true : false}
       label="Title"
       placeholder="Title of view"
       value={title}
@@ -45,7 +45,7 @@ const Publish = ({
 
     <TextField
       fullWidth
-      error={description.length && !!descriptionHandler(description)}
+      error={description.length && !!descriptionHandler(description) ? true : false}
       label="Description"
       value={description}
       variant="outlined"
@@ -105,7 +105,7 @@ const Publish = ({
 
     <TextField
       fullWidth
-      error={keywords.length && !!keywordsHandler(keywords)}
+      error={keywords.length && !!keywordsHandler(keywords) ? true : false}
       label="Keywords"
       value={keywords}
       variant="outlined"

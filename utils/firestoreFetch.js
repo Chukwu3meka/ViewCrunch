@@ -220,13 +220,11 @@ export const fetchChat = async ({ handle }) => {
 
 export const fetchView = async ({ author, view: id, myHandle }) => {
   const view = toId(author, id),
-    url = toId(`${author}/${id}`),
     authorData = await fetchProfile(author);
-
-  // console.log(authorData);
 
   if (!authorData) return { error: "Author does not exist" };
   if (authorData.suspended) return { error: "Author is suspended" };
+
   const {
     about,
     published,
@@ -249,7 +247,7 @@ export const fetchView = async ({ author, view: id, myHandle }) => {
 
   const {
     crunch,
-    title: { data: title },
+    title: { data: title, path },
     date,
     content,
     pryImage,
@@ -272,6 +270,8 @@ export const fetchView = async ({ author, view: id, myHandle }) => {
   //   }
   // }
 
+  console.log(path, 1);
+
   const featuredPost1 = [];
   for (const [key, value] of Object.entries(published)) {
     featuredPost1.push({ title: value.title, id: key });
@@ -284,7 +284,7 @@ export const fetchView = async ({ author, view: id, myHandle }) => {
 
   const data = {
     id: view,
-    url,
+    path,
     title,
     content,
     pryImage,
@@ -317,8 +317,8 @@ export const fetchView = async ({ author, view: id, myHandle }) => {
       ? {
           seen: profile?.stat?.seen,
           blacklist: profile?.blacklist,
-          viewInFavourite: profile?.favourite?.find((x) => x.url === url) ? true : false,
-          viewInBlacklist: profile?.blacklist?.find((x) => x.url === url) ? true : false,
+          viewInFavourite: profile?.favourite?.find((x) => x.url === path) ? true : false,
+          viewInBlacklist: profile?.blacklist?.find((x) => x.url === path) ? true : false,
         }
       : {};
   }
@@ -350,6 +350,8 @@ export const fetchView = async ({ author, view: id, myHandle }) => {
       }
     })
     .catch((error) => {
+      return { error: "View has issues" };
+
       // console.log(error);
     });
 
@@ -363,100 +365,12 @@ export const fetchView = async ({ author, view: id, myHandle }) => {
     href: "https://www.soccermass.com",
   };
 
+  console.log(path, 2);
+
   return {
     view: data,
     advert,
   };
-};
-
-export const fetchViews = async ({ myHandle, crunch, lastVisible, blacklist }) => {
-  const secondary = [],
-    profile = myHandle && lastVisible !== "no other view" ? await fetchProfile(myHandle) : null;
-
-  if (profile) {
-    if (!crunch && typeof profile.crunches === "object") {
-      const crunches = [];
-      for (const [key] of Object.entries(profile.crunches)) {
-        crunches.push(key);
-      }
-      crunch = crunches;
-      blacklist = [];
-      profile.blacklist.map((x) => blacklist.push(x.url));
-    }
-  }
-
-  if (!crunch) {
-    crunch = [
-      "universal",
-      "lifehack",
-      "career-101",
-      "justnow",
-      "software-developers",
-      "cyber-security",
-      "politics",
-      "warfare",
-      "catholic-church",
-      "investment",
-    ];
-  }
-
-  let i = 0;
-  const ref = await viewRef
-    .where("crunch", "array-contains-any", crunch)
-    .where("visible.status", "==", true)
-    .orderBy("date", "desc")
-    .orderBy("title.path");
-
-  while (secondary.length < 4 && lastVisible !== "no other view" && i < 3) {
-    i++;
-    await (lastVisible
-      ? ref
-          .startAfter(firebase.firestore.Timestamp.fromDate(new Date(JSON.parse(lastVisible.date)), lastVisible.path))
-          .limit(4 - secondary.length)
-      : ref.limit(4 - secondary.length)
-    )
-      .get()
-      .then(async (documentSnapshots) => {
-        if (!documentSnapshots?.docs?.length) return (lastVisible = "no other view");
-
-        lastVisible = {
-          date: JSON.stringify(documentSnapshots.docs[documentSnapshots.docs.length - 1].data().date.toDate()),
-          path: documentSnapshots.docs[documentSnapshots.docs.length - 1].data().title.path,
-        };
-
-        for (const doc of documentSnapshots.docs) {
-          const {
-            title: { data: title, path },
-            author,
-            crunch,
-            pryImage,
-            content,
-            upvote: { length: upvote },
-          } = doc.data();
-
-          if (!blacklist.includes(path)) {
-            blacklist.push(path);
-            const { displayName, profilePicture } = await fetchProfile(author);
-
-            secondary.push({
-              crunch,
-              content,
-              title,
-              pryImage,
-              displayName,
-              profilePicture,
-              upvote,
-              path,
-            });
-          }
-        }
-      })
-      .catch((error) => {
-        // console.log({ secondary: error });
-      });
-  }
-
-  return { crunch, blacklist, secondary, lastVisible };
 };
 
 export const fetchHomeViews = async ({ crunch, blacklist }) => {
@@ -478,7 +392,8 @@ export const fetchHomeViews = async ({ crunch, blacklist }) => {
       return tempArray;
     })
     .catch((error) => {
-      console.log({ news: error });
+      // console.log({ news: error });
+      return { error: "Server unable to fetch view" };
     });
 
   const ref1 = await viewRef
@@ -542,6 +457,7 @@ export const fetchHomeViews = async ({ crunch, blacklist }) => {
         }
       })
       .catch((error) => {
+        return { error: "Server unable to fetch view" };
         // console.log({ primary: error });
       });
   }
@@ -580,9 +496,106 @@ export const fetchHomeViews = async ({ crunch, blacklist }) => {
         }
       })
       .catch((error) => {
-        console.log({ highlight: error });
+        return { error: "Server unable to fetch view" };
+        // console.log({ highlight: error });
       });
   }
 
   return { highlight, newsFlash, primary };
+};
+
+export const fetchViews = async ({ myHandle, crunch, lastVisible, blacklist }) => {
+  const secondary = [],
+    profile = myHandle ? await fetchProfile(myHandle) : null;
+
+  if (profile) {
+    if (!crunch && typeof profile.crunches === "object") {
+      const crunches = [];
+      for (const [key] of Object.entries(profile.crunches)) {
+        crunches.push(key);
+      }
+      crunch = crunches;
+      blacklist = [];
+      profile.blacklist.map((x) => blacklist.push(x.url));
+    }
+  }
+
+  if (!crunch) {
+    crunch = [
+      "universal",
+      "lifehack",
+      "career-101",
+      "justnow",
+      "software-developers",
+      "cyber-security",
+      "politics",
+      "warfare",
+      "catholic-church",
+      "investment",
+    ];
+  }
+
+  const initialReq =
+    lastVisible === "initial request" ? await fetchHomeViews({ crunch, blacklist }) : { initialReq: "request is empty" };
+
+  if (initialReq?.error) return { error: "Unable to fetch primary data" };
+
+  let i = 0;
+  const ref = await viewRef
+    .where("crunch", "array-contains-any", crunch)
+    .where("visible.status", "==", true)
+    .orderBy("date", "desc")
+    .orderBy("title.path");
+
+  while (secondary.length < 3 && lastVisible && i < 3) {
+    i++;
+    await (lastVisible && lastVisible !== "initial request"
+      ? ref
+          .startAfter(firebase.firestore.Timestamp.fromDate(new Date(JSON.parse(lastVisible.date)), lastVisible.path))
+          .limit(3 - secondary.length)
+      : ref.limit(3 - secondary.length)
+    )
+      .get()
+      .then(async (documentSnapshots) => {
+        if (!documentSnapshots?.docs?.length) return (lastVisible = "last view");
+
+        lastVisible = {
+          date: JSON.stringify(documentSnapshots.docs[documentSnapshots.docs.length - 1].data().date.toDate()),
+          path: documentSnapshots.docs[documentSnapshots.docs.length - 1].data().title.path,
+        };
+
+        for (const doc of documentSnapshots.docs) {
+          const {
+            title: { data: title, path },
+            author,
+            crunch,
+            pryImage,
+            content,
+            upvote: { length: upvote },
+          } = doc.data();
+
+          if (!blacklist.includes(path)) {
+            blacklist.push(path);
+            const { displayName, profilePicture } = await fetchProfile(author);
+
+            secondary.push({
+              crunch,
+              content,
+              title,
+              pryImage,
+              displayName,
+              profilePicture,
+              upvote,
+              path,
+            });
+          }
+        }
+      })
+      .catch((error) => {
+        return { error: "Server unable to fetch view" };
+        // console.log({ secondary: error });
+      });
+  }
+
+  return { ...initialReq, crunch, blacklist, secondary, lastVisible };
 };

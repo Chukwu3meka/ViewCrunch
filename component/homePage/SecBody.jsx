@@ -10,45 +10,46 @@ import { shortNumber, trimString, toId } from "@utils/clientFunctions";
 const SecBody = ({ secondary, deviceWidth, loading, getMorePost, fetchFailed, scrollRef }) => (
   <Grid container alignItems="center">
     <Grid item xs={12} sm={12} className={styles.secBody}>
-      {secondary.map(({ crunch, content, title, author, pryImage, displayName, profilePicture, upvote, path }, index) => (
-        <Fade bottom key={index}>
-          {/* <Link href={`/${author}/${toId(title)}`}> */}
-          <Link href={path}>
-            <a>
-              <Paper>
-                <div>
-                  <Typography variant="button" color="textSecondary">
-                    {title}
-                  </Typography>
-                  <article dangerouslySetInnerHTML={{ __html: content.replace(/<[^>]+>/g, "") }} />
+      {secondary.map(({ crunch, content, title, pryImage, displayName, profilePicture, upvote, path }) => {
+        return path ? (
+          <Fade bottom key={path}>
+            <Link href={path}>
+              <a>
+                <Paper>
                   <div>
+                    <Typography variant="button" color="textSecondary">
+                      {title}
+                    </Typography>
+                    <article dangerouslySetInnerHTML={{ __html: content.replace(/<[^>]+>/g, "") }} />
                     <div>
-                      <Avatar alt={displayName} src={profilePicture} size="small" />
-                      <Typography variant="body2" color="textSecondary">
-                        {deviceWidth <= 350
-                          ? trimString(displayName, 10)
-                          : deviceWidth <= 600
-                          ? trimString(displayName, 13)
-                          : displayName}
-                      </Typography>
-                    </div>
+                      <div>
+                        <Avatar alt={displayName} src={profilePicture} size="small" />
+                        <Typography variant="body2" color="textSecondary">
+                          {deviceWidth <= 350
+                            ? trimString(displayName, 10)
+                            : deviceWidth <= 600
+                            ? trimString(displayName, 13)
+                            : displayName}
+                        </Typography>
+                      </div>
 
-                    <div>
-                      <Typography variant="caption" color="textSecondary">
-                        {`${shortNumber(upvote)} upvote${upvote > 1 ? "s" : ""}
+                      <div>
+                        <Typography variant="caption" color="textSecondary">
+                          {`${shortNumber(upvote)} upvote${upvote > 1 ? "s" : ""}
                         | ${deviceWidth <= 600 ? trimString(crunch, 9) : crunch}`}
-                      </Typography>
+                        </Typography>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div>
-                  <Image src={pryImage} alt={title} layout="fill" />
-                </div>
-              </Paper>
-            </a>
-          </Link>
-        </Fade>
-      ))}
+                  <div>
+                    <Image src={pryImage} alt={title} layout="fill" />
+                  </div>
+                </Paper>
+              </a>
+            </Link>
+          </Fade>
+        ) : null;
+      })}
       {loading && <Loading status={loading} />}
       {fetchFailed && (
         <Loading

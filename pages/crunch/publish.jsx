@@ -20,6 +20,7 @@ export const getServerSideProps = async (ctx) => {
     { published: publishedArray, roles, crunches } = await fetchProfile(myHandle);
 
   if (roles.suspended) return errorProp(401, "Account is suspended, Please, contact ViewCrunch");
+  if (!crunches[crunch]) return errorProp(401, "You're not subscribed to this Crunch");
   if (!crunches[crunch].publish) return errorProp(401, "Temporarily banned from publishing to this Crunch");
 
   if (Object.keys(publishedArray).length !== 0) {

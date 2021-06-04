@@ -44,12 +44,12 @@ const StoryContainer = (props) => {
     if (online && profile.myHandle) {
       const { status, favourite, blacklist } = await fetcher(
         "/api/profile/favourite",
-        JSON.stringify({ url: view.url, title: view.title, myHandle: profile.myHandle, list, append })
+        JSON.stringify({ url: view.path, title: view.title, myHandle: profile.myHandle, list, append })
       );
 
       if (status) {
-        setViewInFavourite(favourite.find((x) => x.url === view.url) ? true : false);
-        setViewInBlacklist(blacklist.find((x) => x.url === view.url) ? true : false);
+        setViewInFavourite(favourite.find((x) => x.url === view.path) ? true : false);
+        setViewInBlacklist(blacklist.find((x) => x.url === view.path) ? true : false);
         enqueueSnackbar("Successful", { variant: "success" });
       } else {
         enqueueSnackbar("Error occured", { variant: "error" });

@@ -61,6 +61,8 @@ const ViewscapeContainer = (props) => {
   };
 
   const unfollowHandler = async () => {
+    return enqueueSnackbar(`Unfollow disabled.`, { variant: "info" });
+
     if (myHandle && online) {
       const status = await fetcher("/api/crunch/followCrunch", JSON.stringify({ id: activeCrunch.id, myHandle, follow: false }));
       if (status) {

@@ -37,7 +37,7 @@ export default async (req, res) => {
     const result = await handler({ myHandle, title, url, list, append });
     return res.status(200).json(result);
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return res.status(401).json({ status: false });
   }
 };
