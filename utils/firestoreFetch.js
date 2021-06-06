@@ -5,7 +5,7 @@ const profileRef = firestore.collection("profile");
 
 import * as db from "@source/tempdb";
 import firebase, { firestore } from "@utils/firebaseClient";
-import { range, toId, shortNumber, viewIdToPath } from "@utils/clientFunctions";
+import { range, toId, shortNumber, refToPath, viewIdToPath } from "@utils/clientFunctions";
 
 export const isHandleTaken = async (handle) => {
   return await profileRef
@@ -109,95 +109,69 @@ export const fetchCrunches = async (handle) => {
 
 export const fetchProfileData = async (handle) => {
   const viewerData = await fetchProfile(handle);
-  // authorData.profileCreated = authorData.profileCreated.toDate().toDateString();
-  if (!viewerData?.handle) return { error: "authorId is invalid" };
+  if (!viewerData?.displayName) return { error: "authorId is invalid" };
 
-  // const articles = [];
-  // await articleRef
-  //   .where("authorId", "==", authorId)
-  //   .get()
-  //   .then((querySnapshot) => {
-  //     for (const doc of querySnapshot.docs) {
-  //       const id = doc.id,
-  //         {
-  //           title: { data: title },
-  //           date,
-  //           rating: { average: rating, length: ratingLength },
-  //           view: { length: view },
-  //           imageUrl,
-  //         } = doc.data();
+  const published = [];
+  for (const [key, value] of Object.entries(viewerData?.published)) {
+    published.push({ ref: key, ...value, date: value.date.toDate().toDateString(), path: refToPath(key) });
+  }
 
-  //       articles.push({
-  //         id,
-  //         view,
-  //         date,
-  //         title,
-  //         rating,
-  //         imageUrl,
-  //         ratingLength,
-  //       });
-  //     }
-  //   })
-  //   .catch(() => {});
-
-  viewerData?.published?.forEach((x) => {
-    // x.date = x.date.toDate().toDateString();
-    x.id = `/${handle}/${toId(x?.title)}`;
-  });
-
-  viewerData.avgVote = Math.round(viewerData?.stat.voteReceived / viewerData?.published.length);
-  viewerData.avgAudience = Math.round(viewerData?.stat.audience / viewerData?.published.length);
   viewerData.handle = handle;
+  viewerData.published = published;
+  viewerData.stat.profileCreated = viewerData.stat.profileCreated.toDate().toDateString();
+  // viewerData.avgVote = Math.round(viewerData?.stat.voteReceived / viewerData.published.length);
+  // viewerData.avgAudience = Math.round(viewerData?.stat.audience / viewerData.published.length);
 
   const viewerHistoryFunc = () => {
-    const totalView = viewerData?.published.length - 1;
+    const totalView = viewerData.published.length - 1;
 
     if (totalView) {
-      const sortDate = [...viewerData?.published].sort((a, b) => new Date(a.date) - new Date(b.date)),
-        sortRating = [...viewerData?.published].sort((a, b) => b.upvote - a.upvote),
-        sortViews = [...viewerData?.published].sort((a, b) => b.views - a.views);
+      const sortDate = [...viewerData.published].sort((a, b) => new Date(a.date) - new Date(b.date)),
+        sortUpvote = [...viewerData.published].sort((a, b) => b.upvote - a.upvote),
+        sortDownvote = [...viewerData.published].sort((a, b) => b.downvote - a.downvote);
 
       return {
-        firstArticle: {
-          link: `/${handle}/${toId(sortDate[0].title)}`,
-          title: sortDate[0].title,
-          // label: sortDate[0].date.toDate().toDateString(),
-          label: sortDate[0].date,
+        date1: {
+          path: sortDate[0].path,
+          label: `${sortDate[0].title} published ${sortDate[0].date}`,
         },
-        lastArticle: {
-          link: `/${handle}/${toId(sortDate[totalView].title)}`,
-          title: sortDate[totalView].title,
-          label: sortDate[totalView].date,
+        date2: {
+          path: sortDate[totalView].path,
+          label: `${sortDate[totalView].date} published ${sortDate[totalView].title}`,
         },
-        highestRating: {
-          link: `/${handle}/${toId(sortRating[0].title)}`,
-          title: `${sortRating[0].title} @ ${shortNumber(sortRating[0].upvote)}`,
+        upvote1: {
+          path: sortUpvote[0].path,
+          label: `${sortUpvote[0].title} @ ${shortNumber(sortUpvote[0].upvote)}`,
         },
-        leastRating: {
-          link: `/${handle}/${toId(sortRating[totalView].title)}`,
-          title: `${sortRating[totalView].title} @ ${shortNumber(sortRating[totalView].upvote)}`,
+        upvote2: {
+          path: sortUpvote[totalView].path,
+          label: `${sortUpvote[totalView].title} @ ${shortNumber(sortUpvote[totalView].upvote)}`,
         },
-        mostView: { link: `/${handle}/${toId(sortViews[0].title)}`, title: sortViews[0].title, label: sortViews[0].views },
-        leastView: {
-          link: `/${handle}/${toId(sortViews[totalView].title)}`,
-          title: sortViews[totalView].title,
-          label: sortViews[totalView].views,
+        downvote1: {
+          path: sortDownvote[0].path,
+          label: `${sortDownvote[0].title} @ ${sortDownvote[0].downvote}`,
+        },
+        downvote2: {
+          path: sortDownvote[totalView].path,
+          label: `${sortDownvote[totalView].title} @ ${sortDownvote[totalView].downvote}`,
         },
       };
     } else {
-      const emptyHistory = { link: null, title: null, label: 0 };
+      const emptyHistory = { path: null, label: null };
       return {
-        firstArticle: emptyHistory,
-        lastArticle: emptyHistory,
-        highestRating: emptyHistory,
-        leastRating: emptyHistory,
-        mostView: emptyHistory,
-        leastView: emptyHistory,
+        date1: emptyHistory,
+        date2: emptyHistory,
+        upvote1: emptyHistory,
+        upvote2: emptyHistory,
+        downvote1: emptyHistory,
+        downvote2: emptyHistory,
       };
     }
   };
 
-  return { viewerData, viewerHistory: await viewerHistoryFunc() };
+  const viewerHistory = await viewerHistoryFunc();
+
+  return { viewerData, viewerHistory };
 };
 
 export const fetchChat = async ({ handle }) => {
@@ -599,3 +573,31 @@ export const fetchViews = async ({ myHandle, crunch, lastVisible, blacklist }) =
 
   return { ...initialReq, crunch, blacklist, secondary, lastVisible };
 };
+
+// const articles = [];
+// await articleRef
+//   .where("authorId", "==", authorId)
+//   .get()
+//   .then((querySnapshot) => {
+//     for (const doc of querySnapshot.docs) {
+//       const id = doc.id,
+//         {
+//           title: { data: title },
+//           date,
+//           rating: { average: rating, length: ratingLength },
+//           view: { length: view },
+//           imageUrl,
+//         } = doc.data();
+
+//       articles.push({
+//         id,
+//         view,
+//         date,
+//         title,
+//         rating,
+//         imageUrl,
+//         ratingLength,
+//       });
+//     }
+//   })
+//   .catch(() => {});

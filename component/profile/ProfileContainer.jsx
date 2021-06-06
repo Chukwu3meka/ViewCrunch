@@ -30,6 +30,8 @@ const ProfileContainer = (props) => {
     // [profileWarning, setProfileWarning] = useState(myProfile);
     [profileWarning, setProfileWarning] = useState(false);
 
+  console.log({ viewerData, viewerHistory, myProfile, token });
+
   const handleTabChange = (event, newValue) => {
       setTabValue(newValue);
     },

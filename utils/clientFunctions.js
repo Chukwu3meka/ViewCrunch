@@ -43,8 +43,11 @@ export const fetcher = (url, data) => {
   }).then((res) => res.json());
 };
 
-export const viewIdToPath = (viewId) => `/@${viewId.substr(1).replace(/@/g, "/")}`;
+// export const viewIdToPath = (viewId) => `/@${viewId.substr(1).replace(/@/g, "/")}`;
 
+export const refToPath = (ref) => `/@${ref.split("@")[1]}/${ref.split("@")[2]}`;
+
+// `/@${viewId.substr(1).replace(/@/g, "/")}`;
 // let i = 0;
 // viewId = viewId.replace(/@/g, function (match) {
 //   i++;

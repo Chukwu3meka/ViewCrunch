@@ -82,10 +82,8 @@ const createProfileHandler = async ({ handle, myRefresh }) => {
             linkedinHandle: handle,
           },
           stat: {
-            voteSent: 0,
-            voteReceived: 0,
             audience: 0,
-            profileCreated,
+            profileCreated: firebaseAdmin.firestore.Timestamp.fromDate(new Date(JSON.parse(profileCreated))),
             seen: [],
             theme: handle === "maduekwepedro" ? "dark" : "light",
           },

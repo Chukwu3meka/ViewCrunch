@@ -187,8 +187,6 @@ export const viewer = name1.map((name) => ({
     personalWebsite: "https://www.ViewCrunch.com",
   },
   stat: {
-    voteSent: range(0, 10000000),
-    voteReceived: range(0, 10000000),
     audience: range(0, 100000),
     profileCreated: date(),
     seen: name3.slice(0, 7).map((title) => ({ viewId: toId(title), author: "@maduekwepedro" })),
