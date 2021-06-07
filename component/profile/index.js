@@ -2,6 +2,7 @@ import MyIntro from "./MyIntro";
 import Profile from "./Profile";
 import Timeline from "./Timeline";
 import MyArticles from "./MyArticles";
+import ImageUpload from "./ImageUpload";
 import styles from "./profile.module.scss";
 import MyArticlesDialog from "./MyArticlesDialog";
 import MyIntroContainer from "./MyIntroContainer";
@@ -15,6 +16,7 @@ export {
   MyIntro,
   Timeline,
   MyArticles,
+  ImageUpload,
   MyIntroContainer,
   MyArticlesDialog,
   TimelineContainer,

@@ -18,7 +18,7 @@ import AboutIcon from "@material-ui/icons/AcUnit";
 
 import IconButton from "@material-ui/core/IconButton";
 
-import { styles, ImageUpload } from "/";
+import { styles } from "/";
 
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
@@ -50,11 +50,13 @@ const MyIntro = ({
 }) => (
   <div className={styles.myIntro}>
     <Paper elevation={4}>
-      <ImageUpload />
-
+      <IconButton className={styles.fixedIcon} color="secondary">
+        <AboutIcon />
+      </IconButton>
       <TextField
         color="secondary"
         value={displayName}
+        // inputProps={{ min: 0, style: { textAlign: "center" } }}
         error={displayName.toString().length > 30 ? true : false}
         onChange={(e) => {
           if (myProfile) {
@@ -94,6 +96,21 @@ const MyIntro = ({
         //   }
         // }}
       />
+
+      {myProfile && (
+        <div className={classes.root}>
+          <Chip
+            avatar={<Avatar alt={handle} src={preview} />}
+            label="Save edit"
+            onDelete={handleSave}
+            onClick={handleSave}
+            disabled={!updateEnabled}
+            clickable
+            color={updateEnabled ? "secondary" : "default"}
+            deleteIcon={<SaveIcon />}
+          />
+        </div>
+      )}
     </Paper>
 
     <Paper elevation={4}>
@@ -107,42 +124,22 @@ const MyIntro = ({
 
       <span>
         <PublishIcon color="primary" fontSize="small" /> &nbsp;
-        <Typography variant="body2">{`${shortNumber(published.length)} views published`}</Typography>
+        <Typography variant="body2">{`Published ${shortNumber(published.length)} since ${profileCreated} `}</Typography>
       </span>
 
       <span>
         <VisibilityIcon color="primary" fontSize="small" /> &nbsp;
-        <Typography variant="body2">{`Joined ViewCrunch ${profileCreated}`}</Typography>
+        <Typography variant="body2">{`${shortNumber(audience / published.length)} average view per post`}</Typography>
       </span>
     </Paper>
 
     <Paper elevation={4}>
-      <IconButton className={styles.fixedIcon} color="secondary">
-        <AboutIcon />
-      </IconButton>
-
       {myProfile ? (
         <div>
-          <span>
-            <TextField size="small" color="primary" variant="outlined" label="LinkedIN" value={linkedinHandle} />
-            <TextField size="small" color="primary" variant="outlined" label="Twitter" value={twitterHandle} />
-            <TextField size="small" color="primary" variant="outlined" label="Facebook" value={facebookHandle} />
-            <TextField size="small" color="primary" variant="outlined" label="Website" value={personalWebsite} />
-          </span>
-          {myProfile && (
-            <div className={classes.root}>
-              <Chip
-                avatar={<Avatar alt={handle} src={preview} />}
-                label="Save edit"
-                onDelete={handleSave}
-                onClick={handleSave}
-                disabled={!updateEnabled}
-                clickable
-                color={updateEnabled ? "secondary" : "default"}
-                deleteIcon={<SaveIcon />}
-              />
-            </div>
-          )}
+          <TextField size="small" color="primary" variant="outlined" label="LinkedIN" value={linkedinHandle} />
+          <TextField size="small" color="primary" variant="outlined" label="Twitter" value={twitterHandle} />
+          <TextField size="small" color="primary" variant="outlined" label="Facebook" value={facebookHandle} />
+          <TextField size="small" color="primary" variant="outlined" label="Website" value={personalWebsite} />
         </div>
       ) : (
         <span>

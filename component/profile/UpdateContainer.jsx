@@ -5,13 +5,12 @@ import { fetcher, noOfWord, imageObject, dateCalculator } from "@utils/clientFun
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    color: "red",
-    //   display: "flex",
-    //   justifyContent: "center",
-    //   flexWrap: "wrap",
-    //   "& > *": {
-    //     margin: theme.spacing(0.5),
-    //   },
+    display: "flex",
+    justifyContent: "center",
+    flexWrap: "wrap",
+    "& > *": {
+      margin: theme.spacing(0.5),
+    },
   },
 }));
 

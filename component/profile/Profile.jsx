@@ -1,9 +1,13 @@
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
+import PropTypes from "prop-types";
+import { makeStyles } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
 import { Alert } from "@component/others";
 import PersonPinIcon from "@material-ui/icons/PersonPin";
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import FingerprintIcon from "@material-ui/icons/Fingerprint";
+import UpdateIcon from "@material-ui/icons/Update";
 import { styles, MyArticlesContainer, MyIntroContainer, TimelineContainer } from "/";
 
 const Profile = ({
@@ -20,25 +24,33 @@ const Profile = ({
   setProfileWarning,
 }) => (
   <div className={styles.profile}>
-    <Tabs value={tabValue} onChange={handleTabChange} indicatorColor="primary" textColor="primary" scrollButtons="on" centered>
-      {/* <Tab label="Profile" icon={<PersonPinIcon />} /> */}
+    <Tabs
+      value={tabValue}
+      onChange={handleTabChange}
+      indicatorColor="primary"
+      textColor="primary"
+      centered
+      variant="scrollable"
+      scrollButtons="on"
+      aria-label="portfolio tabs">
+      <Tab label="Profile" icon={<PersonPinIcon />} />
       <Tab label="Published" icon={<AssignmentIcon />} />
       <Tab label="Timeline" icon={<FingerprintIcon />} />
     </Tabs>
-    {/* <TabPanel value={tabValue} index={0}>
-      <MyIntroContainer {...{ online, myProfile, viewerData, viewerHistory, token }} />
-    </TabPanel> */}
     <TabPanel value={tabValue} index={0}>
-      <MyArticlesContainer {...{ articles: viewerData.published, token, myProfile, enqueueSnackbar }} />
+      <MyIntroContainer {...{ online, myProfile, viewerData, viewerHistory, token }} />
     </TabPanel>
     <TabPanel value={tabValue} index={1}>
-      <TimelineContainer
+      {/* <MyArticlesContainer {...{ articles: viewerData.published, token, myProfile, enqueueSnackbar }} /> */}
+    </TabPanel>
+    <TabPanel value={tabValue} index={2}>
+      {/* <TimelineContainer
         {...{
           viewerHistory,
           profileCreated: viewerData?.stat?.profileCreated,
           enqueueSnackbar,
         }}
-      />
+      /> */}
     </TabPanel>
 
     {profileWarning && myProfile && (
