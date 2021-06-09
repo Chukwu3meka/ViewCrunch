@@ -8,7 +8,7 @@ import PersonPinIcon from "@material-ui/icons/PersonPin";
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import FingerprintIcon from "@material-ui/icons/Fingerprint";
 import UpdateIcon from "@material-ui/icons/Update";
-import { styles, MyArticlesContainer, MyIntroContainer, TimelineContainer } from "/";
+import { styles, MyViewsContainer, MyIntroContainer, TimelineContainer } from "/";
 
 const Profile = ({
   token,
@@ -41,16 +41,16 @@ const Profile = ({
       <MyIntroContainer {...{ online, myProfile, viewerData, viewerHistory, token }} />
     </TabPanel>
     <TabPanel value={tabValue} index={1}>
-      {/* <MyArticlesContainer {...{ articles: viewerData.published, token, myProfile, enqueueSnackbar }} /> */}
+      <MyViewsContainer {...{ articles: viewerData.published, myProfile, enqueueSnackbar }} />
     </TabPanel>
     <TabPanel value={tabValue} index={2}>
-      {/* <TimelineContainer
+      <TimelineContainer
         {...{
           viewerHistory,
           profileCreated: viewerData?.stat?.profileCreated,
           enqueueSnackbar,
         }}
-      /> */}
+      />
     </TabPanel>
 
     {profileWarning && myProfile && (

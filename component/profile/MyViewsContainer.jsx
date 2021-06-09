@@ -1,7 +1,7 @@
 import { makeStyles } from "@material-ui/core/styles";
 import { fetcher } from "@utils/clientFunctions";
 import { useState } from "react";
-import { MyArticles, MyArticlesDialog, styles } from "/";
+import { MyViews, MyViewsDialog, styles } from "/";
 
 const useStyles = makeStyles((theme) => ({
   heading: {
@@ -28,55 +28,61 @@ const MyArticlesContainer = ({ articles, token, myProfile, enqueueSnackbar }) =>
     enqueueSnackbar("Copied to clipboard", { variant: "info" });
   };
 
+  console.log(articles);
+
   const authorArticlesChunk = () => {
-      if (!articles.length) return [];
-      const chunk = [];
-      for (let i = 0; i < articles.length; i += chunkSize) {
-        chunk.push(articles.slice(i, i + chunkSize));
-      }
-      return chunk[page - 1];
-    },
-    handleChange = (panel) => (event, isExpanded) => {
-      setExpanded(isExpanded ? panel : false);
-    },
-    handlePagination = (event, value) => {
-      setPage(value);
-    },
-    deleteArticle = ({ id, upvote, view, title, rating }) => {
-      setDeleteEnabled(upvote < 100 ? true : false);
-      setVerifiedArticle(upvote < 100 ? false : true);
-      // setDeleteSuccess(false);
-      // setDeleteFailed(false);
-      enqueueSnackbar("Cannot delete view with over 100 upvotes", { variant: "warning" });
+    if (!articles.length) return [];
+    const chunk = [];
+    for (let i = 0; i < articles.length; i += chunkSize) {
+      chunk.push(articles.slice(i, i + chunkSize));
+    }
+    return chunk[page - 1];
+  };
 
-      if (upvote < 100) {
-        setSelectedArticle({ id, view, title, rating });
-      }
-      // setForceRefresh(Math.random() * 1000);
-    },
-    confirmDeleteArticle = () => {
-      const { status } = fetcher("/api/deleteArticle", JSON.stringify({ articleId: selectedArticle.id, token }));
+  const handleChange = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
+  };
 
-      if (status === "success") {
-        // setDeleteSuccess(true);
-        enqueueSnackbar("Deleted succesfully", { variant: "success" });
+  const handlePagination = (event, value) => {
+    setPage(value);
+  };
 
-        setDeleteEnabled(false);
+  const deleteArticle = ({ id, upvote, view, title, rating }) => {
+    setDeleteEnabled(upvote < 100 ? true : false);
+    setVerifiedArticle(upvote < 100 ? false : true);
+    // setDeleteSuccess(false);
+    // setDeleteFailed(false);
+    enqueueSnackbar("Cannot delete view with over 100 upvotes", { variant: "warning" });
 
-        setVerifiedArticle(false);
-        const index = articles.findIndex((x) => x.id === selectedArticle.id);
-        if (index > -1) articles.splice(index, 1);
-        setSelectedArticle({});
-      }
-      if (status !== "success") {
-        // setDeleteFailed(true);
-        enqueueSnackbar("Unable to delete", { variant: "error" });
-      }
-    };
+    if (upvote < 100) {
+      setSelectedArticle({ id, view, title, rating });
+    }
+    // setForceRefresh(Math.random() * 1000);
+  };
+
+  const confirmDeleteArticle = () => {
+    const { status } = fetcher("/api/deleteArticle", JSON.stringify({ articleId: selectedArticle.id, token }));
+
+    if (status === "success") {
+      // setDeleteSuccess(true);
+      enqueueSnackbar("Deleted succesfully", { variant: "success" });
+
+      setDeleteEnabled(false);
+
+      setVerifiedArticle(false);
+      const index = articles.findIndex((x) => x.id === selectedArticle.id);
+      if (index > -1) articles.splice(index, 1);
+      setSelectedArticle({});
+    }
+    if (status !== "success") {
+      // setDeleteFailed(true);
+      enqueueSnackbar("Unable to delete", { variant: "error" });
+    }
+  };
 
   return (
     <>
-      <MyArticles
+      <MyViews
         {...{
           page,
           styles,
@@ -93,7 +99,7 @@ const MyArticlesContainer = ({ articles, token, myProfile, enqueueSnackbar }) =>
           copyHandler,
         }}
       />
-      <MyArticlesDialog
+      <MyViewsDialog
         {...{ forceRefresh, deleteEnabled, verifiedArticle, selectedArticle, confirmDeleteArticle }}
         // {...{ forceRefresh, deleteFailed, deleteSuccess, deleteEnabled, verifiedArticle, selectedArticle, confirmDeleteArticle }}
       />

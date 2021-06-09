@@ -17,7 +17,8 @@ const useStyles = makeStyles((theme) => ({
 
 const MyIntroContainer = ({ online, myProfile, viewerData, viewerHistory, token }) => {
   const classes = useStyles(),
-    [image, setImage] = useState(null),
+    [profilePicture, setProfilePicture] = useState(viewerData.profilePicture),
+    [coverPicture, setCoverPicture] = useState(viewerData.coverPicture),
     [forceRefresh, setForceRefresh] = useState(0),
     [updateFailed, setUpdateFailed] = useState(false),
     [handle, setHandle] = useState(viewerData?.handle),
@@ -49,10 +50,10 @@ const MyIntroContainer = ({ online, myProfile, viewerData, viewerHistory, token 
       }
       setForceRefresh(Math.random() * 1000);
     },
-    handleImageChange = async (e) => {
+    handleImageChange = async (e, picture) => {
       if (e.target.files[0]) {
-        setImage(await imageObject(e.target.files[0]));
-        setPreview(await imageObject(e.target.files[0]));
+        if (picture === "profilePicture") setProfilePicture(await imageObject(e.target.files[0]));
+        if (picture === "coverPicture") setCoverPicture(await imageObject(e.target.files[0]));
         if (!updateEnabled) setUpdateEnabled(true);
       }
     };
@@ -78,6 +79,9 @@ const MyIntroContainer = ({ online, myProfile, viewerData, viewerHistory, token 
           updateSuccess,
           setUpdateEnabled,
           handleImageChange,
+
+          profilePicture,
+          coverPicture,
         }}
       />
     </>

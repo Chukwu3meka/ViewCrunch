@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { shortNumber } from "@utils/clientFunctions";
-import { Avatar as ViewAvatar, CoverPic } from "@component/others";
+import { BlinkingAvatar } from "@component/others";
 
 import Chip from "@material-ui/core/Chip";
 import Paper from "@material-ui/core/Paper";
@@ -18,7 +18,7 @@ import AboutIcon from "@material-ui/icons/AcUnit";
 
 import IconButton from "@material-ui/core/IconButton";
 
-import { styles, ImageUpload } from "/";
+import { styles } from "/";
 
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
@@ -47,10 +47,32 @@ const MyIntro = ({
     stat: { profileCreated, audience },
     social: { linkedinHandle, twitterHandle, facebookHandle, personalWebsite },
   },
+
+  profilePicture,
+  coverPicture,
 }) => (
   <div className={styles.myIntro}>
     <Paper elevation={4}>
-      <ImageUpload />
+      <div>
+        <BlinkingAvatar
+          {...{
+            upload: myProfile,
+            size: "l",
+            src: coverPicture,
+            alt: `${displayName} Cover Picture`,
+            handleChange: (e) => handleImageChange(e, "coverPicture"),
+          }}
+        />
+        <BlinkingAvatar
+          {...{
+            upload: myProfile,
+            size: "xl",
+            src: profilePicture,
+            alt: `${displayName} Profile Picture`,
+            handleChange: (e) => handleImageChange(e, "profilePicture"),
+          }}
+        />
+      </div>
 
       <TextField
         color="secondary"
@@ -132,7 +154,7 @@ const MyIntro = ({
           {myProfile && (
             <div className={classes.root}>
               <Chip
-                avatar={<Avatar alt={handle} src={preview} />}
+                avatar={<Avatar alt={handle} src={profilePicture} />}
                 label="Save edit"
                 onDelete={handleSave}
                 onClick={handleSave}

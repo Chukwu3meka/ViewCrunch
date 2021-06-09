@@ -1,25 +1,23 @@
 import MyIntro from "./MyIntro";
 import Profile from "./Profile";
 import Timeline from "./Timeline";
-import MyArticles from "./MyArticles";
-import ImageUpload from "./ImageUpload";
+import MyViews from "./MyViews";
 import styles from "./profile.module.scss";
-import MyArticlesDialog from "./MyArticlesDialog";
+import MyViewsDialog from "./MyViewsDialog";
 import MyIntroContainer from "./MyIntroContainer";
 import ProfileContainer from "./ProfileContainer";
+import MyViewsContainer from "./MyViewsContainer";
 import TimelineContainer from "./TimelineContainer";
-import MyArticlesContainer from "./MyArticlesContainer";
 
 export {
   styles,
   Profile,
   MyIntro,
   Timeline,
-  MyArticles,
-  ImageUpload,
+  MyViews,
   MyIntroContainer,
-  MyArticlesDialog,
+  MyViewsDialog,
   TimelineContainer,
-  MyArticlesContainer,
+  MyViewsContainer,
   ProfileContainer as default,
 };

@@ -34,28 +34,24 @@ const StyledBadge = withStyles((theme) => ({
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-    overflow: "hidden",
     borderRadius: "50%",
   },
-  small: {
-    width: theme.spacing(3),
-    height: theme.spacing(3),
+  n: {
+    width: theme.spacing(2),
+    height: theme.spacing(2),
   },
-  large: {
+  l: {
+    width: theme.spacing(6),
+    height: theme.spacing(6),
+  },
+  xl: {
     width: theme.spacing(20),
     height: theme.spacing(20),
   },
-  rounded: {
-    color: "#fff",
-    backgroundColor: theme.palette.primary.main,
-  },
 }));
 
-const ImageUpload = ({ src, alt, size = "normal", handleChange }) => {
-  const classes = useStyles(),
+const BlinkingAvatar = ({ src = "/images/no-image.webp", alt = "ViewCrunch", handleChange, size = "n", upload = false }) => {
+  const classes = useStyles(size),
     tags = { alt, src, className: classes[size] };
 
   return (
@@ -67,24 +63,26 @@ const ImageUpload = ({ src, alt, size = "normal", handleChange }) => {
           horizontal: "right",
         }}
         variant="dot">
-        <Avatar {...tags} className={classes.large} />
-        <input
-          type="file"
-          // onChange={handleChange}
-          accept=".jpg, .jpeg, .png"
-          style={{
-            borderRadius: "50%",
-            position: "absolute",
-            top: "-35px",
-            left: 0,
-            height: "calc(100% + 36px)",
-            width: "calc(100% + 5px)",
-            outline: "none",
-          }}
-        />
+        <Avatar {...tags} />
+        {upload ? (
+          <input
+            type="file"
+            onChange={handleChange}
+            accept=".jpg, .jpeg, .png"
+            style={{
+              borderRadius: "50%",
+              position: "absolute",
+              top: "-35px",
+              left: 0,
+              height: "calc(100% + 36px)",
+              width: "calc(100% + 5px)",
+              outline: "none",
+            }}
+          />
+        ) : null}
       </StyledBadge>
     </div>
   );
 };
 
-export default ImageUpload;
+export default BlinkingAvatar;

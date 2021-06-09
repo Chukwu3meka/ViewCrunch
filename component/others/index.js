@@ -9,5 +9,6 @@ import IOSSwitch from "./IOSSwitch";
 import FixedIcon from "./FixedIcon";
 import SocialShare from "./SocialShare";
 import styles from "./styles.module.scss";
+import BlinkingAvatar from "./BlinkingAvatar";
 
-export { Alert, Dialog, styles, Drawer, Avatar, Loading, CoverPic, LineText, FixedIcon, IOSSwitch, SocialShare };
+export { Alert, Dialog, styles, Drawer, Avatar, Loading, CoverPic, LineText, FixedIcon, BlinkingAvatar, IOSSwitch, SocialShare };

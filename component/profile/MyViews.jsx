@@ -13,7 +13,8 @@ import Pagination from "@material-ui/lab/Pagination";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
-import VisibilityIcon from "@material-ui/icons/Visibility";
+import UpvoteIcon from "@material-ui/icons/ThumbUp";
+
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
@@ -34,10 +35,10 @@ const MyArticles = ({
 }) => (
   <div className={styles.myArticles}>
     <div>
-      {authorArticlesChunk().map(({ id, date, title, upvote, pryImage, views, crunch }, index) => {
+      {authorArticlesChunk().map(({ ref, path, date, title, upvote, pryImage }) => {
         return (
-          <Accordion expanded={expanded === id} onChange={handleChange(id)} key={index}>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1bh-content" id="panel1bh-header">
+          <Accordion expanded={expanded === ref} onChange={handleChange(ref)} key={ref}>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="my-views" id="my-views">
               <Typography className={classes.heading}>{title}</Typography>
             </AccordionSummary>
             <AccordionDetails>
@@ -46,17 +47,17 @@ const MyArticles = ({
                   <Image src={pryImage} alt={title} layout="fill" />
                 </div>
                 <div>
-                  <Link href={id}>
-                    <a>{`https://ViewCrunch.com${id}`}</a>
+                  <Link href={path}>
+                    <a>{`https://ViewCrunch.com${path}`}</a>
                   </Link>
                   <div>
                     <Typography variant="subtitle2" color="textSecondary">
                       {date}
                     </Typography>
                     <span>
-                      <VisibilityIcon color="primary" fontSize="small" /> &nbsp;
+                      <UpvoteIcon color="primary" fontSize="small" /> &nbsp;
                       <Typography variant="body2" color="textSecondary">
-                        {shortNumber(views)}
+                        {shortNumber(upvote)}
                       </Typography>
                     </span>
                   </div>
@@ -64,7 +65,7 @@ const MyArticles = ({
                 {myProfile && (
                   <div>
                     <Tooltip title="Copy">
-                      <IconButton aria-label="copy" onClick={copyHandler(id)}>
+                      <IconButton aria-label="copy" onClick={copyHandler(ref)}>
                         <FileCopyIcon />
                       </IconButton>
                     </Tooltip>
