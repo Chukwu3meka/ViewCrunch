@@ -149,11 +149,11 @@ export const fetchProfileData = async (handle) => {
         },
         downvote1: {
           path: sortDownvote[0].path,
-          label: `${sortDownvote[0].title} @ ${sortDownvote[0].downvote}`,
+          label: `${sortDownvote[0].title} @ ${shortNumber(sortDownvote[0].downvote)}`,
         },
         downvote2: {
           path: sortDownvote[totalView].path,
-          label: `${sortDownvote[totalView].title} @ ${sortDownvote[totalView].downvote}`,
+          label: `${sortDownvote[totalView].title} @ ${shortNumber(sortDownvote[totalView].downvote)}`,
         },
       };
     } else {

@@ -95,10 +95,10 @@
 .myArticles {
   padding: 10px 5px;
   @include flexCenter(column);
+  height: 100% !important;
   & > div {
     width: 100%;
   }
-
   .accordionStyle {
     @include flexCenter(column);
     & > div:first-child {

@@ -69,7 +69,7 @@ const MyArticles = ({
                         <FileCopyIcon />
                       </IconButton>
                     </Tooltip>
-                    {/* <Link href={{ pathname: `/crunch/retouch`, query: { id: toId(title) } }}>
+                    <Link href={{ pathname: `/crunch/retouch`, query: { ref } }}>
                       <a>
                         <Tooltip title="Edit">
                           <IconButton aria-label="edit">
@@ -77,12 +77,12 @@ const MyArticles = ({
                           </IconButton>
                         </Tooltip>
                       </a>
-                    </Link> */}
-                    {/* <Tooltip title={views < 100 ? "Delete" : "Retain"}>
-                      <IconButton aria-label="delete" onClick={() => deleteArticle({ id, crunch, views, title, upvote })}>
+                    </Link>
+                    <Tooltip title={upvote < 100 ? "Delete" : "Retain"}>
+                      <IconButton aria-label="delete" onClick={() => deleteArticle({ ref, title })}>
                         <DeleteIcon />
                       </IconButton>
-                    </Tooltip> */}
+                    </Tooltip>
                   </div>
                 )}
               </div>

@@ -45,6 +45,7 @@ const useStyles = makeStyles((theme) => ({
     height: theme.spacing(6),
   },
   xl: {
+    background: theme.palette.text.secondary,
     width: theme.spacing(20),
     height: theme.spacing(20),
   },
