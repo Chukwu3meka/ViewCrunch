@@ -1,36 +1,19 @@
-import { dateCalculator } from "@utils/clientFunctions";
 import { Profile } from "/";
 import { connect } from "react-redux";
 import { useSnackbar } from "notistack";
 import { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-
-// const useStyles = makeStyles({
-//   root: {
-//     padding: 0,
-//     flexGrow: 1,
-//     width: "100%",
-//     marginTop: "20px",
-//     maxWidth: "1000px",
-//     minWidth: "100px",
-//   },
-// });
 
 const ProfileContainer = (props) => {
   const { enqueueSnackbar } = useSnackbar();
-  const { viewerData, viewerHistory, myProfile, token } = props;
+  const { viewerData, myProfile, myHandle } = props;
+
+  const [tabValue, setTabValue] = useState(0),
+    [online, setOnline] = useState(props.online),
+    [profileWarning, setProfileWarning] = useState(myProfile);
 
   useEffect(() => {
     setOnline(props.online);
   }, [props.online]);
-
-  // classes = useStyles(),
-  const [tabValue, setTabValue] = useState(0),
-    [online, setOnline] = useState(props.online),
-    // [profileWarning, setProfileWarning] = useState(myProfile);
-    [profileWarning, setProfileWarning] = useState(false);
-
-  console.log({ viewerData, viewerHistory, myProfile, token });
 
   const handleTabChange = (event, newValue) => {
       setTabValue(newValue);
@@ -44,25 +27,23 @@ const ProfileContainer = (props) => {
   return (
     <Profile
       {...{
-        viewerData,
-        viewerHistory,
-        token,
         online,
-        // classes,
+        myHandle,
         tabValue,
         TabPanel,
         myProfile,
+        viewerData,
         profileWarning,
         handleTabChange,
-        setProfileWarning,
         enqueueSnackbar,
+        setProfileWarning,
       }}
     />
   );
 };
 
 const mapStateToProps = (state) => ({
-    token: state?.profile?.token,
+    myHandle: state.profile?.myHandle,
     online: state?.device?.online,
   }),
   mapDispatchToProps = {};

@@ -1,62 +1,92 @@
 import { useState } from "react";
 import { styles, MyIntro } from "/";
-import { makeStyles } from "@material-ui/core/styles";
 import { fetcher, noOfWord, imageObject, dateCalculator } from "@utils/clientFunctions";
+import validate from "@utils/validator";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    color: "red",
-    //   display: "flex",
-    //   justifyContent: "center",
-    //   flexWrap: "wrap",
-    //   "& > *": {
-    //     margin: theme.spacing(0.5),
-    //   },
-  },
-}));
-
-const MyIntroContainer = ({ online, myProfile, viewerData, viewerHistory, token }) => {
-  const classes = useStyles(),
-    [profilePicture, setProfilePicture] = useState(viewerData.profilePicture),
+const MyIntroContainer = ({ online, myProfile, viewerData, myHandle }) => {
+  const [profilePicture, setProfilePicture] = useState(viewerData.profilePicture),
     [coverPicture, setCoverPicture] = useState(viewerData.coverPicture),
     [forceRefresh, setForceRefresh] = useState(0),
     [updateFailed, setUpdateFailed] = useState(false),
     [handle, setHandle] = useState(viewerData?.handle),
     [updateSuccess, setUpdateSuccess] = useState(false),
     [updateEnabled, setUpdateEnabled] = useState(false),
+    [imageEnabled, setImageEnabled] = useState(false),
     [about, setAbout] = useState(viewerData?.about),
-    [preview, setPreview] = useState(viewerData?.profilePicture);
+    [preview, setPreview] = useState(viewerData?.profilePicture),
+    [safeInput, setSafeInput] = useState({ linkedinHandle: false, twitterHandle: false, facebookHandle: false, website: false }),
+    [oldImages, setOldImages] = useState({
+      profilePicture: viewerData.profilePicture,
+      coverPicture: viewerData.coverPicture,
+    }),
+    [viewerLink, setViewerLink] = useState(viewerData.social);
+
+  const viewerLinkHandler = (slot, value = "") => {
+    setViewerLink({ ...viewerLink, [slot]: value });
+    if (!updateEnabled) setUpdateEnabled(true);
+    return validate("otherHandle", value) ? false : true;
+  };
 
   const handleSave = async () => {
-      if (noOfWord(about.toString()) <= 50 && handle.toString().length <= 30 && myProfile && online) {
-        setUpdateEnabled(false);
+    return console.log("saving");
+    if (noOfWord(about.toString()) <= 50 && handle.toString().length <= 30 && myProfile && online) {
+      setUpdateEnabled(false);
+      setUpdateFailed(false);
+      const { status } = await fetcher(
+        "/api/updateProfile",
+        JSON.stringify({ image, handle, about, oldImage: viewerData?.profilePicture, myHandle })
+      );
+      if (status === "success") {
+        setUpdateSuccess(true);
         setUpdateFailed(false);
-        const { status } = await fetcher(
-          "/api/updateProfile",
-          JSON.stringify({ image, handle, about, oldImage: viewerData?.profilePicture, token })
-        );
-        if (status === "success") {
-          setUpdateSuccess(true);
-          setUpdateFailed(false);
-        }
-        if (status === "failed") {
-          setUpdateSuccess(false);
-          setUpdateFailed(true);
-        }
-      } else {
-        setUpdateFailed(true);
+      }
+      if (status === "failed") {
         setUpdateSuccess(false);
-        setUpdateEnabled(false);
+        setUpdateFailed(true);
       }
-      setForceRefresh(Math.random() * 1000);
-    },
-    handleImageChange = async (e, picture) => {
-      if (e.target.files[0]) {
-        if (picture === "profilePicture") setProfilePicture(await imageObject(e.target.files[0]));
-        if (picture === "coverPicture") setCoverPicture(await imageObject(e.target.files[0]));
-        if (!updateEnabled) setUpdateEnabled(true);
-      }
-    };
+    } else {
+      setUpdateFailed(true);
+      setUpdateSuccess(false);
+      setUpdateEnabled(false);
+    }
+    setForceRefresh(Math.random() * 1000);
+  };
+
+  const handleImageChange = async (e, picture) => {
+    if (e.target.files[0]) {
+      if (picture === "profilePicture") setProfilePicture(await imageObject(e.target.files[0]));
+      if (picture === "coverPicture") setCoverPicture(await imageObject(e.target.files[0]));
+      if (!imageEnabled) setImageEnabled(true);
+    }
+  };
+
+  const uploadImageHandler = async (image) => {
+    if (online && myHandle) {
+      if (image || safeInput)
+        if (noOfWord(about.toString()) <= 50 && handle.toString().length <= 30 && myProfile && online) {
+          const status = await fetcher(
+            "/api/updateProfile",
+            JSON.stringify(
+              image
+                ? { myHandle, coverPicture, profilePicture, image }
+                : { image, handle, about, oldImage: viewerData?.profilePicture, myHandle }
+            )
+          );
+
+          console.log(coverPicture, profilePicture, myHandle, "uploadImageHandler");
+
+          if (status) {
+            if (!image) setSafeInput(false);
+            image ? setImageEnabled(false) : setUpdateEnabled(false);
+            enqueueSnackbar("Success", { variant: "success" });
+          } else {
+            enqueueSnackbar("Error occured", { variant: "error" });
+          }
+        } else {
+          enqueueSnackbar(image ? "Error uploading image" : "Error updating profile", { variant: "error" });
+        }
+    }
+  };
 
   return (
     <>
@@ -64,7 +94,6 @@ const MyIntroContainer = ({ online, myProfile, viewerData, viewerHistory, token 
         {...{
           handle,
           styles,
-          classes,
           about,
           preview,
 
@@ -81,7 +110,13 @@ const MyIntroContainer = ({ online, myProfile, viewerData, viewerHistory, token 
           handleImageChange,
 
           profilePicture,
+          uploadImageHandler,
           coverPicture,
+          viewerLink,
+          safeInput,
+          setViewerLink,
+          imageEnabled,
+          viewerLinkHandler,
         }}
       />
     </>

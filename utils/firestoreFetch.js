@@ -5,7 +5,7 @@ const profileRef = firestore.collection("profile");
 
 import * as db from "@source/tempdb";
 import firebase, { firestore } from "@utils/firebaseClient";
-import { range, toId, shortNumber, refToPath, viewIdToPath } from "@utils/clientFunctions";
+import { range, toId, shortNumber, refToPath } from "@utils/clientFunctions";
 
 export const isHandleTaken = async (handle) => {
   return await profileRef
@@ -66,46 +66,47 @@ export const fetchCrunches = async (handle) => {
   return { crunches, myFollowing, error: false };
 };
 
-// export const fetchCrunch = async (viewscapeId) => {
-//   const crunchDetails = {
-//     id: `${viewscapeId.replace(/ /g, "-").toLowerCase()}`,
-//     title: viewscapeId,
-//     coverPicture: `/images/${range(0, 40)}.png`,
-//     primaryPicture: `/images/${range(0, 40)}.png`,
-//     members: range(700, 7000000),
-//     dateCreated: db.date(),
-//     about: `
-//       Occaecat eu laboris in reprehenderit esse sit labore velit minim tempor exercitation dolore commodo. Cupidatat ex ex minim velit irure labore cillum cillum deserunt magna cillum. Mollit voluptate est culpa ex in dolor irure aute cupidatat labore tempor nostrud esse et. Quis labore ea velit do commodo culpa laboris aliqua veniam magna. Eu pariatur veniam aliquip est duis ullamco tempor anim. Adipisicing dolore ex aute anim anim ex incididunt cillum magna exercitation enim nostrud adipisicing.`,
-//     moderators: db.name1.map((name) => `@${name.replace(/ /g, "_").toLowerCase()}`).slice(0, 3),
-//     followers: db.name1.map((name) => `@${name.replace(/ /g, "_").toLowerCase()}`),
-//   };
+export const fetchCrunch = async (viewscapeId) => {
+  console.log("needs editing");
+  //   const crunchDetails = {
+  //     id: `${viewscapeId.replace(/ /g, "-").toLowerCase()}`,
+  //     title: viewscapeId,
+  //     coverPicture: `/images/${range(0, 40)}.png`,
+  //     primaryPicture: `/images/${range(0, 40)}.png`,
+  //     members: range(700, 7000000),
+  //     dateCreated: db.date(),
+  //     about: `
+  //       Occaecat eu laboris in reprehenderit esse sit labore velit minim tempor exercitation dolore commodo. Cupidatat ex ex minim velit irure labore cillum cillum deserunt magna cillum. Mollit voluptate est culpa ex in dolor irure aute cupidatat labore tempor nostrud esse et. Quis labore ea velit do commodo culpa laboris aliqua veniam magna. Eu pariatur veniam aliquip est duis ullamco tempor anim. Adipisicing dolore ex aute anim anim ex incididunt cillum magna exercitation enim nostrud adipisicing.`,
+  //     moderators: db.name1.map((name) => `@${name.replace(/ /g, "_").toLowerCase()}`).slice(0, 3),
+  //     followers: db.name1.map((name) => `@${name.replace(/ /g, "_").toLowerCase()}`),
+  //   };
 
-//   const views = db.view.map((x) => {
-//     const {
-//       content,
-//       crunch,
-//       pryImage,
-//       author,
-//       upvote: { length: upvote },
-//       title: { data: title },
-//     } = x;
+  //   const views = db.view.map((x) => {
+  //     const {
+  //       content,
+  //       crunch,
+  //       pryImage,
+  //       author,
+  //       upvote: { length: upvote },
+  //       title: { data: title },
+  //     } = x;
 
-//     const { displayName, profilePicture } = db.viewer?.find((x) => x.handle === author);
+  //     const { displayName, profilePicture } = db.viewer?.find((x) => x.handle === author);
 
-//     return {
-//       title,
-//       pryImage,
-//       content,
-//       crunch,
-//       author,
-//       upvote,
-//       displayName,
-//       profilePicture,
-//     };
-//   });
+  //     return {
+  //       title,
+  //       pryImage,
+  //       content,
+  //       crunch,
+  //       author,
+  //       upvote,
+  //       displayName,
+  //       profilePicture,
+  //     };
+  //   });
 
-//   return { crunchDetails, views: views.slice(0, 7), propsLastVisible: 7, error: !crunchDetails || !views.length || null };
-// };
+  //   return { crunchDetails, views: views.slice(0, 7), propsLastVisible: 7, error: !crunchDetails || !views.length || null };
+};
 
 export const fetchProfileData = async (handle) => {
   const viewerData = await fetchProfile(handle);
@@ -119,8 +120,6 @@ export const fetchProfileData = async (handle) => {
   viewerData.handle = handle;
   viewerData.published = published;
   viewerData.stat.profileCreated = viewerData.stat.profileCreated.toDate().toDateString();
-  // viewerData.avgVote = Math.round(viewerData?.stat.voteReceived / viewerData.published.length);
-  // viewerData.avgAudience = Math.round(viewerData?.stat.audience / viewerData.published.length);
 
   const viewerHistoryFunc = () => {
     const totalView = viewerData.published.length - 1;
@@ -168,10 +167,9 @@ export const fetchProfileData = async (handle) => {
       };
     }
   };
+  viewerData.viewerHistory = await viewerHistoryFunc();
 
-  const viewerHistory = await viewerHistoryFunc();
-
-  return { viewerData, viewerHistory };
+  return { viewerData };
 };
 
 export const fetchChat = async ({ handle }) => {
@@ -573,31 +571,3 @@ export const fetchViews = async ({ myHandle, crunch, lastVisible, blacklist }) =
 
   return { ...initialReq, crunch, blacklist, secondary, lastVisible };
 };
-
-// const articles = [];
-// await articleRef
-//   .where("authorId", "==", authorId)
-//   .get()
-//   .then((querySnapshot) => {
-//     for (const doc of querySnapshot.docs) {
-//       const id = doc.id,
-//         {
-//           title: { data: title },
-//           date,
-//           rating: { average: rating, length: ratingLength },
-//           view: { length: view },
-//           imageUrl,
-//         } = doc.data();
-
-//       articles.push({
-//         id,
-//         view,
-//         date,
-//         title,
-//         rating,
-//         imageUrl,
-//         ratingLength,
-//       });
-//     }
-//   })
-//   .catch(() => {});

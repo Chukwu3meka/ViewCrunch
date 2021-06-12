@@ -11,13 +11,12 @@ import UpdateIcon from "@material-ui/icons/Update";
 import { styles, MyViewsContainer, MyIntroContainer, TimelineContainer } from "/";
 
 const Profile = ({
-  token,
+  myHandle,
   online,
   tabValue,
   TabPanel,
   myProfile,
   viewerData,
-  viewerHistory,
   handleTabChange,
   profileWarning,
   enqueueSnackbar,
@@ -29,7 +28,7 @@ const Profile = ({
       onChange={handleTabChange}
       indicatorColor="primary"
       textColor="primary"
-      centered
+      // centered
       variant="scrollable"
       scrollButtons="on"
       aria-label="portfolio tabs">
@@ -38,17 +37,16 @@ const Profile = ({
       <Tab label="Timeline" icon={<FingerprintIcon />} />
     </Tabs>
     <TabPanel value={tabValue} index={0}>
-      <MyIntroContainer {...{ online, myProfile, viewerData, viewerHistory, token }} />
+      <MyIntroContainer {...{ online, myProfile, viewerData, myHandle, enqueueSnackbar }} />
     </TabPanel>
     <TabPanel value={tabValue} index={1}>
-      <MyViewsContainer {...{ articles: viewerData.published, myProfile, enqueueSnackbar }} />
+      <MyViewsContainer {...{ views: viewerData.published, myProfile, enqueueSnackbar }} />
     </TabPanel>
     <TabPanel value={tabValue} index={2}>
       <TimelineContainer
         {...{
-          viewerHistory,
+          viewerHistory: viewerData.viewerHistory,
           profileCreated: viewerData?.stat?.profileCreated,
-          enqueueSnackbar,
         }}
       />
     </TabPanel>
@@ -60,7 +58,7 @@ const Profile = ({
           label: "Profile Availability",
           text: [
             "This page is availabile to the entire public (whether authenticated or not). We strongly discourage posting of private life issues or personal identification details. Uploading nude images is a violaton of our TOS.",
-            'Don\'t forget to click the save button when you update your "picture",  or "about me".',
+            "Don't forget to click the save button when you update your Profile.",
           ],
           confirmation: "I'm Aware",
           handler: () => setProfileWarning(false),

@@ -2,10 +2,10 @@ import validate from "@utils/validator";
 import { ErrorPage } from "@component/page";
 import ProfileContainer from "@component/profile";
 
-const NavPages = ({ viewerData, viewerHistory, myProfile, error }) => {
+const NavPages = ({ viewerData, myProfile, error }) => {
   if (error) return <ErrorPage statusCode={error.code} title={error.title} />;
 
-  return <ProfileContainer {...{ viewerData, viewerHistory, myProfile }} />;
+  return <ProfileContainer {...{ viewerData, myProfile }} />;
 };
 
 export default NavPages;
@@ -20,13 +20,12 @@ export const getServerSideProps = async (ctx) => {
   const handle = await validate("handle", ctx.query.handle.toLowerCase());
   if (!handle) return errorProp(404, "Invalid handle supplied");
 
-  const { viewerData, viewerHistory, error } = await fetchProfileData(handle);
+  const { viewerData, error } = await fetchProfileData(handle);
   if (error) return errorProp(402, error);
 
   return {
     props: {
       viewerData,
-      viewerHistory,
       myProfile: myHandle === handle,
     },
   };

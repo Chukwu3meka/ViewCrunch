@@ -1,7 +1,7 @@
-import { makeStyles } from "@material-ui/core/styles";
-import { fetcher } from "@utils/clientFunctions";
 import { useState } from "react";
-import { MyViews, MyViewsDialog, styles } from "/";
+import { MyViews, styles } from "/";
+import { fetcher } from "@utils/clientFunctions";
+import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   heading: {
@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const MyArticlesContainer = ({ articles, token, myProfile, enqueueSnackbar }) => {
+const MyArticlesContainer = ({ views, myProfile, enqueueSnackbar, token }) => {
   const chunkSize = 10,
     classes = useStyles(),
     [page, setPage] = useState(1),
@@ -23,18 +23,11 @@ const MyArticlesContainer = ({ articles, token, myProfile, enqueueSnackbar }) =>
   const [selectedArticle, setSelectedArticle] = useState({});
   const [verifiedArticle, setVerifiedArticle] = useState(false);
 
-  const copyHandler = (id) => () => {
-    navigator.clipboard.writeText(`https://ViewCrunch.com${id}`);
-    enqueueSnackbar("Copied to clipboard", { variant: "info" });
-  };
-
-  console.log(articles);
-
   const authorArticlesChunk = () => {
-    if (!articles.length) return [];
+    if (!views.length) return [];
     const chunk = [];
-    for (let i = 0; i < articles.length; i += chunkSize) {
-      chunk.push(articles.slice(i, i + chunkSize));
+    for (let i = 0; i < views.length; i += chunkSize) {
+      chunk.push(views.slice(i, i + chunkSize));
     }
     return chunk[page - 1];
   };
@@ -47,7 +40,17 @@ const MyArticlesContainer = ({ articles, token, myProfile, enqueueSnackbar }) =>
     setPage(value);
   };
 
-  const deleteArticle = ({ id, upvote, view, title, rating }) => {
+  const copyHandler = (id) => () => {
+    if (navigator) {
+      navigator.clipboard.writeText(`https://ViewCrunch.com${id}`);
+      enqueueSnackbar("Copied to clipboard", { variant: "info" });
+    } else {
+      enqueueSnackbar("Blocked by server", { variant: "warning" });
+    }
+  };
+
+  const deleteArticle = ({ id, upvote, view, title, rating }) => () => {
+    return enqueueSnackbar("Deletion temporary disabled", { variant: "error" });
     setDeleteEnabled(upvote < 100 ? true : false);
     setVerifiedArticle(upvote < 100 ? false : true);
     // setDeleteSuccess(false);
@@ -70,8 +73,8 @@ const MyArticlesContainer = ({ articles, token, myProfile, enqueueSnackbar }) =>
       setDeleteEnabled(false);
 
       setVerifiedArticle(false);
-      const index = articles.findIndex((x) => x.id === selectedArticle.id);
-      if (index > -1) articles.splice(index, 1);
+      const index = views.findIndex((x) => x.id === selectedArticle.id);
+      if (index > -1) views.splice(index, 1);
       setSelectedArticle({});
     }
     if (status !== "success") {
@@ -80,30 +83,38 @@ const MyArticlesContainer = ({ articles, token, myProfile, enqueueSnackbar }) =>
     }
   };
 
-  return (
-    <>
-      <MyViews
-        {...{
-          page,
-          styles,
-          classes,
-          articles,
-          expanded,
-          myProfile,
-          handleChange,
-          chunkSize,
-          deleteArticle,
-          handlePagination,
-          authorArticlesChunk,
+  const shareHandler = ({ path, title, ref }) => () => {
+    if (navigator) {
+      navigator.share({ url: `https://viewcrunch.com/${path}`, title });
+    } else {
+      copyHandler(ref);
+    }
+  };
 
-          copyHandler,
-        }}
-      />
-      <MyViewsDialog
-        {...{ forceRefresh, deleteEnabled, verifiedArticle, selectedArticle, confirmDeleteArticle }}
-        // {...{ forceRefresh, deleteFailed, deleteSuccess, deleteEnabled, verifiedArticle, selectedArticle, confirmDeleteArticle }}
-      />
-    </>
+  return (
+    <MyViews
+      {...{
+        page,
+        styles,
+        classes,
+        views,
+        expanded,
+        myProfile,
+        handleChange,
+        chunkSize,
+        deleteArticle,
+        handlePagination,
+        authorArticlesChunk,
+        shareHandler,
+        copyHandler,
+
+        // popup
+        forceRefresh,
+        deleteEnabled,
+        selectedArticle,
+        confirmDeleteArticle,
+      }}
+    />
   );
 };
 

@@ -1,41 +1,56 @@
-import Image from "next/image";
+import Rating from "@material-ui/lab/Rating";
+import SaveIcon from "@material-ui/icons/Save";
 import { shortNumber } from "@utils/clientFunctions";
 import { BlinkingAvatar } from "@component/others";
-
-import Chip from "@material-ui/core/Chip";
-import Paper from "@material-ui/core/Paper";
-import Rating from "@material-ui/lab/Rating";
-import Avatar from "@material-ui/core/Avatar";
-import SaveIcon from "@material-ui/icons/Save";
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
 import VisibilityIcon from "@material-ui/icons/Visibility";
-
 import FollowIcon from "@material-ui/icons/GolfCourse";
 import PublishIcon from "@material-ui/icons/Public";
-
 import AboutIcon from "@material-ui/icons/AcUnit";
-
 import IconButton from "@material-ui/core/IconButton";
-
-import { styles } from "/";
-
-import Button from "@material-ui/core/Button";
-import ButtonGroup from "@material-ui/core/ButtonGroup";
-
 import { SocialShare } from "@component/others";
 
+import { Button, ButtonGroup, Typography, Chip, TextField, Paper, Avatar } from "@material-ui/core";
+
+const SaveButton = ({ myProfile, handle, profilePicture, handleSave, enabled }) => {
+  return myProfile ? (
+    <div>
+      <Chip
+        avatar={<Avatar alt={handle} src={profilePicture} />}
+        label="Save"
+        onDelete={handleSave}
+        onClick={handleSave}
+        disabled={!enabled}
+        clickable
+        color={enabled ? "secondary" : "default"}
+        deleteIcon={<SaveIcon />}
+      />
+    </div>
+  ) : null;
+};
+
+const EditLink = ({ viewerLink, slot, title }) => (
+  <TextField
+    size="small"
+    color="secondary"
+    variant="outlined"
+    label={title}
+    value={viewerLink[slot]}
+    error={viewerLink[slot]?.length > 0 ? () => viewerLinkHandler("slot", viewerLink[slot]) : false}
+    onChange={(e) => viewerLinkHandler("slot", e.target.value)}
+  />
+);
+
 const MyIntro = ({
-  // handle,
   styles,
   about,
-  classes,
-  preview,
   myProfile,
   setHandle,
   setAbout,
+  safeInputHandler,
   handleSave,
   updateEnabled,
+  viewerLink,
+  viewerLinkHandler,
   setUpdateEnabled,
   handleImageChange,
   viewerData: {
@@ -44,12 +59,13 @@ const MyIntro = ({
     profession,
     handle,
     chat: { followers, following, blocked },
-    stat: { profileCreated, audience },
-    social: { linkedinHandle, twitterHandle, facebookHandle, personalWebsite },
+    stat: { profileCreated },
   },
 
   profilePicture,
+  uploadImageHandler,
   coverPicture,
+  imageEnabled,
 }) => (
   <div className={styles.myIntro}>
     <Paper elevation={4}>
@@ -72,6 +88,8 @@ const MyIntro = ({
             handleChange: (e) => handleImageChange(e, "profilePicture"),
           }}
         />
+
+        <SaveButton {...{ myProfile, handle, profilePicture, handleSave: () => uploadImageHandler("image"), enabled: imageEnabled }} />
       </div>
 
       <TextField
@@ -146,30 +164,27 @@ const MyIntro = ({
       {myProfile ? (
         <div>
           <span>
-            <TextField size="small" color="primary" variant="outlined" label="LinkedIN" value={linkedinHandle} />
-            <TextField size="small" color="primary" variant="outlined" label="Twitter" value={twitterHandle} />
-            <TextField size="small" color="primary" variant="outlined" label="Facebook" value={facebookHandle} />
-            <TextField size="small" color="primary" variant="outlined" label="Website" value={personalWebsite} />
+            {/* <EditLink {...{ viewerLinkHandler, slot: "website", title: "My Website", viewerLink, safeInputHandler }} />
+            <EditLink {...{ viewerLinkHandler, slot: "twitterHandle", title: "Twitter Handle", viewerLink, safeInputHandler }} />
+            <EditLink {...{ viewerLinkHandler, slot: "linkedinHandle", title: "LinkedIN username", viewerLink, safeInputHandler }} />
+            <EditLink {...{ viewerLinkHandler, slot: "facebookHandle", title: "Facebook username", viewerLink, safeInputHandler }} /> */}
+
+            <EditLink {...{ viewerLink, slot: "linkedinHandle", title: "LinkedIN username" }} />
+            <EditLink {...{ viewerLink, slot: "facebookHandle", title: "Facebook username" }} />
           </span>
-          {myProfile && (
-            <div className={classes.root}>
-              <Chip
-                avatar={<Avatar alt={handle} src={profilePicture} />}
-                label="Save edit"
-                onDelete={handleSave}
-                onClick={handleSave}
-                disabled={!updateEnabled}
-                clickable
-                color={updateEnabled ? "secondary" : "default"}
-                deleteIcon={<SaveIcon />}
-              />
-            </div>
-          )}
+
+          <SaveButton {...{ myProfile, handle, profilePicture, handleSave, enabled: updateEnabled }} />
         </div>
       ) : (
         <span>
-          <SocialShare {...{ linkedinHandle, twitterHandle, facebookHandle }} />
-          <a href={personalWebsite}>{personalWebsite}</a>
+          <SocialShare
+            {...{
+              linkedinHandle: viewerLink.linkedinHandle,
+              twitterHandle: viewerLink.twitterHandle,
+              facebookHandle: viewerLink.facebookHandle,
+            }}
+          />
+          <a href={viewerLink.website}>{`${displayName} website`}</a>
           <ButtonGroup color="secondary" variant="contained" aria-label="friendship action">
             <Button>{following?.includes(handle) ? "unfollow" : "follow"}</Button>
             <Button>{blocked?.includes(handle) ? "unblock" : "block"}</Button>

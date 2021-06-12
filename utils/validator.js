@@ -4,14 +4,20 @@ const sanitize = (value) => {
   const sanitized = value.replace(sanitizeReg, (match) => maps[match]);
   return sanitized;
 };
+
 const validate = (valueType, value) => {
   value = value.trim();
   switch (valueType) {
     case "handle": {
-      const handle = value?.trim().startsWith("@") ? value.substr(1).toLowerCase() : "";
+      const handle = value?.startsWith("@") ? value.substr(1).toLowerCase() : "";
       // const status = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.\s@!~#^$*']{2,14}$/gim.test(handle);
       // const status = /^(?!.*\.\.)(?!.*\.$)[^\W][\w]{2,14}$/gim.test(handle);
       const status = /^[a-zA-Z0-9_]{3,13}$/gim.test(handle);
+      if (status) return value;
+      return undefined;
+    }
+    case "otherHandle": {
+      const status = /^[a-zA-Z0-9_-]{3,30}$/gim.test(value);
       if (status) return value;
       return undefined;
     }

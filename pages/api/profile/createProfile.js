@@ -80,6 +80,7 @@ const createProfileHandler = async ({ handle, myRefresh }) => {
             twitterHandle: handle,
             facebookHandle: handle,
             linkedinHandle: handle,
+            website: `https://viewcrunch.com/${handle}`,
           },
           stat: {
             audience: 0,

@@ -1,29 +1,24 @@
+import { Dialog } from "@component/others";
+
 import { styles } from "/";
 import Link from "next/link";
 import Image from "next/image";
 import { shortNumber, toId } from "@utils/clientFunctions";
 
-import Rating from "@material-ui/lab/Rating";
 import EditIcon from "@material-ui/icons/Edit";
-import Tooltip from "@material-ui/core/Tooltip";
-import SchoolIcon from "@material-ui/icons/School";
+import ShareIcon from "@material-ui/icons/Share";
 import DeleteIcon from "@material-ui/icons/Delete";
-import Accordion from "@material-ui/core/Accordion";
 import Pagination from "@material-ui/lab/Pagination";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
 import UpvoteIcon from "@material-ui/icons/ThumbUp";
-
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
+import { Tooltip, Typography, IconButton, Accordion, AccordionDetails, AccordionSummary } from "@material-ui/core";
 
 const MyArticles = ({
   page,
   styles,
   classes,
-  articles,
+  views,
   expanded,
   chunkSize,
   myProfile,
@@ -32,6 +27,12 @@ const MyArticles = ({
   handlePagination,
   authorArticlesChunk,
   copyHandler,
+  shareHandler,
+
+  forceRefresh,
+  deleteEnabled,
+  selectedArticle,
+  confirmDeleteArticle,
 }) => (
   <div className={styles.myArticles}>
     <div>
@@ -48,9 +49,13 @@ const MyArticles = ({
                 </div>
                 <div>
                   <Link href={path}>
-                    <a>{`https://ViewCrunch.com${path}`}</a>
+                    <a>{`https://viewcrunch.com${path}`}</a>
                   </Link>
                   <div>
+                    <Tooltip title="share">
+                      <ShareIcon aria-label="copy" color="primary" onClick={shareHandler({ path, title, ref })} />
+                    </Tooltip>
+
                     <Typography variant="subtitle2" color="textSecondary">
                       {date}
                     </Typography>
@@ -79,7 +84,7 @@ const MyArticles = ({
                       </a>
                     </Link>
                     <Tooltip title={upvote < 100 ? "Delete" : "Retain"}>
-                      <IconButton aria-label="delete" onClick={() => deleteArticle({ ref, title })}>
+                      <IconButton aria-label="delete" onClick={deleteArticle({ ref, title })}>
                         <DeleteIcon />
                       </IconButton>
                     </Tooltip>
@@ -96,10 +101,22 @@ const MyArticles = ({
       color="primary"
       variant="outlined"
       shape="rounded"
-      count={Math.ceil(articles.length / chunkSize)}
+      count={Math.ceil(views.length / chunkSize)}
       page={page}
       onChange={handlePagination}
     />
+
+    {deleteEnabled ? (
+      <Dialog
+        title="Delete Article"
+        message={`You are about to delete "${selectedArticle.title}" with ${shortNumber(
+          selectedArticle.view
+        )} views and an average rating of ${selectedArticle.rating}. Please input the title to confirm deletion`}
+        forceRefresh={forceRefresh}
+        comparism={selectedArticle.title}
+        handler={confirmDeleteArticle}
+      />
+    ) : null}
   </div>
 );
 

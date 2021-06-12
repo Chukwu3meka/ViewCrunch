@@ -12,7 +12,6 @@ import LaptopMacIcon from "@material-ui/icons/LaptopMac";
 import QueueMusicIcon from "@material-ui/icons/QueueMusic";
 import TrendingDownIcon from "@material-ui/icons/TrendingDown";
 import AccountBalanceIcon from "@material-ui/icons/AccountBalance";
-import { shortNumber } from "@utils/clientFunctions";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -27,23 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TimelineContainer = ({
-  viewerHistory: {
-    date1,
-    date2,
-    upvote1,
-    upvote2,
-    downvote1,
-    downvote2,
-    firstArticle,
-    lastArticle,
-    highestRating,
-    leastRating,
-    mostView,
-    leastView,
-  },
-  profileCreated,
-}) => {
+const TimelineContainer = ({ viewerHistory: { date1, date2, upvote1, upvote2, downvote1, downvote2 }, profileCreated }) => {
   const classes = useStyles();
 
   const viewerHistoryFunc = () => {

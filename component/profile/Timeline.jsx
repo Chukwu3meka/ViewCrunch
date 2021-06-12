@@ -1,6 +1,5 @@
-import Paper from "@material-ui/core/Paper";
 import Timeline from "@material-ui/lab/Timeline";
-import Typography from "@material-ui/core/Typography";
+import { Paper, Typography } from "@material-ui/core";
 import TimelineItem from "@material-ui/lab/TimelineItem";
 import TimelineContent from "@material-ui/lab/TimelineContent";
 import TimelineSeparator from "@material-ui/lab/TimelineSeparator";

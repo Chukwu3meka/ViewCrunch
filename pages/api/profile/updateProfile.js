@@ -42,12 +42,12 @@ export default async (req, res) => {
   try {
     const { image, handle, aboutMe, oldImage, token } = req.body;
     const myAuthorID = "await verifyIdToken(token)";
-    if (!myAuthorID && validate("handle", handle) && validate("text", aboutMe) && oldImage) throw new TypeError("security issue");
-    const result = await updateProfileFunc({ image, handle, aboutMe, oldImage, myAuthorID });
-    if (result !== "success") throw new TypeError("error uploading");
+    // if (!myAuthorID && validate("handle", handle) && validate("text", aboutMe) && oldImage) throw new TypeError("security issue");
+    // const result = await updateProfileFunc({ image, handle, aboutMe, oldImage, myAuthorID });
+    // if (result !== "success") throw new TypeError("error uploading");
     return res.status(200).json({ status: "success" });
   } catch (error) {
-    // console.log(error);
+    console.log(error);
     return res.status(401).json({ status: "failed" });
   }
 };
