@@ -1,24 +1,21 @@
-import Rating from "@material-ui/lab/Rating";
+import { Rating } from "@material-ui/lab";
 import SaveIcon from "@material-ui/icons/Save";
-import { shortNumber } from "@utils/clientFunctions";
-import { BlinkingAvatar } from "@component/others";
-import VisibilityIcon from "@material-ui/icons/Visibility";
-import FollowIcon from "@material-ui/icons/GolfCourse";
-import PublishIcon from "@material-ui/icons/Public";
 import AboutIcon from "@material-ui/icons/AcUnit";
-import IconButton from "@material-ui/core/IconButton";
-import { SocialShare } from "@component/others";
+import PublishIcon from "@material-ui/icons/Public";
+import { shortNumber } from "@utils/clientFunctions";
+import FollowIcon from "@material-ui/icons/GolfCourse";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import { BlinkingAvatar, SocialShare } from "@component/others";
+import { Button, IconButton, ButtonGroup, Typography, Chip, TextField, Paper, Avatar } from "@material-ui/core";
 
-import { Button, ButtonGroup, Typography, Chip, TextField, Paper, Avatar } from "@material-ui/core";
-
-const SaveButton = ({ myProfile, handle, profilePicture, handleSave, enabled }) => {
-  return myProfile ? (
+const SaveButton = ({ myProfile, handle, profilePicture, updateHandler, enabled }) =>
+  myProfile ? (
     <div>
       <Chip
         avatar={<Avatar alt={handle} src={profilePicture} />}
         label="Save"
-        onDelete={handleSave}
-        onClick={handleSave}
+        onDelete={updateHandler}
+        onClick={updateHandler}
         disabled={!enabled}
         clickable
         color={enabled ? "secondary" : "default"}
@@ -26,17 +23,16 @@ const SaveButton = ({ myProfile, handle, profilePicture, handleSave, enabled }) 
       />
     </div>
   ) : null;
-};
 
-const EditLink = ({ viewerLink, slot, title }) => (
+const EditLink = ({ viewerInput, slot, title, viewerInputHandler, safeInput }) => (
   <TextField
     size="small"
-    color="secondary"
+    color={viewerInput[slot]?.length && safeInput[slot] ? "primary" : "secondary"}
     variant="outlined"
     label={title}
-    value={viewerLink[slot]}
-    error={viewerLink[slot]?.length > 0 ? () => viewerLinkHandler("slot", viewerLink[slot]) : false}
-    onChange={(e) => viewerLinkHandler("slot", e.target.value)}
+    value={viewerInput[slot]}
+    error={viewerInput[slot]?.length && safeInput[slot]}
+    onChange={(e) => viewerInputHandler(slot, e.target.value)}
   />
 );
 
@@ -45,14 +41,18 @@ const MyIntro = ({
   about,
   myProfile,
   setHandle,
+  safeInput,
   setAbout,
-  safeInputHandler,
-  handleSave,
+  updateHandler,
   updateEnabled,
-  viewerLink,
-  viewerLinkHandler,
+  viewerInput,
+  viewerInputHandler,
   setUpdateEnabled,
-  handleImageChange,
+  imageHandler,
+  profilePicture,
+  uploadHandler,
+  coverPicture,
+  imageEnabled,
   viewerData: {
     displayName,
     published,
@@ -61,11 +61,6 @@ const MyIntro = ({
     chat: { followers, following, blocked },
     stat: { profileCreated },
   },
-
-  profilePicture,
-  uploadImageHandler,
-  coverPicture,
-  imageEnabled,
 }) => (
   <div className={styles.myIntro}>
     <Paper elevation={4}>
@@ -76,7 +71,7 @@ const MyIntro = ({
             size: "l",
             src: coverPicture,
             alt: `${displayName} Cover Picture`,
-            handleChange: (e) => handleImageChange(e, "coverPicture"),
+            handleChange: (e) => imageHandler(e, "coverPicture"),
           }}
         />
         <BlinkingAvatar
@@ -85,54 +80,44 @@ const MyIntro = ({
             size: "xl",
             src: profilePicture,
             alt: `${displayName} Profile Picture`,
-            handleChange: (e) => handleImageChange(e, "profilePicture"),
+            handleChange: (e) => imageHandler(e, "profilePicture"),
           }}
         />
 
-        <SaveButton {...{ myProfile, handle, profilePicture, handleSave: () => uploadImageHandler("image"), enabled: imageEnabled }} />
+        <SaveButton {...{ myProfile, handle, profilePicture, updateHandler: uploadHandler, enabled: imageEnabled }} />
       </div>
 
       <TextField
-        color="secondary"
-        value={displayName}
-        error={displayName.toString().length > 30 ? true : false}
-        onChange={(e) => {
-          if (myProfile) {
-            setHandle(e.target.value);
-            if (!updateEnabled) setUpdateEnabled(true);
-          }
-        }}
+        color={viewerInput?.displayName?.length && safeInput?.displayName ? "primary" : "secondary"}
+        // variant="filled"
+        label="Display Name"
+        placeholder="Minimum of 3 letters"
+        value={viewerInput?.displayName}
+        error={viewerInput?.displayName?.length && safeInput.displayName}
+        onChange={(e) => viewerInputHandler("displayName", e.target.value)}
       />
 
       <TextField
+        color={viewerInput?.about?.length && safeInput?.about ? "primary" : "secondary"}
         variant="outlined"
-        value={about}
-        color="secondary"
-        id="about author"
+        label="About me"
+        placeholder="Minimum of 13 letters"
+        value={viewerInput?.about}
+        error={viewerInput?.about?.length && safeInput.about}
+        onChange={(e) => viewerInputHandler("about", e.target.value)}
         fullWidth
-        error={about.toString().length > 200 ? true : false}
-        label="About Me"
         multiline
         rowsMax={7}
-        onChange={(e) => {
-          if (myProfile) {
-            setAbout(e.target.value);
-            if (!updateEnabled) setUpdateEnabled(true);
-          }
-        }}
       />
 
       <TextField
-        color="secondary"
-        value={profession}
-        // inputProps={{ min: 0, style: { textAlign: "center" } }}
-        // error={displayName.toString().length > 30 ? true : false}
-        // onChange={(e) => {
-        //   if (myProfile) {
-        //     setHandle(e.target.value);
-        //     if (!updateEnabled) setUpdateEnabled(true);
-        //   }
-        // }}
+        color={viewerInput?.profession?.length && safeInput?.profession ? "primary" : "secondary"}
+        variant="filled"
+        label="Profession"
+        placeholder="Minimum of 5 letters"
+        value={viewerInput?.profession}
+        error={viewerInput?.profession?.length && safeInput.profession}
+        onChange={(e) => viewerInputHandler("profession", e.target.value)}
       />
     </Paper>
 
@@ -164,27 +149,24 @@ const MyIntro = ({
       {myProfile ? (
         <div>
           <span>
-            {/* <EditLink {...{ viewerLinkHandler, slot: "website", title: "My Website", viewerLink, safeInputHandler }} />
-            <EditLink {...{ viewerLinkHandler, slot: "twitterHandle", title: "Twitter Handle", viewerLink, safeInputHandler }} />
-            <EditLink {...{ viewerLinkHandler, slot: "linkedinHandle", title: "LinkedIN username", viewerLink, safeInputHandler }} />
-            <EditLink {...{ viewerLinkHandler, slot: "facebookHandle", title: "Facebook username", viewerLink, safeInputHandler }} /> */}
-
-            <EditLink {...{ viewerLink, slot: "linkedinHandle", title: "LinkedIN username" }} />
-            <EditLink {...{ viewerLink, slot: "facebookHandle", title: "Facebook username" }} />
+            <EditLink {...{ viewerInput, slot: "website", title: "My Website (https://www*)", viewerInputHandler, safeInput }} />
+            <EditLink {...{ viewerInput, slot: "twitterHandle", title: "Twitter Handle", viewerInputHandler, safeInput }} />
+            <EditLink {...{ viewerInput, slot: "linkedinHandle", title: "LinkedIN username", viewerInputHandler, safeInput }} />
+            <EditLink {...{ viewerInput, slot: "facebookHandle", title: "Facebook username", viewerInputHandler, safeInput }} />
           </span>
 
-          <SaveButton {...{ myProfile, handle, profilePicture, handleSave, enabled: updateEnabled }} />
+          <SaveButton {...{ myProfile, handle, profilePicture, updateHandler, enabled: updateEnabled }} />
         </div>
       ) : (
         <span>
           <SocialShare
             {...{
-              linkedinHandle: viewerLink.linkedinHandle,
-              twitterHandle: viewerLink.twitterHandle,
-              facebookHandle: viewerLink.facebookHandle,
+              linkedinHandle: viewerInput.linkedinHandle,
+              twitterHandle: viewerInput.twitterHandle,
+              facebookHandle: viewerInput.facebookHandle,
             }}
           />
-          <a href={viewerLink.website}>{`${displayName} website`}</a>
+          <a href={viewerInput.website}>{`${displayName} website`}</a>
           <ButtonGroup color="secondary" variant="contained" aria-label="friendship action">
             <Button>{following?.includes(handle) ? "unfollow" : "follow"}</Button>
             <Button>{blocked?.includes(handle) ? "unblock" : "block"}</Button>

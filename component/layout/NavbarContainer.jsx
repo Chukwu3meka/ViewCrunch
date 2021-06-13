@@ -28,9 +28,14 @@ const NavbarContainer = (props) => {
       ["Notification", "/notification", myNotification ? <NotificationsActiveIcon /> : <NotificationsOffIcon />],
       ["Portfolio", `/${myHandle ? myHandle : "unauthenticated"}`, <AssignmentIndIcon />],
     ];
+  const [deviceWidth, setDeviceWidth] = useState(props.deviceWidth);
 
   useEffect(() => {
-    const link = router.pathname.split("/"),
+    setDeviceWidth(window.innerWidth);
+  }, [props.deviceWidth]);
+
+  useEffect(() => {
+    const link = router.asPath.split("/"),
       linkLen = link.length;
 
     setSelectedNavBar(
@@ -62,6 +67,7 @@ const NavbarContainer = (props) => {
       {...{
         navBar,
         myHandle,
+        deviceWidth,
         myProfession,
         myDisplayName,
         myNotification,
@@ -78,6 +84,7 @@ const NavbarContainer = (props) => {
 const mapStateToProps = (state) => ({
     profile: state?.profile,
     online: state.device.online,
+    deviceWidth: state.device.deviceWidth,
   }),
   mapDispatchToProps = { setProfileAction };
 

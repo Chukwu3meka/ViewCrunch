@@ -34,7 +34,7 @@ const Header = ({ classes, hidden, hamburger, handleMenu, anchorEl, handleClose,
         }}
         open={open}
         onClose={handleClose}>
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={handleClose} style={{ padding: 0 }}>
           <NavbarContainer />
         </MenuItem>
       </Menu>

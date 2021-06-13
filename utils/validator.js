@@ -16,11 +16,6 @@ const validate = (valueType, value) => {
       if (status) return value;
       return undefined;
     }
-    case "otherHandle": {
-      const status = /^[a-zA-Z0-9_-]{3,30}$/gim.test(value);
-      if (status) return value;
-      return undefined;
-    }
     case "title": {
       let status = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.\s\-:()]{12,151}$/gim.test(value);
       if (status && value.split(" ").length >= 3 && value.split(" ").length <= 20) return value;
@@ -35,6 +30,35 @@ const validate = (valueType, value) => {
       let status = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.\s,]{2,101}$/gim.test(value);
       if (status && value.split(",").length >= 1 && value.split(",").length <= 5) return value;
       return undefined;
+    }
+    case "twitterHandle":
+    case "facebookHandle":
+    case "linkedinHandle": {
+      const status = /^[a-zA-Z0-9_-]{3,20}$/gim.test(value);
+      if (status) return value;
+      return undefined;
+    }
+    case "website": {
+      const status = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{7,30}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gim.test(
+        value
+      );
+      if (status) return value;
+      return undefined;
+    }
+    case "displayName": {
+      const status = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.\s\-']{3,30}$/gim.test(value);
+      if (status === true) return sanitize(value);
+      return false;
+    }
+    case "profession": {
+      const status = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.\s\-']{5,20}$/gim.test(value);
+      if (status === true) return sanitize(value);
+      return false;
+    }
+    case "about": {
+      const status = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.\s\-']{13,300}$/gim.test(value);
+      if (status === true) return sanitize(value);
+      return false;
     }
     case "text": {
       const newValue = value;

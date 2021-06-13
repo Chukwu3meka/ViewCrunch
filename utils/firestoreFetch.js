@@ -493,7 +493,7 @@ export const fetchViews = async ({ myHandle, crunch, lastVisible, blacklist }) =
   }
 
   if (!crunch) {
-    crunch = [
+    crunch = [ 
       "universal",
       "lifehack",
       "career-101",

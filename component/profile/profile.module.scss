@@ -24,14 +24,14 @@
     & > div:nth-of-type(1) {
       @include flexCenter(column);
       margin-top: 10px;
-      padding-bottom: 50px;
+      padding-bottom: 55px;
       overflow: hidden;
       height: 200px;
       & > div:nth-child(1) {
         position: relative;
         top: 55px;
         z-index: 1;
-        left: -79px;
+        left: -84px;
       }
       & > div:nth-child(2) {
         margin-bottom: 5px;

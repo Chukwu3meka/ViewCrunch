@@ -1,6 +1,6 @@
 import { styles } from "/";
 import Link from "next/link";
-import { CoverPic } from "@component/others";
+import { CoverPic, Avatar } from "@component/others";
 import { trimString } from "@utils/clientFunctions";
 
 import List from "@material-ui/core/List";
@@ -21,30 +21,35 @@ const NavBar = ({
   myCoverPicture,
   myProfilePicture,
   selectedNavBar,
+  deviceWidth,
   setSelectedNavBar,
   currentThemeHandler,
 }) => (
   <div className={styles.navbar}>
     <div>
       {/* profile intro */}
-      <Link href={{ pathname: `/${myHandle ? myHandle : "unauthenticated"}` }}>
-        <a>
-          {/* <div> */}
-          <CoverPic
-            {...{
-              imgSrcA: myCoverPicture || "/images/ViewCrunch-cover.webp",
-              imgAltA: myDisplayName || "ViewCrunch cover picture",
-              imgSrcB: myProfilePicture || "/images/ViewCrunch.webp",
-              imgAltB: myDisplayName || "ViewCrunch logo",
-            }}
-          />
-          <div>
-            <Typography variant="body2">{myDisplayName ? trimString(myDisplayName, 15) : "ViewCrunch"}</Typography>
-            <Typography variant="caption">{myProfession ? trimString(myProfession, 30) : new Date().toDateString()}</Typography>
-          </div>
-          {/* </div> */}
-        </a>
-      </Link>
+      {deviceWidth >= 420 ? (
+        <Link href={{ pathname: `/${myHandle ? myHandle : "unauthenticated"}` }}>
+          <a>
+            <CoverPic
+              {...{
+                imgSrcA: myCoverPicture || "/images/ViewCrunch-cover.webp",
+                imgAltA: myDisplayName || "ViewCrunch cover picture",
+                imgSrcB: myProfilePicture || "/images/ViewCrunch.webp",
+                imgAltB: myDisplayName || "ViewCrunch logo",
+              }}
+            />
+            <div>
+              <Typography variant="body2">{myDisplayName ? trimString(myDisplayName, 15) : "ViewCrunch"}</Typography>
+              <Typography variant="caption">{myProfession ? trimString(myProfession, 30) : new Date().toDateString()}</Typography>
+            </div>
+          </a>
+        </Link>
+      ) : (
+        <span>
+          <Avatar src={myProfilePicture || "/images/ViewCrunch.webp"} alt={myDisplayName || "ViewCrunch cover picture"} size="large" />
+        </span>
+      )}
       {/* nav links */}
       {/* <a> */}
       <div>

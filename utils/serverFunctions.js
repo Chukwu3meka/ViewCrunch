@@ -54,19 +54,21 @@ export const extractHandle = async (cookie) => {
 
 export const errorProp = (code = 404, title = "Page not found") => ({ props: { error: { code, title } } });
 
-export const saveTempImage = async ({ image, location, handle }) => {
+export const saveTempImage = async ({ image, location, handle, api = "crunch" }) => {
   const fs = require("fs");
   const base64 = image.replace(/\s/g, "").split(";base64,").pop();
 
   try {
-    fs.statSync(`./pages/api/crunch/uploads/${handle}`).isDirectory();
+    fs.statSync(`./pages/api/${api}/uploads/${handle}`).isDirectory();
   } catch {
-    fs.mkdir(`./pages/api/crunch/uploads/${handle}`, { recursive: true }, () => {});
+    fs.mkdir(`./pages/api/${api}/uploads/${handle}`, { recursive: true }, () => {});
   }
 
-  fs.writeFile(`./pages/api/crunch/uploads/${location}`, base64, { flag: "w", encoding: "base64" }, () => {});
+  fs.writeFile(`./pages/api/${api}/uploads/${location}`, base64, { flag: "w", encoding: "base64" }, (e) => {
+    // console.log(e);
+  });
 
-  return `./pages/api/crunch/uploads/${location}`;
+  return `./pages/api/${api}/uploads/${location}`;
 };
 
 export const uploadImages = async ({ tempLocation, myHandle, title }) => {
