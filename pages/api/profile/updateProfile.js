@@ -1,4 +1,3 @@
-import validate from "@utils/validator";
 import firebaseAdmin from "@utils/firebaseServer";
 import { uploadImages, deleteImages, saveTempImage, deleteTempImage } from "@utils/serverFunctions";
 
@@ -26,61 +25,57 @@ const updateHandler = async ({ about, website, profession, displayName, twitterH
 
 const uploadHandler = async ({ profilePicture, coverPicture, oldImages, myHandle, images }) => {
   const tempLocation = {
-    profilePicture:
-      profilePicture.startsWith("platform-lookaside.fbsbx.com") ||
-      profilePicture.startsWith("firebasestorage.googleapis.com") ||
-      !!profilePicture
-        ? null
-        : await saveTempImage({ image: profilePicture, location: `${myHandle}/profilePicture.png`, handle: myHandle, api: "profile" }),
-    coverPicture:
-      coverPicture.startsWith("platform-lookaside.fbsbx.com") ||
-      coverPicture.startsWith("firebasestorage.googleapis.com") ||
-      !!coverPicture
-        ? null
-        : await saveTempImage({ image: coverPicture, location: `${myHandle}/coverPicture.png`, handle: myHandle, api: "profile" }),
+    profilePicture: images.profilePicture
+      ? await saveTempImage({ image: profilePicture, location: `${myHandle}/profilePicture.png`, handle: myHandle, api: "profile" })
+      : null,
+    coverPicture: images.coverPicture
+      ? await saveTempImage({ image: coverPicture, location: `${myHandle}/coverPicture.png`, handle: myHandle, api: "profile" })
+      : null,
   };
 
   const cloudURL = { profilePicture: "", coverPicture: "" };
 
-  console.log({ oldImages, myHandle, images, a: !profilePicture, b: !coverPicture });
+  const uploadeHandler = async (x) => {
+    if (tempLocation[x]) {
+      await uploadImages({
+        tempLocation: tempLocation[x],
+        myHandle,
+        title: x,
+      })
+        .then((url) => {
+          cloudURL[x] = url;
+          deleteTempImage({ location: `${myHandle}/${x}.png`, api: "profile" });
+        })
+        .catch((error) => {
+          throw new TypeError(error);
+        });
+    }
+  };
 
-  //   await uploadImages({
-  //     tempLocation,
-  //     myAuthorID,
-  //     title: `profilePicture`,
-  //   })
-  //     .then((url) => {
-  //       cloudURL = url;
-  //       deleteTempImage(tempLocation);
-  //     })
-  //     .catch(() => {});
-  // }
+  await uploadeHandler("profilePicture");
+  await uploadeHandler("coverPicture");
 
-  return;
-
-  // image, handle, aboutMe, oldImage, myAuthorID
-  console.log({ myHandle });
-
-  return false;
-
-  await firebaseAdmin
+  return await firebaseAdmin
     .firestore()
     .collection("profile")
-    .doc(myAuthorID)
+    .doc(myHandle)
     .update({
-      handle,
-      profilePicture: cloudURL || oldImage,
-      aboutMe,
+      profilePicture: cloudURL.profilePicture || oldImages.profilePicture,
+      coverPicture: cloudURL.coverPicture || oldImages.coverPicture,
     })
     .then(async () => {
-      if (cloudURL && oldImage.replace("https://", "").split(".")[0] === "firebasestorage") {
-        await deleteImages({ downloadUrl: oldImage });
-      }
+      const deleteHandler = async (x) => {
+        if (cloudURL[x] && oldImages[x].replace("https://", "").split(".")[0] === "firebasestorage") {
+          await deleteImages({ downloadUrl: oldImages[x] });
+        }
+      };
+      deleteHandler("profilePicture");
+      deleteHandler("coverPicture");
+      return true;
     })
     .catch((error) => {
       throw new TypeError(error);
     });
-  return "success";
 };
 
 export default async (req, res) => {

@@ -93,6 +93,9 @@ export const uploadImages = async ({ tempLocation, myHandle, title }) => {
           file.name
         )}?alt=media&token=${accessToken}`
       );
+    })
+    .catch((error) => {
+      throw new TypeError(error);
     });
 };
 
@@ -107,14 +110,16 @@ export const deleteImages = async ({ downloadUrl }) => {
     });
 };
 
-export const deleteTempImage = async (handle) => {
+export const deleteTempImage = async ({ location, api = "crunch" }) => {
+  console.log(location);
   const fs = require("fs"),
-    location = `./pages/api/crunch/uploads/${handle}`;
-
+    path = `./pages/api/${api}/uploads/${location}`;
   try {
-    fs.statSync(location).isDirectory();
-    fs.rmdirSync(location, { recursive: true }, () => {});
-  } catch {}
+    fs.statSync(path).isDirectory();
+    fs.rmdirSync(path, { recursive: true }, () => {});
+  } catch (error) {
+    throw new TypeError(error);
+  }
 };
 
 // here

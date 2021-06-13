@@ -77,7 +77,6 @@ const MyIntroContainer = ({ online, myProfile, viewerData, myHandle, enqueueSnac
       if (!imageEnabled) setImageEnabled(true);
       if (picture === "profilePicture") {
         setImages({ ...images, profilePicture: true });
-        // setProfilePicture(await imageObject(e.target.files[0]));
         setProfilePicture(await imageObject(e.target.files[0]));
       }
       if (picture === "coverPicture") {
