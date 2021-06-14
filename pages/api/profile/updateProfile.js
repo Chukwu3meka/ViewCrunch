@@ -64,13 +64,13 @@ const uploadHandler = async ({ profilePicture, coverPicture, oldImages, myHandle
       coverPicture: cloudURL.coverPicture || oldImages.coverPicture,
     })
     .then(async () => {
-      const deleteHandler = async (x) => {
-        if (cloudURL[x] && oldImages[x].replace("https://", "").split(".")[0] === "firebasestorage") {
-          await deleteImages({ downloadUrl: oldImages[x] });
-        }
-      };
-      deleteHandler("profilePicture");
-      deleteHandler("coverPicture");
+      // const deleteHandler = async (x) => {
+      //   if (cloudURL[x] && oldImages[x].replace("https://", "").split(".")[0] === "firebasestorage") {
+      //     // await deleteImages({ downloadUrl: oldImages[x], api: "profile" });
+      //   }
+      // };
+      // deleteHandler("profilePicture");
+      // deleteHandler("coverPicture");
       return true;
     })
     .catch((error) => {
@@ -107,7 +107,7 @@ export default async (req, res) => {
     if (!handlerResult) throw new TypeError("Server error");
     return res.status(200).send(true);
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return res.status(401).send(false);
   }
 };

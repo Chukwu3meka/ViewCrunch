@@ -111,7 +111,7 @@ export const deleteImages = async ({ downloadUrl }) => {
 };
 
 export const deleteTempImage = async ({ location, api = "crunch" }) => {
-  console.log(location);
+  // console.log(location);
   const fs = require("fs"),
     path = `./pages/api/${api}/uploads/${location}`;
   try {
