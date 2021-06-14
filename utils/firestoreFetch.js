@@ -385,13 +385,13 @@ export const fetchHomeViews = async ({ crunch, blacklist }) => {
   const primary = [],
     highlight = [];
 
-  while (primary.length < 3 && lastVisible !== "no other view" && i < 3) {
+  while (primary.length < 4 && lastVisible !== "no other view" && i < 2) {
     i++;
     await (lastVisible
       ? ref1
           .startAfter(firebase.firestore.Timestamp.fromDate(new Date(JSON.parse(lastVisible.date)), lastVisible.path))
-          .limit(3 - primary.length)
-      : ref1.limit(3 - primary.length)
+          .limit(4 - primary.length)
+      : ref1.limit(4 - primary.length)
     )
       .get()
       .then(async (documentSnapshots) => {
@@ -437,7 +437,7 @@ export const fetchHomeViews = async ({ crunch, blacklist }) => {
   i = 0;
   lastVisible = null;
 
-  while (highlight.length < 3 && lastVisible !== "no other view" && i < 3) {
+  while (highlight.length < 3 && lastVisible !== "no other view" && i < 2) {
     i++;
     await (lastVisible
       ? ref2
@@ -476,7 +476,7 @@ export const fetchHomeViews = async ({ crunch, blacklist }) => {
   return { highlight, newsFlash, primary };
 };
 
-export const fetchViews = async ({ myHandle, crunch, lastVisible, blacklist }) => {
+export const fetchViews = async ({ myHandle, crunch, lastVisible, blacklist = [] }) => {
   const secondary = [],
     profile = myHandle ? await fetchProfile(myHandle) : null;
 
@@ -493,7 +493,7 @@ export const fetchViews = async ({ myHandle, crunch, lastVisible, blacklist }) =
   }
 
   if (!crunch) {
-    crunch = [ 
+    crunch = [
       "universal",
       "lifehack",
       "career-101",
@@ -519,7 +519,7 @@ export const fetchViews = async ({ myHandle, crunch, lastVisible, blacklist }) =
     .orderBy("date", "desc")
     .orderBy("title.path");
 
-  while (secondary.length < 3 && lastVisible && i < 3) {
+  while (secondary.length < 3 && lastVisible && i < 2) {
     i++;
     await (lastVisible && lastVisible !== "initial request"
       ? ref

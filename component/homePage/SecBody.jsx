@@ -17,9 +17,7 @@ const SecBody = ({ secondary, deviceWidth, loading, getMorePost, fetchFailed, sc
               <a>
                 <Paper>
                   <div>
-                    <Typography variant="button" color="textSecondary">
-                      {title}
-                    </Typography>
+                    <Typography variant="button">{title}</Typography>
                     <article dangerouslySetInnerHTML={{ __html: content.replace(/<[^>]+>/g, "") }} />
                     <div>
                       <div>

@@ -14,8 +14,6 @@ export const getMoreViewAction = ({ crunch, reduxBlacklist, reduxLastVisible }) 
       dispatch({ type: "BLACKLIST", payload: blacklist });
       dispatch({ type: "LAST_VISIBLE", payload: lastVisible });
       dispatch(removeError("error fetching view"));
-
-      console.log(lastVisible);
     } catch (error) {
       dispatch(addError("error fetching articles"));
     }

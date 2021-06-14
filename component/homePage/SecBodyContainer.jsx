@@ -6,7 +6,7 @@ import { getMoreViewAction, resetViewAction } from "@store/actions";
 import { useState, useEffect, useRef } from "react";
 
 const NavPageContainer = (props) => {
-  const { crunch, deviceWidth, getMoreViewAction, resetViewAction } = props,
+  const { crunch, deviceWidth, getMoreViewAction } = props,
     scrollRef = useRef(null),
     { enqueueSnackbar } = useSnackbar(),
     [loading, setLoading] = useState(false),
@@ -37,7 +37,6 @@ const NavPageContainer = (props) => {
       setLoading(false);
       setFetchFailed(false);
       setSecondary([...secondary, ...props.secondary]);
-      // resetViewAction();
     }
   }, [props.secondary]);
 
@@ -50,21 +49,27 @@ const NavPageContainer = (props) => {
   }, [props.lastVisible]);
 
   const getMorePost = () => {
-    if (!online || !secondary.length) {
-      enqueueSnackbar(!secondary.length ? "Unable to fetch view" : "Network Connectivity issue", { variant: "info" });
-      return stopFetching();
-    }
-
-    if (!lastVisible) {
+    if (lastVisible === "last view") {
       setLoading(false);
       setFetchFailed(false);
-      return enqueueSnackbar(`No more view.`, { variant: "info" });
-    }
+      enqueueSnackbar("You've gotten to the last View", { variant: "info" });
+    } else {
+      if (!online || !secondary.length) {
+        enqueueSnackbar(!secondary.length ? "Unable to fetch view" : "Network Connectivity issue", { variant: "info" });
+        return stopFetching();
+      }
 
-    if (!loading && online) {
-      setLoading(true);
-      setFetchFailed(false);
-      getMoreViewAction({ crunch, reduxBlacklist: blacklist, reduxLastVisible: lastVisible });
+      if (!lastVisible) {
+        setLoading(false);
+        setFetchFailed(false);
+        return enqueueSnackbar(`No more view.`, { variant: "info" });
+      }
+
+      if (!loading && online) {
+        setLoading(true);
+        setFetchFailed(false);
+        getMoreViewAction({ crunch, reduxBlacklist: blacklist, reduxLastVisible: lastVisible });
+      }
     }
   };
 
