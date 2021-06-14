@@ -1,5 +1,5 @@
 import firebaseAdmin from "@utils/firebaseServer";
-import { uploadImages, deleteImages, saveTempImage, deleteTempImage } from "@utils/serverFunctions";
+import { uploadImages, saveTempImage, deleteTempImage } from "@utils/serverFunctions";
 
 const updateHandler = async ({ about, website, profession, displayName, twitterHandle, linkedinHandle, facebookHandle, myHandle }) => {
   return await firebaseAdmin
