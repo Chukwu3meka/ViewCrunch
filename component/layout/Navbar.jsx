@@ -46,9 +46,11 @@ const NavBar = ({
           </a>
         </Link>
       ) : (
+        <Link href={{ pathname: `/${myHandle ? myHandle : "unauthenticated"}` }}>
         <span>
           <Avatar src={myProfilePicture || "/images/ViewCrunch.webp"} alt={myDisplayName || "ViewCrunch cover picture"} size="large" />
         </span>
+        </Link>
       )}
       {/* nav links */}
       {/* <a> */}

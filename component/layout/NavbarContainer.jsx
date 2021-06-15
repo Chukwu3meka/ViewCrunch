@@ -26,7 +26,8 @@ const NavbarContainer = (props) => {
       ["Favourite", "/favourite", <TimelineIcon />],
       ["My Crunch", "/crunch", <ImportantDevicesIcon />],
       ["Notification", "/notification", myNotification ? <NotificationsActiveIcon /> : <NotificationsOffIcon />],
-      ["Portfolio", `/${myHandle ? myHandle : "unauthenticated"}`, <AssignmentIndIcon />],
+      // ["Portfolio", `/${myHandle ? myHandle : "unauthenticated"}`, <AssignmentIndIcon />],
+      ["NEWS", "/news", <AssignmentIndIcon />],
     ];
   const [deviceWidth, setDeviceWidth] = useState(props.deviceWidth);
 
@@ -43,6 +44,8 @@ const NavbarContainer = (props) => {
         ? "Home"
         : linkLen === 2 && link[1] === "favourite"
         ? "Favourite"
+        : linkLen === 2 && link[1] === "news"
+        ? "NEWS"
         : linkLen === 2 && link[1] === "notification"
         ? "Notification"
         : linkLen === 2 && link[1].startsWith("@")

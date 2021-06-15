@@ -357,8 +357,12 @@ export const fetchHomeViews = async ({ crunch, blacklist }) => {
       const tempArray = [];
 
       for (const doc of querySnapshot.docs) {
-        const { flash, source, newsLink, date } = doc.data();
-        tempArray.push({ flash, source, newsLink, date: date.toDate().toDateString() });
+        const { flash, date } = doc.data();
+        tempArray.push({
+          newsLink: doc.id,
+          flash: flash?.split("@@@")[0],
+          date: date.toDate().toDateString(),
+        });
       }
 
       return tempArray;
@@ -570,4 +574,26 @@ export const fetchViews = async ({ myHandle, crunch, lastVisible, blacklist = []
   }
 
   return { ...initialReq, crunch, blacklist, secondary, lastVisible };
+};
+
+export const fetchNews = async (newsDate) => {
+  newsDate = new Date(newsDate || Date.now()).toDateString().replace(/ /g, "-");
+
+  if (newsDate == "Invalid-Date") return null;
+
+  return newsRef
+    .doc(newsDate)
+    .get()
+    .then((snapshot) => {
+      if (snapshot.exists)
+        return {
+          ...snapshot.data(),
+          date: snapshot.data().date.toDate().toDateString(),
+        };
+      return null;
+    })
+    .catch((error) => {
+      // console.log(error);
+      return null;
+    });
 };
