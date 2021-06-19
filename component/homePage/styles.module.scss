@@ -5,10 +5,9 @@
   & > * > a > div {
     @include flexCenter(row);
     align-items: stretch;
-    gap: 20px;
     margin-top: 10px;
     position: relative;
-    max-width: 550px;
+    padding: 15px 10px;
     & > div:first-of-type {
       width: 80%;
       z-index: -1;
@@ -48,16 +47,19 @@
 
 .newsFlash > div {
   @include flexCenter(column);
-  padding: 10px !important;
   border: 1px solid var(--dim);
   border-radius: 5px;
-  margin: 15px 0 0;
+  & > *:first-child {
+    margin-top: -10px;
+  }
+  & > *:first-child > * > * {
+    font-size: 0.9em;
+  }
   & > a > div {
     border-bottom: 3px solid color(primary);
-    margin: 10px 0;
+    margin: 5px 0;
     @include flexCenter(column);
     & > *:first-child {
-      margin-bottom: 10px;
       display: -webkit-box;
       -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
@@ -76,31 +78,36 @@
   border-radius: 20px 5px 15px 10px;
   justify-content: space-evenly;
   @include flexCenter(row);
-  padding: 40px 10px;
+  padding: 10px;
   flex-wrap: wrap;
-  margin: 20px 0;
+  margin: -5px auto 5px;
   gap: 15px;
   & > * > a > div {
     @include flexCenter(row);
     justify-content: space-evenly;
     max-width: 320px;
     border-left: 3px solid color(secondary);
-
     & > div:first-of-type {
-      padding: 10px;
       @include flexCenter(column);
       & > span {
         @include flexCenter(row);
         gap: 10px;
       }
-      text-align: center;
+      & > p {
+        text-align: center;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        word-break: break-all;
+        overflow: hidden;
+      }
     }
     & > div:last-of-type {
       position: relative;
       border-radius: 0 5px 5px 0;
       overflow: hidden;
-      height: 80px;
-      width: 100px;
+      height: 60px;
+      width: 80px;
     }
   }
 }
@@ -154,7 +161,7 @@
     & > div:nth-of-type(2) {
       border-radius: 5px;
       overflow: hidden;
-      height: 120px;
+      height: 150px;
       position: relative;
       width: 100%;
     }
@@ -163,11 +170,16 @@
 
 @media screen and (min-width: 420px) {
   .primaryBody > * > a > div {
-    margin-top: 160px;
+    padding: 5px;
+    margin: 10px 0 0;
     & > div:first-of-type {
+      margin-right: 10px;
       display: unset;
-      top: -150px;
-      height: 150px;
+      height: 120px;
+      width: 100%;
+      max-width: 150px;
+      z-index: initial;
+      position: relative;
     }
     & > div:last-of-type {
       & > * {
@@ -185,11 +197,6 @@
       & > div:nth-of-type(1) {
         justify-content: space-between;
         padding-right: 5px;
-        & > *:nth-child(2) {
-          // margin-top: -50px;
-          // margin: -200px auto;
-          // border: 3px solid blue;
-        }
       }
       & > div:nth-of-type(2) {
         width: 200px;
@@ -197,18 +204,26 @@
       }
     }
   }
+  .highlight {
+    padding: 40px 10px;
+    margin: 20px 0;
+    & > * > a > div {
+      & > div:first-of-type {
+        padding: 10px;
+      }
+      & > div:last-of-type {
+        height: 80px;
+        width: 100px;
+      }
+    }
+  }
 }
 
 @media screen and (min-width: 660px) {
   .primaryBody > * > a > div {
-    margin: 10px 0 0;
     max-width: 700px;
     & > div:first-of-type {
-      z-index: initial;
-      position: relative;
-      top: 0;
       height: 170px;
-      width: 100%;
       max-width: 220px;
     }
     & > div:last-of-type {
@@ -225,5 +240,18 @@
 @media screen and (min-width: 1100px) {
   .primaryBody > * > a > div {
     max-width: 900px;
+  }
+  .newsFlash > div {
+    padding: 10px !important;
+    margin: 15px 0 0;
+    & > *:first-child {
+      margin-top: -20px;
+    }
+    & > a > div {
+      margin: 10px 0;
+      & > *:first-child {
+        margin-bottom: 10px;
+      }
+    }
   }
 }

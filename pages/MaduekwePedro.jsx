@@ -1,1 +1,3 @@
-export default () => "MaduekwePedro";
+const MaduekwePedro = () => "MaduekwePedro";
+
+export default MaduekwePedro;

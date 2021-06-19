@@ -5,13 +5,17 @@
   justify-content: flex-start;
   height: 100% !important;
   max-width: 800px;
+  & > div:first-child > * > * {
+    font-size: 0.8em;
+  }
   & > div:last-child {
     @include flexCenter(column);
-    & > span {
-      border-bottom: 1px solid transparent;
-      border-image: linear-gradient(to right, color(primary), var(--dim), color(secondary));
+    & > div {
+      border-left: 1px solid transparent;
+      border-image: linear-gradient(to bottom, color(primary), var(--dim), color(secondary));
       border-image-slice: 1;
       margin-bottom: 10px;
+      font-size: 1.1em;
     }
   }
 }

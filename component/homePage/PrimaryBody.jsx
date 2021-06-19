@@ -7,9 +7,8 @@ import { trimString, dateCalculator } from "@utils/clientFunctions";
 
 const PrimaryBody = ({ primary = [], deviceWidth }) =>
   primary.length
-    ? primary.map(({ title, date, author, crunch, pryImage, displayName, profilePicture, path }, index) => (
-        <Fade left key={index}>
-          {/* <Link href={`/${author}/${toId(title)}`}> */}
+    ? primary.map(({ title, date, author, crunch, pryImage, displayName, profilePicture, path }) => (
+        <Fade left key={path}>
           <Link href={path}>
             <a>
               <Paper elevation={2}>

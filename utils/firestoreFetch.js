@@ -346,9 +346,6 @@ export const fetchView = async ({ author, view: id, myHandle }) => {
 };
 
 export const fetchHomeViews = async ({ crunch, blacklist }) => {
-  let i = 0,
-    lastVisible;
-
   const newsFlash = await newsRef
     .orderBy("date", "desc")
     .limit(3)
@@ -372,40 +369,18 @@ export const fetchHomeViews = async ({ crunch, blacklist }) => {
       return { error: "Server unable to fetch view" };
     });
 
-  const ref1 = await viewRef
-      .where("crunch", "array-contains-any", crunch)
-      .where("visible.status", "==", true)
-      .where("title.length", ">=", 10)
-      .orderBy("title.length")
-      .orderBy("date", "desc")
-      .orderBy("title.path"),
-    ref2 = viewRef
-      .where("crunch", "array-contains-any", crunch)
-      .where("visible.status", "==", true)
-      .where("title.length", "==", 3)
-      .orderBy("date", "desc")
-      .orderBy("title.path");
-
-  const primary = [],
-    highlight = [];
-
-  while (primary.length < 4 && lastVisible !== "no other view" && i < 2) {
-    i++;
-    await (lastVisible
-      ? ref1
-          .startAfter(firebase.firestore.Timestamp.fromDate(new Date(JSON.parse(lastVisible.date)), lastVisible.path))
-          .limit(4 - primary.length)
-      : ref1.limit(4 - primary.length)
-    )
-      .get()
-      .then(async (documentSnapshots) => {
-        if (!documentSnapshots?.docs?.length) return (lastVisible = "no other view");
-
-        lastVisible = {
-          date: JSON.stringify(documentSnapshots.docs[documentSnapshots.docs.length - 1].data().date.toDate()),
-          path: documentSnapshots.docs[documentSnapshots.docs.length - 1].data().title.path,
-        };
-
+  const primary = [];
+  await viewRef
+    .where("crunch", "array-contains-any", crunch)
+    .where("visible.status", "==", true)
+    .where("title.length", ">=", 10)
+    .orderBy("title.length")
+    .orderBy("date", "desc")
+    .orderBy("title.path")
+    .limit(3)
+    .get()
+    .then(async (documentSnapshots) => {
+      if (documentSnapshots?.docs?.length) {
         for (const doc of documentSnapshots.docs) {
           const {
             title: { data: title, path },
@@ -431,33 +406,24 @@ export const fetchHomeViews = async ({ crunch, blacklist }) => {
             });
           }
         }
-      })
-      .catch((error) => {
-        return { error: "Server unable to fetch view" };
-        // console.log({ primary: error });
-      });
-  }
+      }
+    })
+    .catch((error) => {
+      return { error: "Server unable to fetch view" };
+      // console.log({ primary: error });
+    });
 
-  i = 0;
-  lastVisible = null;
-
-  while (highlight.length < 3 && lastVisible !== "no other view" && i < 2) {
-    i++;
-    await (lastVisible
-      ? ref2
-          .startAfter(firebase.firestore.Timestamp.fromDate(new Date(JSON.parse(lastVisible.date)), lastVisible.path))
-          .limit(3 - highlight.length)
-      : ref2.limit(3 - highlight.length)
-    )
-      .get()
-      .then(async (documentSnapshots) => {
-        if (!documentSnapshots?.docs?.length) return (lastVisible = "no other view");
-
-        lastVisible = {
-          date: JSON.stringify(documentSnapshots.docs[documentSnapshots.docs.length - 1].data().date.toDate()),
-          path: documentSnapshots.docs[documentSnapshots.docs.length - 1].data().title.path,
-        };
-
+  const highlight = [];
+  await viewRef
+    .where("crunch", "array-contains-any", crunch)
+    .where("visible.status", "==", true)
+    .where("title.length", "==", 3)
+    .orderBy("date", "desc")
+    .orderBy("title.path")
+    .limit(3)
+    .get()
+    .then(async (documentSnapshots) => {
+      if (documentSnapshots?.docs?.length) {
         for (const doc of documentSnapshots.docs) {
           const {
             title: { data: title, path },
@@ -467,15 +433,16 @@ export const fetchHomeViews = async ({ crunch, blacklist }) => {
 
           if (!blacklist.includes(path)) {
             blacklist.push(path);
+
             highlight.push({ title, pryImage, upvote, path });
           }
         }
-      })
-      .catch((error) => {
-        return { error: "Server unable to fetch view" };
-        // console.log({ highlight: error });
-      });
-  }
+      }
+    })
+    .catch((error) => {
+      return { error: "Server unable to fetch view" };
+      // console.log({ highlight: error });
+    });
 
   return { highlight, newsFlash, primary };
 };
@@ -529,7 +496,7 @@ export const fetchViews = async ({ myHandle, crunch, lastVisible, blacklist = []
       ? ref
           .startAfter(firebase.firestore.Timestamp.fromDate(new Date(JSON.parse(lastVisible.date)), lastVisible.path))
           .limit(3 - secondary.length)
-      : ref.limit(3 - secondary.length)
+      : ref.limit(5)
     )
       .get()
       .then(async (documentSnapshots) => {
@@ -577,12 +544,20 @@ export const fetchViews = async ({ myHandle, crunch, lastVisible, blacklist = []
 };
 
 export const fetchNews = async (newsDate) => {
-  newsDate = new Date(newsDate || Date.now()).toDateString().replace(/ /g, "-");
+  newsDate = new Date(newsDate || new Date(`${new Date().getFullYear()} ${new Date().getMonth() + 1} ${new Date().getDate() - 1}`))
+    .toDateString()
+    .replace(/ /g, "-");
 
   if (newsDate == "Invalid-Date") return null;
 
   return newsRef
-    .doc(newsDate)
+    .doc(
+      `${newsDate.split("-")[3]}-${
+        { Jan: "01", Feb: "02", Mar: "03", Apr: "04", May: "05", Jun: "06", Jul: "07", Aug: "08", Sep: "09", Oct: 10, Nov: 11, Dec: 12 }[
+          newsDate.split("-")[1]
+        ]
+      }-${newsDate.split("-")[2]}`
+    )
     .get()
     .then((snapshot) => {
       if (snapshot.exists)

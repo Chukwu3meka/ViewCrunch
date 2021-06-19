@@ -1,5 +1,6 @@
 import { LineText } from "@component/others";
 import { styles } from ".";
+import { Paper } from "@material-ui/core";
 
 const News = ({ date, flash }) => (
   <div className={styles.news}>
@@ -7,7 +8,7 @@ const News = ({ date, flash }) => (
 
     <div>
       {flash?.split("@@@").map((x) => (
-        <span>{x}</span>
+        <Paper>{x}</Paper>
       ))}
     </div>
 

@@ -7,8 +7,8 @@ const NewsFlash = ({ newsFlash }) => (
   <div>
     <LineText title="NEWS Flash" />
     {newsFlash.length
-      ? newsFlash.map(({ flash, newsLink, date }, index) => (
-          <a href={`/news/${newsLink}`} key={index}>
+      ? newsFlash.map(({ flash, newsLink, date }) => (
+          <a href={`/news/${newsLink}`} key={newsLink}>
             <Paper elevation={4}>
               <Typography variant="body1">{flash}</Typography>
               <Typography variant="caption" color="secondary">{`ViewCrunch | ${dateCalculator({ date })}`}</Typography>
