@@ -5,10 +5,10 @@
   justify-content: flex-start;
   height: 100% !important;
   max-width: 800px;
-  & > div:first-child > * > * {
+  & > div:nth-child(1) > * > * {
     font-size: 0.8em;
   }
-  & > div:last-child {
+  & > div:nth-child(2) {
     @include flexCenter(column);
     & > div {
       border-left: 1px solid transparent;

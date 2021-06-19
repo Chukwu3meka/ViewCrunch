@@ -18,7 +18,6 @@ const LayoutContainer = (props) => {
     setStyle({
       "--pry": props.theme === "light" ? "#fff" : "#424242",
       "--sec": props.theme === "light" ? "#424242" : "#fff",
-      // "--dark": props.theme === "light" ? "#0000008a" : "#ffffffb3",
       "--dim": props.theme === "light" ? "#b1b1b18a" : "#ffffffb3",
     });
   }, [props.theme]);
@@ -42,27 +41,6 @@ const LayoutContainer = (props) => {
     if (e.target.scrollTop <= lastScrollPos) setDisplayHeader("visible");
 
     setLastScrollPos(e.target.scrollTop);
-
-    // if (!userAtBottom && e.target.clientHeight + 1600 >= e.target.scrollHeight - e.target.scrollTop) {
-    //   setUserAtBottom(true);
-    //   setBottomScroll(true);
-    //   console.log("user@bottom");
-    //   console.log("bottomScroll true");
-    // } else {
-    //   console.log("bottomScroll false");
-    //   setBottomScroll(false);
-    // }
-
-    // if (e.target.scrollTop > lastScrollPos) {
-    //   setDisplayHeader("hidden");
-    // } else {
-    //   setDisplayHeader("visible");
-    //   if (userAtBottom && e.target.clientHeight + 1600 < e.target.scrollHeight - e.target.scrollTop) {
-    //     console.log("userNot@bottom");
-    //     setUserAtBottom(false);
-    //   }
-    // }
-    // setLastScrollPos(e.target.scrollTop);
   };
 
   const scrollTop = () => {

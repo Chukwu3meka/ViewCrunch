@@ -57,7 +57,7 @@ const ViewscapeContainer = (props) => {
 
       if (status === "success") {
         setFollow(followStat ? true : false);
-        enqueueSnackbar(`Successful.`, { variant: "primary" });
+        enqueueSnackbar(`Successful.`, { variant: "success" });
       } else {
         enqueueSnackbar(`Please, Try again. Server unable to handle request.`, { variant: "error" });
       }
