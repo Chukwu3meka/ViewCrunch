@@ -8,11 +8,9 @@ const News = ({ date, flash }) => (
 
     <div>
       {flash?.split("@@@").map((x) => (
-        <Paper>{x}</Paper>
+        <Paper elevation={4}>{x}</Paper>
       ))}
     </div>
-
-    {/* <div></div> */}
   </div>
 );
 
