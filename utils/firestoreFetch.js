@@ -545,7 +545,7 @@ export const fetchViews = async ({ myHandle, crunch, lastVisible, blacklist = []
 
 export const fetchNews = async (newsDate) => {
   newsDate = new Date(
-    newsDate || new Date(`${new Date().getFullYear()} ${new Date().getMonth() + 1} ${new Date().getDate() - 1}`)
+    newsDate || new Date(`${new Date().getFullYear()} ${new Date().getMonth() + 1} ${new Date().getDate()}`)
   ).toDateString();
 
   if (newsDate == "Invalid-Date") return null;
