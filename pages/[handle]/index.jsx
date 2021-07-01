@@ -1,11 +1,25 @@
 import validate from "@utils/validator";
-import { ErrorPage } from "@component/page";
 import ProfileContainer from "@component/profile";
+import { ErrorPage, SeoHead } from "@component/page";
 
 const NavPages = ({ viewerData, myProfile, error }) => {
   if (error) return <ErrorPage statusCode={error.code} title={error.title} />;
 
-  return <ProfileContainer {...{ viewerData, myProfile }} />;
+  return (
+    <>
+      <SeoHead
+        {...{
+          seo_title: viewerData.displayName,
+          seo_hashtag: `#${viewerData.handle}`,
+          seo_quote: viewerData.about,
+          seo_image: viewerData.profilePicture,
+          seo_keywords: viewerData.social,
+          seo_description: `${viewerData.displayName} profile page on viewcrunch`,
+        }}
+      />
+      <ProfileContainer {...{ viewerData, myProfile }} />;
+    </>
+  );
 };
 
 export default NavPages;

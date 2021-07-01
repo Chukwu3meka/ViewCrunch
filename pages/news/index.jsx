@@ -6,7 +6,13 @@ const Index = ({ error, newsFlash }) => {
 
   return (
     <>
-      <SeoHead />
+      <SeoHead
+        {...{
+          seo_title: newsFlash.flash?.split("@@@")[0],
+          seo_hashtag: `#ViewCrunch NEWS ~ ${newsFlash.date}`,
+          seo_description: newsFlash.flash?.split("@@@").map((x, i) => `${1}. ${x}`),
+        }}
+      />
       <NewsContainer newsFlash={newsFlash} />
     </>
   );
