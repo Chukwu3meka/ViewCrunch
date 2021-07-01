@@ -19,7 +19,7 @@ const NewsContainer = (props) => {
     d.setDate(sign ? d.getDate() + 1 : d.getDate() - 1);
     const news = await fetchNews(d.toDateString());
 
-    console.log(news.date);
+    // console.log(news.date);
     if (news?.date) {
       scrollRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
       // await setDisplayHeader("hidden");

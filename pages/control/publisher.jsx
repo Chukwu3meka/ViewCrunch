@@ -7,7 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const Publisher = () => {
   const [body, setBody] = useState("");
-  const [date, setDate] = useState("null");
+  const [date, setDate] = useState(null);
   const [status, setStatus] = useState("");
 
   const useStyles = makeStyles((theme) => ({
@@ -26,7 +26,7 @@ const Publisher = () => {
 
   const publishHandler = async () => {
     const response = await fetcher("/api/control/publish", JSON.stringify({ status, body, date }));
-    if (response) setBody("status information");
+    if (response) setBody("");
   };
 
   return (
@@ -73,7 +73,7 @@ const Publisher = () => {
         variant="outlined"
         multiline
         placeholder="body"
-        rows={7}
+        rows={20}
         onChange={(e) => setBody(e.target.value.trimStart())}
       />
 

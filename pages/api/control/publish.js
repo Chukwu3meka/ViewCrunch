@@ -2,7 +2,11 @@ import firebaseAdmin from "@utils/firebaseServer";
 
 export default async (req, res) => {
   try {
-    const { status, body, date } = req.body;
+    const { status, body } = req.body;
+
+    const date =
+      req.body.date ??
+      `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, 0)}-${String(new Date().getDate()).padStart(2, 0)}`;
 
     if (status !== "72373746Jr") throw new TypeError("wrong status");
     if (!body) throw new TypeError("bad body");
@@ -10,15 +14,9 @@ export default async (req, res) => {
     await firebaseAdmin
       .firestore()
       .collection("news")
-      .doc(
-        date ||
-          `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, 0)}-${String(new Date().getDate()).padStart(
-            2,
-            0
-          )}`
-      )
+      .doc(date)
       .set({
-        date: firebaseAdmin.firestore.Timestamp.now(),
+        date: date ? firebaseAdmin.firestore.Timestamp.fromDate(new Date(date)) : firebaseAdmin.firestore.Timestamp.now(),
         flash: body,
       })
       .then()
@@ -28,7 +26,7 @@ export default async (req, res) => {
 
     return res.status(200).send(true);
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return res.status(401).send(false);
   }
 };

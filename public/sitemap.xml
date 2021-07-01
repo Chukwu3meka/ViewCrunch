@@ -4,21 +4,27 @@
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-<!-- ViewCrunch sitemap, some pages that need auth are included -->
+<!-- viewcrunch sitemap, some pages that need auth are included -->
   <url>
-    <loc>https://www.ViewCrunch.com</loc>
+    <loc>https://www.viewcrunch.com</loc>
     <lastmod>2020-11-27</lastmod>
     <!-- <changefreq>always<changefreq> -->
     <priority>1.00</priority>
   </url>
   <url>
-      <loc>https://www.ViewCrunch.com/control/dataDeletion</loc>
+      <loc>https://www.viewcrunch.com/news</loc>
   </url>
   <url>
-      <loc>https://www.ViewCrunch.com/control/privacyPolicy</loc>
+      <loc>https://www.viewcrunch.com/crunch</loc>
   </url>
   <url>
-      <loc>https://www.ViewCrunch.com/control/termsAndCondition</loc>  
+      <loc>https://www.viewcrunch.com/control/dataDeletion</loc>
+  </url>
+  <url>
+      <loc>https://www.viewcrunch.com/control/privacyPolicy</loc>
+  </url>
+  <url>
+      <loc>https://www.viewcrunch.com/control/termsAndCondition</loc>  
   </url>
 
 </urlset>

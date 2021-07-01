@@ -5,7 +5,7 @@ import { Paper, Button, ButtonGroup } from "@material-ui/core";
 import PreviousIcon from "@material-ui/icons/KeyboardBackspace";
 
 const News = ({ date, flash, prev, next, scrollRef, newsFetcher }) => (
-  <div className={styles.news} ref={scrollRef}>
+  <Paper className={styles.news} ref={scrollRef}>
     <LineText title={`${date} ~ NEWS Flash`} />
 
     <div>
@@ -32,7 +32,7 @@ const News = ({ date, flash, prev, next, scrollRef, newsFetcher }) => (
         ""
       )}
     </ButtonGroup>
-  </div>
+  </Paper>
 );
 
 export default News;
