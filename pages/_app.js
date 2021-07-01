@@ -118,7 +118,7 @@ const App = ({ Component, pageProps }) => {
         <link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png" />
 
         {/* search coonsole  verification */}
-        <meta name="google-site-verification" content="google-site-verification=55CtUPuxcrkSuOJWNt-6sCjWOH5QtJITyyclidbsXzQ" />
+        <meta name="google-site-verification" content="55CtUPuxcrkSuOJWNt-6sCjWOH5QtJITyyclidbsXzQ" />
       </Head>
 
       <ThemeProvider theme={muiTheme(appTheme)}>
