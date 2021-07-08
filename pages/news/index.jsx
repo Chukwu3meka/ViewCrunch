@@ -8,23 +8,26 @@ const Index = ({ error, newsFlash }) => {
     <>
       <SeoHead
         {...{
-          seo_title: newsFlash.flash?.split("@@@")[0],
+          seo_title: `ViewCrunch NEWS for ${newsFlash.date} ~ ${newsFlash.flash?.split("@@@")[0]}`,
           seo_hashtag: `#ViewCrunch NEWS ~ ${newsFlash.date}`,
           seo_description: newsFlash.flash?.split("@@@").map((x, i) => `${i}. ${x}`),
         }}
       />
-      <NewsContainer newsFlash={newsFlash} />
+      <NewsContainer newsFlash={newsFlash} today={true} />
     </>
   );
 };
 export default Index;
 
 export const getServerSideProps = async (ctx) => {
-  const { fetchNews } = require("@utils/firestoreFetch"),
-    { errorProp } = require("@utils/serverFunctions");
+  const { fetchNews } = require("@utils/firestoreFetch");
 
-  const newsFlash = await fetchNews();
-  if (!newsFlash) return errorProp(400, "No data found for this date");
-
-  return { props: { newsFlash } };
+  return {
+    props: {
+      newsFlash: (await fetchNews()) || {
+        flash: "Today's NEWS not in yet ~ ViewCrunch is preparing something big for you",
+        date: new Date().toDateString(),
+      },
+    },
+  };
 };

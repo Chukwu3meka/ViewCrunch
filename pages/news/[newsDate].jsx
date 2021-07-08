@@ -24,7 +24,7 @@ export const getServerSideProps = async (ctx) => {
     { errorProp } = require("@utils/serverFunctions");
 
   const newsFlash = await fetchNews(ctx.query.newsDate);
-  if (!newsFlash) return errorProp(400, "No data found for this date");
+  if (!newsFlash) return errorProp(400, `No NEWS found for ${new Date(ctx.query.newsDate).toDateString()}`);
 
   return { props: { newsFlash } };
 };

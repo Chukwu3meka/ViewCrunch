@@ -11,18 +11,28 @@ export default async (req, res) => {
     if (status !== "72373746Jr") throw new TypeError("wrong status");
     if (!body) throw new TypeError("bad body");
 
-    await firebaseAdmin
-      .firestore()
-      .collection("news")
-      .doc(date)
-      .set({
-        date: date ? firebaseAdmin.firestore.Timestamp.fromDate(new Date(date)) : firebaseAdmin.firestore.Timestamp.now(),
-        flash: body,
-      })
-      .then()
-      .catch((error) => {
-        throw new TypeError(error);
-      });
+    const newsRef = firebaseAdmin.firestore().collection("news").doc(date);
+
+    const oldData = await newsRef.get();
+
+    if (oldData.exists) {
+      await newsRef
+        .update({ flash: `${oldData.data().flash}@@@${body}` })
+        .then()
+        .catch((error) => {
+          throw new TypeError(error);
+        });
+    } else {
+      await newsRef
+        .set({
+          date: date ? firebaseAdmin.firestore.Timestamp.fromDate(new Date(date)) : firebaseAdmin.firestore.Timestamp.now(),
+          flash: body,
+        })
+        .then()
+        .catch((error) => {
+          throw new TypeError(error);
+        });
+    }
 
     return res.status(200).send(true);
   } catch (error) {

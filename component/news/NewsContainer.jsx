@@ -6,7 +6,7 @@ import { setDisplayHeader } from "@store/actions";
 import { fetchNews } from "@utils/firestoreFetch";
 
 const NewsContainer = (props) => {
-  const { newsFlash, setDisplayHeader } = props,
+  const { newsFlash, setDisplayHeader, today } = props,
     scrollRef = useRef(null),
     { enqueueSnackbar } = useSnackbar(),
     [date, setDate] = useState(newsFlash?.date),
@@ -33,7 +33,7 @@ const NewsContainer = (props) => {
     }
   };
 
-  return <News {...{ flash, date, prev, next, newsFetcher, scrollRef }} />;
+  return <News {...{ flash, date, prev, next, newsFetcher, scrollRef, today }} />;
 };
 
 const mapStateToProps = (state) => ({}),

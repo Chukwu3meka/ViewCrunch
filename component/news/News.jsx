@@ -6,14 +6,18 @@ import PreviousIcon from "@material-ui/icons/KeyboardBackspace";
 
 const News = ({ date, flash, prev, next, scrollRef, newsFetcher }) => (
   <Paper className={styles.news} ref={scrollRef}>
-    <LineText title={`${date} ~ NEWS Flash`} />
+    <LineText title={`ViewCrunch NEWS for ${date}`} />
 
     <div>
-      {flash?.split("@@@").map((x, index) => (
-        <Paper elevation={4} key={index}>
-          {x}
-        </Paper>
-      ))}
+      {flash?.split("@@@").map((x, index) =>
+        x ? (
+          <Paper elevation={4} key={index}>
+            {x}
+          </Paper>
+        ) : (
+          ""
+        )
+      )}
     </div>
 
     <ButtonGroup variant="contained" aria-label="contained primary button group" color="secondary" align="center">
