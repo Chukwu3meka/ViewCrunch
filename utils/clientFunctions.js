@@ -103,13 +103,13 @@ export const dateCalculator = ({ date, days }) => {
 
   switch (true) {
     case diffInDays < 7:
-      return diffInDays > 1 ? `${diffInDays} days ago` : "A day ago";
+      return diffInDays > 1 ? `${diffInDays} days ago` : "Yesterday";
     case diffInDays < 28:
-      return diffInDays > 7 ? `${Math.ceil(diffInDays / 7)} weeks ago` : "A week ago";
+      return diffInDays > 7 ? `${Math.ceil(diffInDays / 7)} weeks ago` : "Last  week";
     case diffInDays < 365:
-      return diffInDays > 30 ? `${Math.ceil(diffInDays / 30)} months ago` : "A month ago";
+      return diffInDays > 30 ? `${Math.ceil(diffInDays / 30)} months ago` : "Last month";
     case diffInDays < 3650:
-      return diffInDays > 365 ? `${Math.ceil(diffInDays / 365)} years ago` : "A year ago";
+      return diffInDays > 365 ? `${Math.ceil(diffInDays / 365)} years ago` : "Last year";
     default:
       // return diffInDays >= 3650 ? `${Math.ceil(diffInDays / 3650)} decades past` : "A decade past";
       return date;

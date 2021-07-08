@@ -95,6 +95,7 @@ export const uploadImages = async ({ tempLocation, myHandle, title }) => {
       );
     })
     .catch((error) => {
+      // console.log(error);
       throw new TypeError(error);
     });
 };
@@ -118,6 +119,8 @@ export const deleteTempImage = async ({ location, api = "crunch" }) => {
     fs.statSync(path).isDirectory();
     fs.rmdirSync(path, { recursive: true }, () => {});
   } catch (error) {
+    // console.log(error);
+
     throw new TypeError(error);
   }
 };
