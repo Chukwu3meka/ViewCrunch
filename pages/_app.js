@@ -89,21 +89,19 @@ const App = ({ Component, pageProps }) => {
         <meta content="image/*" property="og:image:type" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         {/* <meta property="fb:app_id" content="404853513844811" /> */}
-        <meta httpEquiv="Content-Type" content="text/html; charSet=utf-8" />
+        {/* <meta httpEquiv="Content-Type" content="text/html; charSet=utf-8" /> */}
 
         <meta name="_token" content="" />
         <meta name="csrf_token" content="" />
-        <meta name="robots" content="noodp" />
-        <meta name="robots" content="index, follow" />
-        <meta name="theme-color" content="#e2ad26" />
+        {/* <meta name="robots" content="index, follow" />
+        <meta name="theme-color" content="#e2ad26" /> */}
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <meta name="msapplication-TileColor" content="#ffffff" />
         <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
 
-        <link rel="manifest" href="/manifest.json" />
-        <link rel="manifest" href="/manifest.json" />
-        <link rel="shortcut icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png" />
+        {/* <link rel="manifest" href="/manifest.json" /> */}
+        {/* <link rel="shortcut icon" href="/favicon.ico" /> */}
+        {/* <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png" />
         <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png" />
         <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png" />
         <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png" />
@@ -115,7 +113,7 @@ const App = ({ Component, pageProps }) => {
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-        <link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png" />
+        <link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png" /> */}
       </Head>
 
       <ThemeProvider theme={muiTheme(appTheme)}>
