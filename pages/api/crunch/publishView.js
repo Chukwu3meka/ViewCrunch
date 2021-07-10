@@ -85,7 +85,7 @@ const publishHandler = async ({ profile: { myHandle }, title, description, conte
           "stat.seen": firebaseAdmin.firestore.FieldValue.arrayUnion(viewID),
         })
         .then(async () => {
-          await deleteTempImage(myHandle);
+          await deleteTempImage({ location: myHandle });
         })
         .catch((error) => {
           throw new TypeError(error);

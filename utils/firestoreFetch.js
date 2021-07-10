@@ -242,8 +242,6 @@ export const fetchView = async ({ author, view: id, myHandle }) => {
   //   }
   // }
 
-  console.log(path, 1);
-
   const featuredPost1 = [];
   for (const [key, value] of Object.entries(published)) {
     featuredPost1.push({ title: value.title, id: key });
@@ -336,8 +334,6 @@ export const fetchView = async ({ author, view: id, myHandle }) => {
     image: `/images/ads/soccermass.webp`,
     href: "https://www.soccermass.com",
   };
-
-  console.log(path, 2);
 
   return {
     view: data,
