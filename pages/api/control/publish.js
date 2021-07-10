@@ -10,6 +10,7 @@ export default async (req, res) => {
     const date =
       req.body.date ??
       `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, 0)}-${String(new Date().getDate()).padStart(2, 0)}`;
+      
     const newsRef = firebaseAdmin.firestore().collection("news").doc(date);
 
     await firebaseAdmin
