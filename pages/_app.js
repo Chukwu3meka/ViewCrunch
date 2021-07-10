@@ -90,12 +90,12 @@ const App = ({ Component, pageProps }) => {
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         {/* <meta property="fb:app_id" content="404853513844811" /> */}
         {/* <meta httpEquiv="Content-Type" content="text/html; charSet=utf-8" /> */}
-
+ 
         <meta name="_token" content="" />
         <meta name="csrf_token" content="" />
         {/* <meta name="robots" content="index, follow" />
         <meta name="theme-color" content="#e2ad26" /> */}
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        {/* <meta name="viewport" content="width=device-width,initial-scale=1" /> */}
         <meta name="msapplication-TileColor" content="#ffffff" />
         <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
 
