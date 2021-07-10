@@ -85,31 +85,30 @@ const App = ({ Component, pageProps }) => {
     <>
       <Head>
         <meta charSet="UTF-8" />
-        <meta property="type" content="website" />
-        <meta content="image/*" property="og:image:type" />
-        <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-        {/* <meta property="fb:app_id" content="404853513844811" /> */}
-        {/* <meta httpEquiv="Content-Type" content="text/html; charSet=utf-8" /> */}
-
         <meta name="_token" content="" />
         <meta name="csrf_token" content="" />
-        {/* <meta name="robots" content="index, follow" />
-        <meta name="theme-color" content="#e2ad26" /> */}
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <meta property="type" content="website" />
+        <meta name="theme-color" content="#e2ad26" />
+        <meta name="robots" content="index, follow" />
+        <meta content="image/*" property="og:image:type" />
+        <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <meta name="msapplication-TileColor" content="#ffffff" />
+        {/* <meta property="fb:app_id" content="404853513844811" /> */}
+        <meta httpEquiv="Content-Type" content="text/html; charSet=utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
         <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
 
         <meta property="og:type" content="website" />
+        <meta property="og:image:width" content="1080" />
+        <meta property="og:image:height" content="1080" />
+        <meta property="og:image:type" content="image/webp" />
+        <meta property="og:image" content="/images/ViewCrunch.webp" />
         <meta property="og:url" content="https://www.viewcrunch.com/" />
         <meta property="og:title" content={`ViewCrunch: Blog 2018 - ${new Date().getFullYear()}`} />
         <meta
           property="og:description"
           content="ViewCrunch covers a wide range of Fascinating and Captivating contents, with an option to share your views with the world; Latest trends in technology, blog, crunch, trending news"
         />
-        <meta property="og:image" content="/images/ViewCrunch.webp" />
-        <meta property="og:image:type" content="image/webp" />
-        <meta property="og:image:width" content="1080" />
-        <meta property="og:image:height" content="1080" />
 
         <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png" />
         <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png" />
