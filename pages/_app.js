@@ -85,19 +85,20 @@ const App = ({ Component, pageProps }) => {
     <>
       <Head>
         <meta charSet="UTF-8" />
-        <meta name="_token" content="" />
-        <meta name="csrf_token" content="" />
-        <meta property="type" content="website" />
-        <meta name="theme-color" content="#e2ad26" />
-        <meta name="robots" content="index, follow" />
         <meta content="image/*" property="og:image:type" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="msapplication-TileColor" content="#ffffff" />
         {/* <meta property="fb:app_id" content="404853513844811" /> */}
         <meta httpEquiv="Content-Type" content="text/html; charSet=utf-8" />
+
+        <meta name="_token" content="" />
+        <meta name="csrf_token" content="" />
+        <meta name="theme-color" content="#e2ad26" />
+        <meta name="robots" content="index, follow" />
+        <meta name="msapplication-TileColor" content="#ffffff" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
 
+        <meta property="type" content="website" />
         <meta property="og:type" content="website" />
         <meta property="og:image:width" content="1080" />
         <meta property="og:image:height" content="1080" />
