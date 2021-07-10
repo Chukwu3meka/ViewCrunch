@@ -111,9 +111,7 @@ const App = ({ Component, pageProps }) => {
         <meta property="og:image:width" content="1080" />
         <meta property="og:image:height" content="1080" />
 
-        {/* <link rel="manifest" href="/manifest.json" /> */}
-        {/* <link rel="shortcut icon" href="/favicon.ico" /> */}
-        {/* <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png" />
+        <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png" />
         <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png" />
         <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png" />
         <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png" />
@@ -125,7 +123,7 @@ const App = ({ Component, pageProps }) => {
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-        <link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png" /> */}
+        <link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png" />
       </Head>
 
       <ThemeProvider theme={muiTheme(appTheme)}>
