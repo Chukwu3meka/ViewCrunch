@@ -3,6 +3,7 @@ import ViewContainer from "@component/view";
 
 const Index = ({ error, view, advert }) => {
   if (error) return <ErrorPage statusCode={error.code} title={error.title} />;
+
   return (
     <>
       <SeoHead
@@ -27,7 +28,6 @@ export const getServerSideProps = async (ctx) => {
   const { extractHandle, errorProp } = require("@utils/serverFunctions");
 
   const myHandle = await extractHandle(ctx.req.headers.cookie);
-  if (myHandle === "Network connectivity issue") return errorProp(408, "Network connectivity issue");
 
   const { view, advert, error } = await fetchView({
     myHandle,

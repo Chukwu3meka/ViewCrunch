@@ -15,8 +15,8 @@ const StoryContainer = (props) => {
     [moreActions, setMoreActions] = useState(false),
     [totalUpvote, setTotalUpvote] = useState(view?.upvote?.length),
     [upvoted, setUpvoted] = useState(!!view.upvote.includes(profile?.myHandle)),
-    [viewInFavourite, setViewInFavourite] = useState(view.viewer.viewInFavourite),
-    [viewInBlacklist, setViewInBlacklist] = useState(view.viewer.viewInBlacklist),
+    [viewInFavourite, setViewInFavourite] = useState(view.viewer?.viewInFavourite),
+    [viewInBlacklist, setViewInBlacklist] = useState(view.viewer?.viewInBlacklist),
     [downvoted, setDownvoted] = useState(!!view.downvote.includes(profile?.myHandle));
 
   useEffect(() => {
@@ -67,7 +67,16 @@ const StoryContainer = (props) => {
           label: viewInFavourite ? "Remove from favourite" : "Add to favourite",
           handler: () => favouriteHandler("favourite", !viewInFavourite),
         },
-        { label: "Report view to Moderators and ViewCrunch", handler: () => setReportView(true) },
+        {
+          label: "Report view to Moderators and ViewCrunch",
+          handler: () => {
+            if (online && profile.myHandle) {
+              setReportView(true);
+            } else {
+              enqueueSnackbar("Network or Authentication error", { variant: "error" });
+            }
+          },
+        },
         {
           jsx: (
             <SocialShare

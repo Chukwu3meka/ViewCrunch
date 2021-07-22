@@ -21,7 +21,6 @@ export const getServerSideProps = async (ctx) => {
     { extractHandle, errorProp } = require("@utils/serverFunctions");
 
   const myHandle = await extractHandle(ctx.req.headers.cookie);
-  if (myHandle === "Network connectivity issue") return errorProp(408, "Network connectivity issue");
 
   const { error, secondary, lastVisible, crunch, blacklist, highlight, newsFlash, primary } = await fetchViews({
     myHandle,
