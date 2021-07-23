@@ -13,7 +13,7 @@ const validate = (valueType, value) => {
       // const status = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.\s@!~#^$*']{2,14}$/gim.test(handle);
       // const status = /^(?!.*\.\.)(?!.*\.$)[^\W][\w]{2,14}$/gim.test(handle);
       const status = /^[a-zA-Z0-9_]{3,13}$/gim.test(handle);
-      if (status) return value;
+      if (status && !["favourite", "news", "notification", "crunch", "info", "handle", "viewcrunch"].includes(handle)) return value;
       return undefined;
     }
     case "title": {

@@ -8,9 +8,12 @@ const Index = ({ error, newsFlash }) => {
     <>
       <SeoHead
         {...{
-          seo_title: `ViewCrunch NEWS for ${newsFlash.date} ~ ${newsFlash.flash?.split("@@@")[0]}`,
+          seo_quote: newsFlash.flash?.split("@@@")[0],
           seo_hashtag: `#ViewCrunch NEWS ~ ${newsFlash.date}`,
+          seo_keywords: "news, breaking news, headline, viewcrunch",
+          seo_image: "https://www.viewcrunch.com/images/ViewCrunch.webp",
           seo_description: newsFlash.flash?.split("@@@").map((x, i) => `${i}. ${x}`),
+          seo_title: `ViewCrunch NEWS for ${newsFlash.date} ~ ${newsFlash.flash?.split("@@@")[0]}`,
         }}
       />
       <NewsContainer newsFlash={newsFlash} today={true} />

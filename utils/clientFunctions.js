@@ -97,13 +97,17 @@ export const chunkArray = ({ array = [], chunkSize = 13 }) => {
 };
 
 export const dateCalculator = ({ date, days }) => {
-  const diffInDays = Math.round((new Date() - new Date(date)) / (1000 * 60 * 60 * 24));
+  console.log();
+
+  const diffInDays = Math.round((new Date() - new Date(date)) / (1000 * 60 * 60 * 24)) - 1;
 
   if (days) return diffInDays;
 
+  console.log(date, diffInDays, days);
+
   switch (true) {
     case diffInDays < 7:
-      return diffInDays > 1 ? `${diffInDays} days ago` : "Yesterday";
+      return diffInDays < 1 ? "today" : diffInDays < 2 ? "Yesterday" : `${diffInDays} days ago`;
     case diffInDays < 28:
       return diffInDays > 7 ? `${Math.ceil(diffInDays / 7)} weeks ago` : "Last  week";
     case diffInDays < 365:

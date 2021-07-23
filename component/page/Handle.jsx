@@ -59,11 +59,11 @@ const Handle = (props) => {
         <Typography variant="body1" color="textSecondary" align="left">
           <>
             Once you save the handle, You will not be able to change it again.&nbsp;
-            <Link href="/control/faq/handle">
+            <Link href="/info/faq?id=updating-handle">
               <a>Reasons why future handle update are disabled</a>
             </Link>
             . Handle can only contain 13 Alphanumeric characters and underscore.&nbsp;
-            <Link href="/control/faq/naming_convention">
+            <Link href="/info/faq/handle-naming_convention">
               <a>Read more on our naming convention</a>
             </Link>
             .

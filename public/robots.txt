@@ -1,5 +1,5 @@
 User-agent:*
 
-Disallow: 
+Disallow: /admin
 
 Sitemap: https://www.viewcrunch.com/sitemap.xml

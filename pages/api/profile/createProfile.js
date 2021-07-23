@@ -49,17 +49,26 @@ const createProfileHandler = async ({ handle, myRefresh }) => {
           notification: [
             {
               body: "To understand more on what ViewCrunch is all about visit this page at anytime",
-              link: "/control/faq#about",
+              link: "/info/about",
               title: "About ViewCrunch",
             },
             {
-              body:
-                "Visit the link at the bottom of any page on ViewCrunch to read more on our 'terms and condition' and 'privacy policy'",
-              link: "/control/faq",
+              body: "Visit the link at the bottom of any page on ViewCrunch to read more on our terms and conditions",
+              link: "/info/terms",
+              title: "Terms and Conditions",
+            },
+            {
+              body: "Visit the link at the bottom of any page on ViewCrunch to read more on our privacy policy",
+              link: "/info/privacy",
+              title: "Privacy Policy",
+            },
+            {
+              body: "To view frequently asked questions, check out our FAQ",
+              link: "/info/faq",
               title: "FAQ: Frequently Asked Question",
             },
-            { body: "Have a product or service to advertise on ViewCrunch", link: "/control/adverise", title: "Advertise" },
-            { body: "Make suggestions here, or contact the developer", link: "/control/contact", title: "Contact Us" },
+            { body: "Have a product or service to advertise on ViewCrunch", link: "/info/advertise", title: "Advertise" },
+            { body: "Make suggestions here, or contact the developer", link: "/info/contact", title: "Contact Us" },
           ],
           roles: { comment: true, vote: true, suspended: false, moderate: true, createCrunch: true },
           crunches: initialCrunches
@@ -83,7 +92,6 @@ const createProfileHandler = async ({ handle, myRefresh }) => {
             website: `https://viewcrunch.com/${handle}`,
           },
           stat: {
-            audience: 0,
             profileCreated: firebaseAdmin.firestore.Timestamp.fromDate(new Date(JSON.parse(profileCreated))),
             seen: [],
             theme: handle === "maduekwepedro" ? "dark" : "light",

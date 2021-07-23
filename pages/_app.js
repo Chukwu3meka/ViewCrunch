@@ -104,11 +104,11 @@ const App = ({ Component, pageProps }) => {
         <meta property="og:image:height" content="1080" />
         <meta property="og:image:type" content="image/webp" />
         <meta property="og:image" content="/images/ViewCrunch.webp" />
-        <meta property="og:url" content="https://www.viewcrunch.com/" />
+        <meta property="og:url" content="https://www.viewcrunch.com" />
         <meta property="og:title" content={`ViewCrunch: Blog 2018 - ${new Date().getFullYear()}`} />
         <meta
           property="og:description"
-          content="ViewCrunch covers a wide range of Fascinating and Captivating contents, with an option to share your views with the world; Latest trends in technology, blog, crunch, trending news"
+          content="On ViewCrunch, you find Fascinating and Captivating contents, Breaking NEWS and an option to share your views with the world."
         />
 
         <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png" />

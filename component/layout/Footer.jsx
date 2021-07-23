@@ -8,15 +8,15 @@ const Footer = ({ scrollTop }) => (
     <AuthFirebase />
     <div>
       <span>
-        <Link href="/control/terms">
+        <Link href="/info/terms">
           <a>Terms</a>
         </Link>
         ~
-        <Link href="/control/faq">
+        <Link href="/info/faq">
           <a>FAQ</a>
         </Link>
         ~
-        <Link href="/control/advertise">
+        <Link href="/info/advertise">
           <a>Advertise</a>
         </Link>
       </span>
@@ -24,15 +24,15 @@ const Footer = ({ scrollTop }) => (
       <img src="/images/ViewCrunch.webp" alt="ViewCrunch footer icon" onClick={scrollTop} />
 
       <span>
-        <Link href="/control/contact">
+        <Link href="/info/contact">
           <a>Contact</a>
         </Link>
         ~
-        <Link href="/control/about">
+        <Link href="/info/about">
           <a>About</a>
         </Link>
         ~
-        <Link href="/control/privacy">
+        <Link href="/info/privacy">
           <a>Privacy</a>
         </Link>
       </span>

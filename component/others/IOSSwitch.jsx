@@ -80,7 +80,7 @@ const IOSSwitchJsx = ({ state, stateName, setState, title, color = "#935" }) => 
         {title}
       </FormLabel>
       <FormControlLabel
-        control={
+        info={
           <IOSSwitch color={color} checked={state} onChange={(e) => setState({ state: e.target.checked, stateName })} name={title} />
         }
       />

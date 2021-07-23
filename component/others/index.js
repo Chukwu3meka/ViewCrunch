@@ -7,23 +7,8 @@ import LineText from "./LineText";
 import CoverPic from "./CoverPic";
 import IOSSwitch from "./IOSSwitch";
 import FixedIcon from "./FixedIcon";
-import FooterNote from "./FooterNote";
 import SocialShare from "./SocialShare";
 import styles from "./styles.module.scss";
 import BlinkingAvatar from "./BlinkingAvatar";
 
-export {
-  Alert,
-  Dialog,
-  styles,
-  Drawer,
-  Avatar,
-  Loading,
-  CoverPic,
-  LineText,
-  FixedIcon,
-  IOSSwitch,
-  FooterNote,
-  SocialShare,
-  BlinkingAvatar,
-};
+export { Alert, Dialog, styles, Drawer, Avatar, Loading, CoverPic, LineText, FixedIcon, IOSSwitch, SocialShare, BlinkingAvatar };

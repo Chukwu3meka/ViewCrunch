@@ -42,14 +42,16 @@ const NavbarContainer = (props) => {
     setSelectedNavBar(
       link[1] === ""
         ? "Home"
-        : linkLen === 2 && link[1] === "favourite"
+        : link[1] === "favourite"
         ? "Favourite"
-        : linkLen === 2 && link[1] === "news"
+        : link[1] === "news"
         ? "NEWS"
-        : linkLen === 2 && link[1] === "notification"
+        : link[1] === "notification"
         ? "Notification"
         : linkLen === 2 && link[1].startsWith("@")
         ? "Portfolio"
+        : linkLen === 3 && link[1] === "info"
+        ? null
         : "My Crunch"
     );
   }, [router]);

@@ -3,16 +3,14 @@ import { useRouter } from "next/router";
 
 const SeoHead = ({ seo_title, seo_hashtag, seo_quote, seo_image, seo_keywords, seo_description }) => {
   const currentUrl = `https://ViewCrunch.com${useRouter().asPath}`,
-    title = seo_title || "ViewCrunch",
+    title = seo_title || `ViewCrunch: Blog 2018 - ${new Date().getFullYear()}`,
     hashtag = seo_hashtag || "#ViewCrunch",
     quote = seo_quote || "Sharing your Views",
     image = seo_image || "/images/ViewCrunch.webp",
-    keywords =
-      seo_keywords || "ViewCrunch, Technology, Lifehack &amp; health, Entertainment, Business &amp; Finance, Miscellaneous, NEWS",
+    keywords = seo_keywords || "viewcrunch, technology, lifehack, health, entertainment, business, finance, miscellaneous, news",
     description =
       seo_description ||
-      "ViewCrunch covers a wide range of Fascinating and Captivating contents, with an option to share your views with the world; Latest trends in technology, blog, crunch, trending news";
-
+      "On ViewCrunch, you find Fascinating and Captivating contents, Breaking NEWS and an option to share your views with the world.";
   return (
     <Head>
       <meta property="title" content={title} />

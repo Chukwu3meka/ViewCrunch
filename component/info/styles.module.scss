@@ -1,0 +1,58 @@
+@import "@source/_variables.scss";
+
+@font-face {
+  font-family: "Lora";
+  src: local("Lora"), url("/fonts/Lora/static/Lora-Regular.ttf");
+  display: swap;
+}
+
+.layout {
+  font-family: "Lora", sans-serif;
+  // font-size: 18px;
+  font-size: 17px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 100vh;
+  overflow: hidden;
+  & > div:last-of-type {
+    width: 100%;
+    position: relative;
+    height: 100%;
+  }
+  * {
+    box-sizing: border-box;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+    img {
+      overflow: hidden;
+    }
+  }
+
+  a:link {
+    cursor: pointer;
+    color: color(secondary);
+    text-decoration: none;
+  }
+  a:visited {
+    text-decoration: none;
+    color: color(secondary);
+  }
+  a:hover {
+    color: darken($color: color(primary), $amount: 10);
+    transition-delay: 200ms;
+    cursor: pointer;
+  }
+  a:active {
+    text-decoration: none;
+    color: color(secondary);
+  }
+
+  // a:hover {
+  //   color: var(--sec);
+  //   cursor: pointer;
+  // }
+}
+

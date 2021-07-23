@@ -1,19 +1,21 @@
-import Paper from "@material-ui/core/Paper";
-import { LineText } from "@component/others";
+import Link from "next/link";
+import { Paper } from "@material-ui/core/Paper";
 import { dateCalculator } from "@utils/clientFunctions";
-import Typography from "@material-ui/core/Typography";
+import { LineText, Typography } from "@component/others";
 
 const NewsFlash = ({ newsFlash }) => (
   <div>
-    <LineText title="NEWS Flash" />
+    <LineText title="Headline" />
     {newsFlash.length
       ? newsFlash.map(({ flash, newsLink, date }) => (
-          <a href={`/news/${newsLink}`} key={newsLink}>
-            <Paper elevation={4}>
-              <Typography variant="body1">{flash}</Typography>
-              <Typography variant="caption" color="secondary">{`ViewCrunch | ${dateCalculator({ date })}`}</Typography>
-            </Paper>
-          </a>
+          <Link href={`/news/${newsLink}`} key={newsLink}>
+            <a>
+              <Paper elevation={4}>
+                <Typography variant="body1">{flash}</Typography>
+                <Typography variant="caption" color="secondary">{`ViewCrunch | ${dateCalculator({ date })}`}</Typography>
+              </Paper>
+            </a>
+          </Link>
         ))
       : ""}
   </div>
