@@ -97,13 +97,9 @@ export const chunkArray = ({ array = [], chunkSize = 13 }) => {
 };
 
 export const dateCalculator = ({ date, days }) => {
-  console.log();
-
   const diffInDays = Math.round((new Date() - new Date(date)) / (1000 * 60 * 60 * 24)) - 1;
 
   if (days) return diffInDays;
-
-  console.log(date, diffInDays, days);
 
   switch (true) {
     case diffInDays < 7:

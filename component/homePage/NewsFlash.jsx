@@ -1,12 +1,13 @@
+import { styles } from ".";
 import Link from "next/link";
-import { Paper } from "@material-ui/core/Paper";
+import { LineText } from "@component/others";
+import { Paper, Typography } from "@material-ui/core";
 import { dateCalculator } from "@utils/clientFunctions";
-import { LineText, Typography } from "@component/others";
 
 const NewsFlash = ({ newsFlash }) => (
-  <div>
+  <div className={styles.newsFlash}>
     <LineText title="Headline" />
-    {newsFlash.length
+    {newsFlash?.length
       ? newsFlash.map(({ flash, newsLink, date }) => (
           <Link href={`/news/${newsLink}`} key={newsLink}>
             <a>

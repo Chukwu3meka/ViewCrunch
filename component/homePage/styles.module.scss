@@ -45,31 +45,34 @@
   }
 }
 
-.newsFlash > div {
-  @include flexCenter(column);
-  border: 1px solid var(--dim);
-  border-radius: 5px;
+.newsFlash {
   & > *:first-child {
-    margin-top: -10px;
+    margin-top: -33px !important;
   }
-  & > *:first-child > * > * {
-    font-size: 0.9em;
+  & > *:first-child > *:first-child > *:first-child {
+    font-size: 1em;
+    margin-top: 1px !important;
   }
-  & > a > div {
-    border-bottom: 3px solid color(primary);
-    margin: 5px 0;
+  & > div:last-child {
     @include flexCenter(column);
-    & > *:first-child {
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      word-break: normal;
-      overflow: hidden;
+    border: 1px solid var(--dim);
+    border-radius: 5px;
+    & > a > div {
+      border-bottom: 3px solid color(primary);
+      margin: 5px 0;
+      @include flexCenter(column);
+      & > *:first-child {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        word-break: normal;
+        overflow: hidden;
+      }
     }
-  }
-  & > a:nth-child(odd) > div {
-    background-color: var(--dim);
-    color: #000;
+    & > a:nth-child(odd) > div {
+      background-color: var(--dim);
+      color: #000;
+    }
   }
 }
 
