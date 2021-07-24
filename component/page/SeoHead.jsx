@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 
 const SeoHead = ({ seo_title, seo_hashtag, seo_quote, seo_image, seo_keywords, seo_description }) => {
   const currentUrl = `https://ViewCrunch.com${useRouter().asPath}`,
-    title = seo_title || `ViewCrunch: Blog 2018 - ${new Date().getFullYear()}`,
+    title = seo_title || `ViewCrunch`,
     hashtag = seo_hashtag || "#ViewCrunch",
     quote = seo_quote || "Sharing your Views",
     image = seo_image || "/images/ViewCrunch.webp",

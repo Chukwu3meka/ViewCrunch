@@ -15,9 +15,10 @@ const useStyles = makeStyles({
     margin: "auto",
   },
   media: {
-    maxWidth: 460,
-    height: 180,
+    // maxWidth: 400,
+    height: 200,
     margin: "auto",
+    borderRadius: 5,
   },
 });
 
@@ -48,7 +49,7 @@ const InfoContainer = ({ title, body, path }) => {
             <Typography gutterBottom variant="h5" component="h2">
               {title}
             </Typography>
-            <Typography variant="body2" color="textSecondary" component="p">
+            <Typography variant="body2" color="textSecondary" component="div">
               {body}
             </Typography>
           </CardContent>

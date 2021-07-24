@@ -110,13 +110,13 @@ const AuthFirebase = (props) => {
         ) : (
           <Button
             size="small"
-            variant="outlined"
+            variant="contained"
             color="secondary"
             onClick={() => {
               props.setProfileAction({});
               logout();
             }}>
-            Logout/Signout
+            Logout
           </Button>
         )
       ) : (

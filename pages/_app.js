@@ -87,7 +87,7 @@ const App = ({ Component, pageProps }) => {
         <meta charSet="UTF-8" />
         <meta content="image/*" property="og:image:type" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-        {/* <meta property="fb:app_id" content="404853513844811" /> */}
+        <meta property="fb:app_id" content="332276848078020" />
         <meta httpEquiv="Content-Type" content="text/html; charSet=utf-8" />
 
         <meta name="_token" content="" />
@@ -104,8 +104,9 @@ const App = ({ Component, pageProps }) => {
         <meta property="og:image:height" content="1080" />
         <meta property="og:image:type" content="image/webp" />
         <meta property="og:image" content="https://www.viewcrunch.com/images/ViewCrunch.webp" />
-        <meta property="og:url" content="https://www.facebook.com/viewcrunch" />
-        <meta property="og:title" content={`ViewCrunch: Blog 2018 - ${new Date().getFullYear()}`} />
+        <meta property="og:url" content="https://www.facebook.com/viewcrunch/" />
+        {/* <meta property="og:url" content="https://www.viewcrunch.com" /> */}
+        <meta property="og:title" content="ViewCrunch" />
         <meta
           property="og:description"
           content="On ViewCrunch, you find Fascinating and Captivating contents, Breaking NEWS and an option to share your views with the world."

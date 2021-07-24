@@ -1,4 +1,3 @@
-import { AuthFirebase } from "@component/page";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
 import PropTypes from "prop-types";
@@ -66,8 +65,6 @@ const Profile = ({
         }}
       />
     )}
-
-    <AuthFirebase />
   </div>
 );
 

@@ -22,21 +22,13 @@ export default class MyDocument extends Document {
             }}
             defer
           />
-          {/* fb like  */}
+          {/* fb   */}
           <script
             async
             defer
+            nonce="pJttRA02"
             crossorigin="anonymous"
             src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&amp;version=v11.0&amp;appId=332276848078020&amp;autoLogAppEvents=1"
-            nonce="pJttRA02"
-          />
-          {/* share button */}
-          <script
-            async
-            defer
-            crossorigin="anonymous"
-            src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&amp;version=v11.0&amp;appId=273567780526584&amp;autoLogAppEvents=1"
-            nonce="x9MQ4iIV"
           />
         </Head>
         <body>

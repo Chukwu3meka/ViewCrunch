@@ -21,7 +21,7 @@ const FaqContainer = () => {
   const classes = useStyles();
 
   // const [expanded, setExpanded] = useState("ViewCrunch Intro");
-  const [expanded, setExpanded] = useState("news");
+  const [expanded, setExpanded] = useState("news6");
 
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
