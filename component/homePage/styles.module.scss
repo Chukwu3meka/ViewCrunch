@@ -46,33 +46,33 @@
 }
 
 .newsFlash {
+  padding: 0 10px 10px;
+  margin: 15px 0;
+  border-radius: 5px;
+  border: 1px solid var(--dim);
   & > *:first-child {
-    margin-top: -33px !important;
+    margin-top: -15px;
+    h1 {
+      font-size: 1.2em !important;
+    }
   }
-  & > *:first-child > *:first-child > *:first-child {
-    font-size: 1em;
-    margin-top: 1px !important;
-  }
-  & > div:last-child {
+  & > a > div {
     @include flexCenter(column);
-    border: 1px solid var(--dim);
-    border-radius: 5px;
-    & > a > div {
-      border-bottom: 3px solid color(primary);
-      margin: 5px 0;
-      @include flexCenter(column);
-      & > *:first-child {
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        word-break: normal;
-        overflow: hidden;
-      }
+    border-bottom: 3px solid color(primary);
+    margin: 10px auto;
+    @include flexCenter(column);
+    max-width: 700px;
+    & > *:first-child {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      word-break: normal;
+      overflow: hidden;
     }
-    & > a:nth-child(odd) > div {
-      background-color: var(--dim);
-      color: #000;
-    }
+  }
+  & > a:nth-child(odd) > div {
+    background-color: var(--dim);
+    color: #000;
   }
 }
 
@@ -244,17 +244,7 @@
   .primaryBody > * > a > div {
     max-width: 900px;
   }
-  .newsFlash > div {
-    padding: 10px !important;
-    margin: 15px 0 0;
-    & > *:first-child {
-      margin-top: -20px;
-    }
-    & > a > div {
-      margin: 10px 0;
-      & > *:first-child {
-        margin-bottom: 10px;
-      }
-    }
+  .newsFlash > a > div {
+    margin: 20px auto;
   }
 }

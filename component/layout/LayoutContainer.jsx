@@ -19,6 +19,7 @@ const LayoutContainer = (props) => {
       "--pry": props.theme === "light" ? "#fff" : "#424242",
       "--sec": props.theme === "light" ? "#424242" : "#fff",
       "--dim": props.theme === "light" ? "#b1b1b18a" : "#ffffffb3",
+      "--alt": props.theme === "light" ? "#fffffa" : "##9e9e9e",
     });
   }, [props.theme]);
 

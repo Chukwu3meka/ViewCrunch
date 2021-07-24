@@ -77,7 +77,7 @@ const NavPageContainer = (props) => {
     await sleep(15);
     setFetchFailed(true);
     setLoading(false);
-    scrollRef?.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+    // scrollRef?.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   };
 
   return secondary.length ? <SecBody {...{ secondary, deviceWidth, loading, getMorePost, fetchFailed, scrollRef }} /> : "";

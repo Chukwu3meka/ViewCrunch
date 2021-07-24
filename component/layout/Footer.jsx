@@ -5,7 +5,28 @@ import Typography from "@material-ui/core/Typography";
 
 const Footer = ({ scrollTop }) => (
   <div className={styles.footer}>
-    <AuthFirebase />
+    {/* <a href="https://facebook.com/viewcrunch">Kindly Follow us on our facebook @ViewCrunch</a> */}
+    <div>
+      <div id="fb-root"></div>
+      <div
+        className="fb-like"
+        datahref="https://facebook.com/viewcrunch"
+        datawidth=""
+        datalayout="button_count"
+        dataaction="like"
+        datasize="large"
+        datashare="true"
+      />
+      <div class="fb-share-button" data-href="https://www.viewcrunch.com" data-layout="button_count" data-size="large">
+        <a
+          target="_blank"
+          href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.viewcrunch.com%2F&amp;src=sdkpreparse"
+          class="fb-xfbml-parse-ignore">
+          Share
+        </a>
+      </div>
+    </div>
+
     <div>
       <span>
         <Link href="/info/terms">

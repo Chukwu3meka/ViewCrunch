@@ -2,7 +2,7 @@ import cookie from "js-cookie";
 import Router from "next/router";
 import { connect } from "react-redux";
 import { useEffect, useState } from "react";
-import Button from "@material-ui/core/Button";
+import { Button, Paper } from "@material-ui/core";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 
 import { Handle } from ".";
@@ -103,7 +103,7 @@ const AuthFirebase = (props) => {
   if (chooseHandle && online && authDetail?.uid) return <Handle myRefresh={authDetail.myRefresh} />;
 
   return (
-    <div>
+    <Paper>
       {online ? (
         renderAuth && !authenticated ? (
           <StyledFirebaseAuth uiConfig={firebaseAuthConfig({ setAuthDetail })} firebaseAuth={firebase.auth()} />
@@ -116,13 +116,13 @@ const AuthFirebase = (props) => {
               props.setProfileAction({});
               logout();
             }}>
-            Logout
+            Logout/Signout
           </Button>
         )
       ) : (
         ""
       )}
-    </div>
+    </Paper>
   );
 };
 

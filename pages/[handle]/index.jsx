@@ -17,7 +17,7 @@ const NavPages = ({ viewerData, myProfile, error }) => {
           seo_description: `${viewerData.displayName} profile page on viewcrunch`,
         }}
       />
-      <ProfileContainer {...{ viewerData, myProfile }} />;
+      <ProfileContainer {...{ viewerData, myProfile }} />
     </>
   );
 };

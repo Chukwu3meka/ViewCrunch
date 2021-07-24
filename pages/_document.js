@@ -7,6 +7,7 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
+          {/* google  */}
           <script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env.GA_TRACKING_ID}`} defer />
           <script
             dangerouslySetInnerHTML={{
@@ -21,10 +22,27 @@ export default class MyDocument extends Document {
             }}
             defer
           />
+          {/* fb like  */}
+          <script
+            async
+            defer
+            crossorigin="anonymous"
+            src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&amp;version=v11.0&amp;appId=332276848078020&amp;autoLogAppEvents=1"
+            nonce="pJttRA02"
+          />
+          {/* share button */}
+          <script
+            async
+            defer
+            crossorigin="anonymous"
+            src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&amp;version=v11.0&amp;appId=273567780526584&amp;autoLogAppEvents=1"
+            nonce="x9MQ4iIV"
+          />
         </Head>
         <body>
           <Main />
           <NextScript />
+          <div id="fb-root" />
         </body>
       </Html>
     );

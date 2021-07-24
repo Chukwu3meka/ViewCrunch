@@ -13,6 +13,12 @@
       margin: auto !important;
     }
   }
+  & > div:last-child {
+    padding: 10px;
+    margin: 0 auto 10px;
+    width: calc(100% - 10px);
+    @include flexCenter(column);
+  }
 }
 
 .myIntro {

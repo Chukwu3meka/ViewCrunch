@@ -1,3 +1,4 @@
+import { styles } from ".";
 import Link from "next/link";
 import Image from "next/image";
 import Fade from "react-reveal/Fade";
@@ -6,7 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import UpvoteIcon from "@material-ui/icons/ThumbUp";
 import { shortNumber, trimString } from "@utils/clientFunctions";
 
-const Highlight = ({ highlight, styles }) => (
+const Highlight = ({ highlight }) => (
   <div className={styles.highlight}>
     {highlight.length
       ? highlight.map(({ title, pryImage, path, upvote }, index) => (

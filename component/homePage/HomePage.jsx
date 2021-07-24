@@ -7,11 +7,11 @@ const HomePage = ({ highlight, newsFlash, primary, deviceWidth }) => (
     <Grid item xs={12} lg={8} className={styles.primaryBody}>
       <PrimaryBody primary={primary} deviceWidth={deviceWidth} />
     </Grid>
-    <Grid item xs={12} lg={4} className={styles.newsFlash}>
+    <Grid item xs={12} lg={4}>
       <NewsFlash newsFlash={newsFlash} />
     </Grid>
     <Grid item xs={12} sm={12}>
-      <Highlight highlight={highlight} styles={styles} />
+      <Highlight highlight={highlight} />
     </Grid>
   </Grid>
 );
