@@ -217,6 +217,8 @@ export const fetchView = async ({ author, view: id, myHandle }) => {
       // console.log(error);
     });
 
+  if (full_view.error) return { error: "View does not exist" };
+
   const {
     crunch,
     title: { data: title, path },
@@ -232,6 +234,7 @@ export const fetchView = async ({ author, view: id, myHandle }) => {
 
   if (!full_view.visible.status && full_view.visible.moderator !== "ViewCrunch" && full_view.visible.data !== "just published")
     return { error: "View is hidden" };
+
   if (author !== full_view.author) return { error: "Wrong Author specified" };
 
   // const comments = [];
