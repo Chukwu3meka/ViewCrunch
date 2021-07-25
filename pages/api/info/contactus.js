@@ -1,14 +1,14 @@
 import firebaseAdmin from "@utils/firebaseServer";
 
-const handler = async ({ link, myHandle, report, section }) => {
+const handler = async ({ name, email, comment, section }) => {
   await firebaseAdmin
     .firestore()
-    .collection("report")
+    .collection("contactus")
     .add({
-      link,
+      name,
+      email,
+      comment,
       section,
-      reporter: myHandle,
-      report,
       date: firebaseAdmin.firestore.Timestamp.now(),
     })
     .then()
@@ -19,12 +19,11 @@ const handler = async ({ link, myHandle, report, section }) => {
 
 export default async (req, res) => {
   try {
-    // link: "profile, view or crunch link", report: "reason for reporting", section:"view, crunch or profile"
-    const { myHandle, report, link, section } = req.body;
-    await handler({ myHandle, link, report, section });
+    const { name, email, comment, section } = req.body;
+    await handler({ name, email, comment, section });
     return res.status(200).send(true);
   } catch (error) {
-    // console.log(error);
+    // console.log(error)
     return res.status(401).send(false);
   }
 };

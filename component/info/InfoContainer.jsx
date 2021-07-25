@@ -1,13 +1,8 @@
+import { styles } from ".";
 import Link from "next/link";
-import { makeStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
 import { range } from "@utils/clientFunctions";
+import { makeStyles } from "@material-ui/core/styles";
+import { Card, Typography, CardActionArea, CardActions, CardContent, CardMedia, Button } from "@material-ui/core";
 
 const useStyles = makeStyles({
   root: {
@@ -27,7 +22,7 @@ const InfoContainer = ({ title, body, path }) => {
     actions = [
       { title: "FAQ", path: "/info/faq" },
       { title: "About", path: "/info/about" },
-      { title: "Contact", path: "/info/contact" },
+      { title: "Contact US", path: "/info/contactus" },
       { title: "Advertise", path: "/info/advertise" },
       { title: "Privacy Policy", path: "/info/privacy" },
       { title: "Terms and Conditions", path: "/info/terms" },
@@ -49,8 +44,21 @@ const InfoContainer = ({ title, body, path }) => {
             <Typography gutterBottom variant="h5" component="h2">
               {title}
             </Typography>
-            <Typography variant="body2" color="textSecondary" component="div">
+            <Typography variant="body2" color="textSecondary" component="article" className={styles.info}>
               {body}
+              <p>
+                ***
+                <b>
+                  WE VEHEMENTLY FORBID SCANNING OF THIS WEBSITE, OR ANY ACT OF EXPLOITATION (ALONE OR IN CONJUCTION WITH OTHERS) AND
+                  LEGAL ACTIONS WILL BE TAKEN AT HIGH COST AGAINST ANY ENTITY, INDIVIDUAL OR ORGANISATION THAT ATTEMT TO EXPLOIT ANY
+                  VULNERABILITY KNOWN OR UNKNOWN, FOREIGN OR DOMESTIC
+                </b>
+                ***
+                <span>
+                  best wishes,
+                  <br /> ViewCrunch.
+                </span>
+              </p>
             </Typography>
           </CardContent>
         </CardActionArea>
@@ -75,4 +83,5 @@ const InfoContainer = ({ title, body, path }) => {
     </div>
   );
 };
+
 export default InfoContainer;

@@ -139,20 +139,20 @@ export const viewer = name1.map((name) => ({
   notification: [
     {
       body: "To understand more on what ViewCrunch is all about visit this page at anytime",
-      link: "/control/faq#about",
+      link: "/info/about",
       title: "About ViewCrunch",
     },
     {
       body: "Visit the link at the bottom of any page on ViewCrunch to read more on our 'terms and condition' and 'privacy policy'",
-      link: "/control/faq",
+      link: "/info/faq",
       title: "FAQ: Frequently Asked Question",
     },
-    { body: "Have a product or service to advertise on ViewCrunch", link: "/control/adverise", title: "Advertise" },
-    { body: "Make suggestions here, or contact the developer", link: "/control/contact", title: "Contact Us" },
+    { body: "Have a product or service to advertise on ViewCrunch", link: "/info/advertise", title: "Advertise" },
+    { body: "Contact us here", link: "/info/contactus", title: "Contact Us" },
   ],
   favourite: [
-    { link: "/control/adverise", title: "Have a product or service to advertise on ViewCrunch" },
-    { link: "/control/contact", title: "Make suggestions here, or contact the developer" },
+    { link: "/info/advertise", title: "Have a product or service to advertise on ViewCrunch" },
+    { link: "/info/contactus", title: "Make suggestions here, or reach out to our team" },
   ],
   blacklist: [],
   published: name3.map((title) => ({

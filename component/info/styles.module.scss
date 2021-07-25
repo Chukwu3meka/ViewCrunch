@@ -1,58 +1,109 @@
 @import "@source/_variables.scss";
 
-@font-face {
-  font-family: "Lora";
-  src: local("Lora"), url("/fonts/Lora/static/Lora-Regular.ttf");
-  display: swap;
-}
-
-.layout {
-  font-family: "Lora", sans-serif;
-  // font-size: 18px;
-  font-size: 17px;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  height: 100vh;
-  overflow: hidden;
-  & > div:last-of-type {
-    width: 100%;
-    position: relative;
-    height: 100%;
+.info {
+  @include flexCenter(column);
+  text-align: justify;
+  u {
+    margin: 20px auto 10px;
   }
-  * {
-    box-sizing: border-box;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    user-select: none;
-    -webkit-tap-highlight-color: transparent;
-    outline: none;
-    img {
-      overflow: hidden;
+  & > span {
+    margin: 5px auto;
+  }
+  & > p {
+    @include flexCenter(column);
+    text-align: center;
+    span {
+      text-align: justify;
+      margin: 20px 0 0;
+      align-self: flex-start;
+      line-height: 30px;
     }
   }
-
-  a:link {
-    cursor: pointer;
-    color: color(secondary);
-    text-decoration: none;
+  & > label {
+    margin: 10px 0 5px;
+    align-self: flex-start;
   }
-  a:visited {
-    text-decoration: none;
-    color: color(secondary);
+  & > ul {
+    width: 100%;
+    text-align: center;
+    font-size: 1.2em;
   }
-  a:hover {
-    color: darken($color: color(primary), $amount: 10);
-    transition-delay: 200ms;
-    cursor: pointer;
-  }
-  a:active {
-    text-decoration: none;
-    color: color(secondary);
-  }
-
-  // a:hover {
-  //   color: var(--sec);
-  //   cursor: pointer;
-  // }
 }
 
+.contact {
+  @include flexCenter(column);
+  width: calc(100% - 10px);
+  padding: 20px 5px 10px;
+  text-align: center;
+  margin: 10px auto !important;
+  hr {
+    margin: -10px auto 50px;
+    width: 100%;
+    max-width: 200px;
+    border-color: color(primary);
+  }
+  & > div:nth-of-type(1) {
+    @include flexCenter(row);
+    flex-wrap: wrap;
+    & > div {
+      @include flexCenter(column, initial);
+      min-width: 200px;
+      max-width: 350px;
+      margin: 10px auto;
+      padding: 5px;
+      & > div {
+        width: 200px;
+        height: 200px;
+        position: relative;
+        margin: 10px auto;
+        border-radius: 50%;
+        overflow: hidden;
+      }
+      & > button {
+        margin: 15px auto;
+      }
+    }
+  }
+  & > div:nth-of-type(2) {
+    margin: 10px 0;
+    & > div:first-of-type {
+      color: black;
+      background-color: var(--dim);
+      padding-bottom: 100px;
+      & > div {
+        text-align: left;
+      }
+    }
+    & > div:last-of-type {
+      margin-top: -80px;
+      & > div:nth-of-type(1) > div:nth-of-type(1) {
+        @include flexCenter(column);
+        align-items: flex-start;
+        & > * {
+          margin: 5px initial;
+        }
+        & > div:nth-of-type(2) {
+          text-align: left;
+          & > section {
+            & > * {
+              margin: 10px 5px;
+            }
+            @include flexCenter(row);
+            justify-content: flex-start;
+            flex-wrap: wrap;
+            padding: 10px;
+          }
+        }
+        & > button {
+          margin: 10px auto;
+        }
+      }
+      & > div:nth-of-type(2) {
+        margin-top: -60px;
+        width: 200px;
+        height: 420px;
+        position: relative;
+      }
+    }
+  }
+}

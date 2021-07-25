@@ -6,7 +6,6 @@ import Typography from "@material-ui/core/Typography";
 const Footer = ({ scrollTop }) => (
   <div className={styles.footer}>
     <div>
-      <AuthFirebase />
       <div
         className="fb-like"
         data-href="https://www.facebook.com/viewcrunch/"
@@ -44,8 +43,8 @@ const Footer = ({ scrollTop }) => (
       <img src="/images/ViewCrunch.webp" alt="ViewCrunch footer icon" onClick={scrollTop} />
 
       <span>
-        <Link href="/info/contact">
-          <a>Contact</a>
+        <Link href="/info/contactus">
+          <a>Contact Us</a>
         </Link>
         ~
         <Link href="/info/about">
@@ -57,6 +56,9 @@ const Footer = ({ scrollTop }) => (
         </Link>
       </span>
     </div>
+
+    <AuthFirebase />
+
     <Typography variant="body2" color="textSecondary">
       ● © 2018 ~ {new Date().getFullYear()} ViewCrunch ●
     </Typography>

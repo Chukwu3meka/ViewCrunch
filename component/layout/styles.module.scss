@@ -178,11 +178,7 @@
   @include flexCenter(column);
   padding: 10px 5px 5px !important;
   text-align: center;
-  & > div:first-of-type {
-    @include flexCenter(row);
-    flex-wrap: wrap;
-  }
-  & > div:last-of-type {
+  & > div:nth-of-type(2) {
     @include flexCenter(row);
     flex-wrap: wrap;
     font-size: 0.8em;
@@ -200,6 +196,7 @@
       }
     }
     & > img {
+      border: 3px solid red;
       visibility: hidden;
       position: absolute;
       margin: auto;
@@ -213,15 +210,8 @@
   }
 }
 
-@media screen and (min-width: 482px) {
-  .footer > div:last-of-type {
-    & > img {
-      visibility: visible;
-    }
-  }
-}
 @media screen and (min-width: 600px) {
-  .footer > div:last-of-type {
+  .footer > div:nth-of-type(2) {
     & > span {
       width: fit-content;
     }

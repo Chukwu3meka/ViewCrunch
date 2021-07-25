@@ -105,7 +105,6 @@ const App = ({ Component, pageProps }) => {
         <meta property="og:image:type" content="image/webp" />
         <meta property="og:image" content="https://www.viewcrunch.com/images/ViewCrunch.webp" />
         <meta property="og:url" content="https://www.facebook.com/viewcrunch/" />
-        {/* <meta property="og:url" content="https://www.viewcrunch.com" /> */}
         <meta property="og:title" content="ViewCrunch" />
         <meta
           property="og:description"

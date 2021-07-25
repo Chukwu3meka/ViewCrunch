@@ -18,10 +18,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const FaqContainer = () => {
-  const classes = useStyles();
-
-  // const [expanded, setExpanded] = useState("ViewCrunch Intro");
-  const [expanded, setExpanded] = useState("news6");
+  const classes = useStyles(),
+    [expanded, setExpanded] = useState("ViewCrunch Intro");
 
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);

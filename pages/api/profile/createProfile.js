@@ -68,7 +68,7 @@ const createProfileHandler = async ({ handle, myRefresh }) => {
               title: "FAQ: Frequently Asked Question",
             },
             { body: "Have a product or service to advertise on ViewCrunch", link: "/info/advertise", title: "Advertise" },
-            { body: "Make suggestions here, or contact the developer", link: "/info/contact", title: "Contact Us" },
+            { body: "Contact us here", link: "/info/contactus", title: "Contact Us" },
           ],
           roles: { comment: true, vote: true, suspended: false, moderate: true, createCrunch: true },
           crunches: initialCrunches
@@ -77,7 +77,10 @@ const createProfileHandler = async ({ handle, myRefresh }) => {
               roles: { publish: true, retouch: true, moderate: handle === "maduekwepedro" ? true : false },
             }))
             .reduce((acc, cur) => ({ ...acc, [cur.id]: cur.roles }), {}),
-          favourite: [],
+          favourite: [
+            { link: "/info/advertise", title: "Have a product or service to advertise on ViewCrunch" },
+            { link: "/info/contactus", title: "Make suggestions here, or reach out to our team" },
+          ],
           blacklist: [],
           published: {},
           chat: {

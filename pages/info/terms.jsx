@@ -10,7 +10,7 @@ const Terms = () => (
         by ViewCrunch. Your access to and use of the Service is conditioned on your acceptance of and compliance with these Terms. These
         Terms apply to all visitors, users and others who access or use the Service. By accessing or using the Service you agree to be
         bound by these Terms. If you disagree with any part of the terms then you may not access the Service.
-        <ul style={{ textAlign: "center" }}>PURCHASES</ul>
+        <u>PURCHASES</u>
         The primary intention of developing ViewCrunch is to create an engaging blog that would cost users nothing, having said that,
         ViewCrunch has no intention of making this website paid, i.e. the service will remain free at all cost amid constant improvement
         for its entirety, though we accept donations, we also incorporated Ads as a way to the gain/get funds to keep our service running
@@ -19,22 +19,22 @@ const Terms = () => (
         the Ads on this website, you may be asked to supply certain information relevant to your Purchase; ViewCrunch bears no attachment
         and no responsibility of what you choose to do on any ad network and would not be held liable for your actions as stated above
         Ads were added as way to generate funds.
-        <ul style={{ textAlign: "center" }}>TERMINATION</ul>
+        <u>TERMINATION</u>
         We may terminate or suspend your access to our service immediately, without prior notice or liability, for any reason whatsoever,
         including without limitation if you breach the Terms of use and Conditions. All provisions of the Terms of Use and Conditions
         which by their nature should survive termination shall survive termination, including, without limitation, ownership provisions,
         warranty disclaimers, indemnity and limitations of liability.
-        <ul style={{ textAlign: "center" }}>CONTENT</ul>
+        <u>CONTENT</u>
         Our Service allows you to post, link, store, share and otherwise make available certain information, text, graphics, videos, or
         other Content so far you link back to the portion/page on this website you intend using. You are responsible for whatsoever you
         do with this content.
-        <ul style={{ textAlign: "center" }}>LINKS TO OTHER WEB SITES</ul>
+        <u>LINKS TO OTHER WEB SITES</u>
         Our Service may contain links to third-party web sites or services that are not owned or controlled by ViewCrunch including the
         ad network. As such ViewCrunch has no control over, and assumes no responsibility for, the content, privacy policies, or
         practices of any third-party web sites or services. You further acknowledge and agree that ViewCrunch shall not be responsible or
         liable, directly or indirectly, for any damage or loss caused or alleged to be caused by or in connection with use of or reliance
         on any such content, goods or services available on or through any such web sites or services.
-        <ul style={{ textAlign: "center" }}>CHANGES TO TERMS OF USE AND CONDITIONS</ul>
+        <u>CHANGES TO TERMS OF USE AND CONDITIONS</u>
         This Terms of use and Conditions is effective as of Sunday, 24th May 2020 and will remain in effect except with respect to any
         changes in its provisions in the future, which will be in effect immediately after being posted on this page. We reserve the
         right, at our sole discretion, to modify, update or replace these Terms and Policy at any time and you should check the Terms and
@@ -44,23 +44,6 @@ const Terms = () => (
         page will constitute your acknowledgment of the modifications and your consent to abide and be bound by the modified Privacy
         Policy. If we make any material changes to this Privacy Policy, we will notify you either through the email address you have
         provided us, or by placing a prominent notice on our website.
-        <ul style={{ textAlign: "center" }}>IMPORTANT NOTICE</ul>
-        ***
-        <br />
-        <hr />
-        <b>
-          WE VEHEMENTLY FORBID SCANNING OF THIS WEBSITE, OR ANY ACT OF EXPLOITATION (ALONE OR IN CONJUCTION WITH OTHERS) AND LEGAL
-          ACTIONS WILL BE TAKEN AT HIGH COST AGAINST ANY ENTITY, INDIVIDUAL OR ORGANISATION THAT ATTEMT TO EXPLOIT ANY VULNERABILITY
-          KNOWN OR UNKNOWN, FOREIGN OR DOMESTIC
-        </b>
-        <hr />
-        <br />
-        ***
-        <br />
-        best wishes,
-        <br />
-        <br />
-        ViewCrunch.
       </>
     }
   />

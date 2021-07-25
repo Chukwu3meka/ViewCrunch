@@ -27,7 +27,7 @@ export default class MyDocument extends Document {
             async
             defer
             nonce="pJttRA02"
-            crossorigin="anonymous"
+            crossOrigin="anonymous"
             src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&amp;version=v11.0&amp;appId=332276848078020&amp;autoLogAppEvents=1"
           />
         </Head>
