@@ -104,8 +104,8 @@ export default async (req, res) => {
     const link = await publishHandler({ profile, title, description, content, keywords, crunch, moderator });
     return res.status(200).json({ link });
   } catch (error) {
-    console.log(error);
-    return res.status(401).json({ link: false });
+    console.log("error", error);
+    return res.status(401).json({ link: undefined });
   }
 };
 

@@ -55,7 +55,7 @@ const PublishContainer = (props) => {
   };
 
   const descriptionHandler = (value) => {
-    const error1 = "Description can have between 50 to 200 letters",
+    const error1 = "Description can have between 50 to 125 letters",
       error2 = "Description must be between 3 - 70 words",
       error3 =
         "Invalid characters; Only Letters, Numbers and special characters like '-', ':', '(', ')', ',', ''', '?',  and ';' are valid",
@@ -72,7 +72,8 @@ const PublishContainer = (props) => {
     return false;
   };
 
-  const keywordsHandler = (value) => {
+  const keywordsHandler = (value = "") => {
+    value = value.toLowerCase();
     const error1 = "Keywords can only contain 3 to 100 letters",
       error2 = "Keywords must be between 1 - 5 words seapareted by comma",
       error3 = "only ',' and Alphanumeric characters allowed. Example: 'Gadets 2018, Smart Phones, ball, schools'",

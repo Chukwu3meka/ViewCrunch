@@ -59,69 +59,85 @@ export const saveTempImage = async ({ image, location, handle, api = "crunch" })
   const base64 = image.replace(/\s/g, "").split(";base64,").pop();
 
   try {
-    fs.statSync(`./pages/api/${api}/uploads/${handle}`).isDirectory();
-  } catch {
-    fs.mkdir(`./pages/api/${api}/uploads/${handle}`, { recursive: true }, () => {});
+    try {
+      fs.statSync(`./pages/api/${api}/uploads/${handle}`).isDirectory();
+    } catch {
+      fs.mkdir(`./pages/api/${api}/uploads/${handle}`, { recursive: true }, () => {});
+    }
+
+    fs.writeFile(`./pages/api/${api}/uploads/${location}`, base64, { flag: "w", encoding: "base64" }, () => {});
+
+    return `./pages/api/${api}/uploads/${location}`;
+  } catch (error) {
+    console.log(error);
   }
-
-  fs.writeFile(`./pages/api/${api}/uploads/${location}`, base64, { flag: "w", encoding: "base64" }, (e) => {
-    console.log("saveTempImage", e);
-  });
-
-  return `./pages/api/${api}/uploads/${location}`;
 };
 
 export const uploadImages = async ({ tempLocation, myHandle, title }) => {
-  const accessToken = v4();
-  if (!tempLocation || !myHandle || !title) throw new TypeError("incomplete parameters");
-  return await bucket
-    .upload(tempLocation, {
-      destination: `images/@${myHandle}/${title}.png`,
-      gzip: true,
-      uploadType: "media",
-      metadata: {
-        contentType: "image/png",
+  try {
+    const accessToken = v4();
+    if (!tempLocation || !myHandle || !title) throw new TypeError("incomplete parameters");
+
+    return await bucket
+      .upload(tempLocation, {
+        destination: `images/@${myHandle}/${title}.png`,
+        gzip: true,
+        uploadType: "media",
         metadata: {
-          firebaseStorageDownloadTokens: accessToken,
+          contentType: "image/png",
+          metadata: {
+            firebaseStorageDownloadTokens: accessToken,
+          },
         },
-      },
-    })
-    .then((data) => {
-      const file = data[0];
-      return Promise.resolve(
-        `https://firebasestorage.googleapis.com/v0/b/${process.env.FIREBASE_STORAGE_BUCKET}/o/${encodeURIComponent(
-          file.name
-        )}?alt=media&token=${accessToken}`
-      );
-    })
-    .catch((error) => {
-      console.log("uploadImages", tempLocation, myHandle, title, error);
-      throw new TypeError(error);
-    });
+      })
+      .then((data) => {
+        const file = data[0];
+        return Promise.resolve(
+          `https://firebasestorage.googleapis.com/v0/b/${process.env.FIREBASE_STORAGE_BUCKET}/o/${encodeURIComponent(
+            file.name
+          )}?alt=media&token=${accessToken}`
+        );
+      })
+      .catch((error) => {
+        // console.log("uploadImages", tempLocation, myHandle, title, error);
+        throw new TypeError(error);
+      });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const deleteImages = async ({ downloadUrl }) => {
-  const httpsRef = storage.refFromURL(downloadUrl).fullPath;
-  return await bucket
-    .file(httpsRef)
-    .delete()
-    .then(() => "success")
-    .catch((error) => {
-      console.log("deleteImages", downloadUrl, error);
-      throw new TypeError(error);
-    });
+  try {
+    // console.log(downloadUrl);
+    const httpsRef = storage.refFromURL(downloadUrl).fullPath;
+    return await bucket
+      .file(httpsRef)
+      .delete()
+      .then(() => "success")
+      .catch((error) => {
+        // console.log("deleteImages", downloadUrl, error);
+        throw new TypeError(error);
+      });
+  } catch (error) {
+    // console.log(error);
+  }
 };
 
 export const deleteTempImage = async ({ location, api = "crunch" }) => {
-  // console.log(location);
-  const fs = require("fs"),
-    path = `./pages/api/${api}/uploads/${location}`;
   try {
-    fs.statSync(path).isDirectory();
-    fs.rmdirSync(path, { recursive: true }, () => {});
+    // console.log({ location, api });
+    const fs = require("fs"),
+      path = `./pages/api/${api}/uploads/${location}`;
+    try {
+      fs.statSync(path).isDirectory();
+      fs.rmdirSync(path, { recursive: true }, () => {});
+    } catch (error) {
+      // console.log("deleteTempImage", location, api, error);
+      throw new TypeError(error);
+    }
   } catch (error) {
-    console.log("deleteTempImage", location, api, error);
-    throw new TypeError(error);
+    console.log(error);
   }
 };
 

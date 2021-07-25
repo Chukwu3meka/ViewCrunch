@@ -24,7 +24,7 @@ export const getServerSideProps = async (ctx) => {
 
   const crunch = ctx.query.crunch;
 
-  return errorProp(500, "Temporarily Server issue");
+  return errorProp(500, "Temporal Server issue");
 
   // const { crunches, myFollowing, error } = await fetchCrunches(myHandle);
   // if (error) return errorProp(400, "Unable to fetch crunches");

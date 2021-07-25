@@ -19,32 +19,38 @@ const PreviewContainer = (props) => {
   const view = content
     .map((x) => {
       if (typeof x === "string") return x;
-      if (typeof x === "object") return `<Image src='${x.image}' alt='${title}' />`;
+      if (typeof x === "object") return `<Image src='${x.image}' alt='${title}' layout="fill" />`;
     })
     .flat(Infinity)
     .join("");
 
   const publishHandler = async () => {
-    if (publishing) return enqueueSnackbar("Please wait, Your view is being published", { variant: "info" });
-    setPublishing(true);
-    if (profile.myHandle && title && content?.length && online) {
+    if (publishing) {
       enqueueSnackbar("Please wait, Your view is being published", { variant: "info" });
-
-      const { link } = await fetcher(
-        viewToBeModified.title ? "/api/crunch/retouchView" : "/api/crunch/publishView",
-        JSON.stringify({ description, profile, title, content, keywords, crunch, moderator })
-      );
-
-      if (link) {
-        enqueueSnackbar(`Published succesfully`, { variant: "success" });
-        setPublishing(false);
-        router.push(link);
-      } else {
-        enqueueSnackbar("Unable to publish view now; make sure you're connected and try again.", { variant: "error" });
-      }
     } else {
-      enqueueSnackbar("Make sure you're connected and logged in, then try again.", { variant: "error" });
-      setPublishing(false);
+      setPublishing(true);
+
+      if (profile.myHandle && title && content?.length && online) {
+        enqueueSnackbar("Please wait, Your view is being published", { variant: "info" });
+
+        const { link } = await fetcher(
+          viewToBeModified.title ? "/api/crunch/retouchView" : "/api/crunch/publishView",
+          JSON.stringify({ description, profile, title, content, keywords, crunch, moderator })
+        );
+
+        if (link) {
+          console.log({ link });
+          enqueueSnackbar(`Published succesfully`, { variant: "success" });
+          setPublishing(false);
+          router.push(link);
+        } else {
+          setPublishing(false);
+          enqueueSnackbar("Unable to publish view now; make sure you're connected and try again.", { variant: "error" });
+        }
+      } else {
+        enqueueSnackbar("Make sure you're connected and logged in, then try again.", { variant: "error" });
+        setPublishing(false);
+      }
     }
   };
 

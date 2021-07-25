@@ -2,7 +2,7 @@ import firebaseAdmin from "@utils/firebaseServer";
 
 export default async (req, res) => {
   try {
-    throw new TypeError("authentication failed");
+    if (process.env.NODE_ENV !== "development") throw new TypeError("authentication failed");
 
     for (const [key, value] of Object.entries({
       "2021-06-15":

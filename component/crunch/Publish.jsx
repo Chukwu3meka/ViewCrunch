@@ -49,7 +49,7 @@ const Publish = ({
       label="Description"
       value={description}
       variant="outlined"
-      placeholder="Describe what view is about, and how it should appear in search engines. Description should be between 50 to 200 letters "
+      placeholder="Describe what view is about, and how it should appear in search engines. Description should be between 50 to 125 letters "
       multiline
       onChange={(e) => descriptionHandler(e.target.value.trimStart().replace(/\s+/g, " "))}
     />
