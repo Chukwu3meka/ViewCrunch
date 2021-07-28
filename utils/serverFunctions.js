@@ -59,7 +59,9 @@ export const saveTempImage = async ({ image, location, handle, api = "crunch" })
   const base64 = image.replace(/\s/g, "").split(";base64,").pop();
   try {
     if (!fs.existsSync(`./pages/api/${api}/uploads/${handle}`)) {
-      fs.mkdir(`./pages/api/${api}/uploads/${handle}`, { recursive: true }, () => {});
+      fs.mkdir(`./pages/api/${api}/uploads/${handle}`, { recursive: true }, (e) => {
+        console.log("sfafdsfsd", e);
+      });
     }
     // try {
     //   fs.statSync(`./pages/api/${api}/uploads/${handle}`).isDirectory();
@@ -67,10 +69,12 @@ export const saveTempImage = async ({ image, location, handle, api = "crunch" })
     //   console.log("SAVEtEMPiMAGE", error);
     //   fs.mkdir(`./pages/api/${api}/uploads/${handle}`, { recursive: true }, () => {});
     // }
-    fs.writeFile(`./pages/api/${api}/uploads/${location}`, base64, { flag: "w", encoding: "base64" }, () => {});
+    fs.writeFile(`./pages/api/${api}/uploads/${location}`, base64, { flag: "w", encoding: "base64" }, (e) => {
+      console.log("sfafdsfsd", e);
+    });
     return `./pages/api/${api}/uploads/${location}`;
   } catch (error) {
-    // console.log(error);
+    console.log("error", error);
   }
 };
 

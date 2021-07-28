@@ -14,7 +14,13 @@ const PreviewContainer = (props) => {
     [publishing, setPublishing] = useState(false),
     [scrollPosition, setScrollPosition] = useState(true);
 
-  useEffect(() => setOnline(props.online), [props.online]);
+  useEffect(() => {
+    let mounted = true;
+    if (mounted) {
+      setOnline(props.online);
+    }
+    () => (mounted = false);
+  }, [props.online]);
 
   const view = content
     .map((x) => {
