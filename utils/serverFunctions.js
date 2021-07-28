@@ -61,7 +61,8 @@ export const saveTempImage = async ({ image, location, handle, api = "crunch" })
   try {
     try {
       fs.statSync(`./pages/api/${api}/uploads/${handle}`).isDirectory();
-    } catch {
+    } catch (error) {
+      console.log("SAVEtEMPiMAGE", error);
       fs.mkdir(`./pages/api/${api}/uploads/${handle}`, { recursive: true }, () => {});
     }
 
@@ -99,7 +100,7 @@ export const uploadImages = async ({ tempLocation, myHandle, title }) => {
         );
       })
       .catch((error) => {
-        // console.log("uploadImages", tempLocation, myHandle, title, error);
+        console.log("uploadImages", tempLocation, myHandle, title, error);
         throw new TypeError(error);
       });
   } catch (error) {
@@ -133,7 +134,7 @@ export const deleteTempImage = async ({ location, api = "crunch" }) => {
       fs.statSync(path).isDirectory();
       fs.rmdirSync(path, { recursive: true }, () => {});
     } catch (error) {
-      // console.log("deleteTempImage", location, api, error);
+      console.log("deleteTempImage", location, api, error);
       throw new TypeError(error);
     }
   } catch (error) {

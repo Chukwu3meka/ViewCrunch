@@ -102,20 +102,20 @@ const PublishContainer = (props) => {
     await sleep(1.5);
     setLoading(false);
 
-    if (
-      !(
-        (fullArticleWord?.join(" ")?.split(" ")?.length >= 100 &&
-          fullArticleWord?.join(" ")?.split(" ")?.length <= 10000 &&
-          fullArticleWord.join(" ").length >= 1000 &&
-          fullArticleWord.join(" ").length <= 1000000) ||
-        (fullArticleImage?.length >= 10 && fullArticleImage?.length <= 30)
-      )
-    )
-      return enqueueSnackbar(`Article should have at least 100 words or 10 images and at most 10,000 words or 30MB`, {
-        variant: "error",
-      });
+    // if (
+    //   !(
+    //     (fullArticleWord?.join(" ")?.split(" ")?.length >= 100 &&
+    //       fullArticleWord?.join(" ")?.split(" ")?.length <= 10000 &&
+    //       fullArticleWord.join(" ").length >= 1000 &&
+    //       fullArticleWord.join(" ").length <= 1000000) ||
+    //     (fullArticleImage?.length >= 10 && fullArticleImage?.length <= 30)
+    //   )
+    // )
+    //   return enqueueSnackbar(`Article should have at least 100 words or 10 images and at most 10,000 words or 30MB`, {
+    //     variant: "error",
+    //   });
 
-    if (titleHandler(title) || descriptionHandler(description) || keywordsHandler(keywords)) return;
+    // if (titleHandler(title) || descriptionHandler(description) || keywordsHandler(keywords)) return;
 
     setPreview(true);
   };
