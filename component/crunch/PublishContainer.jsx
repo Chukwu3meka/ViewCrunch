@@ -27,10 +27,12 @@ const PublishContainer = (props) => {
     [preview, setPreview] = useState(false),
     [contentText, setContentText] = useState(""),
     { viewToBeModified = {}, crunch, published, moderator } = props,
-    [title, setTitle] = useState(viewToBeModified.title || ""),
-    [keywords, setKeywords] = useState(viewToBeModified.keywords || ""),
+    [title, setTitle] = useState(viewToBeModified.title || "Wealth: Freedom or not"),
+    [keywords, setKeywords] = useState(viewToBeModified.keywords || "wealth, finance"),
     [contentArray, setContentArray] = useState(viewToBeModified.content || []),
-    [description, setDescription] = useState(viewToBeModified.description || "");
+    [description, setDescription] = useState(
+      viewToBeModified.description || "Wealth or riches as we all know refers to valuable material possession or abundance"
+    );
 
   const titleHandler = (value) => {
     const error1 = "Title should be within the range of 3 to 20 words and 13 to 150 characters at most",
