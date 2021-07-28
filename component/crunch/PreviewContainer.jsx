@@ -39,7 +39,6 @@ const PreviewContainer = (props) => {
         );
 
         if (link) {
-          console.log({ link });
           enqueueSnackbar(`Published succesfully`, { variant: "success" });
           setPublishing(false);
           router.push(link);

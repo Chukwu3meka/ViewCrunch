@@ -57,20 +57,20 @@ export const errorProp = (code = 404, title = "Page not found") => ({ props: { e
 export const saveTempImage = async ({ image, location, handle, api = "crunch" }) => {
   const fs = require("fs");
   const base64 = image.replace(/\s/g, "").split(";base64,").pop();
-
   try {
-    try {
-      fs.statSync(`./pages/api/${api}/uploads/${handle}`).isDirectory();
-    } catch (error) {
-      console.log("SAVEtEMPiMAGE", error);
+    if (!fs.existsSync(`./pages/api/${api}/uploads/${handle}`)) {
       fs.mkdir(`./pages/api/${api}/uploads/${handle}`, { recursive: true }, () => {});
     }
-
+    // try {
+    //   fs.statSync(`./pages/api/${api}/uploads/${handle}`).isDirectory();
+    // } catch (error) {
+    //   console.log("SAVEtEMPiMAGE", error);
+    //   fs.mkdir(`./pages/api/${api}/uploads/${handle}`, { recursive: true }, () => {});
+    // }
     fs.writeFile(`./pages/api/${api}/uploads/${location}`, base64, { flag: "w", encoding: "base64" }, () => {});
-
     return `./pages/api/${api}/uploads/${location}`;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 };
 
@@ -100,25 +100,22 @@ export const uploadImages = async ({ tempLocation, myHandle, title }) => {
         );
       })
       .catch((error) => {
-        console.log("uploadImages", tempLocation, myHandle, title, error);
-        throw new TypeError(error);
+        throw new TypeError(`uploadImages ${error}`);
       });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 };
 
 export const deleteImages = async ({ downloadUrl }) => {
   try {
-    // console.log(downloadUrl);
     const httpsRef = storage.refFromURL(downloadUrl).fullPath;
     return await bucket
       .file(httpsRef)
       .delete()
       .then(() => "success")
       .catch((error) => {
-        // console.log("deleteImages", downloadUrl, error);
-        throw new TypeError(error);
+        throw new TypeError(`deleteImages ${error}`);
       });
   } catch (error) {
     // console.log(error);
@@ -127,18 +124,16 @@ export const deleteImages = async ({ downloadUrl }) => {
 
 export const deleteTempImage = async ({ location, api = "crunch" }) => {
   try {
-    // console.log({ location, api });
     const fs = require("fs"),
       path = `./pages/api/${api}/uploads/${location}`;
     try {
       fs.statSync(path).isDirectory();
       fs.rmdirSync(path, { recursive: true }, () => {});
     } catch (error) {
-      console.log("deleteTempImage", location, api, error);
-      throw new TypeError(error);
+      throw new TypeError(`deleteTempImages ${error}`);
     }
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 };
 
