@@ -61,11 +61,17 @@ export const saveTempImage = async ({ image, location, handle, api = "crunch" })
   const dir = `./pages/api/${api}/uploads/${handle}`;
   const file = `./pages/api/${api}/uploads/${location}`;
   if (fs.existsSync(dir)) {
-    fs.writeFile(file, base64, { flag: "w", encoding: "base64" }, () => {});
+    fs.writeFile(file, base64, { flag: "w", encoding: "base64" }, (e) => {
+      console.log("SAVEtEMPiMAGE", error);
+    });
     return file;
   } else {
-    fs.mkdir(file, { recursive: true }, (e) => {});
-    fs.writeFile(file, base64, { flag: "w", encoding: "base64" }, () => {});
+    fs.mkdir(file, { recursive: true }, (e) => {
+      console.log("SAVEtEMPiMAGE 2", error);
+    });
+    fs.writeFile(file, base64, { flag: "w", encoding: "base64" }, (e) => {
+      console.log("SAVEtEMPiMAGE", error);
+    });
     return file;
   }
 
