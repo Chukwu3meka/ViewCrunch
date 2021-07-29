@@ -62,7 +62,7 @@ export const saveTempImage = async ({ image, location, handle, api = "crunch" })
   const file = `./pages/api/${api}/uploads/${location}`;
   if (fs.existsSync(dir)) {
     fs.writeFile(file, base64, { flag: "w", encoding: "base64" }, (error) => {
-      console.log("SAVEtEMPiMAGE", error);
+      console.log("SAVEtEMPiMAGE 1", error);
     });
     return file;
   } else {
@@ -70,7 +70,7 @@ export const saveTempImage = async ({ image, location, handle, api = "crunch" })
       console.log("SAVEtEMPiMAGE 2", error);
     });
     fs.writeFile(file, base64, { flag: "w", encoding: "base64" }, (error) => {
-      console.log("SAVEtEMPiMAGE", error);
+      console.log("SAVEtEMPiMAGE 3", error);
     });
     return file;
   }
