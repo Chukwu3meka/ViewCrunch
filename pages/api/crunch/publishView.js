@@ -18,6 +18,8 @@ const publishHandler = async ({ profile: { myHandle }, title, description, conte
 
   const articleHasImage = images.length;
 
+  console.log({ images });
+
   if (articleHasImage) {
     for (const tempLocation of images) {
       await uploadImages({
