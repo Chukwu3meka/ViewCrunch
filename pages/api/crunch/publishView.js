@@ -46,6 +46,8 @@ const publishHandler = async ({ profile: { myHandle }, title, description, conte
     .flat(Infinity)
     .join("\n");
 
+  console.log({ pry: pryImageURL[0], title, viewURL, crunch, myHandle, moderator });
+
   const newView = {
     title: {
       data: title,
