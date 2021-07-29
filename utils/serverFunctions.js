@@ -58,19 +58,30 @@ export const saveTempImage = async ({ image, location, handle, api = "crunch" })
   const fs = require("fs");
   const base64 = image.replace(/\s/g, "").split(";base64,").pop();
   // try {
-  // if (!fs.existsSync(`./pages/api/${api}/uploads/${handle}`)) {
+  const dir = `./pages/api/${api}/uploads/${handle}`;
+  const file = `./pages/api/${api}/uploads/${location}`;
+  if (fs.existsSync(dir)) {
+    fs.writeFile(file, base64, { flag: "w", encoding: "base64" }, () => {});
+    return file;
+  } else {
+    fs.mkdir(file, { recursive: true }, (e) => {});
+    fs.writeFile(file, base64, { flag: "w", encoding: "base64" }, () => {});
+    return file;
+  }
+
+  //   if (!fs.existsSync(`./pages/api/${api}/uploads/${handle}`)) {
   //   fs.mkdir(`./pages/api/${api}/uploads/${handle}`, { recursive: true }, (e) => {
   //     console.log("sfafdsfsd", e);
   //   });
   // }
-  try {
-    fs.statSync(`./pages/api/${api}/uploads/${handle}`).isDirectory();
-  } catch (error) {
-    throw new TypeError("SAVEtEMPiMAGE", error);
-    fs.mkdir(`./pages/api/${api}/uploads/${handle}`, { recursive: true }, () => {});
-  }
-  fs.writeFile(`./pages/api/${api}/uploads/${location}`, base64, { flag: "w", encoding: "base64" }, () => {});
-  return `./pages/api/${api}/uploads/${location}`;
+  // try {
+  //   fs.statSync(`./pages/api/${api}/uploads/${handle}`).isDirectory();
+  // } catch (error) {
+  //   throw new TypeError("SAVEtEMPiMAGE", error);
+  //   fs.mkdir(`./pages/api/${api}/uploads/${handle}`, { recursive: true }, () => {});
+  // }
+  // fs.writeFile(`./pages/api/${api}/uploads/${location}`, base64, { flag: "w", encoding: "base64" }, () => {});
+  // return `./pages/api/${api}/uploads/${location}`;
   // } catch (error) {
   //   console.log("error", error);
   // }
