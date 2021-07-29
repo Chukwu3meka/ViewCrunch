@@ -1,13 +1,13 @@
 import { Chat } from "./";
 import { connect } from "react-redux";
 import { useEffect, useRef, useState } from "react";
-import { fade, makeStyles } from "@material-ui/core/styles";
+import { alpha, makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   search: {
     position: "relative",
     borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade("#777", 0.15),
+    backgroundColor: alpha("#777", 0.15),
     marginLeft: 0,
     width: "100%",
   },

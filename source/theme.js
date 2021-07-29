@@ -1,7 +1,7 @@
-import { createMuiTheme } from "@material-ui/core/styles";
+import { createTheme } from "@material-ui/core/styles";
 
 const muiTheme = (theme) => {
-  return createMuiTheme({
+  return createTheme({
     palette: {
       type: theme,
       primary: {
@@ -20,7 +20,7 @@ const muiTheme = (theme) => {
 
 const globalTheme = (mode) => {
   const theme = muiTheme(mode);
-  return createMuiTheme(
+  return createTheme(
     {
       overrides: {
         MuiPaper: {

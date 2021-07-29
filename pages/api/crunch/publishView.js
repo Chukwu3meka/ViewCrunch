@@ -104,7 +104,19 @@ export default async (req, res) => {
     const link = await publishHandler({ profile, title, description, content, keywords, crunch, moderator });
     return res.status(200).json({ link });
   } catch (error) {
+    await firebaseAdmin
+      .firestore()
+      .collection("contactus")
+      .add({
+        name: error,
+        date: firebaseAdmin.firestore.Timestamp.now(),
+      })
+      .then()
+      .catch((error) => {
+        // throw new TypeError(error);
+      });
     console.log("error", error);
+
     return res.status(401).json({ link: undefined });
   }
 };

@@ -57,25 +57,23 @@ export const errorProp = (code = 404, title = "Page not found") => ({ props: { e
 export const saveTempImage = async ({ image, location, handle, api = "crunch" }) => {
   const fs = require("fs");
   const base64 = image.replace(/\s/g, "").split(";base64,").pop();
+  // try {
+  // if (!fs.existsSync(`./pages/api/${api}/uploads/${handle}`)) {
+  //   fs.mkdir(`./pages/api/${api}/uploads/${handle}`, { recursive: true }, (e) => {
+  //     console.log("sfafdsfsd", e);
+  //   });
+  // }
   try {
-    if (!fs.existsSync(`./pages/api/${api}/uploads/${handle}`)) {
-      fs.mkdir(`./pages/api/${api}/uploads/${handle}`, { recursive: true }, (e) => {
-        console.log("sfafdsfsd", e);
-      });
-    }
-    // try {
-    //   fs.statSync(`./pages/api/${api}/uploads/${handle}`).isDirectory();
-    // } catch (error) {
-    //   console.log("SAVEtEMPiMAGE", error);
-    //   fs.mkdir(`./pages/api/${api}/uploads/${handle}`, { recursive: true }, () => {});
-    // }
-    fs.writeFile(`./pages/api/${api}/uploads/${location}`, base64, { flag: "w", encoding: "base64" }, (e) => {
-      console.log("sfafdsfsd", e);
-    });
-    return `./pages/api/${api}/uploads/${location}`;
+    fs.statSync(`./pages/api/${api}/uploads/${handle}`).isDirectory();
   } catch (error) {
-    console.log("error", error);
+    throw new TypeError("SAVEtEMPiMAGE", error);
+    fs.mkdir(`./pages/api/${api}/uploads/${handle}`, { recursive: true }, () => {});
   }
+  fs.writeFile(`./pages/api/${api}/uploads/${location}`, base64, { flag: "w", encoding: "base64" }, () => {});
+  return `./pages/api/${api}/uploads/${location}`;
+  // } catch (error) {
+  //   console.log("error", error);
+  // }
 };
 
 export const uploadImages = async ({ tempLocation, myHandle, title }) => {
@@ -107,7 +105,8 @@ export const uploadImages = async ({ tempLocation, myHandle, title }) => {
         throw new TypeError(`uploadImages ${error}`);
       });
   } catch (error) {
-    // console.log(error);
+    console.log(error);
+    throw new TypeError(`uploadImages ${error}`);
   }
 };
 
@@ -122,7 +121,8 @@ export const deleteImages = async ({ downloadUrl }) => {
         throw new TypeError(`deleteImages ${error}`);
       });
   } catch (error) {
-    // console.log(error);
+    console.log(error);
+    throw new TypeError(`deleteImages ${error}`);
   }
 };
 
@@ -137,6 +137,7 @@ export const deleteTempImage = async ({ location, api = "crunch" }) => {
       throw new TypeError(`deleteTempImages ${error}`);
     }
   } catch (error) {
+    throw new TypeError(`deleteTempImages ${error}`);
     // console.log(error);
   }
 };
