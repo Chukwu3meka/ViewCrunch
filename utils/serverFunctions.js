@@ -54,22 +54,22 @@ export const extractHandle = async (cookie) => {
 
 export const errorProp = (code = 404, title = "Page not found") => ({ props: { error: { code, title } } });
 
-export const saveTempImage = async ({ image, location, handle, api = "crunch" }) => {
+export const saveTempImage = ({ image, location, handle, api = "crunch" }) => {
   const fs = require("fs");
   const base64 = image.replace(/\s/g, "").split(";base64,").pop();
   // try {
   const dir = `./pages/api/${api}/uploads/${handle}`;
   const file = `./pages/api/${api}/uploads/${location}`;
   if (fs.existsSync(dir)) {
-    fs.writeFile(file, base64, { flag: "w", encoding: "base64" }, (error) => {
+    fs.writeFileSync(file, base64, { flag: "w", encoding: "base64" }, (error) => {
       console.log("SAVEtEMPiMAGE 1", error);
     });
     return file;
   } else {
-    fs.mkdir(file, { recursive: true }, (error) => {
+    fs.mkdirSync(file, { recursive: true }, (error) => {
       console.log("SAVEtEMPiMAGE 2", error);
     });
-    fs.writeFile(file, base64, { flag: "w", encoding: "base64" }, (error) => {
+    fs.writeFileSync(file, base64, { flag: "w", encoding: "base64" }, (error) => {
       console.log("SAVEtEMPiMAGE 3", error);
     });
     return file;
