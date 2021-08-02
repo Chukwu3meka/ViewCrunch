@@ -12,13 +12,21 @@ const publishHandler = async ({ profile: { myHandle }, title, description, conte
     profileRef = firebaseAdmin.firestore().collection("profile").doc(myHandle);
 
   for (const x of content) {
-    if (typeof x === "object")
-      images.push(await saveTempImage({ image: x.image, location: `${viewURL}@${content.indexOf(x)}.png`, handle: myHandle }));
+    if (typeof x === "object") {
+      console.log("here");
+      images.push(
+        await saveTempImage({ image: x.image, location: `${viewURL}@${content.indexOf(x)}.png`, handle: myHandle, firebaseAdmin })
+      );
+    }
   }
+
+  console.log("here");
 
   const articleHasImage = images.length;
 
-  console.log({ images });
+  console.log({ articleHasImage, images });
+
+  firebaseAdmin.firestore().collection("report").doc("aaa").set({ link1: true });
 
   if (articleHasImage) {
     for (const tempLocation of images) {
@@ -36,6 +44,8 @@ const publishHandler = async ({ profile: { myHandle }, title, description, conte
     }
   }
 
+  firebaseAdmin.firestore().collection("report").doc("aaa").set({ link2: true });
+
   const viewContent = [...content]
     .map((x) => {
       if (typeof x === "string") return x;
@@ -48,7 +58,16 @@ const publishHandler = async ({ profile: { myHandle }, title, description, conte
     .flat(Infinity)
     .join("\n");
 
-  console.log({ pry: pryImageURL[0], title, viewURL, crunch, myHandle, moderator });
+  firebaseAdmin.firestore().collection("report").doc("aaa").set({
+    pry: pryImageURL[0],
+    title,
+    viewURL,
+    crunch,
+    myHandle,
+    moderator,
+  });
+
+  firebaseAdmin.firestore().collection("report").doc("aaa").set({ link3: true });
 
   const newView = {
     title: {
@@ -73,6 +92,8 @@ const publishHandler = async ({ profile: { myHandle }, title, description, conte
       data: moderator ? "published by a moderator" : "just published",
     },
   };
+
+  firebaseAdmin.firestore().collection("report").doc("aaa").set({ link4: true });
 
   await viewRef
     .set({ ...newView })
@@ -120,6 +141,9 @@ export default async (req, res) => {
         // throw new TypeError(error);
       });
     console.log("error", error);
+    firebaseAdmin.firestore().collection("report").doc("aaa").set({ link4: true });
+
+    firebaseAdmin.firestore().collection("report").doc("aaa").set({ link5: error });
 
     return res.status(401).json({ link: undefined });
   }

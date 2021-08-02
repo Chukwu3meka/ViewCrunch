@@ -34,7 +34,7 @@ const PreviewContainer = (props) => {
     if (publishing) {
       enqueueSnackbar("Please wait, Your view is being published", { variant: "info" });
     } else {
-      setPublishing(true);
+      // setPublishing(true);
 
       if (profile.myHandle && title && content?.length && online) {
         enqueueSnackbar("Please wait, Your view is being published", { variant: "info" });

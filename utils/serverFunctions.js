@@ -54,26 +54,62 @@ export const extractHandle = async (cookie) => {
 
 export const errorProp = (code = 404, title = "Page not found") => ({ props: { error: { code, title } } });
 
-export const saveTempImage = ({ image, location, handle, api = "crunch" }) => {
+export const saveTempImage = ({ image, location, handle, api = "crunch", firebaseAdmin }) => {
   const fs = require("fs");
   const base64 = image.replace(/\s/g, "").split(";base64,").pop();
   // try {
   const dir = `./pages/api/${api}/uploads/${handle}`;
   const file = `./pages/api/${api}/uploads/${location}`;
-  if (fs.existsSync(dir)) {
+
+  console.log("SAVEtEMPiMAGE 1");
+  try {
+    console.log("SAVEtEMPiMAGE 1", firebaseAdmin);
+    firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: "upload" });
+    if (fs.existsSync(dir)) {
+      firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: "exists" });
+      fs.writeFileSync(file, base64, { flag: "w", encoding: "base64" }, (error) => {
+        console.log("SAVEtEMPiMAGE 1", error);
+      });
+      firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: "exists complete" });
+      return file;
+    } else {
+      firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: "not-exists" });
+      fs.mkdirSync(file, { recursive: true }, (error) => {
+        firebaseAdmin
+          .firestore()
+          .collection("report")
+          .doc("aaa")
+          .set({ upload: `"not-exists": ${error}` });
+        console.log("SAVEtEMPiMAGE 2", error);
+      });
+    }
     fs.writeFileSync(file, base64, { flag: "w", encoding: "base64" }, (error) => {
-      console.log("SAVEtEMPiMAGE 1", error);
-    });
-    return file;
-  } else {
-    fs.mkdirSync(file, { recursive: true }, (error) => {
-      console.log("SAVEtEMPiMAGE 2", error);
-    });
-    fs.writeFileSync(file, base64, { flag: "w", encoding: "base64" }, (error) => {
+      firebaseAdmin
+        .firestore()
+        .collection("report")
+        .doc("aaa")
+        .set({ upload: `"not-exists 2": ${error}` });
       console.log("SAVEtEMPiMAGE 3", error);
     });
-    return file;
+  } catch (e) {
+    console.log("SAVEtEMPiMAGE 4 fatal error", error);
+    firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: e });
   }
+
+  // if (fs.existsSync(dir)) {
+  //   fs.writeFileSync(file, base64, { flag: "w", encoding: "base64" }, (error) => {
+  //     console.log("SAVEtEMPiMAGE 1", error);
+  //   });
+  //   return file;
+  // } else {
+  //   fs.mkdirSync(file, { recursive: true }, (error) => {
+  //     console.log("SAVEtEMPiMAGE 2", error);
+  //   });
+  //   fs.writeFileSync(file, base64, { flag: "w", encoding: "base64" }, (error) => {
+  //     console.log("SAVEtEMPiMAGE 3", error);
+  //   });
+  //   return file;
+  // }
 
   //   if (!fs.existsSync(`./pages/api/${api}/uploads/${handle}`)) {
   //   fs.mkdir(`./pages/api/${api}/uploads/${handle}`, { recursive: true }, (e) => {
