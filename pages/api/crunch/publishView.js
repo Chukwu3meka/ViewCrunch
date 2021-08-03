@@ -1,3 +1,4 @@
+import fs from "fs";
 import { toId } from "@utils/clientFunctions";
 import firebaseAdmin from "@utils/firebaseServer";
 import { uploadImages, saveTempImage, deleteTempImage } from "@utils/serverFunctions";
@@ -11,8 +12,7 @@ const publishHandler = async ({ profile: { myHandle }, title, description, conte
     viewRef = firebaseAdmin.firestore().collection("view").doc(viewID),
     profileRef = firebaseAdmin.firestore().collection("profile").doc(myHandle);
 
-  const fs = require("fs");
-  console.log("here 0");
+  // console.log("here 0");
 
   // const getd = () =>
   //   fs
