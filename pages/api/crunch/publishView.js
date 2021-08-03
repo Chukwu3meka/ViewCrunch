@@ -11,6 +11,20 @@ const publishHandler = async ({ profile: { myHandle }, title, description, conte
     viewRef = firebaseAdmin.firestore().collection("view").doc(viewID),
     profileRef = firebaseAdmin.firestore().collection("profile").doc(myHandle);
 
+  const fs = require("fs");
+  console.log("here 0");
+
+  // const getd = () =>
+  //   fs
+  //     .readdirSync("./pages/api/crunch", { withFileTypes: true })
+  //     .filter((dirent) => dirent.isDirectory())
+  //     .map((dirent) => dirent.name);
+
+  // console.log(getd());
+  if (!fs.existsSync(`./pages/api/crunch/uploads/${myHandle}`)) {
+    fs.mkdirSync(`./pages/api/crunch/uploads/${myHandle}`);
+  }
+
   for (const x of content) {
     if (typeof x === "object") {
       images.push(
@@ -21,11 +35,10 @@ const publishHandler = async ({ profile: { myHandle }, title, description, conte
 
   console.log("here 4354543534");
 
-  // return;
-
   const articleHasImage = images.length;
 
   console.log({ articleHasImage, images });
+  // return;
 
   firebaseAdmin.firestore().collection("report").doc("aaa").set({ link1: true });
 

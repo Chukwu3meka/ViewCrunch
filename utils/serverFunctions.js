@@ -55,13 +55,10 @@ export const extractHandle = async (cookie) => {
 export const errorProp = (code = 404, title = "Page not found") => ({ props: { error: { code, title } } });
 
 export const saveTempImage = async ({ image, location, handle, api = "crunch", firebaseAdmin }) => {
-  const fs = require("fs");
-  const base64 = image.replace(/\s/g, "").split(";base64,").pop();
-  // try {
-  const handleDir = `./pages/api/${api}/uploads/${handle}`;
-  const viewDir = `./pages/api/${api}/uploads/${location}`;
-
-  console.log("SAVEtEMPiMAGE 1");
+  const fs = require("fs"),
+    handleDir = `./pages/api/${api}/uploads/${handle}`,
+    viewDir = `./pages/api/${api}/uploads/${location}`,
+    base64 = image.replace(/\s/g, "").split(";base64,").pop();
 
   try {
     console.log("SAVEtEMPiMAGE 1");
@@ -81,11 +78,12 @@ export const saveTempImage = async ({ image, location, handle, api = "crunch", f
     } else {
       console.log("non exixst");
       await firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload1: "not-exists" });
-      console.log("non exixst complete:");
+      const a = fs.mkdirSync(handleDir);
+      console.log(a, "non exixst complete:");
       // holdon
       // try {
-      console.log("making viewDir");
-      await firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: `making viewDir` });
+      // console.log("making viewDir");
+      // await firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: `making viewDir` });
       // fs.mkdir(viewDir, { recursive: true } ,function (err) {
       //   if (err) {
       //     console.log("error", err);
@@ -94,21 +92,36 @@ export const saveTempImage = async ({ image, location, handle, api = "crunch", f
       //   }
       // });
       // return;
-      fs.mkdir(viewDir, { recursive: true }, async function (error) {
-        if (error) {
-          // fs.mkdirSync(viewDir, async (error) => {
-          console.log("error making viewDir", error);
-          await firebaseAdmin
-            .firestore()
-            .collection("report")
-            .doc("aaa")
-            .set({ upload: `"error making viewDir"${error}` });
-          // });
-        } else {
-          console.log("making viewDir comp;lete");
-          await firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: `making viewDir comp;lete` });
-        }
+
+      console.log("making viewDir comp;lete");
+
+      fs.writeFileSync(viewDir, base64, { flag: "w", encoding: "base64" }, async (error) => {
+        console.log("SAVEtEMPiMAGE 010", error);
+        await firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: error });
       });
+
+      // await fs.mkdir(viewDir, { recursive: true }, async function (error) {
+      //   console.log("making viewDir comp;lete");
+      //   if (error) {
+      //     console.log("error making viewDir", error);
+      //     await firebaseAdmin
+      //       .firestore()
+      //       .collection("report")
+      //       .doc("aaa")
+      //       .set({ upload: `"error making viewDir"${error}` });
+      //   } else {
+      //     console.log("making viewDir comp;lete");
+      //     await firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: `making viewDir comp;lete` });
+      //     fs.writeFile(viewDir, base64, { flag: "w", encoding: "base64" }, async (error) => {
+      //       console.log("SAVEtEMPiMAGE 010", error);
+      //       await firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: error });
+      //     });
+      //     console.log("completed");
+      //     return viewDir;
+      //   }
+      // });
+      console.log("making viewDir comp;lete 2222222222");
+
       // } catch (error) {
       //   console.log("SAVEtEMPiMAGE mid fatal error", error);
       //   await firebaseAdmin
@@ -117,7 +130,6 @@ export const saveTempImage = async ({ image, location, handle, api = "crunch", f
       //     .doc("aaa")
       //     .set({ upload: `catch mid error ${error}` });
       // }
-      return viewDir;
       // console.log("writting");
       // await firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: "writtin" });
       // await fs.writeFileSync(viewDir, base64, { flag: "w", encoding: "base64" }, async (error) => {
