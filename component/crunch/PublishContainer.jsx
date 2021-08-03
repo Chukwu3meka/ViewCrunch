@@ -20,13 +20,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const PublishContainer = (props) => {
-  const { enqueueSnackbar } = useSnackbar(),
+  const { viewToBeModified = {}, crunch, published, moderator } = props,
     classes = useStyles(),
     scrollRef = useRef(null),
+    { enqueueSnackbar } = useSnackbar(),
     [loading, setLoading] = useState(false),
     [preview, setPreview] = useState(false),
     [contentText, setContentText] = useState(""),
-    { viewToBeModified = {}, crunch, published, moderator } = props,
     [title, setTitle] = useState(viewToBeModified.title || "Wealth: Freedom or not"),
     [keywords, setKeywords] = useState(viewToBeModified.keywords || "wealth, finance"),
     [contentArray, setContentArray] = useState(viewToBeModified.content || []),

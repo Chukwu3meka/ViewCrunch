@@ -62,39 +62,52 @@ export const saveTempImage = ({ image, location, handle, api = "crunch", firebas
   const file = `./pages/api/${api}/uploads/${location}`;
 
   console.log("SAVEtEMPiMAGE 1");
+
   try {
-    console.log("SAVEtEMPiMAGE 1", firebaseAdmin);
+    console.log("SAVEtEMPiMAGE 1");
     firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: "upload" });
     if (fs.existsSync(dir)) {
+      console.log("exixst");
       firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: "exists" });
       fs.writeFileSync(file, base64, { flag: "w", encoding: "base64" }, (error) => {
         console.log("SAVEtEMPiMAGE 1", error);
+        firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: error });
       });
+      console.log("exixst complete");
       firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: "exists complete" });
       return file;
     } else {
+      console.log("non exixst");
       firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: "not-exists" });
       fs.mkdirSync(file, { recursive: true }, (error) => {
+        console.log("non exixst complete", error);
         firebaseAdmin
           .firestore()
           .collection("report")
           .doc("aaa")
-          .set({ upload: `"not-exists": ${error}` });
-        console.log("SAVEtEMPiMAGE 2", error);
+          .set({ upload: `"not-exists error"${error}` });
       });
     }
+    console.log("writting");
+    firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: "writtin" });
     fs.writeFileSync(file, base64, { flag: "w", encoding: "base64" }, (error) => {
+      console.log("writting error", error);
       firebaseAdmin
         .firestore()
         .collection("report")
         .doc("aaa")
         .set({ upload: `"not-exists 2": ${error}` });
-      console.log("SAVEtEMPiMAGE 3", error);
     });
   } catch (e) {
     console.log("SAVEtEMPiMAGE 4 fatal error", error);
-    firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: e });
+    firebaseAdmin
+      .firestore()
+      .collection("report")
+      .doc("aaa")
+      .set({ upload: `catch error ${e}` });
   }
+  console.log("SAVEtEMPiMAGE complete");
+  firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: "complete" });
 
   // if (fs.existsSync(dir)) {
   //   fs.writeFileSync(file, base64, { flag: "w", encoding: "base64" }, (error) => {
