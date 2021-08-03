@@ -1,7 +1,6 @@
-import fs from "fs";
 import { toId } from "@utils/clientFunctions";
 import firebaseAdmin from "@utils/firebaseServer";
-import { uploadImages, saveTempImage, deleteTempImage } from "@utils/serverFunctions";
+import { uploadImages, saveTempImage, deleteTempImage, initCrunchImageUpload } from "@utils/serverFunctions";
 
 const publishHandler = async ({ profile: { myHandle }, title, description, content, keywords, crunch, moderator }) => {
   const images = [],
@@ -21,9 +20,8 @@ const publishHandler = async ({ profile: { myHandle }, title, description, conte
   //     .map((dirent) => dirent.name);
 
   // console.log(getd());
-  if (!fs.existsSync(`./pages/api/crunch/uploads/${myHandle}`)) {
-    fs.mkdirSync(`./pages/api/crunch/uploads/${myHandle}`);
-  }
+
+  await initCrunchImageUpload(`./pages/api/crunch/uploads/${myHandle}`);
 
   for (const x of content) {
     if (typeof x === "object") {
@@ -50,6 +48,7 @@ const publishHandler = async ({ profile: { myHandle }, title, description, conte
         title: `${title}@${images.indexOf(tempLocation)}`,
       })
         .then((url) => {
+          console.log({ url });
           imagesURL.push(url);
         })
         .catch((error) => {

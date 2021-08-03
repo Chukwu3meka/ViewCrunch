@@ -54,6 +54,12 @@ export const extractHandle = async (cookie) => {
 
 export const errorProp = (code = 404, title = "Page not found") => ({ props: { error: { code, title } } });
 
+export const initCrunchImageUpload = () => {
+  if (!fs.existsSync(path)) {
+    fs.mkdirSync(path);
+  }
+};
+
 export const saveTempImage = async ({ image, location, handle, api = "crunch", firebaseAdmin }) => {
   const fs = require("fs"),
     handleDir = `./pages/api/${api}/uploads/${handle}`,
