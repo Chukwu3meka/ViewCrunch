@@ -58,7 +58,7 @@ export const initCrunchImageUpload = (path) => {
   try {
     const fs = require("fs");
     if (!fs.existsSync(path)) {
-      fs.mkdirSync(path);
+      fs.mkdir(path, { recursive: true }, (err) => true);
     }
   } catch (error) {
     console.log("init fatal error", error);
