@@ -21,12 +21,11 @@ const publishHandler = async ({ profile: { myHandle }, title, description, conte
 
   // console.log(getd());
 
-  console.log("here 4354543534");
-  await initCrunchImageUpload(`./pages/api/crunch/uploads/${myHandle}`);
-  console.log("here 4354543534");
-
   for (const x of content) {
     if (typeof x === "object") {
+      console.log("here 4354543534");
+      await initCrunchImageUpload(`./pages/api/crunch/uploads/${(myHandle, location)}`);
+      console.log("here 4354543534");
       images.push(
         await saveTempImage({ image: x.image, location: `${viewURL}@${content.indexOf(x)}.png`, handle: myHandle, firebaseAdmin })
       );
