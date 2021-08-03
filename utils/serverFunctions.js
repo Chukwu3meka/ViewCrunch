@@ -87,17 +87,19 @@ export const saveTempImage = ({ image, location, handle, api = "crunch", firebas
           .doc("aaa")
           .set({ upload: `"not-exists error"${error}` });
       });
+      console.log("writting");
+      firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: "writtin" });
+      fs.writeFileSync(file, base64, { flag: "w", encoding: "base64" }, (error) => {
+        console.log("writting error", error);
+        firebaseAdmin
+          .firestore()
+          .collection("report")
+          .doc("aaa")
+          .set({ upload: `"not-exists 2": ${error}` });
+      });
+      console.log("writting completet");
+      return file;
     }
-    console.log("writting");
-    firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: "writtin" });
-    fs.writeFileSync(file, base64, { flag: "w", encoding: "base64" }, (error) => {
-      console.log("writting error", error);
-      firebaseAdmin
-        .firestore()
-        .collection("report")
-        .doc("aaa")
-        .set({ upload: `"not-exists 2": ${error}` });
-    });
   } catch (e) {
     console.log("SAVEtEMPiMAGE 4 fatal error", error);
     firebaseAdmin
@@ -106,6 +108,7 @@ export const saveTempImage = ({ image, location, handle, api = "crunch", firebas
       .doc("aaa")
       .set({ upload: `catch error ${e}` });
   }
+
   console.log("SAVEtEMPiMAGE complete");
   firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: "complete" });
 
