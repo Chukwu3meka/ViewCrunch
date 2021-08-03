@@ -54,77 +54,107 @@ export const extractHandle = async (cookie) => {
 
 export const errorProp = (code = 404, title = "Page not found") => ({ props: { error: { code, title } } });
 
-export const saveTempImage = ({ image, location, handle, api = "crunch", firebaseAdmin }) => {
+export const saveTempImage = async ({ image, location, handle, api = "crunch", firebaseAdmin }) => {
   const fs = require("fs");
   const base64 = image.replace(/\s/g, "").split(";base64,").pop();
   // try {
-  const dir = `./pages/api/${api}/uploads/${handle}`;
-  const file = `./pages/api/${api}/uploads/${location}`;
+  const handleDir = `./pages/api/${api}/uploads/${handle}`;
+  const viewDir = `./pages/api/${api}/uploads/${location}`;
 
   console.log("SAVEtEMPiMAGE 1");
 
   try {
     console.log("SAVEtEMPiMAGE 1");
-    firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: "upload" });
-    if (fs.existsSync(dir)) {
+    await firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: "upload" });
+    if (fs.existsSync(handleDir)) {
       console.log("exixst");
-      firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: "exists" });
-      fs.writeFileSync(file, base64, { flag: "w", encoding: "base64" }, (error) => {
+      await firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: "exists" });
+      fs.writeFileSync(viewDir, base64, { flag: "w", encoding: "base64" }, async (error) => {
         console.log("SAVEtEMPiMAGE 1", error);
-        firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: error });
+        await firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: error });
       });
       console.log("exixst complete");
-      firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: "exists complete" });
-      return file;
+      await firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: "exists complete" });
+      console.log("SAVEtEMPiMAGE complete");
+      await firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: "complete" });
+      return viewDir;
     } else {
       console.log("non exixst");
-      firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: "not-exists" });
-      fs.mkdirSync(file, { recursive: true }, (error) => {
-        console.log("non exixst complete", error);
-        firebaseAdmin
-          .firestore()
-          .collection("report")
-          .doc("aaa")
-          .set({ upload: `"not-exists error"${error}` });
+      await firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload1: "not-exists" });
+      console.log("non exixst complete:");
+      // holdon
+      // try {
+      console.log("making viewDir");
+      await firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: `making viewDir` });
+      // fs.mkdir(viewDir, { recursive: true } ,function (err) {
+      //   if (err) {
+      //     console.log("error", err);
+      //   } else {
+      //     console.log("no error", err);
+      //   }
+      // });
+      // return;
+      fs.mkdir(viewDir, { recursive: true }, async function (error) {
+        if (error) {
+          // fs.mkdirSync(viewDir, async (error) => {
+          console.log("error making viewDir", error);
+          await firebaseAdmin
+            .firestore()
+            .collection("report")
+            .doc("aaa")
+            .set({ upload: `"error making viewDir"${error}` });
+          // });
+        } else {
+          console.log("making viewDir comp;lete");
+          await firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: `making viewDir comp;lete` });
+        }
       });
-      console.log("writting");
-      firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: "writtin" });
-      fs.writeFileSync(file, base64, { flag: "w", encoding: "base64" }, (error) => {
-        console.log("writting error", error);
-        firebaseAdmin
-          .firestore()
-          .collection("report")
-          .doc("aaa")
-          .set({ upload: `"not-exists 2": ${error}` });
-      });
-      console.log("writting completet");
-      return file;
+      // } catch (error) {
+      //   console.log("SAVEtEMPiMAGE mid fatal error", error);
+      //   await firebaseAdmin
+      //     .firestore()
+      //     .collection("report")
+      //     .doc("aaa")
+      //     .set({ upload: `catch mid error ${error}` });
+      // }
+      return viewDir;
+      // console.log("writting");
+      // await firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: "writtin" });
+      // await fs.writeFileSync(viewDir, base64, { flag: "w", encoding: "base64" }, async (error) => {
+      //   console.log("writting error", error);
+      //   await firebaseAdmin
+      //     .firestore()
+      //     .collection("report")
+      //     .doc("aaa")
+      //     .set({ upload: `"writting error": ${error}` });
+      // });
+      // console.log("writting completet");
+      // console.log("SAVEtEMPiMAGE complete");
+      // await firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: "complete" });
+      //     return viewDir;
     }
-  } catch (e) {
+  } catch (error) {
     console.log("SAVEtEMPiMAGE 4 fatal error", error);
-    firebaseAdmin
+    await firebaseAdmin
       .firestore()
       .collection("report")
       .doc("aaa")
-      .set({ upload: `catch error ${e}` });
+      .set({ upload: `catch error ${error}` });
   }
 
-  console.log("SAVEtEMPiMAGE complete");
-  firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: "complete" });
-
-  // if (fs.existsSync(dir)) {
-  //   fs.writeFileSync(file, base64, { flag: "w", encoding: "base64" }, (error) => {
+  // if (fs.existsSync(handleDir)) {
+  //   fs.writeFileSync(viewDir, base64, { flag: "w", encoding: "base64" }, (error) => {
   //     console.log("SAVEtEMPiMAGE 1", error);
   //   });
-  //   return file;
+  //   return viewDir;
   // } else {
-  //   fs.mkdirSync(file, { recursive: true }, (error) => {
+  //   fs.mkdirSync(viewDir, { recursive: true }, (error) => {
   //     console.log("SAVEtEMPiMAGE 2", error);
   //   });
-  //   fs.writeFileSync(file, base64, { flag: "w", encoding: "base64" }, (error) => {
+  //   fs.writeFileSync(viewDir, base64, { flag: "w", encoding: "base64" }, (error) => {
   //     console.log("SAVEtEMPiMAGE 3", error);
   //   });
-  //   return file;
+  //   return viewDir;
   // }
 
   //   if (!fs.existsSync(`./pages/api/${api}/uploads/${handle}`)) {
@@ -163,10 +193,10 @@ export const uploadImages = async ({ tempLocation, myHandle, title }) => {
         },
       })
       .then((data) => {
-        const file = data[0];
+        const viewDir = data[0];
         return Promise.resolve(
           `https://firebasestorage.googleapis.com/v0/b/${process.env.FIREBASE_STORAGE_BUCKET}/o/${encodeURIComponent(
-            file.name
+            viewDir.name
           )}?alt=media&token=${accessToken}`
         );
       })
@@ -183,7 +213,7 @@ export const deleteImages = async ({ downloadUrl }) => {
   try {
     const httpsRef = storage.refFromURL(downloadUrl).fullPath;
     return await bucket
-      .file(httpsRef)
+      .viewDir(httpsRef)
       .delete()
       .then(() => "success")
       .catch((error) => {
