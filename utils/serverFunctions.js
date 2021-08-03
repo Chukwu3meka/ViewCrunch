@@ -54,9 +54,14 @@ export const extractHandle = async (cookie) => {
 
 export const errorProp = (code = 404, title = "Page not found") => ({ props: { error: { code, title } } });
 
-export const initCrunchImageUpload = () => {
-  if (!fs.existsSync(path)) {
-    fs.mkdirSync(path);
+export const initCrunchImageUpload = (path) => {
+  try {
+    const fs = require("fs");
+    if (!fs.existsSync(path)) {
+      fs.mkdirSync(path);
+    }
+  } catch (error) {
+    console.log("init fatal error", error);
   }
 };
 
@@ -68,7 +73,7 @@ export const saveTempImage = async ({ image, location, handle, api = "crunch", f
 
   try {
     console.log("SAVEtEMPiMAGE 1");
-    await firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: "upload" });
+    // await firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: "upload" });
     if (fs.existsSync(handleDir)) {
       console.log("exixst");
       await firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: "exists" });
