@@ -7,7 +7,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "export": "next export"
+    "export": "next export",
+    "prod_start": "NODE_ENV=production next start"
   },
   "keywords": [
     "viewcrunch",

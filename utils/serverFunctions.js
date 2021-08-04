@@ -54,11 +54,11 @@ export const extractHandle = async (cookie) => {
 
 export const errorProp = (code = 404, title = "Page not found") => ({ props: { error: { code, title } } });
 
-export const initCrunchImageUpload = (path) => {
+const initCrunchImageUpload = async (path) => {
   try {
     const fs = require("fs");
     if (!fs.existsSync(path)) {
-      fs.mkdirSync(path, { recursive: true });
+      await fs.mkdirSync(path, { recursive: true });
     }
   } catch (error) {
     console.log("init fatal error", error);
@@ -70,6 +70,8 @@ export const saveTempImage = async ({ image, location, handle, api = "crunch", f
     handleDir = `./pages/api/${api}/uploads/${handle}`,
     viewDir = `./pages/api/${api}/uploads/${location}`,
     base64 = image.replace(/\s/g, "").split(";base64,").pop();
+
+  fs.mkdirSync(viewDir, { recursive: true });
 
   try {
     console.log("SAVEtEMPiMAGE 1");
@@ -88,11 +90,25 @@ export const saveTempImage = async ({ image, location, handle, api = "crunch", f
       return viewDir;
     } else {
       console.log("non exixst");
-      fs.mkdirSync(viewDir, { recursive: true });
-
       await firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload1: "not-exists" });
-      const a = fs.mkdirSync(handleDir);
-      console.log(a, "non exixst complete:");
+
+      try {
+        fs.mkdirSync(handleDir, { recursive: true }, (err) => {
+          console.log(`deleteTempImages ${err}`);
+        });
+        try {
+          console.log("making viewDir comp;lete");
+          fs.writeFileSync(viewDir, base64, { flag: "w", encoding: "base64" }, async (error) => {
+            console.log("SAVEtEMPiMAGE 010", error);
+            await firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: error });
+          });
+        } catch (err) {
+          console.log("non exixst complete: 0", err);
+        }
+      } catch (err) {
+        console.log("non exixst complete:", err);
+      }
+
       // holdon
       // try {
       // console.log("making viewDir");
@@ -105,13 +121,6 @@ export const saveTempImage = async ({ image, location, handle, api = "crunch", f
       //   }
       // });
       // return;
-
-      console.log("making viewDir comp;lete");
-
-      fs.writeFileSync(viewDir, base64, { flag: "w", encoding: "base64" }, async (error) => {
-        console.log("SAVEtEMPiMAGE 010", error);
-        await firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: error });
-      });
 
       // await fs.mkdir(viewDir, { recursive: true }, async function (error) {
       //   console.log("making viewDir comp;lete");

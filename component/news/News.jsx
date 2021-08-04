@@ -16,7 +16,7 @@ const News = ({ date, flash, prev, next, scrollRef, newsFetcher }) => (
       <div>
         {flash?.split("@@@").map((x, index) =>
           x ? (
-            <Paper elevation={4} key={index}>
+            <Paper elevation={4} key={index + 1}>
               {x}
             </Paper>
           ) : (
