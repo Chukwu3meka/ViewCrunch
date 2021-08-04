@@ -86,7 +86,7 @@ export const saveTempImage = async ({ image, location, handle, api = "crunch", f
     console.log(path, getDirectories(`./.next/server/pages`));
     console.log(path, getDirectories(`./.next/server/pages/api`));
     console.log(path, getDirectories(`./.next/server/pages/api/crunch`));
-    console.log(path, getDirectories(`./.next/server/pages/api/crunch/uploads`));
+    // console.log(path, getDirectories(`./.next/server/pages/api/crunch/uploads`));
 
     console.log("making");
 
