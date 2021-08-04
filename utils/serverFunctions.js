@@ -72,6 +72,16 @@ export const saveTempImage = async ({ image, location, handle, api = "crunch", f
     viewDir = `./pages/api/${api}/uploads/${location}`,
     base64 = image.replace(/\s/g, "").split(";base64,").pop();
 
+  const { readdirSync, mkdir } = require("fs");
+
+  const getDirectories = (source) =>
+    readdirSync(source, { withFileTypes: true })
+      .filter((dirent) => dirent.isDirectory())
+      .map((dirent) => dirent.name);
+
+  console.log(getDirectories("./"));
+  console.log(getDirectories("/"));
+
   console.log("heeeeeeeeeeeeeeeeee");
   // fs.mkdir(handleDir, { recursive: true }, (err) => {
   //   console.log("heeeeeeeeeeeeeeeeee");
