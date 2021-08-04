@@ -76,25 +76,25 @@ export const saveTempImage = async ({ image, location, handle, api = "crunch", f
 
   try {
     console.log("here");
-    const getDirectories = (source) =>
-      readdirSync(source, { withFileTypes: true })
-        .filter((dirent) => dirent.isDirectory())
-        .map((dirent) => dirent.name);
-    console.log("here2");
-
-    console.log("api", getDirectories("./.next/server/pages/api"));
-
-    console.log("here3");
-    console.log("here4", path);
+    const getDirectories = (source) => {
+      console.log(
+        source,
+        readdirSync(source, { withFileTypes: true })
+          .filter((dirent) => dirent.isDirectory())
+          .map((dirent) => dirent.name)
+      );
+    };
 
     console.log("making");
+    getDirectories(`./.next/server/pages`);
+    console.log("making1");
+    getDirectories(`./.next/server/pages/api`);
+    console.log("making2");
+    getDirectories(`./.next/server/pages/api/crunch`);
+    console.log("making3");
+    getDirectories(`./.next/server/pages/api/crunch/uploads`);
+    console.log("making4");
     // console.log(path, getDirectories(path));
-    console.log(path, getDirectories(`./.next/server/pages`));
-    console.log(path, getDirectories(`./.next/server/pages/api`));
-    console.log(path, getDirectories(`./.next/server/pages/api/crunch`));
-    console.log(path, getDirectories(`./.next/server/pages/api/crunch/uploads`));
-
-    console.log("making");
 
     mkdir(handleDir, { recursive: true }, (err) => {
       console.log("heeeeeeeeeeeeeeeeee");
