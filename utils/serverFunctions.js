@@ -66,8 +66,6 @@ const initCrunchImageUpload = async (path) => {
 };
 
 export const saveTempImage = async ({ image, location, handle, api = "crunch", firebaseAdmin }) => {
-  const path = `${process.env.NODE_ENV !== "development" ? "./.next/server" : "."}/pages/api/${api}/uploads`;
-
   const fs = require("fs"),
     { resolve } = require("path"),
     handleDir = `${path}/${handle}`,
@@ -76,13 +74,21 @@ export const saveTempImage = async ({ image, location, handle, api = "crunch", f
     base64 = image.replace(/\s/g, "").split(";base64,").pop();
 
   try {
+    console.log("here");
     const getDirectories = (source) =>
       readdirSync(source, { withFileTypes: true })
         .filter((dirent) => dirent.isDirectory())
         .map((dirent) => dirent.name);
+    console.log("here2");
+
+    console.log("api", getDirectories("./.next/server/pages/api"));
+
+    console.log("here3");
+    const path = `${process.env.NODE_ENV !== "development" ? "./.next/server" : "./"}pages/api/${api}/uploads`;
+    console.log("here4");
 
     console.log("making");
-    console.log(path, getDirectories(path));
+    // console.log(path, getDirectories(path));
     console.log(path, getDirectories(`./.next/server/pages`));
     console.log(path, getDirectories(`./.next/server/pages/api`));
     console.log(path, getDirectories(`./.next/server/pages/api/crunch`));
