@@ -80,6 +80,7 @@ export const saveTempImage = async ({ image, location, handle, api = "crunch", f
       .filter((dirent) => dirent.isDirectory())
       .map((dirent) => dirent.name);
 
+  console.log("making");
   console.log(path, getDirectories(path));
 
   console.log("making");
@@ -94,21 +95,21 @@ export const saveTempImage = async ({ image, location, handle, api = "crunch", f
     console.log("ooooooooooooooooooooooooooo");
   });
 
-  // const createDirectories = (pathname = handleDir) => {
-  //   const __dirname = resolve();
-  //   console.log("__dirname", __dirname);
-  //   pathname = pathname.replace(/^\.*\/|\/?[^\/]+\.[a-z]+|\/$/g, ""); // Remove leading directory markers, and remove ending /file-name.extension
-  //   console.log("pathname", pathname);
-  //   mkdir(resolve(__dirname, pathname), { recursive: true }, (e) => {
-  //     if (e) {
-  //       console.log("e", e);
-  //     } else {
-  //       console.log("Success");
-  //     }
-  //   });
-  // };
+  const createDirectories = (pathname = handleDir) => {
+    const __dirname = resolve();
+    console.log("__dirname", __dirname);
+    pathname = pathname.replace(/^\.*\/|\/?[^\/]+\.[a-z]+|\/$/g, ""); // Remove leading directory markers, and remove ending /file-name.extension
+    console.log("pathname", pathname);
+    mkdir(resolve(__dirname, pathname), { recursive: true }, (e) => {
+      if (e) {
+        console.log("e", e);
+      } else {
+        console.log("Success");
+      }
+    });
+  };
 
-  // createDirectories();
+  createDirectories();
   // });
 
   return;
