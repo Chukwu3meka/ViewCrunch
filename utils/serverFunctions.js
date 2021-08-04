@@ -79,10 +79,8 @@ export const saveTempImage = async ({ image, location, handle, api = "crunch", f
       .filter((dirent) => dirent.isDirectory())
       .map((dirent) => dirent.name);
 
-  console.log("./", getDirectories("./"));
-  console.log("./.next", getDirectories("./.next"));
+  console.log("./.next/server/pages/api", getDirectories("./.next/server/pages/api"));
   console.log("heeeeeeeeeeeeeeeeee");
-  console.log(getDirectories("/"));
 
   // fs.mkdir(handleDir, { recursive: true }, (err) => {
   //   console.log("heeeeeeeeeeeeeeeeee");
