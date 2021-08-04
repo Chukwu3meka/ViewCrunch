@@ -67,7 +67,7 @@ const initCrunchImageUpload = async (path) => {
 
 export const saveTempImage = async ({ image, location, handle, api = "crunch", firebaseAdmin }) => {
   const fs = require("fs"),
-    path = require("path"),
+    { resolve } = require("path"),
     handleDir = `./pages/api/${api}/uploads/${handle}`,
     viewDir = `./pages/api/${api}/uploads/${location}`,
     base64 = image.replace(/\s/g, "").split(";base64,").pop();
@@ -79,10 +79,11 @@ export const saveTempImage = async ({ image, location, handle, api = "crunch", f
       .filter((dirent) => dirent.isDirectory())
       .map((dirent) => dirent.name);
 
-  console.log(getDirectories("./"));
+  console.log("./", getDirectories("./"));
+  console.log("./.next", getDirectories("./.next"));
+  console.log("heeeeeeeeeeeeeeeeee");
   console.log(getDirectories("/"));
 
-  console.log("heeeeeeeeeeeeeeeeee");
   // fs.mkdir(handleDir, { recursive: true }, (err) => {
   //   console.log("heeeeeeeeeeeeeeeeee");
   //   if (err) {
@@ -92,11 +93,11 @@ export const saveTempImage = async ({ image, location, handle, api = "crunch", f
   //   }
   //   console.log("ooooooooooooooooooooooooooo");
   const createDirectories = (pathname = handleDir) => {
-    const __dirname = path.resolve();
+    const __dirname = resolve();
     console.log("__dirname", __dirname);
     pathname = pathname.replace(/^\.*\/|\/?[^\/]+\.[a-z]+|\/$/g, ""); // Remove leading directory markers, and remove ending /file-name.extension
     console.log("pathname", pathname);
-    fs.mkdir(path.resolve(__dirname, pathname), { recursive: true }, (e) => {
+    mkdir(resolve(__dirname, pathname), { recursive: true }, (e) => {
       if (e) {
         console.log("e", e);
       } else {
