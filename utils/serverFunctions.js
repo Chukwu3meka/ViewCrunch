@@ -66,45 +66,49 @@ const initCrunchImageUpload = async (path) => {
 };
 
 export const saveTempImage = async ({ image, location, handle, api = "crunch", firebaseAdmin }) => {
+  const path = `${process.env.NODE_ENV !== "development" ? "./.next/server" : "."}/pages/api/${api}/uploads`;
+
   const fs = require("fs"),
     { resolve } = require("path"),
-    handleDir = `./pages/api/${api}/uploads/${handle}`,
-    viewDir = `./pages/api/${api}/uploads/${location}`,
+    handleDir = `${path}/${handle}`,
+    viewDir = `${path}/${location}`,
+    { readdirSync, mkdir } = require("fs"),
     base64 = image.replace(/\s/g, "").split(";base64,").pop();
-
-  const { readdirSync, mkdir } = require("fs");
 
   const getDirectories = (source) =>
     readdirSync(source, { withFileTypes: true })
       .filter((dirent) => dirent.isDirectory())
       .map((dirent) => dirent.name);
 
-  console.log("./.next/server/pages/api", getDirectories("./.next/server/pages/api"));
-  console.log("heeeeeeeeeeeeeeeeee");
+  console.log(path, getDirectories(path));
 
-  // fs.mkdir(handleDir, { recursive: true }, (err) => {
-  //   console.log("heeeeeeeeeeeeeeeeee");
-  //   if (err) {
-  //     console.log("err", err);
-  //   } else {
-  //     console.log("no error");
-  //   }
-  //   console.log("ooooooooooooooooooooooooooo");
-  const createDirectories = (pathname = handleDir) => {
-    const __dirname = resolve();
-    console.log("__dirname", __dirname);
-    pathname = pathname.replace(/^\.*\/|\/?[^\/]+\.[a-z]+|\/$/g, ""); // Remove leading directory markers, and remove ending /file-name.extension
-    console.log("pathname", pathname);
-    mkdir(resolve(__dirname, pathname), { recursive: true }, (e) => {
-      if (e) {
-        console.log("e", e);
-      } else {
-        console.log("Success");
-      }
-    });
-  };
+  console.log("making");
 
-  createDirectories();
+  fs.mkdir(handleDir, { recursive: true }, (err) => {
+    console.log("heeeeeeeeeeeeeeeeee");
+    if (err) {
+      console.log("err", err);
+    } else {
+      console.log("no error");
+    }
+    console.log("ooooooooooooooooooooooooooo");
+  });
+
+  // const createDirectories = (pathname = handleDir) => {
+  //   const __dirname = resolve();
+  //   console.log("__dirname", __dirname);
+  //   pathname = pathname.replace(/^\.*\/|\/?[^\/]+\.[a-z]+|\/$/g, ""); // Remove leading directory markers, and remove ending /file-name.extension
+  //   console.log("pathname", pathname);
+  //   mkdir(resolve(__dirname, pathname), { recursive: true }, (e) => {
+  //     if (e) {
+  //       console.log("e", e);
+  //     } else {
+  //       console.log("Success");
+  //     }
+  //   });
+  // };
+
+  // createDirectories();
   // });
 
   return;
