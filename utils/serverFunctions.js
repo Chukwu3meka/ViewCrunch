@@ -54,18 +54,19 @@ export const extractHandle = async (cookie) => {
 
 export const errorProp = (code = 404, title = "Page not found") => ({ props: { error: { code, title } } });
 
-const initCrunchImageUpload = async (path) => {
-  try {
-    const fs = require("fs");
-    if (!fs.existsSync(path)) {
-      await fs.mkdirSync(path, { recursive: true });
-    }
-  } catch (error) {
-    console.log("init fatal error", error);
-  }
-};
+// const initCrunchImageUpload = async (path) => {
+//   try {
+//     const fs = require("fs");
+//     if (!fs.existsSync(path)) {
+//       await fs.mkdirSync(path, { recursive: true });
+//     }
+//   } catch (error) {
+//     console.log("init fatal error", error);
+//   }
+// };
 
 export const saveTempImage = async ({ image, location, handle, api = "crunch", firebaseAdmin }) => {
+  const path = `${process.env.NODE_ENV !== "development" ? "./.next/server/" : "./"}pages/api/${api}/uploads`;
   const fs = require("fs"),
     { resolve } = require("path"),
     handleDir = `${path}/${handle}`,
@@ -84,7 +85,6 @@ export const saveTempImage = async ({ image, location, handle, api = "crunch", f
     console.log("api", getDirectories("./.next/server/pages/api"));
 
     console.log("here3");
-    const path = `${process.env.NODE_ENV !== "development" ? "./.next/server/" : "./"}pages/api/${api}/uploads`;
     console.log("here4", path);
 
     console.log("making");
@@ -92,11 +92,11 @@ export const saveTempImage = async ({ image, location, handle, api = "crunch", f
     console.log(path, getDirectories(`./.next/server/pages`));
     console.log(path, getDirectories(`./.next/server/pages/api`));
     console.log(path, getDirectories(`./.next/server/pages/api/crunch`));
-    // console.log(path, getDirectories(`./.next/server/pages/api/crunch/uploads`));
+    console.log(path, getDirectories(`./.next/server/pages/api/crunch/uploads`));
 
     console.log("making");
 
-    fs.mkdir(handleDir, { recursive: true }, (err) => {
+    mkdir(handleDir, { recursive: true }, (err) => {
       console.log("heeeeeeeeeeeeeeeeee");
       if (err) {
         console.log("err", err);
