@@ -36,6 +36,8 @@ const publishHandler = async ({ profile: { myHandle }, title, description, conte
 
   const articleHasImage = images.length;
 
+  return;
+
   console.log({ articleHasImage, images });
   // return;
 

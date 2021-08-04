@@ -67,21 +67,47 @@ const initCrunchImageUpload = async (path) => {
 
 export const saveTempImage = async ({ image, location, handle, api = "crunch", firebaseAdmin }) => {
   const fs = require("fs"),
+    path = require("path"),
     handleDir = `./pages/api/${api}/uploads/${handle}`,
     viewDir = `./pages/api/${api}/uploads/${location}`,
     base64 = image.replace(/\s/g, "").split(";base64,").pop();
 
-  // fs.mkdirSync(viewDir, { recursive: true });
-  if (!fs.existsSync(handleDir)) {
-    fs.mkdirSync(handleDir, (err) => {
-      console.log("does not exists 1", err);
-      fs.mkdirSync(handleDir, { recursive: true }, (err) => {
-        console.log("does not exists 2", err);
+  fs.mkdir(handleDir, { recursive: true }, (err) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("no error");
+    }
+    const createDirectories = (pathname = handleDir) => {
+      const __dirname = path.resolve();
+      console.error(__dirname);
+      pathname = pathname.replace(/^\.*\/|\/?[^\/]+\.[a-z]+|\/$/g, ""); // Remove leading directory markers, and remove ending /file-name.extension
+      console.error(pathname);
+      fs.mkdir(path.resolve(__dirname, pathname), { recursive: true }, (e) => {
+        if (e) {
+          console.error(e);
+        } else {
+          console.log("Success");
+        }
       });
-    });
-  }
+    };
 
-  throw new TypeError("SAVEtEMPiMAGE hald");
+    createDirectories();
+  });
+
+  return;
+
+  // fs.mkdirSync(viewDir, { recursive: true });
+  // if (!fs.existsSync(handleDir)) {
+  //   fs.mkdirSync(handleDir, (err) => {
+  //     console.log("does not exists 1", err);
+  //     fs.mkdirSync(handleDir, { recursive: true }, (err) => {
+  //       console.log("does not exists 2", err);
+  //     });
+  //   });
+  // }
+
+  return "SAVEtEMPiMAGE hald";
 
   try {
     console.log("SAVEtEMPiMAGE 1");
