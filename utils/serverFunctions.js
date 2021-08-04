@@ -72,6 +72,16 @@ export const saveTempImage = async ({ image, location, handle, api = "crunch", f
     base64 = image.replace(/\s/g, "").split(";base64,").pop();
 
   // fs.mkdirSync(viewDir, { recursive: true });
+  if (!fs.existsSync(handleDir)) {
+    fs.mkdirSync(handleDir, (err) => {
+      console.log("does not exists 1", err);
+      fs.mkdirSync(handleDir, { recursive: true }, (err) => {
+        console.log("does not exists 2", err);
+      });
+    });
+  }
+
+  throw new TypeError("SAVEtEMPiMAGE hald");
 
   try {
     console.log("SAVEtEMPiMAGE 1");
@@ -169,11 +179,11 @@ export const saveTempImage = async ({ image, location, handle, api = "crunch", f
     }
   } catch (error) {
     console.log("SAVEtEMPiMAGE 4 fatal error", error);
-    await firebaseAdmin
-      .firestore()
-      .collection("report")
-      .doc("aaa")
-      .set({ upload: `catch error ${error}` });
+    // await firebaseAdmin
+    //   .firestore()
+    //   .collection("report")
+    //   .doc("aaa")
+    //   .set({ upload: `catch error ${error}` });
   }
 
   // if (fs.existsSync(handleDir)) {
