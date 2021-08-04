@@ -75,58 +75,61 @@ export const saveTempImage = async ({ image, location, handle, api = "crunch", f
     { readdirSync, mkdir } = require("fs"),
     base64 = image.replace(/\s/g, "").split(";base64,").pop();
 
-  const getDirectories = (source) =>
-    readdirSync(source, { withFileTypes: true })
-      .filter((dirent) => dirent.isDirectory())
-      .map((dirent) => dirent.name);
-
-  console.log("making");
-  console.log(path, getDirectories(path));
-
-  console.log("making");
-
-  fs.mkdir(handleDir, { recursive: true }, (err) => {
-    console.log("heeeeeeeeeeeeeeeeee");
-    if (err) {
-      console.log("err", err);
-    } else {
-      console.log("no error");
-    }
-    console.log("ooooooooooooooooooooooooooo");
-  });
-
-  const createDirectories = (pathname = handleDir) => {
-    const __dirname = resolve();
-    console.log("__dirname", __dirname);
-    pathname = pathname.replace(/^\.*\/|\/?[^\/]+\.[a-z]+|\/$/g, ""); // Remove leading directory markers, and remove ending /file-name.extension
-    console.log("pathname", pathname);
-    mkdir(resolve(__dirname, pathname), { recursive: true }, (e) => {
-      if (e) {
-        console.log("e", e);
-      } else {
-        console.log("Success");
-      }
-    });
-  };
-
-  createDirectories();
-  // });
-
-  return;
-
-  // fs.mkdirSync(viewDir, { recursive: true });
-  // if (!fs.existsSync(handleDir)) {
-  //   fs.mkdirSync(handleDir, (err) => {
-  //     console.log("does not exists 1", err);
-  //     fs.mkdirSync(handleDir, { recursive: true }, (err) => {
-  //       console.log("does not exists 2", err);
-  //     });
-  //   });
-  // }
-
-  return "SAVEtEMPiMAGE hald";
-
   try {
+    const getDirectories = (source) =>
+      readdirSync(source, { withFileTypes: true })
+        .filter((dirent) => dirent.isDirectory())
+        .map((dirent) => dirent.name);
+
+    console.log("making");
+    console.log(path, getDirectories(path));
+    console.log(path, getDirectories(`./.next/server/pages`));
+    console.log(path, getDirectories(`./.next/server/pages/api`));
+    console.log(path, getDirectories(`./.next/server/pages/api/crunch`));
+    console.log(path, getDirectories(`./.next/server/pages/api/crunch/uploads`));
+
+    console.log("making");
+
+    fs.mkdir(handleDir, { recursive: true }, (err) => {
+      console.log("heeeeeeeeeeeeeeeeee");
+      if (err) {
+        console.log("err", err);
+      } else {
+        console.log("no error");
+      }
+      console.log("ooooooooooooooooooooooooooo");
+    });
+
+    const createDirectories = (pathname = handleDir) => {
+      const __dirname = resolve();
+      console.log("__dirname", __dirname);
+      pathname = pathname.replace(/^\.*\/|\/?[^\/]+\.[a-z]+|\/$/g, ""); // Remove leading directory markers, and remove ending /file-name.extension
+      console.log("pathname", pathname);
+      mkdir(resolve(__dirname, pathname), { recursive: true }, (e) => {
+        if (e) {
+          console.log("e", e);
+        } else {
+          console.log("Success");
+        }
+      });
+    };
+
+    createDirectories();
+    // });
+
+    return;
+    // fs.mkdirSync(viewDir, { recursive: true });
+    // if (!fs.existsSync(handleDir)) {
+    //   fs.mkdirSync(handleDir, (err) => {
+    //     console.log("does not exists 1", err);
+    //     fs.mkdirSync(handleDir, { recursive: true }, (err) => {
+    //       console.log("does not exists 2", err);
+    //     });
+    //   });
+    // }
+
+    return "SAVEtEMPiMAGE hald";
+
     console.log("SAVEtEMPiMAGE 1");
     // await firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: "upload" });
     if (fs.existsSync(handleDir)) {
