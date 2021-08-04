@@ -71,7 +71,7 @@ export const saveTempImage = async ({ image, location, handle, api = "crunch", f
     viewDir = `./pages/api/${api}/uploads/${location}`,
     base64 = image.replace(/\s/g, "").split(";base64,").pop();
 
-  fs.mkdirSync(viewDir, { recursive: true });
+  // fs.mkdirSync(viewDir, { recursive: true });
 
   try {
     console.log("SAVEtEMPiMAGE 1");

@@ -1,6 +1,6 @@
 import { toId } from "@utils/clientFunctions";
 import firebaseAdmin from "@utils/firebaseServer";
-import { uploadImages, saveTempImage, deleteTempImage, initCrunchImageUpload } from "@utils/serverFunctions";
+import { uploadImages, saveTempImage, deleteTempImage } from "@utils/serverFunctions";
 
 const publishHandler = async ({ profile: { myHandle }, title, description, content, keywords, crunch, moderator }) => {
   const images = [],
