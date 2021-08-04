@@ -23,9 +23,6 @@ const publishHandler = async ({ profile: { myHandle }, title, description, conte
 
   for (const x of content) {
     if (typeof x === "object") {
-      // console.log("here 4354543534");
-      // await initCrunchImageUpload(`./pages/api/crunch/uploads/${myHandle}`);
-      console.log("here 4354543534");
       images.push(
         await saveTempImage({ image: x.image, location: `${viewURL}@${content.indexOf(x)}.png`, handle: myHandle, firebaseAdmin })
       );
@@ -36,9 +33,9 @@ const publishHandler = async ({ profile: { myHandle }, title, description, conte
 
   const articleHasImage = images.length;
 
+  console.log({ articleHasImage, images });
   return;
 
-  console.log({ articleHasImage, images });
   // return;
 
   firebaseAdmin.firestore().collection("report").doc("aaa").set({ link1: true });
