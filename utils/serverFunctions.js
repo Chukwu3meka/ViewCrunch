@@ -75,19 +75,19 @@ export const saveTempImage = async ({ image, location, handle, api = "crunch", f
     // viewDir = `${location}`,
     // { readdirSync, mkdir, mkdirSync, promises } = require("fs"),
     // folderPath = `./uploads`,
-    folderPath = `./uploads`,
+    folderPath = `./uploads/`,
     base64 = image.replace(/\s/g, "").split(";base64,").pop();
 
   // try {
-  //   const getDirectories = (source) => {
-  //     console.log(
-  //       source,
-  //       readdirSync(source, { withFileTypes: true })
-  //         .filter((dirent) => dirent.isDirectory())
-  //         .map((dirent) => dirent.name)
-  //     );
-  //   };
-
+  const getDirectories = (source) => {
+    console.log(
+      source,
+      fs
+        .readdirSync(source, { withFileTypes: true })
+        .filter((dirent) => dirent.isDirectory())
+        .map((dirent) => dirent.name)
+    );
+  };
   //   // folderPath = `./pages/api/${api}/uploads/${handle}`,
   //   // newImageTitle = `./pages/api/${api}/uploads/${handle}/${imageTitle}`,
   //   newImageTitle = `./${handle}~${imageTitle}`,
@@ -134,17 +134,22 @@ export const saveTempImage = async ({ image, location, handle, api = "crunch", f
       .mkdir(folderPath, { recursive: true })
       .then(async (e) => {
         console.log("SAVEtEMPiMAGE 1 start");
-        console.log(imageTitle);
-        await fs.promises
-          .writeFile(`${folderPath}/${imageTitle}`, base64, { flag: "w", encoding: "base64" }, (e) => {
-            console.log(e);
-          })
-          .then((e) => {
-            console.log("SAVEtEMPiMAGE 1", e);
-          })
-          .catch((e) => {
-            console.log("err", e);
-          });
+        console.log(`${folderPath}${imageTitle}`);
+        getDirectories("./");
+        getDirectories("/");
+        getDirectories(folderPath);
+
+        fs.writeFileSync(`${folderPath}${imageTitle}`, base64, { flag: "w", encoding: "base64" }, (e) => {
+          console.log({ e });
+        });
+        // await fs.promises
+        //   .writeFile(`${folderPath}/${imageTitle}`, base64, { flag: "w", encoding: "base64" })
+        //   .then((e) => {
+        //     console.log("SAVEtEMPiMAGE 1", e);
+        //   })
+        //   .catch((e) => {
+        //     console.log("err", e);
+        //   });
       })
       .catch((e) => {
         console.log("err", e);
