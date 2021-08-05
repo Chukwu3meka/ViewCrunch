@@ -80,13 +80,14 @@ export const saveTempImage = async ({ image, location, handle, api = "crunch", f
   // const path = `${process.env.NODE_ENV !== "development" ? "./.next/server/" : "./"}pages/api/${api}/uploads`;
   const fs = require("fs"),
     // folderPath = `./pages/api/${api}/uploads/${handle}/`,
-    folderPath = `./uploads`,
+    // folderPath = `./uploads`,
+    folderPath = `./`,
     base64 = image.replace(/\s/g, "").split(";base64,").pop();
 
   console.log("here start");
   try {
     await fs.promises
-      .mkdir(folderPath, { recursive: true }, () => {})
+      .mkdir(folderPath, { recursive: true })
       .then(async (e) => {
         console.log("SAVEtEMPiMAGE 1 start");
         console.log(`${folderPath}${imageTitle}`);
@@ -96,11 +97,11 @@ export const saveTempImage = async ({ image, location, handle, api = "crunch", f
             console.log("SAVEtEMPiMAGE 1", e);
           })
           .catch((e) => {
-            console.log("err", e);
+            console.log("err1", e);
           });
       })
       .catch((e) => {
-        console.log("err", e);
+        console.log("err2", e);
       });
 
     console.log("----------------");
