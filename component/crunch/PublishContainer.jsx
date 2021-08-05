@@ -27,7 +27,7 @@ const PublishContainer = (props) => {
     [loading, setLoading] = useState(false),
     [preview, setPreview] = useState(false),
     [contentText, setContentText] = useState(""),
-    [title, setTitle] = useState(viewToBeModified.title || "Wealth: Freedom or not"),
+    [title, setTitle] = useState(viewToBeModified.title || "Wealth - 'Freedom or not'"),
     [keywords, setKeywords] = useState(viewToBeModified.keywords || "wealth, finance"),
     [contentArray, setContentArray] = useState(viewToBeModified.content || []),
     [description, setDescription] = useState(

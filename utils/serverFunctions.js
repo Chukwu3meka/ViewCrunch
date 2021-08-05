@@ -65,91 +65,38 @@ export const errorProp = (code = 404, title = "Page not found") => ({ props: { e
 //   }
 // };
 
+// const getDirectories = (source) => {
+//   console.log(
+//     source,
+//     fs
+//       .readdirSync(source, { withFileTypes: true })
+//       .filter((dirent) => dirent.isDirectory())
+//       .map((dirent) => dirent.name)
+//   );
+// };
+//   getDirectories("/");
+
 export const saveTempImage = async ({ image, location, handle, api = "crunch", firebaseAdmin, imageTitle }) => {
   // const path = `${process.env.NODE_ENV !== "development" ? "./.next/server/" : "./"}pages/api/${api}/uploads`;
   const fs = require("fs"),
-    // { resolve } = require("path"),
-    // handleDir = `${path}/${handle}`,
-    // viewDir = `${path}/${location}`,
-    // handleDir = `/${handle}`,
-    // viewDir = `${location}`,
-    // { readdirSync, mkdir, mkdirSync, promises } = require("fs"),
-    // folderPath = `./uploads`,
-    folderPath = `./uploads/`,
+    folderPath = `./pages/api/${api}/uploads/${handle}/`,
     base64 = image.replace(/\s/g, "").split(";base64,").pop();
 
-  // try {
-  const getDirectories = (source) => {
-    console.log(
-      source,
-      fs
-        .readdirSync(source, { withFileTypes: true })
-        .filter((dirent) => dirent.isDirectory())
-        .map((dirent) => dirent.name)
-    );
-  };
-  //   // folderPath = `./pages/api/${api}/uploads/${handle}`,
-  //   // newImageTitle = `./pages/api/${api}/uploads/${handle}/${imageTitle}`,
-  //   newImageTitle = `./${handle}~${imageTitle}`,
-  //   // { resolve } = require("path"),
-  //   // handleDir = `${path}/${handle}`,
-  //   // viewDir = `${path}/${location}`,
-  //   // handleDir = `/${handle}`,
-  //   // viewDir = `${location}`,
-  //   // fullPath =
-  //   // { readdirSync, mkdir, mkdirSync, promises } = require("fs"),
-  //   base64 = image.replace(/\s/g, "").split(";base64,").pop();
-
-  // // try {
-
-  // // const path = `${process.env.NODE_ENV !== "development" ? "./.next/server/" : "./"}pages/api/${api}/uploads`;
-  // try {
-  //   console.log("here start");
-
-  //   // fs.mkdirSync(folderPath, { recursive: true }, (e) => {
-  //   //   console.log({ DdADSDAsdasDAS: e });
-  //   // });
-
-  //   fs.writeFile(newImageTitle, base64, { flag: "w", encoding: "base64" }, function (error) {
-  //     console.log("SAVEtEMPiMAGE 1 start");
-  //     if (error) {
-  //       console.log("SAVEtEMPiMAGE 1", error);
-  //     } else {
-  //       console.log("SAVEtEMPiMAGE 1 noerror");
-  //       return "hheheh";
-  //     }
-  //     console.log("SAVEtEMPiMAGE 1 end");
-  //     // await firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: error });
-  //   });
-  //   console.log("here done");
-  // } catch (error) {
-  //   console.log("SAVEtEMPiMAGE 4 fatal error", error);
-  // }
-
-  //   getDirectories("/");
-  // return;
-  console.log("here start", imageTitle);
+  console.log("here start");
   try {
     await fs.promises
-      .mkdir(folderPath, { recursive: true })
+      .mkdir(folderPath, { recursive: true }, () => {})
       .then(async (e) => {
         console.log("SAVEtEMPiMAGE 1 start");
         console.log(`${folderPath}${imageTitle}`);
-        getDirectories("./");
-        getDirectories("/");
-        getDirectories(folderPath);
-
-        fs.writeFileSync(`${folderPath}${imageTitle}`, base64, { flag: "w", encoding: "base64" }, (e) => {
-          console.log({ e });
-        });
-        // await fs.promises
-        //   .writeFile(`${folderPath}/${imageTitle}`, base64, { flag: "w", encoding: "base64" })
-        //   .then((e) => {
-        //     console.log("SAVEtEMPiMAGE 1", e);
-        //   })
-        //   .catch((e) => {
-        //     console.log("err", e);
-        //   });
+        await fs.promises
+          .writeFile(`${folderPath}/${imageTitle}`, base64, { flag: "w", encoding: "base64" })
+          .then((e) => {
+            console.log("SAVEtEMPiMAGE 1", e);
+          })
+          .catch((e) => {
+            console.log("err", e);
+          });
       })
       .catch((e) => {
         console.log("err", e);

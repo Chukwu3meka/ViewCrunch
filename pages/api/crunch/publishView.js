@@ -28,10 +28,10 @@ const publishHandler = async ({ profile: { myHandle }, title, description, conte
           // location: `/@@${myHandle}@@@${toId(title)}@@@${content.indexOf(x)}.png`,
           location: `${myHandle}~${content.indexOf(x)}.png`,
           image: x.image,
-          imageTitle: `${myHandle}~${toId(title)}~${content.indexOf(x)}.png`,
+          // imageTitle: `${myHandle}~${toId(title)}~${content.indexOf(x)}.png`,
+          imageTitle: `${toId(title)}~${content.indexOf(x)}.png`,
           // location: `${viewURL}@${content.indexOf(x)}.png`,
           handle: myHandle,
-          firebaseAdmin,
         })
       );
     }
