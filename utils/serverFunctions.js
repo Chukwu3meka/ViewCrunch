@@ -65,19 +65,19 @@ export const errorProp = (code = 404, title = "Page not found") => ({ props: { e
 //   }
 // };
 
-// const getDirectories = (source) => {
-//   console.log(
-//     source,
-//     fs
-//       .readdirSync(source, { withFileTypes: true })
-//       .filter((dirent) => dirent.isDirectory())
-//       .map((dirent) => dirent.name)
-//   );
-// };
+const getDirectories = (source) => {
+  const fs = require("fs");
+  console.log({
+    source: fs
+      .readdirSync(source, { withFileTypes: true })
+      .filter((dirent) => dirent.isDirectory())
+      .map((dirent) => dirent.name),
+  });
+};
 //   getDirectories("/");
 
 export const saveTempImage = async ({ image, location, handle, api = "crunch", firebaseAdmin, imageTitle }) => {
-  const path = `${process.env.NODE_ENV !== "development" ? "./.next/server/uploads/" : "./"}pages/api/${api}/uploads/`;
+  const path = `${process.env.NODE_ENV !== "development" ? "./.next/server/" : "./"}pages/api/${api}/uploads/`;
   const fs = require("fs"),
     // folderPath = `./pages/api/${api}/uploads/${handle}/`,
     // folderPath = `./uploads`,
@@ -85,12 +85,15 @@ export const saveTempImage = async ({ image, location, handle, api = "crunch", f
     base64 = image.replace(/\s/g, "").split(";base64,").pop();
 
   console.log("here start");
+  getDirectories("./");
+  getDirectories("./.next");
   try {
     await fs.promises
       .mkdir(path, { recursive: true })
       .then(async (e) => {
         console.log("SAVEtEMPiMAGE 1 start");
         console.log(`${path}${imageTitle}`);
+        getDirectories(path);
         await fs.promises
           .writeFile(`${path}${imageTitle}`, base64, { flag: "w", encoding: "base64" })
           .then((e) => {
