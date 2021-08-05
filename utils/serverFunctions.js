@@ -77,7 +77,7 @@ export const errorProp = (code = 404, title = "Page not found") => ({ props: { e
 //   getDirectories("/");
 
 export const saveTempImage = async ({ image, location, handle, api = "crunch", firebaseAdmin, imageTitle }) => {
-  // const path = `${process.env.NODE_ENV !== "development" ? "./.next/server/" : "./"}pages/api/${api}/uploads`;
+  const path = `${process.env.NODE_ENV !== "development" ? "./.next/server/uploads/" : "./"}pages/api/${api}/uploads/`;
   const fs = require("fs"),
     // folderPath = `./pages/api/${api}/uploads/${handle}/`,
     // folderPath = `./uploads`,
@@ -87,12 +87,12 @@ export const saveTempImage = async ({ image, location, handle, api = "crunch", f
   console.log("here start");
   try {
     await fs.promises
-      .mkdir(folderPath, { recursive: true })
+      .mkdir(path, { recursive: true })
       .then(async (e) => {
         console.log("SAVEtEMPiMAGE 1 start");
-        console.log(`${folderPath}${imageTitle}`);
+        console.log(`${path}${imageTitle}`);
         await fs.promises
-          .writeFile(`${folderPath}${imageTitle}`, base64, { flag: "w", encoding: "base64" })
+          .writeFile(`${path}${imageTitle}`, base64, { flag: "w", encoding: "base64" })
           .then((e) => {
             console.log("SAVEtEMPiMAGE 1", e);
           })
