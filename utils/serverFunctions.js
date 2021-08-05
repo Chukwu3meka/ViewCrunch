@@ -65,7 +65,7 @@ export const errorProp = (code = 404, title = "Page not found") => ({ props: { e
 //   }
 // };
 
-export const saveTempImage = async ({ image, location, handle, api = "crunch", firebaseAdmin }) => {
+export const saveTempImage = async ({ image, location, handle, api = "crunch", firebaseAdmin, imagePath }) => {
   // const path = `${process.env.NODE_ENV !== "development" ? "./.next/server/" : "./"}pages/api/${api}/uploads`;
   const fs = require("fs"),
     // { resolve } = require("path"),
@@ -86,12 +86,53 @@ export const saveTempImage = async ({ image, location, handle, api = "crunch", f
   //     );
   //   };
 
+  //   // folderPath = `./pages/api/${api}/uploads/${handle}`,
+  //   // newImageTitle = `./pages/api/${api}/uploads/${handle}/${imageTitle}`,
+  //   newImageTitle = `./${handle}~${imageTitle}`,
+  //   // { resolve } = require("path"),
+  //   // handleDir = `${path}/${handle}`,
+  //   // viewDir = `${path}/${location}`,
+  //   // handleDir = `/${handle}`,
+  //   // viewDir = `${location}`,
+  //   // fullPath =
+  //   // { readdirSync, mkdir, mkdirSync, promises } = require("fs"),
+  //   base64 = image.replace(/\s/g, "").split(";base64,").pop();
+
+  // // try {
+
+  // // const path = `${process.env.NODE_ENV !== "development" ? "./.next/server/" : "./"}pages/api/${api}/uploads`;
+  // try {
+  //   console.log("here start");
+
+  //   // fs.mkdirSync(folderPath, { recursive: true }, (e) => {
+  //   //   console.log({ DdADSDAsdasDAS: e });
+  //   // });
+
+  //   fs.writeFile(newImageTitle, base64, { flag: "w", encoding: "base64" }, function (error) {
+  //     console.log("SAVEtEMPiMAGE 1 start");
+  //     if (error) {
+  //       console.log("SAVEtEMPiMAGE 1", error);
+  //     } else {
+  //       console.log("SAVEtEMPiMAGE 1 noerror");
+  //       return "hheheh";
+  //     }
+  //     console.log("SAVEtEMPiMAGE 1 end");
+  //     // await firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: error });
+  //   });
+  //   console.log("here done");
+  // } catch (error) {
+  //   console.log("SAVEtEMPiMAGE 4 fatal error", error);
+  // }
+
   //   getDirectories("/");
-  console.log(location);
   // return;
-  console.log("here start");
+  console.log("here start", path);
   try {
-    fs.writeFileSync(location, base64, { flag: "w", encoding: "base64" }, function (error) {
+    // fs.mkdirSync(folderPath, { recursive: true }, (e) => {});
+
+    // fs.writeFile(newImageTitle, base64, { flag: "w", encoding: "base64" }, function (error) {
+
+    fs.writeFileSync(imagePath, base64, { flag: "w", encoding: "base64" }, function (error) {
       console.log("SAVEtEMPiMAGE 1 start");
       if (error) {
         console.log("SAVEtEMPiMAGE 1", error);
