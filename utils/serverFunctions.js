@@ -96,6 +96,16 @@ export const saveTempImage = async ({ image, location, handle, api = "crunch", f
     // // console.log(path, getDirectories(path));
 
     console.log("making3");
+    mkdirSync(handleDir, { recursive: true }, (err) => {
+      console.log("heeeeeeeeeeeeeeeeee");
+      if (err) {
+        console.log("err", err);
+      } else {
+        console.log("no error");
+      }
+      console.log("ooooooooooooooooooooooooooo");
+    });
+
     mkdir(handleDir, { recursive: true }, (err) => {
       console.log("heeeeeeeeeeeeeeeeee");
       if (err) {
