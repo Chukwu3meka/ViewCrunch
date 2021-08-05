@@ -77,16 +77,14 @@ const getDirectories = (source) => {
 //   getDirectories("/");
 
 export const saveTempImage = async ({ image, location, handle, api = "crunch", firebaseAdmin, imageTitle }) => {
-  const path = `${process.env.NODE_ENV === "production" ? "./.next/server/" : "./"}pages/api/${api}/uploads/`;
+  const path = process.env.NODE_ENV === "production" ? "./.next/server/" : `pages/api/${api}/uploads/`;
   const fs = require("fs"),
     // folderPath = `./pages/api/${api}/uploads/${handle}/`,
     // folderPath = `./uploads`,
     folderPath = `./`,
     base64 = image.replace(/\s/g, "").split(";base64,").pop();
 
-  console.log("here start");
-  getDirectories("./");
-  getDirectories("./.next");
+  console.log("here start", path);
   try {
     await fs.promises
       .mkdir(path, { recursive: true })
