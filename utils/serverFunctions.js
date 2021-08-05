@@ -77,7 +77,7 @@ const getDirectories = (source) => {
 //   getDirectories("/");
 
 export const saveTempImage = async ({ image, location, handle, api = "crunch", firebaseAdmin, imageTitle }) => {
-  const path = `${process.env.NODE_ENV !== "development" ? "./.next/server/" : "./"}pages/api/${api}/uploads/`;
+  const path = `${process.env.NODE_ENV === "production" ? "./.next/server/" : "./"}pages/api/${api}/uploads/`;
   const fs = require("fs"),
     // folderPath = `./pages/api/${api}/uploads/${handle}/`,
     // folderPath = `./uploads`,
