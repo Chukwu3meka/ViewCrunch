@@ -65,7 +65,7 @@ export const errorProp = (code = 404, title = "Page not found") => ({ props: { e
 //   }
 // };
 
-export const saveTempImage = async ({ image, location, handle, api = "crunch", firebaseAdmin, imagePath }) => {
+export const saveTempImage = async ({ image, location, handle, api = "crunch", firebaseAdmin, imageTitle }) => {
   // const path = `${process.env.NODE_ENV !== "development" ? "./.next/server/" : "./"}pages/api/${api}/uploads`;
   const fs = require("fs"),
     // { resolve } = require("path"),
@@ -74,6 +74,8 @@ export const saveTempImage = async ({ image, location, handle, api = "crunch", f
     // handleDir = `/${handle}`,
     // viewDir = `${location}`,
     // { readdirSync, mkdir, mkdirSync, promises } = require("fs"),
+    // folderPath = `./uploads`,
+    folderPath = `./uploads`,
     base64 = image.replace(/\s/g, "").split(";base64,").pop();
 
   // try {
@@ -126,23 +128,32 @@ export const saveTempImage = async ({ image, location, handle, api = "crunch", f
 
   //   getDirectories("/");
   // return;
-  console.log("here start", imagePath);
+  console.log("here start", imageTitle);
   try {
-    // fs.mkdirSync(folderPath, { recursive: true }, (e) => {});
+    await fs.promises
+      .mkdir(folderPath, { recursive: true })
+      .then(async (e) => {
+        console.log("SAVEtEMPiMAGE 1 start");
+        console.log(imageTitle);
+        await fs.promises
+          .writeFile(`${folderPath}/${imageTitle}`, base64, { flag: "w", encoding: "base64" }, (e) => {
+            console.log(e);
+          })
+          .then((e) => {
+            console.log("SAVEtEMPiMAGE 1", e);
+          })
+          .catch((e) => {
+            console.log("err", e);
+          });
+      })
+      .catch((e) => {
+        console.log("err", e);
+      });
+
+    console.log("----------------");
 
     // fs.writeFile(newImageTitle, base64, { flag: "w", encoding: "base64" }, function (error) {
 
-    fs.writeFileSync(imagePath, base64, { flag: "w", encoding: "base64" }, function (error) {
-      console.log("SAVEtEMPiMAGE 1 start");
-      if (error) {
-        console.log("SAVEtEMPiMAGE 1", error);
-      } else {
-        console.log("SAVEtEMPiMAGE 1 noerror");
-        return "hheheh";
-      }
-      console.log("SAVEtEMPiMAGE 1 end");
-      // await firebaseAdmin.firestore().collection("report").doc("aaa").set({ upload: error });
-    });
     console.log("here done");
   } catch (error) {
     console.log("SAVEtEMPiMAGE 4 fatal error", error);
