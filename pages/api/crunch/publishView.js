@@ -24,7 +24,15 @@ const publishHandler = async ({ profile: { myHandle }, title, description, conte
   for (const x of content) {
     if (typeof x === "object") {
       images.push(
-        await saveTempImage({ image: x.image, location: `${viewURL}@${content.indexOf(x)}.png`, handle: myHandle, firebaseAdmin })
+        await saveTempImage({
+          // location: `/@@${myHandle}@@@${toId(title)}@@@${content.indexOf(x)}.png`,
+          location: `${myHandle}~${content.indexOf(x)}.png`,
+          image: x.image,
+          imageTitle: `${myHandle}~${toId(title)}~${content.indexOf(x)}.png`,
+          // location: `${viewURL}@${content.indexOf(x)}.png`,
+          handle: myHandle,
+          firebaseAdmin,
+        })
       );
     }
   }
