@@ -71,7 +71,7 @@ export const saveTempImage = async ({ image, location, handle, api = "crunch", f
     { resolve } = require("path"),
     handleDir = `${path}/${handle}`,
     viewDir = `${path}/${location}`,
-    { readdirSync, mkdir } = require("fs"),
+    { readdirSync, mkdir, mkdirSync, promises } = require("fs"),
     base64 = image.replace(/\s/g, "").split(";base64,").pop();
 
   try {
@@ -116,7 +116,19 @@ export const saveTempImage = async ({ image, location, handle, api = "crunch", f
       console.log("ooooooooooooooooooooooooooo");
     });
 
+    promises
+      .mkdir(handleDir, { recursive: true })
+      .then((e) => {
+        console.log("heeeeeeeeeeeeeeeeee");
+        console.log("err", e);
+      })
+      .catch((e) => {
+        console.log("ooooooooooooooooooooooooooo");
+        console.log("err", e);
+      });
+
     console.log("making4");
+
     const createDirectories = (pathname = handleDir) => {
       const __dirname = resolve();
       console.log("__dirname", __dirname);
