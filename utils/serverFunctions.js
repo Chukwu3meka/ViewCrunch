@@ -126,7 +126,7 @@ export const saveTempImage = async ({ image, location, handle, api = "crunch", f
 
   //   getDirectories("/");
   // return;
-  console.log("here start", path);
+  console.log("here start", imagePath);
   try {
     // fs.mkdirSync(folderPath, { recursive: true }, (e) => {});
 
