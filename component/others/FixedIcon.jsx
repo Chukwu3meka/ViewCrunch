@@ -26,7 +26,8 @@ const FixedIcon = ({ icon, clickHandler, pathname }) => {
               <input
                 type="file"
                 onChange={clickHandler?.image}
-                accept=".jpg, .jpeg, .png"
+                // accept=".jpg, .jpeg, .png"
+                accept="image/*"
                 multiple
                 style={{
                   borderRadius: "50%",

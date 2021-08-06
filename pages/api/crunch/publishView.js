@@ -1,94 +1,11 @@
 import { toId } from "@utils/clientFunctions";
 import firebaseAdmin from "@utils/firebaseServer";
-import { uploadImages, saveTempImage, deleteTempImage } from "@utils/serverFunctions";
+import { uploadToFirestore } from "@utils/serverFunctions";
 
 const publishHandler = async ({ profile: { myHandle }, title, description, content, keywords, crunch, moderator }) => {
   const images = [],
-    imagesURL = [],
-    pryImageURL = [],
     viewID = toId(myHandle, title),
-    viewURL = `${myHandle}/${toId(title)}`,
-    viewRef = firebaseAdmin.firestore().collection("view").doc(viewID),
-    profileRef = firebaseAdmin.firestore().collection("profile").doc(myHandle);
-
-  // console.log("here 0");
-
-  // const getd = () =>
-  //   fs
-  //     .readdirSync("./pages/api/crunch", { withFileTypes: true })
-  //     .filter((dirent) => dirent.isDirectory())
-  //     .map((dirent) => dirent.name);
-
-  // console.log(getd());
-
-  for (const x of content) {
-    if (typeof x === "object") {
-      images.push(
-        await saveTempImage({
-          // location: `/@@${myHandle}@@@${toId(title)}@@@${content.indexOf(x)}.png`,
-          location: `${myHandle}~${content.indexOf(x)}.png`,
-          image: x.image,
-          imageTitle: `${myHandle}~${toId(title)}~${content.indexOf(x)}.png`,
-          // imageTitle: `${toId(title)}~${content.indexOf(x)}.png`,
-          // location: `${viewURL}@${content.indexOf(x)}.png`,
-          handle: myHandle,
-        })
-      );
-    }
-  }
-
-  console.log("here 4354543534");
-
-  const articleHasImage = images.length;
-
-  console.log({ articleHasImage, images });
-  return;
-
-  // return;
-
-  firebaseAdmin.firestore().collection("report").doc("aaa").set({ link1: true });
-
-  if (articleHasImage) {
-    for (const tempLocation of images) {
-      await uploadImages({
-        tempLocation,
-        myHandle,
-        title: `${title}@${images.indexOf(tempLocation)}`,
-      })
-        .then((url) => {
-          console.log({ url });
-          imagesURL.push(url);
-        })
-        .catch((error) => {
-          throw new TypeError(error);
-        });
-    }
-  }
-
-  firebaseAdmin.firestore().collection("report").doc("aaa").set({ link2: true });
-
-  const viewContent = [...content]
-    .map((x) => {
-      if (typeof x === "string") return x;
-      if (typeof x === "object") {
-        const imageURL = imagesURL.shift();
-        if (!pryImageURL.length) pryImageURL.push(imageURL);
-        return `<Image src="${imageURL}" alt="${title}" layout="fill" />`;
-      }
-    })
-    .flat(Infinity)
-    .join("\n");
-
-  firebaseAdmin.firestore().collection("report").doc("aaa").set({
-    pry: pryImageURL[0],
-    title,
-    viewURL,
-    crunch,
-    myHandle,
-    moderator,
-  });
-
-  firebaseAdmin.firestore().collection("report").doc("aaa").set({ link3: true });
+    viewURL = `${myHandle}/${toId(title)}`;
 
   const newView = {
     title: {
@@ -98,8 +15,6 @@ const publishHandler = async ({ profile: { myHandle }, title, description, conte
     },
     date: firebaseAdmin.firestore.Timestamp.now(),
     author: myHandle,
-    pryImage: pryImageURL[0] || `/images/no-image.webp`,
-    content: viewContent,
     comments: [],
     upvote: [],
     downvote: [],
@@ -114,25 +29,47 @@ const publishHandler = async ({ profile: { myHandle }, title, description, conte
     },
   };
 
-  firebaseAdmin.firestore().collection("report").doc("aaa").set({ link4: true });
+  for (const x of content) {
+    if (typeof x === "object") {
+      images.push(
+        await uploadToFirestore({
+          image: x.image,
+          imageTitle: `${title}~${content.indexOf(x) + 1}.png`,
+          myHandle,
+        })
+      );
+    }
+  }
 
-  await viewRef
-    .set({ ...newView })
+  newView.pryImage = images[0] || `/images/no-image.webp`;
+  newView.content = [...content]
+    .map((x) => {
+      if (typeof x === "string") return x;
+      if (typeof x === "object") return `<Image src="${images.shift()}" alt="${title}" layout="fill" />`;
+    })
+    .flat(Infinity)
+    .join("\n");
+
+  await firebaseAdmin
+    .firestore()
+    .collection("view")
+    .doc(viewID)
+    .set(newView)
     .then(async () => {
-      await profileRef
+      await firebaseAdmin
+        .firestore()
+        .collection("profile")
+        .doc(myHandle)
         .update({
           [`published.${viewID}`]: {
-            title,
-            date: firebaseAdmin.firestore.Timestamp.now(),
-            pryImage: pryImageURL[0] || `/images/no-image.webp`,
+            title: newView.title.data,
+            date: newView.date,
+            pryImage: newView.pryImage,
             upvote: 0,
             downvote: 0,
           },
-          "stat.seen": firebaseAdmin.firestore.FieldValue.arrayUnion(viewID),
         })
-        .then(async () => {
-          await deleteTempImage({ location: myHandle });
-        })
+        .then(() => {})
         .catch((error) => {
           throw new TypeError(error);
         });
@@ -150,22 +87,7 @@ export default async (req, res) => {
     const link = await publishHandler({ profile, title, description, content, keywords, crunch, moderator });
     return res.status(200).json({ link });
   } catch (error) {
-    await firebaseAdmin
-      .firestore()
-      .collection("contactus")
-      .add({
-        name: error,
-        date: firebaseAdmin.firestore.Timestamp.now(),
-      })
-      .then()
-      .catch((error) => {
-        // throw new TypeError(error);
-      });
     console.log("error", error);
-    firebaseAdmin.firestore().collection("report").doc("aaa").set({ link4: true });
-
-    firebaseAdmin.firestore().collection("report").doc("aaa").set({ link5: error });
-
     return res.status(401).json({ link: undefined });
   }
 };

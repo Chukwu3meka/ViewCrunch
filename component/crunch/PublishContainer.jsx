@@ -144,6 +144,8 @@ const PublishContainer = (props) => {
     const contentImages = [];
     if (contentImagesArray?.length) {
       for (const image of contentImagesArray) {
+        const imageSplit = image?.name?.split(".");
+        if (!["png", "jpg", "jpeg"].includes(imageSplit[imageSplit.length - 1])) return;
         contentImages.push({ image: await imageObject(image) });
       }
       if (contentText) {
