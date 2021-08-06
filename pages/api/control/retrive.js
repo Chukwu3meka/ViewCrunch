@@ -2,7 +2,7 @@ import firebaseAdmin from "@utils/firebaseServer";
 
 export default async (req, res) => {
   try {
-    if (process.env.NODE_ENV !== "development") throw new TypeError("authentication failed");
+    if (process.env.NODE_ENV === "production") throw new TypeError("authentication failed");
 
     const docs = await firebaseAdmin
       .firestore()

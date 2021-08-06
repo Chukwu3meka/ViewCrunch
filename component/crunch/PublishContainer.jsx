@@ -27,12 +27,10 @@ const PublishContainer = (props) => {
     [loading, setLoading] = useState(false),
     [preview, setPreview] = useState(false),
     [contentText, setContentText] = useState(""),
-    [title, setTitle] = useState(viewToBeModified.title || "Wealth - 'Freedom or not'"),
-    [keywords, setKeywords] = useState(viewToBeModified.keywords || "wealth, finance"),
+    [title, setTitle] = useState(viewToBeModified.title || ""),
+    [keywords, setKeywords] = useState(viewToBeModified.keywords || ""),
     [contentArray, setContentArray] = useState(viewToBeModified.content || []),
-    [description, setDescription] = useState(
-      viewToBeModified.description || "Wealth or riches as we all know refers to valuable material possession or abundance"
-    );
+    [description, setDescription] = useState(viewToBeModified.description || "");
 
   const titleHandler = (value) => {
     const error1 = "Title should be within the range of 3 to 20 words and 13 to 150 characters at most",
@@ -104,20 +102,20 @@ const PublishContainer = (props) => {
     await sleep(1.5);
     setLoading(false);
 
-    // if (
-    //   !(
-    //     (fullArticleWord?.join(" ")?.split(" ")?.length >= 100 &&
-    //       fullArticleWord?.join(" ")?.split(" ")?.length <= 10000 &&
-    //       fullArticleWord.join(" ").length >= 1000 &&
-    //       fullArticleWord.join(" ").length <= 1000000) ||
-    //     (fullArticleImage?.length >= 10 && fullArticleImage?.length <= 30)
-    //   )
-    // )
-    //   return enqueueSnackbar(`Article should have at least 100 words or 10 images and at most 10,000 words or 30MB`, {
-    //     variant: "error",
-    //   });
+    if (
+      !(
+        (fullArticleWord?.join(" ")?.split(" ")?.length >= 100 &&
+          fullArticleWord?.join(" ")?.split(" ")?.length <= 10000 &&
+          fullArticleWord.join(" ").length >= 1000 &&
+          fullArticleWord.join(" ").length <= 1000000) ||
+        (fullArticleImage?.length >= 10 && fullArticleImage?.length <= 30)
+      )
+    )
+      return enqueueSnackbar(`Article should have at least 100 words or 10 images and at most 10,000 words or 30MB of Images`, {
+        variant: "error",
+      });
 
-    // if (titleHandler(title) || descriptionHandler(description) || keywordsHandler(keywords)) return;
+    if (titleHandler(title) || descriptionHandler(description) || keywordsHandler(keywords)) return;
 
     setPreview(true);
   };
