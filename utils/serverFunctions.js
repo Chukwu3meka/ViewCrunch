@@ -1,6 +1,4 @@
 const { v4 } = require("uuid");
-// import { storage } from "./firebaseClient";
-import { toId } from "@utils/clientFunctions";
 import firebaseAdmin, { bucket } from "@utils/firebaseServer";
 
 const connected = fetch("https://google.com", {
@@ -55,33 +53,7 @@ export const extractHandle = async (cookie) => {
 
 export const errorProp = (code = 404, title = "Page not found") => ({ props: { error: { code, title } } });
 
-// const initCrunchImageUpload = async (path) => {
-//   try {
-//     const fs = require("fs");
-//     if (!fs.existsSync(path)) {
-//       await fs.mkdirSync(path, { recursive: true });
-//     }
-//   } catch (error) {
-//     console.log("init fatal error", error);
-//   }
-// };
-
-const getDirectories = (source) => {
-  const fs = require("fs");
-  console.log({
-    source: fs
-      .readdirSync(source, { withFileTypes: true })
-      .filter((dirent) => dirent.isDirectory())
-      .map((dirent) => dirent.name),
-  });
-};
-//   getDirectories("/");
-
-export const saveTempImage = async ({ image, myHandle, api = "crunch", imageTitle }) => {
-  return console.log("saveTempImage is deprecated in server functions");
-};
-
-export const uploadToFirestore = async ({ image, myHandle, api = "crunch", imageTitle }) => {
+export const uploadToFirestore = async ({ image, myHandle, imageTitle }) => {
   try {
     if (!imageTitle || !myHandle || !image) throw new TypeError("incomplete parameters");
 
@@ -114,73 +86,6 @@ export const uploadToFirestore = async ({ image, myHandle, api = "crunch", image
   }
 };
 
-export const uploadImages = async ({ tempLocation, myHandle, title }) => {
-  try {
-    const accessToken = v4();
-    if (!tempLocation || !myHandle || !title) throw new TypeError("incomplete parameters");
-
-    return await bucket
-      .upload(tempLocation, {
-        destination: `images/@${myHandle}/${title}.png`,
-        gzip: true,
-        uploadType: "media",
-        metadata: {
-          contentType: "image/png",
-          metadata: {
-            firebaseStorageDownloadTokens: accessToken,
-          },
-        },
-      })
-      .then((data) => {
-        const viewDir = data[0];
-        return Promise.resolve(
-          `https://firebasestorage.googleapis.com/v0/b/${process.env.FIREBASE_STORAGE_BUCKET}/o/${encodeURIComponent(
-            viewDir.name
-          )}?alt=media&token=${accessToken}`
-        );
-      })
-      .catch((error) => {
-        throw new TypeError(`uploadImages ${error}`);
-      });
-  } catch (error) {
-    console.log(error);
-    throw new TypeError(`uploadImages ${error}`);
-  }
-};
-
-export const deleteImages = async ({ downloadUrl }) => {
-  try {
-    const httpsRef = storage.refFromURL(downloadUrl).fullPath;
-    return await bucket
-      .viewDir(httpsRef)
-      .delete()
-      .then(() => "success")
-      .catch((error) => {
-        throw new TypeError(`deleteImages ${error}`);
-      });
-  } catch (error) {
-    console.log(error);
-    throw new TypeError(`deleteImages ${error}`);
-  }
-};
-
-export const deleteTempImage = async ({ location, api = "crunch" }) => {
-  try {
-    const fs = require("fs"),
-      path = `./pages/api/${api}/uploads/${location}`;
-    try {
-      fs.statSync(path).isDirectory();
-      fs.rmdirSync(path, { recursive: true }, () => {});
-    } catch (error) {
-      throw new TypeError(`deleteTempImages ${error}`);
-    }
-  } catch (error) {
-    throw new TypeError(`deleteTempImages ${error}`);
-    // console.log(error);
-  }
-};
-
-// here
 export const convertContentToArray = async (content) => {
   const contentArray = [],
     formerImagesUrl = [];
@@ -218,3 +123,97 @@ export const convertContentToArray = async (content) => {
 
   return { contentArray, formerImagesUrl };
 };
+
+// export const uploadImages = async ({ tempLocation, myHandle, title }) => {
+//   try {
+//     const accessToken = v4();
+//     if (!tempLocation || !myHandle || !title) throw new TypeError("incomplete parameters");
+
+//     return await bucket
+//       .upload(tempLocation, {
+//         destination: `images/@${myHandle}/${title}.png`,
+//         gzip: true,
+//         uploadType: "media",
+//         metadata: {
+//           contentType: "image/png",
+//           metadata: {
+//             firebaseStorageDownloadTokens: accessToken,
+//           },
+//         },
+//       })
+//       .then((data) => {
+//         const viewDir = data[0];
+//         return Promise.resolve(
+//           `https://firebasestorage.googleapis.com/v0/b/${process.env.FIREBASE_STORAGE_BUCKET}/o/${encodeURIComponent(
+//             viewDir.name
+//           )}?alt=media&token=${accessToken}`
+//         );
+//       })
+//       .catch((error) => {
+//         throw new TypeError(`uploadImages ${error}`);
+//       });
+//   } catch (error) {
+//     console.log(error);
+//     throw new TypeError(`uploadImages ${error}`);
+//   }
+// };
+
+// export const deleteImages = async ({ downloadUrl }) => {
+//   try {
+//     const httpsRef = storage.refFromURL(downloadUrl).fullPath;
+//     return await bucket
+//       .viewDir(httpsRef)
+//       .delete()
+//       .then(() => "success")
+//       .catch((error) => {
+//         throw new TypeError(`deleteImages ${error}`);
+//       });
+//   } catch (error) {
+//     console.log(error);
+//     throw new TypeError(`deleteImages ${error}`);
+//   }
+// };
+
+// export const deleteTempImage = async ({ location, api = "crunch" }) => {
+//   try {
+//     const fs = require("fs"),
+//       path = `./pages/api/${api}/uploads/${location}`;
+//     try {
+//       fs.statSync(path).isDirectory();
+//       fs.rmdirSync(path, { recursive: true }, () => {});
+//     } catch (error) {
+//       throw new TypeError(`deleteTempImages ${error}`);
+//     }
+//   } catch (error) {
+//     throw new TypeError(`deleteTempImages ${error}`);
+//     // console.log(error);
+//   }
+// };
+
+// here
+
+// const initCrunchImageUpload = async (path) => {
+//   try {
+//     const fs = require("fs");
+//     if (!fs.existsSync(path)) {
+//       await fs.mkdirSync(path, { recursive: true });
+//     }
+//   } catch (error) {
+//     console.log("init fatal error", error);
+//   }
+// };
+
+// const getDirectories = (source) => {
+//   const fs = require("fs");
+//   console.log({
+//     source: fs
+//       .readdirSync(source, { withFileTypes: true })
+//       .filter((dirent) => dirent.isDirectory())
+//       .map((dirent) => dirent.name),
+//   });
+// };
+// //   getDirectories("/");
+
+// export const saveTempImage = async ({ image, myHandle, api = "crunch", imageTitle }) => {
+//   return console.log("saveTempImage is deprecated in server functions");
+// };

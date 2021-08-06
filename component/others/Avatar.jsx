@@ -4,7 +4,7 @@ import Image from "next/image";
 
 const Avatar = ({ src, alt, size = "normal", pathname }) => {
   return pathname ? (
-    <Link href={{ pathname }}>
+    <Link href={pathname}>
       <a className={styles[`${size}Avatar`]}>
         <Image src={src} alt={alt} layout="fill" />
       </a>

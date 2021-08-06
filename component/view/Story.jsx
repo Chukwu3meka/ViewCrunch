@@ -41,9 +41,9 @@ const View = ({
         <Fade right>{title}</Fade>
       </h1>
       <div>
-        <Avatar alt={displayName} src={profilePicture} family={"blink"} pathname={author} />
+        <Avatar alt={displayName} src={profilePicture} family={"blink"} pathname={`/${author}`} />
         <div>
-          <Link href={{ pathname: author }}>
+          <Link href={`/${author}`}>
             <Typography component="a" variant="inherit" color="secondary">{`by ${trimString(displayName, 15)}`}</Typography>
           </Link>
           <Typography color="secondary" variant="subtitle2">{`${dateCalculator({ date })} ● ${time2read(content)}`}</Typography>
