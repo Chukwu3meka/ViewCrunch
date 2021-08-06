@@ -114,6 +114,7 @@ export const fetchProfileData = async (handle) => {
 
   const published = [];
   for (const [key, value] of Object.entries(viewerData?.published)) {
+    console.log(key);
     published.push({ ref: key, ...value, date: value.date.toDate().toDateString(), path: refToPath(key) });
   }
 
