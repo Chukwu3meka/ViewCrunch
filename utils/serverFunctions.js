@@ -53,7 +53,7 @@ export const extractHandle = async (cookie) => {
 
 export const errorProp = (code = 404, title = "Page not found") => ({ props: { error: { code, title } } });
 
-export const uploadToFirestore = async ({ image, myHandle, imageTitle }) => {
+export const uploadToFirestorage = async ({ image, myHandle, imageTitle }) => {
   try {
     if (!imageTitle || !myHandle || !image) throw new TypeError("incomplete parameters");
 

@@ -1,6 +1,6 @@
 import { toId } from "@utils/clientFunctions";
 import firebaseAdmin from "@utils/firebaseServer";
-import { uploadToFirestore } from "@utils/serverFunctions";
+import { uploadToFirestorage } from "@utils/serverFunctions";
 
 const publishHandler = async ({ profile: { myHandle }, title, description, content, keywords, crunch, moderator }) => {
   const images = [],
@@ -32,7 +32,7 @@ const publishHandler = async ({ profile: { myHandle }, title, description, conte
   for (const x of content) {
     if (typeof x === "object") {
       images.push(
-        await uploadToFirestore({
+        await uploadToFirestorage({
           image: x.image,
           imageTitle: `${title}~${content.indexOf(x) + 1}.png`,
           myHandle,
