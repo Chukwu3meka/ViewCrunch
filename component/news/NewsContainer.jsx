@@ -42,10 +42,10 @@ const NewsContainer = (props) => {
       </Head>
       <SeoHead
         {...{
-          seo_quote: newsFlash.flash?.split("@@@")[1],
+          seo_quote: newsFlash.flash?.split("@@@")[2],
           seo_title: `ViewCrunch NEWS for ${newsFlash.date}`,
           seo_hashtag: `#ViewCrunch NEWS ~ ${newsFlash.date}`,
-          seo_description: `${newsFlash.flash?.split("@@@")[0]}`,
+          seo_description: `1. ${newsFlash.flash?.split("@@@")[0]}\n 2.${newsFlash.flash?.split("@@@")[1]}`,
           seo_image: "https://www.viewcrunch.com/images/ViewCrunch.webp",
           seo_keywords: "news, breaking news, headline, viewcrunch, worldwide",
         }}
