@@ -28,21 +28,15 @@ export const getServerSideProps = async (ctx) => {
   const { fetchProfileData } = require("@utils/firestoreFetch");
   const { extractHandle, errorProp } = require("@utils/serverFunctions");
 
-  console.log("here 1");
-
   const myHandle = await extractHandle(ctx.req.headers.cookie);
   if (myHandle === "Network connectivity issue") return errorProp(408, "Network connectivity issue");
-  console.log("here 2");
   if (!myHandle) return errorProp(401, "Kindly log in");
   const handle = await validate("handle", ctx.query.handle.toLowerCase());
-  console.log("here 3");
   if (!handle) return errorProp(404, "Invalid handle supplied");
 
-  console.log("here 4");
   const { viewerData, error } = await fetchProfileData(handle);
   if (error) return errorProp(402, error);
 
-  console.log("here 5");
   return {
     props: {
       viewerData,

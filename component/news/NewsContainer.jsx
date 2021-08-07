@@ -1,7 +1,9 @@
 import { News } from ".";
+import Head from "next/head";
 import { connect } from "react-redux";
 import { useSnackbar } from "notistack";
 import { useState, useRef } from "react";
+import { SeoHead } from "@component/page";
 import { setDisplayHeader } from "@store/actions";
 import { fetchNews } from "@utils/firestoreFetch";
 
@@ -33,7 +35,24 @@ const NewsContainer = (props) => {
     }
   };
 
-  return <News {...{ flash, date, prev, next, newsFetcher, scrollRef, today }} />;
+  return (
+    <>
+      <Head>
+        <link rel="canonical" href="https://www.viewcrunch.com/news" />
+      </Head>
+      <SeoHead
+        {...{
+          seo_quote: newsFlash.flash?.split("@@@")[1],
+          seo_title: `ViewCrunch NEWS for ${newsFlash.date}`,
+          seo_hashtag: `#ViewCrunch NEWS ~ ${newsFlash.date}`,
+          seo_description: `${newsFlash.flash?.split("@@@")[0]}`,
+          seo_image: "https://www.viewcrunch.com/images/ViewCrunch.webp",
+          seo_keywords: "news, breaking news, headline, viewcrunch, worldwide",
+        }}
+      />
+      <News {...{ flash, date, prev, next, newsFetcher, scrollRef, today }} />
+    </>
+  );
 };
 
 const mapStateToProps = (state) => ({}),
