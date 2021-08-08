@@ -565,3 +565,37 @@ export const fetchNews = async (newsDate) => {
       return null;
     });
 };
+
+export const fetchViewForRetouch = async ({ ref, myHandle }) => {
+  try {
+    const [, author] = ref.split("@");
+    if (`@${author}` !== myHandle) return { error: "View belongs to someone else" };
+
+    const view = await viewRef
+      .doc(ref)
+      .get()
+      .then((snapshot) => {
+        if (snapshot.exists) return snapshot.data();
+        return { error: "View not found" };
+      })
+      .catch((err) => {
+        return { error: "View not found" };
+      });
+
+    if (!view) return { error: "Unable to locate view" };
+
+    const { content } = view;
+
+    console.log({ content, view });
+
+    return { error: "Error fetching view" };
+
+    // return {
+    //   view: data,
+    //   advert,
+    // };
+  } catch (err) {
+    return { error: "Error fetching view" };
+    console.log(err);
+  }
+};
