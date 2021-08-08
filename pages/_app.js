@@ -11,13 +11,14 @@ import { ThemeProvider } from "@material-ui/core/styles";
 import * as gtag from "@utils/gtag";
 import muiTheme from "@source/theme";
 import { useStore } from "@store/index";
+import validate from "@utils/validator";
+import { SeoHead } from "@component/page";
 import Handle from "@component/page/Handle";
 import { Loading } from "@component/others";
 import userControl from "@utils/userControl";
 import LayoutContainer from "@component/layout";
 import { fetcher } from "@utils/clientFunctions";
 import { setDisplayHeader, setOnlineAction, setProfileAction } from "@store/actions";
-import validate from "@utils/validator";
 
 const App = ({ Component, pageProps }) => {
   config({ ssrFadeout: true });
@@ -83,11 +84,24 @@ const App = ({ Component, pageProps }) => {
 
   return (
     <>
+      <SeoHead />
+
       <Head>
         <meta charSet="UTF-8" />
         <meta content="image/*" property="og:image:type" />
-        <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+
+        <meta property="type" content="website" />
+        <meta property="og:type" content="website" />
+        <meta property="og:locale" content="en_US" />
+        <meta property="og:image:width" content="300" />
+        <meta property="og:image:height" content="180" />
+        {/* <meta property="og:image:width" content="1080" />
+      <meta property="og:image:height" content="1080" /> */}
+        <meta property="og:site_name" content="ViewCrunch" />
         <meta property="fb:app_id" content="332276848078020" />
+        <meta property="og:url" content="https://www.facebook.com/viewcrunch/" key="og:url" />
+
+        <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <meta httpEquiv="Content-Type" content="text/html; charSet=utf-8" />
 
         <meta name="_token" content="" />
@@ -97,19 +111,6 @@ const App = ({ Component, pageProps }) => {
         <meta name="msapplication-TileColor" content="#ffffff" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
-
-        <meta property="type" content="website" />
-        <meta property="og:type" content="website" />
-        <meta property="og:image:width" content="1080" />
-        <meta property="og:image:height" content="1080" />
-        <meta property="og:image:type" content="image/webp" />
-        <meta property="og:image" content="https://www.viewcrunch.com/images/ViewCrunch.webp" />
-        <meta property="og:url" content="https://www.facebook.com/viewcrunch/" />
-        <meta property="og:title" content="ViewCrunch" />
-        <meta
-          property="og:description"
-          content="On ViewCrunch, you find Fascinating and Captivating contents, Breaking NEWS and an option to share your views with the world."
-        />
 
         <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png" />
         <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png" />

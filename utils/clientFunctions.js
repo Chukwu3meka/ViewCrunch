@@ -118,4 +118,6 @@ export const dateCalculator = ({ date, days }) => {
 
 export const toId = (a, b) => (b ? `${a}@${b}`.replace(/ /g, "-").toLowerCase() : a.replace(/ /g, "-").toLowerCase());
 
+export const dateDiff = (date) => Math.round((new Date() - new Date(date)) / (1000 * 60 * 60 * 24)) - 1;
+
 //filter to remove duplicate .filter((v, i, a) => a.indexOf(v) === i);

@@ -287,7 +287,6 @@ export const fetchView = async ({ author, view: id, myHandle }) => {
 
     data.viewer = profile
       ? {
-          seen: profile?.stat?.seen,
           blacklist: profile?.blacklist,
           viewInFavourite: profile?.favourite?.find((x) => x.url === path) ? true : false,
           viewInBlacklist: profile?.blacklist?.find((x) => x.url === path) ? true : false,
@@ -312,11 +311,7 @@ export const fetchView = async ({ author, view: id, myHandle }) => {
             pryImage,
           } = doc.data();
 
-        if (
-          data.post.similarPost.length < 3 ||
-          data.viewer.seen.some((x) => x.view !== id) ||
-          data.viewer.blacklist.some((x) => x.title !== title)
-        ) {
+        if (data.post.similarPost.length < 3 || data.viewer.blacklist.some((x) => x.title !== title)) {
           data.post.similarPost.push({ author, title, pryImage, id });
         }
       }

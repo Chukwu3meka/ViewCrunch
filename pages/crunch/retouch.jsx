@@ -18,6 +18,9 @@ export const getServerSideProps = async (ctx) => {
   if (myHandle === "Network connectivity issue") return errorProp(408, "Network connectivity issue");
   if (!myHandle) return errorProp(401, "User not logged in");
 
+  console.log(myHandle);
+  return errorProp(404, "View does exist");
+
   const { view, error } = await fetchView({ author: myHandle, viewHref: `${ctx.query.id}`, myHandle });
   if (error || view.author !== myHandle) return errorProp(404, "View does not exist");
 

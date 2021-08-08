@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { MyViews, styles } from "/";
-import { fetcher } from "@utils/clientFunctions";
+import { fetcher, dateDiff } from "@utils/clientFunctions";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -10,18 +10,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const MyArticlesContainer = ({ views, myProfile, enqueueSnackbar, token }) => {
+const MyArticlesContainer = ({ views, myProfile, enqueueSnackbar, myHandle }) => {
   const chunkSize = 10,
     classes = useStyles(),
     [page, setPage] = useState(1),
     [expanded, setExpanded] = useState(false),
-    [forceRefresh, setForceRefresh] = useState(0);
-
-  // const [deleteFailed, setDeleteFailed] = useState(false);
-  // const [deleteSuccess, setDeleteSuccess] = useState(false);
-  const [deleteEnabled, setDeleteEnabled] = useState(false);
-  const [selectedArticle, setSelectedArticle] = useState({});
-  const [verifiedArticle, setVerifiedArticle] = useState(false);
+    [selectedArticle, setSelectedArticle] = useState({});
 
   const authorArticlesChunk = () => {
     if (!views.length) return [];
@@ -49,40 +43,6 @@ const MyArticlesContainer = ({ views, myProfile, enqueueSnackbar, token }) => {
     }
   };
 
-  const deleteArticle = ({ id, upvote, view, title, rating }) => () => {
-    return enqueueSnackbar("Deletion temporary disabled", { variant: "error" });
-    setDeleteEnabled(upvote < 100 ? true : false);
-    setVerifiedArticle(upvote < 100 ? false : true);
-    // setDeleteSuccess(false);
-    // setDeleteFailed(false);
-    enqueueSnackbar("Cannot delete view with over 100 upvotes", { variant: "warning" });
-
-    if (upvote < 100) {
-      setSelectedArticle({ id, view, title, rating });
-    }
-    // setForceRefresh(Math.random() * 1000);
-  };
-
-  const confirmDeleteArticle = () => {
-    const { status } = fetcher("/api/deleteArticle", JSON.stringify({ articleId: selectedArticle.id, token }));
-
-    if (status === "success") {
-      // setDeleteSuccess(true);
-      enqueueSnackbar("Deleted succesfully", { variant: "success" });
-
-      setDeleteEnabled(false);
-
-      setVerifiedArticle(false);
-      const index = views.findIndex((x) => x.id === selectedArticle.id);
-      if (index > -1) views.splice(index, 1);
-      setSelectedArticle({});
-    }
-    if (status !== "success") {
-      // setDeleteFailed(true);
-      enqueueSnackbar("Unable to delete", { variant: "error" });
-    }
-  };
-
   const shareHandler = ({ path, title, ref }) => () => {
     if (navigator) {
       navigator.share({ url: `https://viewcrunch.com/${path}`, title });
@@ -91,28 +51,47 @@ const MyArticlesContainer = ({ views, myProfile, enqueueSnackbar, token }) => {
     }
   };
 
+  const setDeleteEnabledHandler = ({ ref, title, upvote, date }) => {
+    if (ref && title && !isNaN(upvote) && date) {
+      if (upvote > 1) return enqueueSnackbar("Cannot delete view with upvotes", { variant: "error" });
+      if (dateDiff(date) >= 90) return enqueueSnackbar("Cannot delete view older than three months", { variant: "error" });
+      setSelectedArticle({ ref, title, upvote, date });
+    } else {
+      setSelectedArticle({});
+    }
+  };
+
+  const deleteViewHandler = async () => {
+    const status = await fetcher("/api/crunch/deleteView", JSON.stringify({ ...selectedArticle, myHandle }));
+    console.log(status);
+    if (status) {
+      const index = views.findIndex((x) => x.id === selectedArticle.id);
+      if (index !== -1) views.splice(index, 1);
+      enqueueSnackbar("Deletion succesful", { variant: "success" });
+      setDeleteEnabledHandler();
+    } else {
+      enqueueSnackbar("Unable to delete. Kindly try again, later.", { variant: "error" });
+    }
+  };
+
   return (
     <MyViews
       {...{
         page,
+        views,
         styles,
         classes,
-        views,
         expanded,
-        myProfile,
-        handleChange,
         chunkSize,
-        deleteArticle,
-        handlePagination,
-        authorArticlesChunk,
-        shareHandler,
+        myProfile,
         copyHandler,
-
-        // popup
-        forceRefresh,
-        deleteEnabled,
+        handleChange,
+        shareHandler,
         selectedArticle,
-        confirmDeleteArticle,
+        handlePagination,
+        deleteViewHandler,
+        authorArticlesChunk,
+        setDeleteEnabledHandler,
       }}
     />
   );

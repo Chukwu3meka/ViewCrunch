@@ -40,7 +40,7 @@ const Profile = ({
       <MyIntroContainer {...{ online, myProfile, viewerData, myHandle, enqueueSnackbar }} />
     </TabPanel>
     <TabPanel value={tabValue} index={1}>
-      <MyViewsContainer {...{ views: viewerData.published, myProfile, enqueueSnackbar }} />
+      <MyViewsContainer {...{ views: viewerData.published, myProfile, myHandle, enqueueSnackbar }} />
     </TabPanel>
     <TabPanel value={tabValue} index={2}>
       <TimelineContainer

@@ -46,7 +46,6 @@ const NewsContainer = (props) => {
           seo_title: `ViewCrunch NEWS for ${newsFlash.date}`,
           seo_hashtag: `#ViewCrunch NEWS ~ ${newsFlash.date}`,
           seo_description: `1. ${newsFlash.flash?.split("@@@")[0]}\n 2.${newsFlash.flash?.split("@@@")[1]}`,
-          seo_image: "https://www.viewcrunch.com/images/ViewCrunch.webp",
           seo_keywords: "news, breaking news, headline, viewcrunch, worldwide",
         }}
       />

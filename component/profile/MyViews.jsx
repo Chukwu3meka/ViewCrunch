@@ -1,38 +1,32 @@
-import { Dialog } from "@component/others";
-
-import { styles } from "/";
 import Link from "next/link";
 import Image from "next/image";
-import { shortNumber, toId } from "@utils/clientFunctions";
-
+import { Dialog } from "@component/others";
 import EditIcon from "@material-ui/icons/Edit";
 import ShareIcon from "@material-ui/icons/Share";
 import DeleteIcon from "@material-ui/icons/Delete";
-import Pagination from "@material-ui/lab/Pagination";
-import FileCopyIcon from "@material-ui/icons/FileCopy";
 import UpvoteIcon from "@material-ui/icons/ThumbUp";
+import Pagination from "@material-ui/lab/Pagination";
+import { shortNumber } from "@utils/clientFunctions";
+import FileCopyIcon from "@material-ui/icons/FileCopy";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { Tooltip, Typography, IconButton, Accordion, AccordionDetails, AccordionSummary } from "@material-ui/core";
 
 const MyArticles = ({
   page,
+  views,
   styles,
   classes,
-  views,
   expanded,
   chunkSize,
   myProfile,
-  handleChange,
-  deleteArticle,
-  handlePagination,
-  authorArticlesChunk,
   copyHandler,
+  handleChange,
   shareHandler,
-
-  forceRefresh,
-  deleteEnabled,
   selectedArticle,
-  confirmDeleteArticle,
+  handlePagination,
+  deleteViewHandler,
+  authorArticlesChunk,
+  setDeleteEnabledHandler,
 }) => (
   <div className={styles.myArticles}>
     <div>
@@ -74,7 +68,7 @@ const MyArticles = ({
                         <FileCopyIcon />
                       </IconButton>
                     </Tooltip>
-                    {/* <Link href={{ pathname: `/crunch/retouch`, query: { ref } }}>
+                    <Link href={{ pathname: `/crunch/retouch`, query: { ref } }}>
                       <a>
                         <Tooltip title="Edit">
                           <IconButton aria-label="edit">
@@ -83,11 +77,11 @@ const MyArticles = ({
                         </Tooltip>
                       </a>
                     </Link>
-                    <Tooltip title={upvote < 100 ? "Delete" : "Retain"}>
-                      <IconButton aria-label="delete" onClick={deleteArticle({ ref, title })}>
+                    <Tooltip title={upvote < 1 ? "Delete" : "Disabled"}>
+                      <IconButton aria-label="delete" onClick={() => setDeleteEnabledHandler({ ref, title, upvote, date })}>
                         <DeleteIcon />
                       </IconButton>
-                    </Tooltip> */}
+                    </Tooltip>
                   </div>
                 )}
               </div>
@@ -106,17 +100,17 @@ const MyArticles = ({
       onChange={handlePagination}
     />
 
-    {deleteEnabled ? (
-      <Dialog
-        title="Delete Article"
-        message={`You are about to delete "${selectedArticle.title}" with ${shortNumber(
-          selectedArticle.view
-        )} views and an average rating of ${selectedArticle.rating}. Please input the title to confirm deletion`}
-        forceRefresh={forceRefresh}
-        comparism={selectedArticle.title}
-        handler={confirmDeleteArticle}
-      />
-    ) : null}
+    <Dialog
+      dialogTitle="Delete Article"
+      dialogBody={`You are about to delete "${selectedArticle.title}", published on ${selectedArticle.date}, with ${
+        selectedArticle.upvote ? shortNumber(selectedArticle.upvote) : "no"
+      } ${selectedArticle.upvote < 2 ? "upvote" : "upvotes"}. Please input the title to confirm deletion`}
+      dialogHandler={deleteViewHandler}
+      displayDialog={selectedArticle.title}
+      setDisplayDialog={setDeleteEnabledHandler}
+      compareText={selectedArticle.title}
+      proceed="report"
+    />
   </div>
 );
 

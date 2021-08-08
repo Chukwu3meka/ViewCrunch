@@ -96,7 +96,6 @@ const createProfileHandler = async ({ handle, myRefresh }) => {
           },
           stat: {
             profileCreated: firebaseAdmin.firestore.Timestamp.fromDate(new Date(JSON.parse(profileCreated))),
-            seen: [],
             theme: handle === "maduekwepedro" ? "dark" : "light",
           },
         })

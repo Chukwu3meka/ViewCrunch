@@ -86,6 +86,36 @@ export const uploadToFirestorage = async ({ image, myHandle, imageTitle }) => {
   }
 };
 
+export const extractStorageLinks = ({ content, myHandle }) => {
+  const links = [];
+  for (const x of content?.split("\n")) {
+    if (x.match(/\bhttps:\/\/firebasestorage.googleapis.com\/v0\/b\/viewcrunch-2018.appspot.com\/o\/images%2F%40\S+/gi)?.[0]) {
+      const linkHandle = decodeURIComponent(
+        x.split("https://firebasestorage.googleapis.com/v0/b/viewcrunch-2018.appspot.com/o/images%2F")[1].split("%2F")[0]
+      );
+      if ((linkHandle.startsWith("@@") ? linkHandle.substr(1) : linkHandle) === myHandle) links.push(x.split('"')[1]);
+    }
+  }
+  return links;
+};
+
+export const deleteImages = async (downloadUrl) => {
+  try {
+    const path = decodeURIComponent(downloadUrl.split("o/")[1].split("?")[0]);
+
+    return await bucket
+      .file(path)
+      .delete()
+      .then(() => true)
+      .catch((error) => {
+        throw new TypeError(`deleteImages ${error}`);
+      });
+  } catch (error) {
+    console.log(error);
+    throw new TypeError(`deleteImages ${error}`);
+  }
+};
+
 export const convertContentToArray = async (content) => {
   const contentArray = [],
     formerImagesUrl = [];
@@ -155,22 +185,6 @@ export const convertContentToArray = async (content) => {
 //   } catch (error) {
 //     console.log(error);
 //     throw new TypeError(`uploadImages ${error}`);
-//   }
-// };
-
-// export const deleteImages = async ({ downloadUrl }) => {
-//   try {
-//     const httpsRef = storage.refFromURL(downloadUrl).fullPath;
-//     return await bucket
-//       .viewDir(httpsRef)
-//       .delete()
-//       .then(() => "success")
-//       .catch((error) => {
-//         throw new TypeError(`deleteImages ${error}`);
-//       });
-//   } catch (error) {
-//     console.log(error);
-//     throw new TypeError(`deleteImages ${error}`);
 //   }
 // };
 
