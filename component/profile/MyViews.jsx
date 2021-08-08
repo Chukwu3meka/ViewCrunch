@@ -109,7 +109,7 @@ const MyArticles = ({
       displayDialog={selectedArticle.title}
       setDisplayDialog={setDeleteEnabledHandler}
       compareText={selectedArticle.title}
-      proceed="report"
+      proceed="delete"
     />
   </div>
 );

@@ -10,11 +10,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const MyArticlesContainer = ({ views, myProfile, enqueueSnackbar, myHandle }) => {
+const MyArticlesContainer = (props) => {
   const chunkSize = 10,
     classes = useStyles(),
     [page, setPage] = useState(1),
+    [views, setViews] = useState(props.views),
     [expanded, setExpanded] = useState(false),
+    { myProfile, enqueueSnackbar, myHandle } = props,
     [selectedArticle, setSelectedArticle] = useState({});
 
   const authorArticlesChunk = () => {
@@ -63,9 +65,9 @@ const MyArticlesContainer = ({ views, myProfile, enqueueSnackbar, myHandle }) =>
 
   const deleteViewHandler = async () => {
     const status = await fetcher("/api/crunch/deleteView", JSON.stringify({ ...selectedArticle, myHandle }));
-    console.log(status);
     if (status) {
-      const index = views.findIndex((x) => x.id === selectedArticle.id);
+      setViews(views.filter((x) => x.ref !== selectedArticle.ref));
+      const index = views.findIndex((x) => x.ref === selectedArticle.ref);
       if (index !== -1) views.splice(index, 1);
       enqueueSnackbar("Deletion succesful", { variant: "success" });
       setDeleteEnabledHandler();

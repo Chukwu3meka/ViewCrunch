@@ -67,6 +67,7 @@ const PreviewContainer = (props) => {
         profile,
         articleId,
         scrollRef,
+        publishing,
         setPreview,
         description,
         scrollPosition,

@@ -4,11 +4,11 @@ import { deleteImages, extractStorageLinks } from "@utils/serverFunctions";
 
 const deleteViewHandler = async ({ ref, myHandle }) => {
   const [, , view] = ref.split("@");
-  const {
-    view: { content },
-  } = await fetchView({ author: myHandle, view });
+  const view = await fetchView({ author: myHandle, view });
 
-  const imageLinks = extractStorageLinks({ content, myHandle });
+  if (!view) throw new TypeError("View does not exist");
+
+  const imageLinks = extractStorageLinks({ content: view?.content, myHandle });
 
   if (imageLinks) {
     for (const downloadUrl of imageLinks) {
@@ -39,7 +39,7 @@ export default async (req, res) => {
     await deleteViewHandler({ ref, myHandle });
     return res.status(200).send(true);
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     return res.status(401).send(false);
   }
 };

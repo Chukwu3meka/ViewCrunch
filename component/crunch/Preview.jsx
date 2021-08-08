@@ -22,6 +22,7 @@ const Preview = ({
   articleId,
   scrollRef,
   setPreview,
+  publishing,
   description,
   scrollPosition,
   publishHandler,
@@ -78,9 +79,13 @@ const Preview = ({
             <Button startIcon={<PreviousIcon />} onClick={() => setPreview(false)}>
               back
             </Button>
-            <Button endIcon={<PublishIcon />} onClick={publishHandler}>
-              {articleId ? "Update" : "Publish"}
-            </Button>
+            {publishing ? (
+              ""
+            ) : (
+              <Button endIcon={<PublishIcon />} onClick={publishHandler}>
+                {articleId ? "Update" : "Publish"}
+              </Button>
+            )}{" "}
           </ButtonGroup>
         </div>
       </div>
