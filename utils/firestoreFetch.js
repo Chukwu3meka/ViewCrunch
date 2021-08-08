@@ -571,6 +571,8 @@ export const fetchViewForRetouch = async ({ ref, myHandle }) => {
     const [, author] = ref.split("@");
     if (`@${author}` !== myHandle) return { error: "View belongs to someone else" };
 
+    return { error: "Error fetching view" };
+
     const view = await viewRef
       .doc(ref)
       .get()
