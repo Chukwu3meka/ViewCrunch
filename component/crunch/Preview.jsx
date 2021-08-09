@@ -79,13 +79,9 @@ const Preview = ({
             <Button startIcon={<PreviousIcon />} onClick={() => setPreview(false)}>
               back
             </Button>
-            {publishing ? (
-              ""
-            ) : (
-              <Button endIcon={<PublishIcon />} onClick={publishHandler}>
-                {articleId ? "Update" : "Publish"}
-              </Button>
-            )}{" "}
+            <Button endIcon={<PublishIcon />} onClick={publishHandler} disabled={publishing}>
+              {articleId ? "Update" : "Publish"}
+            </Button>
           </ButtonGroup>
         </div>
       </div>
