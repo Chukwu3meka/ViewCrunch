@@ -104,7 +104,9 @@ const MyArticles = ({
       dialogTitle="Delete Article"
       dialogBody={`You are about to delete "${selectedArticle.title}", published on ${selectedArticle.date}, with ${
         selectedArticle.upvote ? shortNumber(selectedArticle.upvote) : "no"
-      } ${selectedArticle.upvote < 2 ? "upvote" : "upvotes"}. Please input the title to confirm deletion`}
+      } ${
+        selectedArticle.upvote < 2 ? "upvote" : "upvotes"
+      }. Please input the title to confirm deletion of View and all images you uploaded with this title`}
       dialogHandler={deleteViewHandler}
       displayDialog={selectedArticle.title}
       setDisplayDialog={setDeleteEnabledHandler}

@@ -19,8 +19,6 @@ const MyArticlesContainer = (props) => {
     { myProfile, enqueueSnackbar, myHandle } = props,
     [selectedArticle, setSelectedArticle] = useState({});
 
-  console.log(views);
-
   const authorArticlesChunk = () => {
     if (!views.length) return [];
     const chunk = [];

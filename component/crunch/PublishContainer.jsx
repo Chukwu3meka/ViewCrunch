@@ -29,12 +29,12 @@ const PublishContainer = (props) => {
     [contentText, setContentText] = useState(""),
     [title, setTitle] = useState(viewToBeModified.title || ""),
     [keywords, setKeywords] = useState(viewToBeModified.keywords || ""),
-    [contentArray, setContentArray] = useState(viewToBeModified.content || []),
+    [contentArray, setContentArray] = useState(viewToBeModified.content ? [viewToBeModified.content] : []),
     [description, setDescription] = useState(viewToBeModified.description || "");
 
   const titleHandler = (value) => {
     const error1 = "Title should be within the range of 3 to 20 words and 13 to 150 characters at most",
-      error2 = "Title can only have letters and special characters such as '-', ':', '(' and ')'",
+      error2 = "Title can only have letters and special characters such as '-', ':', '.' '(' and ')'",
       error3 = "You already have a view with the same title",
       errorHandler = (errorNo) => {
         enqueueSnackbar(errorNo, { variant: "error" });
@@ -49,7 +49,7 @@ const PublishContainer = (props) => {
       if (!validate("title", value)) return errorHandler(error2);
       if (published.includes(value)) return errorHandler(error3);
     } else {
-      enqueueSnackbar("Title cannot be modified when retouching view", { variant: "error" });
+      enqueueSnackbar("Title cannot be modified", { variant: "error" });
     }
     return false;
   };
@@ -94,6 +94,7 @@ const PublishContainer = (props) => {
     setPreview(false);
     const fullArticleImage = [],
       fullArticleWord = [contentText];
+
     contentArray.forEach((x) => {
       if (typeof x === "string") return fullArticleWord.push(x.replace(/\s+/g, " "));
       if (typeof x === "object") return fullArticleImage.push(x);
@@ -122,6 +123,7 @@ const PublishContainer = (props) => {
 
   const formatContentArray = () => {
     const newContentArray = [];
+
     [...contentArray]?.forEach((value, index, loopArr) => {
       if (typeof value === "object") {
         newContentArray.push(value);
@@ -176,7 +178,7 @@ const PublishContainer = (props) => {
         setContentText,
         previewHandler,
         setContentArray,
-        viewToBeModified,
+        oldContent: viewToBeModified.content,
         titleHandler,
         descriptionHandler,
         formatContentArray,

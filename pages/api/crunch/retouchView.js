@@ -87,15 +87,23 @@ const retouchArticle = async ({ author: { myAuthorID }, title, tag, content, mar
 
 export default async (req, res) => {
   try {
-    throw new TypeError("cannot update view");
-    const { author, title, tag, content, formerImagesUrl, articleId } = req.body;
-    const authorId = "await verifyIdToken(author?.token)";
-    if (authorId !== author?.myAuthorID) throw new TypeError("invalid user");
-    const status = await retouchArticle({ author, title, tag, content, formerImagesUrl, articleId });
-    if (status !== "success") throw new TypeError("Unable to create view");
-    return res.status(200).json({ status: "success", articleLink: articleId });
+    const { description, profile, title, content, keywords, crunch, moderator, oldContent } = req.body;
+    throw new TypeError("error");
+
+    console.log(oldContent, content);
+
+    const link = await publishHandler({ profile, title, description, content, keywords, crunch, moderator });
+    return res.status(200).json({ link });
   } catch (error) {
-    console.log(error);
-    return res.status(401).json({ status: "failed" });
+    console.log("error", error);
+    return res.status(401).json({ link: undefined });
   }
+};
+
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: "30mb",
+    },
+  },
 };

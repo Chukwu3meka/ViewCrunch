@@ -86,35 +86,54 @@ export const uploadToFirestorage = async ({ image, myHandle, imageTitle }) => {
   }
 };
 
-export const extractStorageLinks = ({ content, myHandle }) => {
-  const links = [];
-  for (const x of content?.split("\n")) {
-    if (x.match(/\bhttps:\/\/firebasestorage.googleapis.com\/v0\/b\/viewcrunch-2018.appspot.com\/o\/images%2F%40\S+/gi)?.[0]) {
-      const linkHandle = decodeURIComponent(
-        x.split("https://firebasestorage.googleapis.com/v0/b/viewcrunch-2018.appspot.com/o/images%2F")[1].split("%2F")[0]
-      );
-      if ((linkHandle.startsWith("@@") ? linkHandle.substr(1) : linkHandle) === myHandle) links.push(x.split('"')[1]);
-    }
-  }
-  return links;
-};
-
-export const deleteImages = async (downloadUrl) => {
+export const deleteImages = async ({ title, content, myHandle }) => {
   try {
-    const path = decodeURIComponent(downloadUrl.split("o/")[1].split("?")[0]);
+    const extractStorageLinks = () => {
+      const links = [];
+      for (const x of content?.split("\n")) {
+        if (x.match(/\bhttps:\/\/firebasestorage.googleapis.com\/v0\/b\/viewcrunch-2018.appspot.com\/o\/images%2F%40\S+/gi)?.[0]) {
+          const linkHandle = decodeURIComponent(
+            x.split("https://firebasestorage.googleapis.com/v0/b/viewcrunch-2018.appspot.com/o/images%2F")[1].split("%2F")[0]
+          );
+          const linkTitle = decodeURIComponent(
+            x
+              .split("https://firebasestorage.googleapis.com/v0/b/viewcrunch-2018.appspot.com/o/images%2F")[1]
+              .split("%2F")[1]
+              .split(/~\d.png/)[0]
+          );
 
-    return await bucket
-      .file(path)
-      .delete()
-      .then(() => true)
-      .catch((error) => {
-        throw new TypeError(`deleteImages ${error}`);
-      });
-  } catch (error) {
-    console.log(error);
-    throw new TypeError(`deleteImages ${error}`);
+          if ((linkHandle.startsWith("@@") ? linkHandle.substr(1) : linkHandle) === myHandle && linkTitle === title)
+            links.push(x.split('"')[1]);
+        }
+      }
+      return links;
+    };
+
+    const imageLinks = extractStorageLinks({ content: view?.content, myHandle });
+
+    if (imageLinks) {
+      for (const downloadUrl of imageLinks) {
+        const path = decodeURIComponent(downloadUrl.split("o/")[1].split("?")[0]);
+
+        await bucket
+          .file(path)
+          .delete()
+          .then(() => true)
+          .catch((err) => {
+            throw new TypeError(`deleteImages ${err}`);
+          });
+      }
+    } else {
+      return true;
+    }
+  } catch (err) {
+    // console.log(err);
+    throw new TypeError(`deleteImages ${err}`);
   }
 };
+
+// "      https://firebasestorage.googleapis.com/v0/b/viewcrunch-2018.appspot.com/o/images%2F%40maduekwepedro%2FWealth%3A%20Freedom%20or%20not~1.png?alt=media&token=db2b4cca-31ae-4ac4-981f-3cf07d10e602
+// "
 
 export const convertContentToArray = async (content) => {
   const contentArray = [],

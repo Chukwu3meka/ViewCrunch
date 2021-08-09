@@ -26,7 +26,7 @@ const Publisher = () => {
   const classes = useStyles();
 
   const publishHandler = async () => {
-    const response = await fetcher("/api/control/publish", JSON.stringify({ status, body, date }));
+    const response = await fetcher("/api/admin/publish", JSON.stringify({ status, body, date }));
     if (response) setBody("");
   };
 

@@ -17,7 +17,7 @@ const validate = (valueType, value) => {
       return undefined;
     }
     case "title": {
-      let status = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.\s\-:()]{12,151}$/gim.test(value);
+      let status = /^(?!.*\.\.)(?!.*\.$)[^\W][\w\s\-:()]{12,151}$/gim.test(value);
       if (status && value.split(" ").length >= 3 && value.split(" ").length <= 20) return value;
       return undefined;
     }
