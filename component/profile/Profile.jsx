@@ -1,20 +1,15 @@
-import Tab from "@material-ui/core/Tab";
-import Tabs from "@material-ui/core/Tabs";
-import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
 import { Alert } from "@component/others";
+import { Tab, Tabs } from "@material-ui/core";
 import PersonPinIcon from "@material-ui/icons/PersonPin";
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import FingerprintIcon from "@material-ui/icons/Fingerprint";
-import UpdateIcon from "@material-ui/icons/Update";
 import { styles, MyViewsContainer, MyIntroContainer, TimelineContainer } from "/";
 
 const Profile = ({
-  myHandle,
   online,
   tabValue,
   TabPanel,
+  myHandle,
   myProfile,
   viewerData,
   handleTabChange,
@@ -28,7 +23,6 @@ const Profile = ({
       onChange={handleTabChange}
       indicatorColor="primary"
       textColor="primary"
-      // centered
       variant="scrollable"
       scrollButtons="on"
       aria-label="portfolio tabs">
@@ -51,20 +45,16 @@ const Profile = ({
       />
     </TabPanel>
 
-    {profileWarning && myProfile && (
-      <Alert
-        alertType="notification"
-        details={{
-          label: "Profile Availability",
-          text: [
-            "This page is availabile to the entire public (whether authenticated or not). We strongly discourage posting of private life issues or personal identification details. Uploading nude images is a violaton of our TOS.",
-            "Don't forget to click the save button when you update your Profile.",
-          ],
-          confirmation: "I'm Aware",
-          handler: () => setProfileWarning(false),
-        }}
-      />
-    )}
+    <Alert
+      open={profileWarning && myProfile}
+      confirmation="I'm Aware"
+      title="Profile Availability"
+      handler={() => setProfileWarning(false)}
+      message={[
+        "This page is availabile to the entire public (whether authenticated or not). We strongly discourage posting of private life issues or personal identification details. Uploading nude images is a violaton of our TOS.",
+        "Don't forget to click the save button when you update your Profile.",
+      ]}
+    />
   </div>
 );
 

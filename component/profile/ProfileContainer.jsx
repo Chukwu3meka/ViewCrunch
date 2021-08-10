@@ -28,13 +28,13 @@ const ProfileContainer = (props) => {
     <Profile
       {...{
         online,
-        myHandle,
         tabValue,
         TabPanel,
+        myHandle,
         myProfile,
         viewerData,
-        profileWarning,
         handleTabChange,
+        profileWarning,
         enqueueSnackbar,
         setProfileWarning,
       }}

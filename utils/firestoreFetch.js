@@ -576,10 +576,10 @@ export const fetchViewForRetouch = async ({ ref, myHandle }) => {
       .get()
       .then((snapshot) => {
         if (snapshot.exists) return snapshot.data();
-        return;
+        throw new TypeError("snapshot does not exist");
       })
       .catch((err) => {
-        return;
+        throw new TypeError(err);
       });
 
     if (!view) return { error: "Unable to locate view" };

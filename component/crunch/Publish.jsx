@@ -1,39 +1,34 @@
-import { Alert } from "@component/others";
 import { styles, PreviewContainer } from "/";
-import { FixedIcon } from "@component/others";
-import Button from "@material-ui/core/Button";
-import Tooltip from "@material-ui/core/Tooltip";
 import PublishIcon from "@material-ui/icons/Brush";
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
+import { FixedIcon, Alert } from "@component/others";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import { Button, TextField, Tooltip, Typography, CircularProgress } from "@material-ui/core";
 
 const Publish = ({
   title,
+  crunch,
   classes,
   loading,
   preview,
+  keywords,
   scrollRef,
+  moderator,
+  oldContent,
   setPreview,
   scroll2Ref,
   contentText,
   description,
   imageHandler,
+  titleHandler,
   contentArray,
+  retouchWarning,
   setContentText,
   previewHandler,
   setContentArray,
-  oldContent,
-  titleHandler,
+  keywordsHandler,
+  setRetouchWarning,
   descriptionHandler,
   formatContentArray,
-  keywords,
-  crunch,
-  retouchWarning,
-  setRetouchWarning,
-  keywordsHandler,
-  moderator,
 }) => (
   <div className={styles.publish} ref={scrollRef}>
     <TextField
@@ -84,7 +79,6 @@ const Publish = ({
               const tempContent = [...formatContentArray()];
               tempContent[index] = e.target.value;
               setContentArray([...tempContent]);
-              // setContentText("");
             }}
           />
         )
@@ -101,9 +95,6 @@ const Publish = ({
           onChange={(e) => setContentText(e.target.value)}
         />
       )}
-      {/* <span style={{ height: contentArray?.length ? 5 : Math.round(deviceHeight / 33) }} /> */}
-      {/* <span /> */}
-      {/* <span style={{ height: contentArray?.length ? 5 : Math.round(deviceHeight / 33) }} /> */}
     </div>
 
     <TextField

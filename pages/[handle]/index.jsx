@@ -29,6 +29,7 @@ export const getServerSideProps = async (ctx) => {
   const { extractHandle, errorProp } = require("@utils/serverFunctions");
 
   const myHandle = await extractHandle(ctx.req.headers.cookie);
+  if (!ctx?.query?.handle?.startsWith("@")) return errorProp(404, "Wrong handle format");
   if (myHandle === "Network connectivity issue") return errorProp(408, "Network connectivity issue");
   if (!myHandle) return errorProp(401, "Kindly log in");
   const handle = await validate("handle", ctx.query.handle.toLowerCase());

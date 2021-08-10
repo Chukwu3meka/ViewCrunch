@@ -1,8 +1,6 @@
 import { toId } from "@utils/clientFunctions";
 import firebaseAdmin from "@utils/firebaseServer";
-import { uploadToFirestorage } from "@utils/serverFunctions";
-
-import { deleteImages, uploadImages, saveTempImage, deleteTempImage } from "@utils/serverFunctions";
+import { uploadToFirestorage, deleteImages } from "@utils/serverFunctions";
 
 const retouchHandler = async ({ profile: { myHandle }, title, description, content, keywords, crunch, moderator, oldContent }) => {
   const images = [],
@@ -25,7 +23,7 @@ const retouchHandler = async ({ profile: { myHandle }, title, description, conte
     keywords,
     description,
     content: [...content]
-      .map((x) => {
+      ?.map((x) => {
         if (typeof x === "string") return x;
         if (typeof x === "object") return `<Image src="${images.shift()}" alt="${title}" layout="fill" />`;
       })
@@ -35,14 +33,14 @@ const retouchHandler = async ({ profile: { myHandle }, title, description, conte
   };
 
   const imagesToBeDeleted = [],
-    oldContentImages = oldContent.match(/<Image src="[^"]*"[^>]*>/gm).map((x) => x.split('src="')[1].split('"')[0]),
-    newContentImages = updatedView.content.match(/<Image src="[^"]*"[^>]*>/gm).map((x) => x.split('src="')[1].split('"')[0]);
+    oldContentImages = oldContent.match(/<Image src="[^"]*"[^>]*>/gm)?.map((x) => x.split('src="')[1].split('"')[0]) || [],
+    newContentImages = updatedView.content.match(/<Image src="[^"]*"[^>]*>/gm)?.map((x) => x.split('src="')[1].split('"')[0]) || [];
 
-  oldContentImages.forEach((x) => {
+  oldContentImages?.forEach((x) => {
     if (!newContentImages.includes(x)) imagesToBeDeleted.push(x);
   });
 
-  await deleteImages({ directDelete: imagesToBeDeleted });
+  if (imagesToBeDeleted?.length) await deleteImages({ directDelete: imagesToBeDeleted });
   updatedView.pryImage = newContentImages[0] || `/images/no-image.webp`;
 
   await firebaseAdmin
@@ -56,9 +54,7 @@ const retouchHandler = async ({ profile: { myHandle }, title, description, conte
         .collection("profile")
         .doc(myHandle)
         .update({
-          [`published.${viewID}`]: {
-            pryImage: updatedView.pryImage,
-          },
+          [`published.${viewID}.pryImage`]: updatedView.pryImage,
         })
         .then(() => {})
         .catch((err) => {

@@ -2,7 +2,6 @@ import { Publish } from "/";
 import { useSnackbar } from "notistack";
 import validate from "@utils/validator";
 import { useState, useRef } from "react";
-import { Alert } from "@component/others";
 import { makeStyles } from "@material-ui/core/styles";
 import { imageObject, sleep } from "@utils/clientFunctions";
 
@@ -165,29 +164,29 @@ const PublishContainer = (props) => {
     <Publish
       {...{
         title,
+        crunch,
         classes,
         loading,
         preview,
+        keywords,
         scrollRef,
+        moderator,
         setPreview,
         scroll2Ref,
         contentText,
         description,
         imageHandler,
+        titleHandler,
         contentArray,
+        retouchWarning,
         setContentText,
         previewHandler,
         setContentArray,
-        titleHandler,
-        retouchWarning,
+        keywordsHandler,
         setRetouchWarning,
-        oldContent: viewToBeModified.content,
         descriptionHandler,
         formatContentArray,
-        keywords,
-        crunch,
-        moderator,
-        keywordsHandler,
+        oldContent: viewToBeModified.content,
       }}
     />
   );
