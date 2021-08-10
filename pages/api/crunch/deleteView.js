@@ -4,9 +4,9 @@ import { deleteImages } from "@utils/serverFunctions";
 
 const deleteViewHandler = async ({ ref, myHandle, title }) => {
   const [, , view] = ref.split("@");
-  const view = await fetchView({ author: myHandle, view });
+  const viewData = await fetchView({ author: myHandle, view });
 
-  if (!view) throw new TypeError("View does not exist");
+  if (!viewData) throw new TypeError("View does not exist");
 
   await firebaseAdmin
     .firestore()
@@ -22,7 +22,7 @@ const deleteViewHandler = async ({ ref, myHandle, title }) => {
       throw new TypeError(err);
     });
 
-  await deleteImages({ content: view?.content, myHandle, title });
+  await deleteImages({ content: viewData?.content, myHandle, title });
 
   return true;
 };
@@ -30,10 +30,10 @@ const deleteViewHandler = async ({ ref, myHandle, title }) => {
 export default async (req, res) => {
   try {
     const { ref, title, myHandle } = req.body;
-    await deleteViewHandler({ ref, myHandle });
+    await deleteViewHandler({ ref, myHandle, title });
     return res.status(200).send(true);
   } catch (err) {
-    // console.log(err);
+    console.log(err);
     return res.status(401).send(false);
   }
 };
