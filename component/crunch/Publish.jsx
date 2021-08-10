@@ -30,8 +30,8 @@ const Publish = ({
   formatContentArray,
   keywords,
   crunch,
-  titleEditDisabled,
-  setTitleEditDisabled,
+  retouchWarning,
+  setRetouchWarning,
   keywordsHandler,
   moderator,
 }) => (
@@ -127,14 +127,14 @@ const Publish = ({
     <FixedIcon icon="publish" clickHandler={{ image: imageHandler, down: () => scroll2Ref("end"), up: () => scroll2Ref("start") }} />
 
     <Alert
-      open={titleEditDisabled}
+      open={retouchWarning}
       confirmation="okay"
       title="Updating view title"
-      handler={() => {
-        setTitleEditDisabled(false);
-        console.log("clicked");
-      }}
-      message={["Once published, View title cannot be modified. Endeavour to use a suitable title before initial publish."]}
+      handler={() => setRetouchWarning(false)}
+      message={[
+        "Once published, View title cannot be modified. Endeavour to use a suitable title before initial publish.",
+        "Updating this view will lead to deletion of all previous image references with the same title",
+      ]}
     />
 
     {preview && (

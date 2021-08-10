@@ -49,7 +49,7 @@ const retouchHandler = async ({ profile: { myHandle }, title, description, conte
     .firestore()
     .collection("view")
     .doc(viewID)
-    .set(updatedView)
+    .update(updatedView)
     .then(async () => {
       await firebaseAdmin
         .firestore()
@@ -78,7 +78,7 @@ export default async (req, res) => {
     const link = await retouchHandler({ profile, title, description, content, keywords, crunch, moderator, oldContent });
     return res.status(200).json({ link });
   } catch (error) {
-    console.log("error", error);
+    // console.log("error", error);
     return res.status(401).json({ link: undefined });
   }
 };

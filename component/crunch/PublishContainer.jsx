@@ -31,7 +31,7 @@ const PublishContainer = (props) => {
     [title, setTitle] = useState(viewToBeModified.title || ""),
     [keywords, setKeywords] = useState(viewToBeModified.keywords || ""),
     [description, setDescription] = useState(viewToBeModified.description || ""),
-    [titleEditDisabled, setTitleEditDisabled] = useState(viewToBeModified.title ? true : false),
+    [retouchWarning, setRetouchWarning] = useState(viewToBeModified.title ? true : false),
     [contentArray, setContentArray] = useState(viewToBeModified.content ? [viewToBeModified.content] : []);
 
   const titleHandler = (value) => {
@@ -43,7 +43,7 @@ const PublishContainer = (props) => {
         return true;
       };
 
-    if (!titleEditDisabled) {
+    if (!viewToBeModified.title) {
       setTitle(value);
 
       if (value.length < 13 || value.length > 150 || value.split(" ").length < 3 || value.split(" ").length > 20)
@@ -179,8 +179,8 @@ const PublishContainer = (props) => {
         previewHandler,
         setContentArray,
         titleHandler,
-        titleEditDisabled,
-        setTitleEditDisabled,
+        retouchWarning,
+        setRetouchWarning,
         oldContent: viewToBeModified.content,
         descriptionHandler,
         formatContentArray,
