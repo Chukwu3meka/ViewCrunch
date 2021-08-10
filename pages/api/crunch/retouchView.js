@@ -40,7 +40,7 @@ const retouchHandler = async ({ profile: { myHandle }, title, description, conte
     if (!newContentImages.includes(x)) imagesToBeDeleted.push(x);
   });
 
-  if (imagesToBeDeleted?.length) await deleteImages({ directDelete: imagesToBeDeleted });
+  if (imagesToBeDeleted?.length) await deleteImages({ deleteType: "retouch", title, myHandle, content: imagesToBeDeleted });
   updatedView.pryImage = newContentImages[0] || `/images/no-image.webp`;
 
   await firebaseAdmin

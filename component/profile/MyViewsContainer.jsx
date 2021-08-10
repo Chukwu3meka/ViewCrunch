@@ -66,11 +66,11 @@ const MyArticlesContainer = (props) => {
   const deleteViewHandler = async () => {
     const status = await fetcher("/api/crunch/deleteView", JSON.stringify({ ...selectedArticle, myHandle }));
     if (status) {
-      setViews(views.filter((x) => x.ref !== selectedArticle.ref));
-      const index = views.findIndex((x) => x.ref === selectedArticle.ref);
-      if (index !== -1) views.splice(index, 1);
       enqueueSnackbar("Deletion succesful", { variant: "success" });
-      setDeleteEnabledHandler();
+      setViews(views.filter((x) => x.ref !== selectedArticle.ref));
+      setSelectedArticle({});
+      // const index = views.findIndex((x) => x.ref === selectedArticle.ref);
+      // if (index !== -1) views.splice(index, 1);
     } else {
       enqueueSnackbar("Unable to delete. Kindly try again, later.", { variant: "error" });
     }

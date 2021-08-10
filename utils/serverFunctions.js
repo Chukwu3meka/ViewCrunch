@@ -86,12 +86,22 @@ export const uploadToFirestorage = async ({ image, myHandle, imageTitle }) => {
   }
 };
 
-export const deleteImages = async ({ title, content, myHandle, directDelete }) => {
+export const deleteImages = async ({ title, content, myHandle, deleteType }) => {
   try {
     const extractStorageLinks = () => {
       const links = [];
-      for (const x of content?.split("\n")) {
-        if (x.match(/\bhttps:\/\/firebasestorage.googleapis.com\/v0\/b\/viewcrunch-2018.appspot.com\/o\/images%2F%40\S+/gi)?.[0]) {
+      if (deleteType === "retouch") {
+        // sort this to prevent deletion of other users image
+        content?.forEach((x) => {
+          links.push(x);
+        });
+        console.log({ deleteType, title, myHandle, content });
+      } else {
+        const imagePaths = content.match(
+          /\bhttps:\/\/firebasestorage.googleapis.com\/v0\/b\/viewcrunch-2018.appspot.com\/o\/images%2F%40\S+/gi
+        );
+
+        for (const x of imagePaths) {
           const linkHandle = decodeURIComponent(
             x.split("https://firebasestorage.googleapis.com/v0/b/viewcrunch-2018.appspot.com/o/images%2F")[1].split("%2F")[0]
           );
@@ -102,14 +112,13 @@ export const deleteImages = async ({ title, content, myHandle, directDelete }) =
               .split(/~\d.png/)[0]
           );
 
-          if ((linkHandle.startsWith("@@") ? linkHandle.substr(1) : linkHandle) === myHandle && linkTitle === title)
-            links.push(x.split('"')[1]);
+          if ((linkHandle.startsWith("@@") ? linkHandle.substr(1) : linkHandle) === myHandle && linkTitle === title) links.push(x);
         }
       }
       return links;
     };
 
-    const imageLinks = directDelete || extractStorageLinks({ content: view?.content, myHandle });
+    const imageLinks = extractStorageLinks();
 
     if (imageLinks) {
       for (const downloadUrl of imageLinks) {
@@ -127,7 +136,7 @@ export const deleteImages = async ({ title, content, myHandle, directDelete }) =
       return true;
     }
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     throw new TypeError(`deleteImages ${err}`);
   }
 };

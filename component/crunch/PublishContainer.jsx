@@ -43,7 +43,7 @@ const PublishContainer = (props) => {
       };
 
     if (!viewToBeModified.title) {
-      setTitle(value);
+      setTitle(value?.trim());
 
       if (value.length < 13 || value.length > 150 || value.split(" ").length < 3 || value.split(" ").length > 20)
         return errorHandler(error1);
@@ -63,7 +63,7 @@ const PublishContainer = (props) => {
         return true;
       };
 
-    setDescription(value);
+    setDescription(value?.trim());
     if (value.length < 50 || value.length > 213) return errorHandler(error1);
     if (value.split(" ").length < 3 || value.split(" ").length > 70) return errorHandler(error2);
     if (!validate("description", value)) return errorHandler(error3);
@@ -81,7 +81,7 @@ const PublishContainer = (props) => {
         return true;
       };
 
-    setKeywords(value);
+    setKeywords(value?.trim());
     if (value.length < 3 || value.length > 100) return errorHandler(error1);
     if (value.split(",").length < 1 || value.split(",").length > 5) return errorHandler(error2);
     if (!validate("keywords", value)) return errorHandler(error3);
@@ -102,20 +102,20 @@ const PublishContainer = (props) => {
     await sleep(1.5);
     setLoading(false);
 
-    if (
-      !(
-        (fullArticleWord?.join(" ")?.split(" ")?.length >= 100 &&
-          fullArticleWord?.join(" ")?.split(" ")?.length <= 10000 &&
-          fullArticleWord.join(" ").length >= 1000 &&
-          fullArticleWord.join(" ").length <= 1000000) ||
-        (fullArticleImage?.length >= 10 && fullArticleImage?.length <= 30)
-      )
-    )
-      return enqueueSnackbar(`Article should have at least 100 words or 10 images and at most 10,000 words or 30MB of Images`, {
-        variant: "error",
-      });
+    // if (
+    //   !(
+    //     (fullArticleWord?.join(" ")?.split(" ")?.length >= 100 &&
+    //       fullArticleWord?.join(" ")?.split(" ")?.length <= 10000 &&
+    //       fullArticleWord.join(" ").length >= 1000 &&
+    //       fullArticleWord.join(" ").length <= 1000000) ||
+    //     (fullArticleImage?.length >= 10 && fullArticleImage?.length <= 30)
+    //   )
+    // )
+    //   return enqueueSnackbar(`Article should have at least 100 words or 10 images and at most 10,000 words or 30MB of Images`, {
+    //     variant: "error",
+    //   });
 
-    if (titleHandler(title) || descriptionHandler(description) || keywordsHandler(keywords)) return;
+    // if (titleHandler(title) || descriptionHandler(description) || keywordsHandler(keywords)) return;
 
     setPreview(true);
   };
