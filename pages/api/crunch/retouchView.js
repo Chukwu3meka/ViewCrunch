@@ -9,12 +9,6 @@ const retouchHandler = async ({ profile: { myHandle }, title, description, conte
     viewID = toId(myHandle, title),
     viewURL = `${myHandle}/${toId(title)}`;
 
-  const newData = {
-    lastUpdate: firebaseAdmin.firestore.Timestamp.now(),
-    keywords,
-    description,
-  };
-
   for (const x of content) {
     if (typeof x === "object") {
       images.push(
@@ -27,26 +21,35 @@ const retouchHandler = async ({ profile: { myHandle }, title, description, conte
     }
   }
 
-  newData.content = [...content]
-    .map((x) => {
-      if (typeof x === "string") return x;
-      if (typeof x === "object") return `<Image src="${images.shift()}" alt="${title}" layout="fill" />`;
-    })
-    .flat(Infinity)
-    .join("\n");
-  const imageTags = newData.content.match(/<Image src="[^"]*"[^>]*>/gm).map((x) => {
-    console.log(x);
-  });
-  throw new TypeError("werewre");
+  const updatedView = {
+    keywords,
+    description,
+    content: [...content]
+      .map((x) => {
+        if (typeof x === "string") return x;
+        if (typeof x === "object") return `<Image src="${images.shift()}" alt="${title}" layout="fill" />`;
+      })
+      .flat(Infinity)
+      .join("\n"),
+    lastUpdate: firebaseAdmin.firestore.Timestamp.now(),
+  };
 
-  return;
-  newData.pryImage = "" || `/images/no-image.webp`;
+  const imagesToBeDeleted = [],
+    oldContentImages = oldContent.match(/<Image src="[^"]*"[^>]*>/gm).map((x) => x.split('src="')[1].split('"')[0]),
+    newContentImages = updatedView.content.match(/<Image src="[^"]*"[^>]*>/gm).map((x) => x.split('src="')[1].split('"')[0]);
+
+  oldContentImages.forEach((x) => {
+    if (!newContentImages.includes(x)) imagesToBeDeleted.push(x);
+  });
+
+  await deleteImages({ directDelete: imagesToBeDeleted });
+  updatedView.pryImage = newContentImages[0] || `/images/no-image.webp`;
 
   await firebaseAdmin
     .firestore()
     .collection("view")
     .doc(viewID)
-    .set(newData)
+    .set(updatedView)
     .then(async () => {
       await firebaseAdmin
         .firestore()
@@ -54,7 +57,7 @@ const retouchHandler = async ({ profile: { myHandle }, title, description, conte
         .doc(myHandle)
         .update({
           [`published.${viewID}`]: {
-            pryImage: newView.pryImage,
+            pryImage: updatedView.pryImage,
           },
         })
         .then(() => {})
@@ -67,84 +70,6 @@ const retouchHandler = async ({ profile: { myHandle }, title, description, conte
     });
 
   return `/${viewURL}`;
-
-  // console.log(content);
-
-  // for (const x of content) {
-  //   if (typeof x === "object") {
-  //     if (x.image.match(/\bhttps?:\/\/\S+/gi)) {
-  //       content[content.indexOf(x)] = `![${title}](${x.image})`;
-  //     } else {
-  //       images.push(await saveTempImage(x.image, `${articleId}@${content.indexOf(x)}.png`));
-  //     }
-  //   }
-  // }
-
-  // if (images?.length) {
-  //   for (const x of images) {
-  //     await uploadImages({
-  //       tempLocation: x,
-  //       myAuthorID,
-  //       title: `${title}@${images.indexOf(x)}`,
-  //     })
-  //       .then(async (url) => {
-  //         imagesURL.push(url);
-  //         await deleteTempImage(x);
-  //       })
-  //       .catch((err) => {});
-  //   }
-  // }
-
-  // console.log(content);
-
-  // const markdown = [...content]
-  //   .map((x) => {
-  //     if (typeof x === "string") return x;
-  //     if (typeof x === "object") {
-  //       const imageURL = imagesURL.shift();
-  //       if (!pryImageURL.length) pryImageURL.push(imageURL);
-  //       return `![${title}](${imageURL})`;
-  //     }
-  //   })
-  //   .flat(Infinity)
-  //   .join("\n");
-
-  // if (formerImagesUrl?.length) {
-  //   const imagesToBeDeleted = [],
-  //     // currentImagesUrl = markdown?.match(/\bhttps?:\/\/\S+/gi).map((x) => x.slice(0, -1));
-  //     currentImagesUrl = markdown?.match(/\bhttps?:\/\/\S+/gi).map((x) => decodeURIComponent(x.slice(0, -1)));
-
-  //   for (const url of formerImagesUrl) {
-  //     if (!currentImagesUrl.includes(decodeURIComponent(url))) imagesToBeDeleted.push(url);
-  //   }
-
-  //   if (imagesToBeDeleted?.length) {
-  //     for (const url of imagesToBeDeleted) {
-  //       await deleteImages({ downloadUrl: url });
-  //     }
-  //   }
-  // }
-
-  // firebaseAdmin
-  //   .firestore()
-  //   .collection("view")
-  //   .doc(articleId)
-  //   .update({
-  //     title: {
-  //       data: title,
-  //       length: title.split(" ").length,
-  //     },
-  //     date: firebaseAdmin.firestore.Timestamp.now(),
-  //     tag,
-  //     imageUrl: pryImageURL[0] || `/images/${tag}.png`,
-  //     markdown,
-  //   })
-  //   .then()
-  //   .catch((error) => {
-  //     throw new TypeError(error);
-  //   });
-
-  // return "success";
 };
 
 export default async (req, res) => {

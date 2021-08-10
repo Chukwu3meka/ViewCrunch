@@ -22,7 +22,7 @@ const deleteViewHandler = async ({ ref, myHandle, title }) => {
       throw new TypeError(err);
     });
 
-  deleteImages({ content: view?.content, myHandle, title });
+  await deleteImages({ content: view?.content, myHandle, title });
 
   return true;
 };

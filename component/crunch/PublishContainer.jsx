@@ -2,6 +2,7 @@ import { Publish } from "/";
 import { useSnackbar } from "notistack";
 import validate from "@utils/validator";
 import { useState, useRef } from "react";
+import { Alert } from "@component/others";
 import { makeStyles } from "@material-ui/core/styles";
 import { imageObject, sleep } from "@utils/clientFunctions";
 
@@ -29,8 +30,9 @@ const PublishContainer = (props) => {
     [contentText, setContentText] = useState(""),
     [title, setTitle] = useState(viewToBeModified.title || ""),
     [keywords, setKeywords] = useState(viewToBeModified.keywords || ""),
-    [contentArray, setContentArray] = useState(viewToBeModified.content ? [viewToBeModified.content] : []),
-    [description, setDescription] = useState(viewToBeModified.description || "");
+    [description, setDescription] = useState(viewToBeModified.description || ""),
+    [titleEditDisabled, setTitleEditDisabled] = useState(viewToBeModified.title ? true : false),
+    [contentArray, setContentArray] = useState(viewToBeModified.content ? [viewToBeModified.content] : []);
 
   const titleHandler = (value) => {
     const error1 = "Title should be within the range of 3 to 20 words and 13 to 150 characters at most",
@@ -41,15 +43,13 @@ const PublishContainer = (props) => {
         return true;
       };
 
-    if (!viewToBeModified.title) {
+    if (!titleEditDisabled) {
       setTitle(value);
 
       if (value.length < 13 || value.length > 150 || value.split(" ").length < 3 || value.split(" ").length > 20)
         return errorHandler(error1);
       if (!validate("title", value)) return errorHandler(error2);
       if (published.includes(value)) return errorHandler(error3);
-    } else {
-      enqueueSnackbar("Title cannot be modified", { variant: "error" });
     }
     return false;
   };
@@ -178,8 +178,10 @@ const PublishContainer = (props) => {
         setContentText,
         previewHandler,
         setContentArray,
-        oldContent: viewToBeModified.content,
         titleHandler,
+        titleEditDisabled,
+        setTitleEditDisabled,
+        oldContent: viewToBeModified.content,
         descriptionHandler,
         formatContentArray,
         keywords,

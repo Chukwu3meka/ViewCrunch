@@ -1,3 +1,4 @@
+import { Alert } from "@component/others";
 import { styles, PreviewContainer } from "/";
 import { FixedIcon } from "@component/others";
 import Button from "@material-ui/core/Button";
@@ -29,6 +30,8 @@ const Publish = ({
   formatContentArray,
   keywords,
   crunch,
+  titleEditDisabled,
+  setTitleEditDisabled,
   keywordsHandler,
   moderator,
 }) => (
@@ -120,7 +123,20 @@ const Publish = ({
       </Button>
       {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
     </div>
+
     <FixedIcon icon="publish" clickHandler={{ image: imageHandler, down: () => scroll2Ref("end"), up: () => scroll2Ref("start") }} />
+
+    <Alert
+      open={titleEditDisabled}
+      confirmation="okay"
+      title="Updating view title"
+      handler={() => {
+        setTitleEditDisabled(false);
+        console.log("clicked");
+      }}
+      message={["Once published, View title cannot be modified. Endeavour to use a suitable title before initial publish."]}
+    />
+
     {preview && (
       <PreviewContainer
         {...{ title, description, content: [...contentArray, contentText], setPreview, oldContent, keywords, crunch, moderator }}

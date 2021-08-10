@@ -86,7 +86,7 @@ export const uploadToFirestorage = async ({ image, myHandle, imageTitle }) => {
   }
 };
 
-export const deleteImages = async ({ title, content, myHandle }) => {
+export const deleteImages = async ({ title, content, myHandle, directDelete }) => {
   try {
     const extractStorageLinks = () => {
       const links = [];
@@ -109,7 +109,7 @@ export const deleteImages = async ({ title, content, myHandle }) => {
       return links;
     };
 
-    const imageLinks = extractStorageLinks({ content: view?.content, myHandle });
+    const imageLinks = directDelete || extractStorageLinks({ content: view?.content, myHandle });
 
     if (imageLinks) {
       for (const downloadUrl of imageLinks) {
@@ -127,7 +127,7 @@ export const deleteImages = async ({ title, content, myHandle }) => {
       return true;
     }
   } catch (err) {
-    // console.log(err);
+    console.log(err);
     throw new TypeError(`deleteImages ${err}`);
   }
 };
