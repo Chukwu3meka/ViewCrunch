@@ -36,8 +36,6 @@ const createProfileHandler = async ({ handle, myRefresh }) => {
         displayName = user.providerData[0].displayName;
       // displayName = user.displayName.replace(/ViewCrunch_new-user_/g, "");
 
-      console.log({ profilePicture, profileCreated, displayName, handle });
-
       await firebaseAdmin
         .firestore()
         .collection("profile")
@@ -97,7 +95,8 @@ const createProfileHandler = async ({ handle, myRefresh }) => {
             website: `https://viewcrunch.com/${handle}`,
           },
           stat: {
-            profileCreated: firebaseAdmin.firestore.Timestamp.fromDate(new Date(JSON.parse(profileCreated))),
+            // profileCreated: firebaseAdmin.firestore.Timestamp.fromDate(new Date(JSON.parse(profileCreated))),
+            profileCreated: firebaseAdmin.firestore.Timestamp.fromDate(new Date(profileCreated)),
             theme: handle === "maduekwepedro" ? "dark" : "light",
           },
         })
@@ -153,7 +152,6 @@ const createProfileHandler = async ({ handle, myRefresh }) => {
 export default async (req, res) => {
   try {
     const { handle, myRefresh } = req.body;
-    console.log({ handle, myRefresh });
     if (handle === "maduekwepedro") throw new TypeError("Reserved handle");
     await createProfileHandler({ handle, myRefresh });
     return res.status(200).send(true);
