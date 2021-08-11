@@ -22,24 +22,21 @@ const createProfileHandler = async ({ handle, myRefresh }) => {
     credentials: "same-origin",
   }).then((res) => res.json());
 
-  console.log({ token });
-
   const uid = await firebaseAdmin
     .auth()
     .verifyIdToken(token)
     .then((decodedToken) => decodedToken?.uid);
 
-  console.log({ uid });
-
   await firebaseAdmin
     .auth()
     .getUser(uid)
     .then(async (user) => {
-      console.log({ user });
       const profilePicture = handle === "maduekwepedro" ? "/images/ViewCrunch-cover.webp" : user.photoURL || "/images/ViewCrunch.webp",
         profileCreated = user.metadata.creationTime,
         displayName = user.providerData[0].displayName;
       // displayName = user.displayName.replace(/ViewCrunch_new-user_/g, "");
+
+      console.log({ profilePicture, profileCreated, displayName, handle });
 
       await firebaseAdmin
         .firestore()
@@ -105,6 +102,8 @@ const createProfileHandler = async ({ handle, myRefresh }) => {
           },
         })
         .then(async () => {
+          console.log({});
+
           await firebaseAdmin
             .auth()
             .updateUser(uid, {
