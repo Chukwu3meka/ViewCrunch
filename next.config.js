@@ -17,7 +17,7 @@ module.exports = {
   target: "serverless",
   images: {
     // domains: ["firebase.com"],
-    domains: ["platform-lookaside.fbsbx.com", "firebasestorage.googleapis.com"],
+    domains: ["platform-lookaside.fbsbx.com", "firebasestorage.googleapis.com", "https://scontent-atl3-2.xx.fbcdn.net"],
 
     // firebasestorage.googleapis.com/v0/b/viewcrunch-2018.appspot.com/o/images%2F%40%40maduekwepedro%2Ffirst%20post%20in%20catholic%20church%400.png?alt=media&token=bd060443-355c-4ddd-bc82-d0572f4a199a) on `next/image`, hostname "firebasestorage.googleapis.com" is not configured under images in your `next.config.js`
   },
