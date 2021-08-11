@@ -2,16 +2,16 @@ import { toId } from "@utils/clientFunctions";
 import firebaseAdmin from "@utils/firebaseServer";
 
 const initialCrunches = [
-  "Universal",
-  "Lifehack",
-  "Career 101",
   "Justnow",
-  "Software Developers",
-  "Cyber Security",
-  "Politics",
   "Warfare",
-  "Catholic Church",
+  "Politics",
+  "Lifehack",
+  "Universal",
+  "Career 101",
   "Investment",
+  "Catholic Church",
+  "Cyber Security",
+  "Software Developers",
 ];
 
 const createProfileHandler = async ({ handle, myRefresh }) => {
@@ -22,15 +22,20 @@ const createProfileHandler = async ({ handle, myRefresh }) => {
     credentials: "same-origin",
   }).then((res) => res.json());
 
+  console.log({ token });
+
   const uid = await firebaseAdmin
     .auth()
     .verifyIdToken(token)
     .then((decodedToken) => decodedToken?.uid);
 
+  console.log({ uid });
+
   await firebaseAdmin
     .auth()
     .getUser(uid)
     .then(async (user) => {
+      console.log({ user });
       const profilePicture = handle === "maduekwepedro" ? "/images/ViewCrunch-cover.webp" : user.photoURL || "/images/ViewCrunch.webp",
         profileCreated = user.metadata.creationTime,
         displayName = user.providerData[0].displayName;
@@ -132,16 +137,16 @@ const createProfileHandler = async ({ handle, myRefresh }) => {
                   })
                   .then()
                   .catch((error) => {
-                    throw new TypeError(error);
+                    throw new TypeError(`catch 1${error}`);
                   });
               }
             })
             .catch((error) => {
-              throw new TypeError(error);
+              throw new TypeError(`catch 2${error}`);
             });
         })
         .catch((error) => {
-          throw new TypeError(error);
+          throw new TypeError(`catch 3${error}`);
         });
     });
 };
@@ -149,6 +154,7 @@ const createProfileHandler = async ({ handle, myRefresh }) => {
 export default async (req, res) => {
   try {
     const { handle, myRefresh } = req.body;
+    console.log({ handle, myRefresh });
     if (handle === "maduekwepedro") throw new TypeError("Reserved handle");
     await createProfileHandler({ handle, myRefresh });
     return res.status(200).send(true);

@@ -40,7 +40,9 @@ const Handle = (props) => {
 
   const saveHandle = async () => {
     if (!handleError && handle?.length) {
+      console.log("here 1", handle, props.myRefresh);
       const profileStatus = await fetcher("/api/profile/createProfile", JSON.stringify({ handle, myRefresh: props.myRefresh }));
+      console.log("here 1", profileStatus);
       if (profileStatus) {
         cookie.set("ViewCrunch", props.myRefresh, { expires: 183, path: "" });
         Router.reload();
