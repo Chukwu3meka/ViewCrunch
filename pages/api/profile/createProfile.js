@@ -153,7 +153,7 @@ export default async (req, res) => {
     await createProfileHandler({ handle, myRefresh });
     return res.status(200).send(true);
   } catch (error) {
-    // console.log(error);
+    console.log(error);
     return res.status(401).send(false);
   }
 };

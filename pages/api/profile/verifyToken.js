@@ -1,6 +1,7 @@
 import firebaseAdmin from "@utils/firebaseServer";
 
 const verifyRefresh = async (myRefresh) => {
+  console.log({ myRefresh });
   const { access_token: token } = await fetch(`https://securetoken.googleapis.com/v1/token?key=${process.env.FIREBASE_API_KEY}`, {
     method: "POST",
     headers: new Headers({ "Content-Type": "application/x-www-form-urlencoded" }),
