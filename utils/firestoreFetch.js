@@ -24,9 +24,11 @@ export const fetchProfile = async (handle) => {
     .get()
     .then((snapshot) => {
       if (snapshot.exists) return snapshot.data();
+      console.log("snapshot");
       return null;
     })
     .catch((error) => {
+      console.log(error);
       return null;
     });
 };
