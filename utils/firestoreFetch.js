@@ -19,17 +19,14 @@ export const isHandleTaken = async (handle) => {
 };
 
 export const fetchProfile = async (handle) => {
-  console.log(handle);
   return profileRef
     .doc(handle)
     .get()
     .then((snapshot) => {
       if (snapshot.exists) return snapshot.data();
-      console.log("snapshot");
       return null;
     })
     .catch((error) => {
-      console.log(error);
       return null;
     });
 };
@@ -126,7 +123,7 @@ export const fetchProfileData = async (handle) => {
   const viewerHistoryFunc = () => {
     const totalView = viewerData.published.length - 1;
 
-    if (totalView) {
+    if (viewerData.published.length) {
       const sortDate = [...viewerData.published].sort((a, b) => new Date(a.date) - new Date(b.date)),
         sortUpvote = [...viewerData.published].sort((a, b) => b.upvote - a.upvote),
         sortDownvote = [...viewerData.published].sort((a, b) => b.downvote - a.downvote);

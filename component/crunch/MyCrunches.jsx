@@ -109,7 +109,7 @@ const CoverPicUpdate = ({
 
 const MyCrunches = ({}) => {
   const [viewscapePic, setViewscapePic] = useState("/images/no-image.webp");
-  const [viewscapeCover, setViewscapeCover] = useState("/images/ViewCrunch-cover.webp");
+  const [viewscapeCover, setViewscapeCover] = useState("/images/no-image-cover.webp");
   const [viewscapeTitle, setViewscapeTitle] = useState("Crunch Title");
   const [viewscapeAbout, setViewscapeAbout] = useState("Crunch about");
   const [modifyViewscape, setModifyViewscape] = useState(false);
@@ -117,14 +117,14 @@ const MyCrunches = ({}) => {
   const createdViewscape = [
     {
       image: "/images/no-image.webp",
-      cover: "/images/ViewCrunch-cover.webp",
+      cover: "/images/no-image-cover.webp",
       title: "Commerce",
       id: "dfsgdgf",
       about:
         "Tempor consequat enim in non ex culpa commodo dolor labore Lorem. Sint in cupidatat laboris adipisicing deserunt tempor esse. Consectetur aliquip ipsum ut sint dolore non in eiusmod anim qui laborum nisi do. Veniam ea duis cillum aute velit est et sunt tempor et est. Enim qui aute eiusmod ullamco. Nulla fugiat excepteur pariatur irure eiusmod nisi do quis eiusmod deserunt nulla sint exercitation.",
     },
     {
-      image: "/images/ViewCrunch-cover.webp",
+      image: "/images/no-image-cover.webp",
       cover: "/images/no-image.webp",
       title: "NEWS set",
       id: "23qwe",
@@ -136,7 +136,7 @@ const MyCrunches = ({}) => {
   const initializeCreateViewscapeHandler = (crunch) => () => {
     const {
       image = "/images/no-image.webp",
-      cover = "/images/ViewCrunch-cover.webp",
+      cover = "/images/no-image-cover.webp",
       title = "Crunch Title",
       about = "Crunch about",
       id,

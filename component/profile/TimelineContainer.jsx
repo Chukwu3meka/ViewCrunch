@@ -1,11 +1,9 @@
 import Link from "next/link";
 import { Timeline } from "/";
-
-import Rating from "@material-ui/lab/Rating";
 import HotelIcon from "@material-ui/icons/Hotel";
 import StarsIcon from "@material-ui/icons/Highlight";
 import { makeStyles } from "@material-ui/core/styles";
-import TimelineDot from "@material-ui/lab/TimelineDot";
+import { TimelineDot, Rating } from "@material-ui/lab";
 import FastfoodIcon from "@material-ui/icons/Fastfood";
 import MusicOffIcon from "@material-ui/icons/MusicOff";
 import LaptopMacIcon from "@material-ui/icons/LaptopMac";
@@ -40,18 +38,26 @@ const TimelineContainer = ({ viewerHistory: { date1, date2, upvote1, upvote2, do
       ],
       [
         "First Article",
-        <Link href={{ pathname: date1?.path || "/profile" }}>
-          <a>{date1.label || "No post published"}</a>
-        </Link>,
+        date1?.path ? (
+          <Link href={{ pathname: date1?.path }}>
+            <a>{date1.label}</a>
+          </Link>
+        ) : (
+          "No post published"
+        ),
         <TimelineDot color="secondary">
           <LaptopMacIcon />
         </TimelineDot>,
       ],
       [
         "Last Article",
-        <Link href={{ pathname: date2?.path || "/profile" }}>
-          <a>{date2.label || "No post published"}</a>
-        </Link>,
+        date2?.path ? (
+          <Link href={{ pathname: date2?.path }}>
+            <a>{date2.label}</a>
+          </Link>
+        ) : (
+          "No post published"
+        ),
         <TimelineDot color="primary">
           <HotelIcon />
         </TimelineDot>,
@@ -59,9 +65,13 @@ const TimelineContainer = ({ viewerHistory: { date1, date2, upvote1, upvote2, do
       [
         "Highest Rating",
         <>
-          <Link href={{ pathname: upvote1?.path || "/profile" }}>
-            <a>{upvote1?.label || "No post published"}</a>
-          </Link>
+          {upvote1?.path ? (
+            <Link href={{ pathname: upvote1?.path }}>
+              <a>{upvote1?.label}</a>
+            </Link>
+          ) : (
+            "No post published"
+          )}{" "}
           <br />
           <Rating name="pristine" value={5} />
         </>,
@@ -72,9 +82,13 @@ const TimelineContainer = ({ viewerHistory: { date1, date2, upvote1, upvote2, do
       [
         "Least Rating",
         <>
-          <Link href={{ pathname: upvote2?.path || "/profile" }}>
-            <a>{upvote2?.label || "No post published"}</a>
-          </Link>
+          {upvote2?.path ? (
+            <Link href={{ pathname: upvote2?.path }}>
+              <a>{upvote2?.label}</a>
+            </Link>
+          ) : (
+            "No post published"
+          )}{" "}
           <br />
           <Rating name="pristine" value={1} />
         </>,
@@ -84,18 +98,26 @@ const TimelineContainer = ({ viewerHistory: { date1, date2, upvote1, upvote2, do
       ],
       [
         "Most Downvotes",
-        <Link href={{ pathname: downvote1?.path || "/profile" }}>
-          <a>{downvote1?.label || "No post published"}</a>
-        </Link>,
+        downvote1?.label ? (
+          <Link href={{ pathname: downvote1?.path }}>
+            <a>{downvote1?.label}</a>
+          </Link>
+        ) : (
+          "No post published"
+        ),
         <TimelineDot color="secondary">
           <QueueMusicIcon />
         </TimelineDot>,
       ],
       [
         "Least Downvotes",
-        <Link href={{ pathname: downvote2?.path || "/profile" }}>
-          <a>{downvote2?.label || "No post published"}</a>
-        </Link>,
+        downvote2?.path ? (
+          <Link href={{ pathname: downvote2?.path }}>
+            <a>{downvote2?.label}</a>
+          </Link>
+        ) : (
+          "No post published"
+        ),
         <TimelineDot>
           <MusicOffIcon />
         </TimelineDot>,

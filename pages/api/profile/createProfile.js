@@ -31,7 +31,7 @@ const createProfileHandler = async ({ handle, myRefresh }) => {
     .auth()
     .getUser(uid)
     .then(async (user) => {
-      const profilePicture = handle === "maduekwepedro" ? "/images/ViewCrunch-cover.webp" : user.photoURL || "/images/ViewCrunch.webp",
+      const profilePicture = handle === "maduekwepedro" ? "/images/no-image.webp" : user.photoURL || "/images/no-image.webp",
         profileCreated = user.metadata.creationTime,
         displayName = user.providerData[0].displayName;
       // displayName = user.displayName.replace(/ViewCrunch_new-user_/g, "");
@@ -43,7 +43,7 @@ const createProfileHandler = async ({ handle, myRefresh }) => {
         .set({
           profilePicture,
           about: "new Viewer and Writer",
-          coverPicture: "/images/ViewCrunch-cover.webp",
+          coverPicture: "/images/no-image-cover.webp",
           displayName,
           profession: "Viewer and Writter",
           notification: [
@@ -89,9 +89,9 @@ const createProfileHandler = async ({ handle, myRefresh }) => {
             following: handle === "maduekwepedro" ? [] : ["@maduekwepedro"],
           },
           social: {
-            twitterHandle: handle,
-            facebookHandle: handle,
-            linkedinHandle: handle,
+            twitterHandle: "viewcrunch",
+            facebookHandle: "viewcrunch",
+            linkedinHandle: "viewcrunch",
             website: `https://viewcrunch.com/${handle}`,
           },
           stat: {
@@ -101,7 +101,7 @@ const createProfileHandler = async ({ handle, myRefresh }) => {
           },
         })
         .then(async () => {
-          console.log({});
+          // console.log({});
 
           await firebaseAdmin
             .auth()
@@ -110,22 +110,22 @@ const createProfileHandler = async ({ handle, myRefresh }) => {
             })
             .then(async () => {
               for (const x of initialCrunches) {
-                if (handle === "maduekwepedro") {
-                  await firebaseAdmin
-                    .firestore()
-                    .collection("crunch")
-                    .doc(toId(x))
-                    .set({
-                      title: x,
-                      coverPicture: "/images/ViewCrunch-cover.webp",
-                      primaryPicture: "/images/ViewCrunch.webp",
-                      dateCreated: firebaseAdmin.firestore.Timestamp.now(),
-                      about: `${x} was invented by Maduekwe Pedro for all`,
-                      moderators: ["@maduekwepedro"],
-                      followers: ["@maduekwepedro"],
-                      inventor: ["@maduekwepedro"],
-                    });
-                }
+                // if (handle === "maduekwepedro") {
+                //   await firebaseAdmin
+                //     .firestore()
+                //     .collection("crunch")
+                //     .doc(toId(x))
+                //     .set({
+                //       title: x,
+                //       coverPicture: "/images/no-image-cover.webp",
+                //       primaryPicture: "/images/no-image.webp",
+                //       dateCreated: firebaseAdmin.firestore.Timestamp.now(),
+                //       about: `${x} was invented by Maduekwe Pedro for all`,
+                //       moderators: ["@maduekwepedro"],
+                //       followers: ["@maduekwepedro"],
+                //       inventor: ["@maduekwepedro"],
+                //     });
+                // }
                 await firebaseAdmin
                   .firestore()
                   .collection("crunch")
@@ -156,7 +156,7 @@ export default async (req, res) => {
     await createProfileHandler({ handle, myRefresh });
     return res.status(200).send(true);
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return res.status(401).send(false);
   }
 };

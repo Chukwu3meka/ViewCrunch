@@ -17,9 +17,14 @@ module.exports = {
   target: "serverless",
   images: {
     // domains: ["firebase.com"],
-    domains: ["platform-lookaside.fbsbx.com", "firebasestorage.googleapis.com", "https://scontent-atl3-2.xx.fbcdn.net"],
+    domains: ["platform-lookaside.fbsbx.com", "firebasestorage.googleapis.com", "scontent-atl3-2.xx.fbcdn.net"],
 
     // firebasestorage.googleapis.com/v0/b/viewcrunch-2018.appspot.com/o/images%2F%40%40maduekwepedro%2Ffirst%20post%20in%20catholic%20church%400.png?alt=media&token=bd060443-355c-4ddd-bc82-d0572f4a199a) on `next/image`, hostname "firebasestorage.googleapis.com" is not configured under images in your `next.config.js`
+
+    // or
+    // Error: Invalid src prop (https://scontent-atl3-2.xx.fbcdn.net/v/t1.30497-1/c29.0.100.100a/p100x100/84628273_176159830277856_972693363922829312_n.jpg?_nc_cat=1&ccb=1-4&_nc_sid=12b3be&_nc_ohc=GsA3y-ZkuUoAX_VFkof&_nc_ht=scontent-atl3-2.xx&edm=AP4hL3IEAAAA&oh=19bbbd2923855115071affa90dc53b68&oe=6138E675) on `next/image`, hostname "scontent-atl3-2.xx.fbcdn.net" is not configured under images in your `next.config.js`
+    // See more info: https://nextjs.org/docs/messages/next-image-unconfigured-host
+    // Source
   },
   // future: {
   //   // webpack5: true,
