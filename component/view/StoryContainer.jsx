@@ -82,9 +82,9 @@ const StoryContainer = (props) => {
             <SocialShare
               share
               {...{
-                viewHref: `/${view?.author}/${view.id}`,
+                viewHref: `/${view.id}`,
                 title: view?.title,
-                author: view?.author,
+                author: view?.author?.author,
               }}
             />
           ),
@@ -99,7 +99,7 @@ const StoryContainer = (props) => {
     if (online && profile.myHandle) {
       const { status, newTotalUpvote } = await fetcher(
         "/api/crunch/voteView",
-        JSON.stringify({ viewId: view.id, myHandle: profile.myHandle, vote })
+        JSON.stringify({ viewId: view.id, myHandle: profile.myHandle, vote, author: view?.author?.author })
       );
 
       if (status) {

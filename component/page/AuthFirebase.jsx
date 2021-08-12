@@ -1,8 +1,8 @@
 import cookie from "js-cookie";
 import Router from "next/router";
 import { connect } from "react-redux";
+import { Button } from "@material-ui/core";
 import { useEffect, useState } from "react";
-import { Button, Paper } from "@material-ui/core";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 
 import { Handle } from ".";
@@ -103,7 +103,7 @@ const AuthFirebase = (props) => {
   if (chooseHandle && online && authDetail?.uid) return <Handle myRefresh={authDetail.myRefresh} />;
 
   return (
-    <Paper>
+    <div>
       {online ? (
         renderAuth && !authenticated ? (
           <StyledFirebaseAuth uiConfig={firebaseAuthConfig({ setAuthDetail })} firebaseAuth={firebase.auth()} />
@@ -122,7 +122,7 @@ const AuthFirebase = (props) => {
       ) : (
         ""
       )}
-    </Paper>
+    </div>
   );
 };
 

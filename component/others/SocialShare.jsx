@@ -27,16 +27,22 @@ const SocialShare = ({
         }`}>
         <Twitter fontSize="inherit" />
       </a>
-      <a href={`https://api.whatsapp.com/send?text=https://ViewCrunch.com${crunch ? `/crunch/${toId(crunch)}` : viewHref} ${crunch}`}>
+      <a
+        href={`https://api.whatsapp.com/send?text=https://ViewCrunch.com${crunch ? `/crunch/${toId(crunch)}` : viewHref} ${
+          crunch || title
+        }`}>
         <WhatsApp fontSize="inherit" />
       </a>
-      <a href={`https://reddit.com/submit?url=https://ViewCrunch.com${crunch ? `/crunch/${toId(crunch)}` : viewHref}&title=${crunch}`}>
+      <a
+        href={`https://reddit.com/submit?url=https://ViewCrunch.com${crunch ? `/crunch/${toId(crunch)}` : viewHref}&title=${
+          crunch || title
+        }`}>
         <Reddit fontSize="inherit" />
       </a>
       <a
-        href={`https://www.linkedin.com/shareArticle?url=https://ViewCrunch.com${
-          crunch ? `/crunch/${toId(crunch)}` : viewHref
-        }&title=${crunch}`}>
+        href={`https://www.linkedin.com/shareArticle?url=https://ViewCrunch.com${crunch ? `/crunch/${toId(crunch)}` : viewHref}&title=${
+          crunch || title
+        }`}>
         <LinkedIn fontSize="inherit" />
       </a>
     </div>
