@@ -31,7 +31,7 @@ const App = ({ Component, pageProps }) => {
 
   const persistUser = async () => {
     const profile = await fetcher("/api/profile/verifyToken", JSON.stringify({ myRefresh }));
-
+ 
     if (profile?.myHandle) {
       if (validate("handle", profile?.myHandle)) {
         setAppTheme(profile.myTheme);

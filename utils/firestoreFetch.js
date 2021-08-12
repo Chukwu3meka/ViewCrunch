@@ -19,6 +19,7 @@ export const isHandleTaken = async (handle) => {
 };
 
 export const fetchProfile = async (handle) => {
+  console.log(handle);
   return profileRef
     .doc(handle)
     .get()

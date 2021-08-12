@@ -95,7 +95,7 @@ export const deleteImages = async ({ title, content, myHandle, deleteType }) => 
         content?.forEach((x) => {
           links.push(x);
         });
-        console.log({ deleteType, title, myHandle, content });
+        // console.log({ deleteType, title, myHandle, content });
       } else {
         const imagePaths = content.match(
           /\bhttps:\/\/firebasestorage.googleapis.com\/v0\/b\/viewcrunch-2018.appspot.com\/o\/images%2F%40\S+/gi
