@@ -34,7 +34,6 @@ const createProfileHandler = async ({ handle, myRefresh }) => {
       const profilePicture = handle === "maduekwepedro" ? "/images/no-image.webp" : user.photoURL || "/images/no-image.webp",
         profileCreated = user.metadata.creationTime,
         displayName = user.providerData[0].displayName;
-      // displayName = user.displayName.replace(/ViewCrunch_new-user_/g, "");
 
       await firebaseAdmin
         .firestore()
@@ -78,8 +77,8 @@ const createProfileHandler = async ({ handle, myRefresh }) => {
             }))
             .reduce((acc, cur) => ({ ...acc, [cur.id]: cur.roles }), {}),
           favourite: [
-            { link: "/info/advertise", title: "Have a product or service to advertise on ViewCrunch" },
             { link: "/info/contactus", title: "Make suggestions here, or reach out to our team" },
+            { link: "/info/advertise", title: "Have a product or service to advertise on ViewCrunch" },
           ],
           blacklist: [],
           published: {},
@@ -95,9 +94,8 @@ const createProfileHandler = async ({ handle, myRefresh }) => {
             website: `https://viewcrunch.com/${handle}`,
           },
           stat: {
-            // profileCreated: firebaseAdmin.firestore.Timestamp.fromDate(new Date(JSON.parse(profileCreated))),
-            profileCreated: firebaseAdmin.firestore.Timestamp.fromDate(new Date(profileCreated)),
             theme: handle === "maduekwepedro" ? "dark" : "light",
+            profileCreated: firebaseAdmin.firestore.Timestamp.fromDate(new Date(profileCreated)),
           },
         })
         .then(async () => {
@@ -168,7 +166,7 @@ export default async (req, res) => {
     await createProfileHandler({ handle, myRefresh });
     return res.status(200).send(true);
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return res.status(401).send(false);
   }
 };
