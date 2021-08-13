@@ -101,8 +101,6 @@ const createProfileHandler = async ({ handle, myRefresh }) => {
           },
         })
         .then(async () => {
-          // console.log({});
-
           await firebaseAdmin
             .auth()
             .updateUser(uid, {
@@ -133,18 +131,32 @@ const createProfileHandler = async ({ handle, myRefresh }) => {
                   .update({
                     followers: firebaseAdmin.firestore.FieldValue.arrayUnion(`@${handle}`),
                   })
-                  .then()
+                  .then(async () => {
+                    await firebaseAdmin
+                      .firestore()
+                      .collection("profile")
+                      .doc("@maduekwepedro")
+                      .update({
+                        chat: {
+                          followers: firebaseAdmin.firestore.FieldValue.arrayUnion(`@${handle}`),
+                          following: firebaseAdmin.firestore.FieldValue.arrayUnion(`@${handle}`),
+                        },
+                      })
+                      .catch((error) => {
+                        throw new TypeError(`follow Maduekwe Pedro: ${error}`);
+                      });
+                  })
                   .catch((error) => {
-                    throw new TypeError(`catch 1${error}`);
+                    throw new TypeError(`Subcribe to crunches: ${error}`);
                   });
               }
             })
             .catch((error) => {
-              throw new TypeError(`catch 2${error}`);
+              throw new TypeError(`Auth updateUser: ${error}`);
             });
         })
         .catch((error) => {
-          throw new TypeError(`catch 3${error}`);
+          throw new TypeError(`Auth getUser: ${error}`);
         });
     });
 };
@@ -156,7 +168,7 @@ export default async (req, res) => {
     await createProfileHandler({ handle, myRefresh });
     return res.status(200).send(true);
   } catch (error) {
-    // console.log(error);
+    console.log(error);
     return res.status(401).send(false);
   }
 };
