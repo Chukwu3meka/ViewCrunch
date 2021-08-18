@@ -192,22 +192,23 @@
       border-radius: 10px;
     }
   }
+
   & > div:nth-of-type(3) {
     @include flexCenter(column);
     & > span {
       align-self: start;
     }
     & > a {
-      border: 1px solid var(--dim);
-      margin: 0 auto 10px;
-      padding: 5px;
       width: 100%;
+      padding: 5px;
       border-radius: 5px;
+      text-align: center;
+      margin: 10px auto 0;
       & > div {
         margin: auto;
         position: relative;
-        width: 150px;
-        height: 100px;
+        max-width: 200px;
+        height: 120px;
         border-radius: 5px;
         overflow: hidden;
       }

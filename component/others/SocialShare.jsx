@@ -54,7 +54,7 @@ const SocialShare = ({
       <a href={`https://twitter.com/${twitterHandle}`}>
         <Twitter fontSize="inherit" />
       </a>
-      <a href={`https://www.linkedin.com/${linkedinHandle}`}>
+      <a href={`https://www.linkedin.com/in/${linkedinHandle}`}>
         <LinkedIn fontSize="inherit" />
       </a>
     </div>

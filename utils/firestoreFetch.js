@@ -252,7 +252,9 @@ export const fetchView = async ({ author, view: id, myHandle }) => {
     featuredPost3 = [
       featuredPost2?.length && featuredPost2.splice(range(0, featuredPost2.length - 1), 1),
       featuredPost2?.length && featuredPost2.splice(range(0, featuredPost2.length - 1), 1),
-    ].flat(Infinity);
+    ]
+      .flat(Infinity)
+      .map(({ title, id }) => ({ title, id: `/${id.split("@").join("/")}`.replace("//", "/@") }));
 
   const data = {
     id: view,
@@ -304,27 +306,26 @@ export const fetchView = async ({ author, view: id, myHandle }) => {
       if (!snapshot?.docs?.length) return;
 
       for (const doc of snapshot.docs) {
-        const id = doc.id,
-          {
-            author,
-            title: { data: title },
-            pryImage,
-          } = doc.data();
+        // const id = doc.id,
+        const {
+          author,
+          title: { data: title, path: id },
+          pryImage,
+        } = doc.data();
 
         if (data.post.similarPost.length < 3 || data.viewer.blacklist.some((x) => x.title !== title)) {
           data.post.similarPost.push({ author, title, pryImage, id });
         }
       }
     })
-    .catch((error) => {
+    .catch((err) => {
+      // console.log(err);
       return { error: "View has issues" };
-
-      // console.log(error);
     });
 
-  data.post.similarPost = data.post.similarPost.filter((x) => x.id !== view);
-  if (!data) return { error: "Error occured while fetching data" };
+  data.post.similarPost = data.post.similarPost.filter((x) => x.id !== `/${view.split("@").join("/")}`.replace("//", "/@"));
 
+  if (!data) return { error: "Error occured while fetching data" };
   const advert = {
     company: "SoccerMASS",
     description: "No. 1 free competitive online Soccer Manager game, with added tactics and realistic transfer.",

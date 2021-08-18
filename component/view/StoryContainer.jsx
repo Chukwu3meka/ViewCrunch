@@ -96,6 +96,7 @@ const StoryContainer = (props) => {
   };
 
   const voteHandler = (vote) => async () => {
+    enqueueSnackbar("Please wait");
     if (online && profile.myHandle) {
       const { status, newTotalUpvote } = await fetcher(
         "/api/crunch/voteView",

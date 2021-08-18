@@ -41,7 +41,8 @@ const StoryNav = ({
                 Featured posts
               </Typography>
               {featuredPost.map(({ title, id }) => (
-                <Link href={{ pathname: `/${author}/${id}` }} key={id}>
+                // <Link href={{ pathname: `/${author}/${id}` }} key={id}>
+                <Link href={id} key={id}>
                   <a>~ {title}</a>
                 </Link>
               ))}
@@ -77,7 +78,8 @@ const StoryNav = ({
           {
             // console.log(similarPost)
             similarPost.map(({ author, title, pryImage, id }, index) => (
-              <Link href={{ pathname: `/${author}/${id}` }} key={index}>
+              // <Link href={{ pathname: `/${author}/${id}` }} key={index}>
+              <Link href={{ pathname: `${id}` }} key={index}>
                 <a>
                   <div>
                     <Image src={pryImage || "/images/no-image.webp"} layout="fill" />
