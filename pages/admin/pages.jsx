@@ -6,7 +6,7 @@ const CopyAndPaste = ({ error, newsFlash: { flash, date } }) => {
   return (
     <Button
       onClick={() => {
-        if (navigator) navigator.clipboard.writeText(`ViewCrunch NEWS for ${date}\n${flash.split("@@@").map((x) => `\n${x?.trim()}`)}`);
+        if (navigator) navigator.clipboard.writeText(`ViewCrunch NEWS for ${date}\n${flash.split("@@@").map((x) => `\n${x?.trim()}`)}\n Visit www.viewcrunch.com/news for more`);
       }}>
       reset api keys
     </Button>
