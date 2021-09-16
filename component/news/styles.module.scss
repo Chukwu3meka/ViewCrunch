@@ -1,15 +1,16 @@
 @import "@source/_variables.scss";
 
 .news {
-  min-height: 97% !important;
-  @include flexCenter(column);
+  @include flexCenter(column, 98%);
   justify-content: space-between;
   max-width: 1200px !important;
   & > div:nth-child(1) > * > * {
     font-size: 0.8em;
   }
+
   & > div:nth-child(2) {
     @include flexCenter(column);
+    min-height: 40vh !important;
     & > div {
       border-left: 1px solid transparent;
       border-image: linear-gradient(to bottom, color(primary), var(--dim), color(secondary));
@@ -17,5 +18,9 @@
       margin-bottom: 10px;
       font-size: 1.1em;
     }
+  }
+
+  & > div:last-child {
+    margin-top: 20px;
   }
 }
