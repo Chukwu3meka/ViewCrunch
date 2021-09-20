@@ -31,6 +31,19 @@
     background-color: var(--pry);
     line-height: 2em;
     line-height: 1.6em;
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      text-align: center;
+    }
+    iframe {
+      display: block;
+      border-radius: 5px;
+      margin: auto;
+    }
     img {
       display: block;
       margin: 10px auto;

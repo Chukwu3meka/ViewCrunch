@@ -134,7 +134,7 @@
 
 @media screen and (min-width: 600px) {
   .myArticles {
-    .accordionStyle {
+    .accordionStyle { 
       @include flexCenter(row);
       justify-content: space-between;
       & > div:nth-of-type(2) {
