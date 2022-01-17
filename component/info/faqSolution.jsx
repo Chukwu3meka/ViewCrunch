@@ -10,6 +10,9 @@ export default [
       "We've permanently disabled updating handle to prevent conflict in our database. So you can only choose handle once for the entirety of your account. Though, you can update your displaty name in the profile page as much as you like.",
   },
   {
+    title: "Data Deletion",
+  },
+  {
     title: "Handle-Naming-Convention",
     details: `As you can only choos handle once, we are careful not to mess things, so we've imposed some restrictions, such as 3 - 13 characters limit on handle, a-z,A - Z, 0-9, and an underscore are the only acceptable characters for handle. You can't use any of the following as you handle ["favourite", "news", "notification", "crunch", "info", "handle", "viewcrunch"] to prevent unexpected behaviour`,
   },

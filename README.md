@@ -1,4 +1,4 @@
 ## Authors
 
-- Maduekwe Pedro ([@pedro](https://twitter.com/ped70)) – [ViewCrunch](https://ViewCrunch.com)
+- Maduekwe Pedro ([@pedro](https://twitter.com/chukwuemeka)) – [ViewCrunch](https://ViewCrunch.com)
 <!-- Please see our [contributing.md](/contributing.md). -->
