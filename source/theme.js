@@ -2,6 +2,9 @@ import { createTheme } from "@material-ui/core/styles";
 
 const muiTheme = (theme) => {
   return createTheme({
+    typography: {
+      fontFamily: "Amiri, serif",
+    },
     palette: {
       type: theme,
       primary: {

@@ -1,0 +1,30 @@
+@import "@source/_variables.scss";
+
+.header {
+  // position: absolute;
+  // position: static;
+  top: 0;
+  max-width: 100vw;
+  overflow: hidden;
+  z-index: 3;
+  background-color: var(--pry);
+  transition: all 0.5s linear;
+  height: 50px;
+  @include flexCenter(row);
+  justify-content: space-between;
+  & > div:first-of-type {
+    display: flex;
+    & > *:nth-child(2) {
+      letter-spacing: 2px;
+      font-weight: 500;
+      font-size: 30px;
+      text-shadow: 2px 2px 0 var(--dim);
+      color: color(secondary) !important;
+    }
+  }
+}
+
+.headerHidden {
+  @extend .header;
+  top: -50px;
+}

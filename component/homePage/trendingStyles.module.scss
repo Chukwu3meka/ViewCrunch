@@ -1,0 +1,48 @@
+@import "@source/_variables.scss";
+
+.trending {
+  @include flexCenter(column);
+  align-items: flex-start;
+  margin: auto;
+  max-width: 900px;
+  padding: 10px;
+  & > p {
+    @include flexCenter(row);
+    justify-content: flex-start;
+    h2 {
+      font-family: "Playfair Display", serif;
+      font-size: 1em;
+      font-weight: 600;
+      margin-left: 5px;
+    }
+  }
+  & > div {
+    @include flexCenter(row);
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 10px;
+    & > div {
+      max-width: 300px;
+      // border: 3px solid red;
+    }
+  }
+  // padding: 30px 0;
+  // justify-content: space-evenly;
+  // flex-wrap: wrap;
+  // background-color: var(--dim);
+  // & > div:nth-of-type(1) {
+  //   max-width: 500px;
+  //   h2 {
+  //     font-family: "Playfair Display", serif;
+  //     font-size: 4.5em;
+  //     font-weight: 600;
+  //   }
+  //   h3 {
+  //     font-family: "Cookie", cursive;
+  //   }
+  // }
+  // & > div:nth-of-type(2) {
+  //   height: 100%;
+  //   min-width: 300px;
+  // }
+}

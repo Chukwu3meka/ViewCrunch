@@ -7,7 +7,16 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Amiri:ital@1&amp;family=Cookie&amp;
+family=Playfair+Display:ital,wght@1,500&amp;display=swap"
+            rel="stylesheet"
+          />
+
           {/* google  */}
+
           <script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env.GA_TRACKING_ID}`} defer />
           <script
             dangerouslySetInnerHTML={{

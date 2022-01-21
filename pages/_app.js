@@ -31,7 +31,7 @@ const App = ({ Component, pageProps }) => {
 
   const persistUser = async () => {
     const profile = await fetcher("/api/profile/verifyToken", JSON.stringify({ myRefresh }));
- 
+
     if (profile?.myHandle) {
       if (validate("handle", profile?.myHandle)) {
         setAppTheme(profile.myTheme);
@@ -132,8 +132,9 @@ const App = ({ Component, pageProps }) => {
         <Provider store={store}>
           <SnackbarProvider maxSnack={1} preventDuplicate>
             <LayoutContainer setAppTheme={setAppTheme}>
+              {/* renable this */}
               {pageReady ? <Component {...pageProps} /> : <Loading />}
-              {chooseHandle && <Handle myRefresh={myRefresh} />}
+              {/* {chooseHandle && <Handle myRefresh={myRefresh} />} */}
             </LayoutContainer>
           </SnackbarProvider>
         </Provider>

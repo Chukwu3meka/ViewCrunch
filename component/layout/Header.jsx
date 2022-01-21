@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { styles, NavbarContainer } from "/";
+import { headerStyles, NavbarContainer } from "/";
 
 import Menu from "@material-ui/core/Menu";
 import Button from "@material-ui/core/Button";
@@ -11,7 +11,7 @@ import InputBase from "@material-ui/core/InputBase";
 import IconButton from "@material-ui/core/IconButton";
 
 const Header = ({ classes, hidden, hamburger, handleMenu, anchorEl, handleClose, searchBar, open }) => (
-  <div className={hidden === "hidden" ? styles.headerHidden : styles.header}>
+  <div className={hidden === "hidden" ? headerStyles.headerHidden : headerStyles.header}>
     <div>
       {hamburger ? (
         <IconButton onClick={handleMenu} color="inherit">
