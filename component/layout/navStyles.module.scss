@@ -1,0 +1,47 @@
+@import "@source/_variables.scss";
+
+.navigation {
+  @include flexCenter(column);
+  justify-content: space-between;
+  align-items: flex-start;
+  border-top: 1px solid var(--dim);
+  border-bottom: 1px solid var(--dim);
+  & > div:nth-of-type(1),
+  & > div:nth-of-type(2) {
+    padding: 10px;
+    margin-bottom: 10px;
+    & > h2 {
+      font-size: 1em;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+    & > div {
+      @include flexCenter(row);
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      gap: 10px 5px;
+    }
+  }
+
+  & > div:nth-of-type(3) {
+    border-top: 1px solid color(secondary);
+    padding: 10px 5px 5px;
+    @include flexCenter(row);
+    justify-content: space-between;
+    & > span:first-child {
+      @include flexCenter(row);
+      width: fit-content;
+      cursor: pointer;
+      & > *:first-child {
+        padding: 0;
+        margin: -3px 2px 0 0;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 960px) {
+  .navigation {
+    min-height: calc(100vh - 50px);
+  }
+}

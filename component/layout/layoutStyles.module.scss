@@ -1,6 +1,9 @@
 @import "@source/_variables.scss";
 
 .layout {
+  box-sizing: border-box;
+  max-width: 100vw;
+  overflow: hidden;
   font-family: "Amiri", serif;
   a:link {
     cursor: pointer;

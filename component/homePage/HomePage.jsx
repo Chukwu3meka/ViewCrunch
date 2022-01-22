@@ -1,8 +1,8 @@
 import { connect } from "react-redux";
 import Grid from "@material-ui/core/Grid";
-import { Intro, Trending, PrimaryBody, NewsFlash, Highlight, homeStyles } from ".";
+import { Intro, Trending, PrimaryBody, News, Highlight, homeStyles } from ".";
 import { Paper, Typography } from "@material-ui/core";
-import { NavigationContainer } from "@component/layout";
+import { NavContainer } from "@component/layout";
 
 const HomePage = ({ trending, highlight, newsFlash, primary, deviceWidth }) => (
   <div className={homeStyles.home}>
@@ -10,9 +10,9 @@ const HomePage = ({ trending, highlight, newsFlash, primary, deviceWidth }) => (
     <Trending trending={trending} />
 
     <Grid container spacing={1}>
-      <NavigationContainer />
+      <NavContainer />
       <Grid item xs={12} sm={12} md={8}>
-        list of irtems
+        <News />
       </Grid>
     </Grid>
   </div>

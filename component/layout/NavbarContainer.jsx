@@ -1,6 +1,6 @@
 import { Navbar } from "/";
-import { useRouter } from "next/router";
 import { connect } from "react-redux";
+import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { fetcher } from "@utils/clientFunctions";
 import { setProfileAction } from "@store/actions";

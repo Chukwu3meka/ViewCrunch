@@ -623,8 +623,6 @@ export const fetchTrending = async () => {
               throw e;
             });
 
-          // console.log(a);
-
           trending.push({
             author: author,
             authorLink: `/author/${authorLink}`,
@@ -646,4 +644,36 @@ export const fetchTrending = async () => {
     });
 
   return { trending };
+};
+
+export const fetchNavCrunches = async () => {
+  try {
+    const snapshot = await crunchRef.orderBy("dateCreated").get();
+
+    const last = snapshot.docs[range(0, snapshot.docs.length - 5)];
+
+    const crunches = await crunchRef
+      .orderBy("dateCreated")
+      .startAfter(last.data().dateCreated)
+      .limit(13)
+      .get()
+      .then((snapshot) => {
+        const crunches = [];
+        for (const doc of snapshot.docs) {
+          const title = doc.data().title;
+          crunches.push({
+            title,
+            link: `/crunch/${`${title}-${doc.id}`.replace(/ /g, "-").toLowerCase()}`,
+          });
+        }
+        return crunches;
+      })
+      .catch((e) => {
+        throw e;
+      });
+
+    return { crunches, error: false };
+  } catch (error) {
+    return { error: true };
+  }
 };

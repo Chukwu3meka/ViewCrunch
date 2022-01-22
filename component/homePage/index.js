@@ -1,7 +1,7 @@
 import SecBody from "./SecBody";
 import HomePage from "./HomePage";
 import Highlight from "./Highlight";
-import NewsFlash from "./NewsFlash";
+import News from "./News";
 import PrimaryBody from "./PrimaryBody";
 import styles from "./styles.module.scss";
 import SecBodyContainer from "./SecBodyContainer";
@@ -19,7 +19,7 @@ export {
   Intro,
   styles,
   PrimaryBody,
-  NewsFlash,
+  News,
   Highlight,
   SecBodyContainer,
   SecBody,

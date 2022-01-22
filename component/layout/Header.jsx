@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { headerStyles, NavbarContainer } from "/";
 
 import Menu from "@material-ui/core/Menu";
@@ -9,42 +10,17 @@ import MenuItem from "@material-ui/core/MenuItem";
 import SearchIcon from "@material-ui/icons/Search";
 import InputBase from "@material-ui/core/InputBase";
 import IconButton from "@material-ui/core/IconButton";
+import { Typography } from "@material-ui/core";
 
 const Header = ({ classes, hidden, hamburger, handleMenu, anchorEl, handleClose, searchBar, open }) => (
   <div className={hidden === "hidden" ? headerStyles.headerHidden : headerStyles.header}>
-    <div>
-      {hamburger ? (
-        <IconButton onClick={handleMenu} color="inherit">
-          <MenuIcon color="primary" />
-        </IconButton>
-      ) : (
-        <span />
-      )}
-      <Menu
-        id="menu-appbar"
-        anchorEl={anchorEl}
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-        keepMounted
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-        open={open}
-        onClose={handleClose}>
-        <MenuItem onClick={handleClose} style={{ padding: 0 }}>
-          <NavbarContainer />
-        </MenuItem>
-      </Menu>
-      <Link href="/">
-        <Button style={{ textTransform: "none" }} component="h1" aria-label="ViewCrunch">
-          ViewCrunch
-        </Button>
-      </Link>
-    </div>
-    {searchBar && (
+    <Link href="/">
+      <Image src="/images/ViewCrunch.webp" height={30} width={30} alt="ViewCrunch" />
+    </Link>
+    <Link href="/">
+      <Typography variant="h1">ViewCrunch</Typography>
+    </Link>
+    {searchBar ? (
       <Toolbar>
         <div className={classes.search}>
           <div className={classes.searchIcon}>
@@ -60,6 +36,8 @@ const Header = ({ classes, hidden, hamburger, handleMenu, anchorEl, handleClose,
           />
         </div>
       </Toolbar>
+    ) : (
+      <span />
     )}
   </div>
 );
