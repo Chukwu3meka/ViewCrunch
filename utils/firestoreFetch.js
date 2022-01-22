@@ -537,36 +537,6 @@ export const fetchViews = async ({ myHandle, crunch, lastVisible, blacklist = []
   return { ...initialReq, crunch, blacklist, secondary, lastVisible };
 };
 
-export const fetchNews = async (newsDate) => {
-  newsDate = new Date(
-    newsDate || new Date(`${new Date().getFullYear()} ${new Date().getMonth() + 1} ${new Date().getDate()}`)
-  ).toDateString();
-
-  if (newsDate == "Invalid-Date") return null;
-
-  return newsRef
-    .doc(
-      `${newsDate.split(" ")[3]}-${
-        { Jan: "01", Feb: "02", Mar: "03", Apr: "04", May: "05", Jun: "06", Jul: "07", Aug: "08", Sep: "09", Oct: 10, Nov: 11, Dec: 12 }[
-          newsDate.split(" ")[1]
-        ]
-      }-${newsDate.split(" ")[2]}`
-    )
-    .get()
-    .then((snapshot) => {
-      if (snapshot.exists)
-        return {
-          ...snapshot.data(),
-          date: snapshot.data().date.toDate().toDateString(),
-        };
-      return null;
-    })
-    .catch((error) => {
-      // console.log(error);
-      return null;
-    });
-};
-
 export const fetchViewForRetouch = async ({ ref, myHandle }) => {
   try {
     const [, author] = ref.split("@");

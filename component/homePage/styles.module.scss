@@ -45,37 +45,6 @@
   }
 }
 
-.newsFlash {
-  padding: 0 10px 10px;
-  margin: 15px 0;
-  border-radius: 5px;
-  border: 1px solid var(--dim);
-  & > *:first-child {
-    margin-top: -15px;
-    h1 {
-      font-size: 1.2em !important;
-    }
-  }
-  & > a > div {
-    @include flexCenter(column);
-    border-bottom: 3px solid color(primary);
-    margin: 10px auto;
-    @include flexCenter(column);
-    max-width: 700px;
-    & > *:first-child {
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      word-break: normal;
-      overflow: hidden;
-    }
-  }
-  & > a:nth-child(odd) > div {
-    background-color: var(--dim);
-    color: #000;
-  }
-}
-
 .highlight {
   background: linear-gradient(to right, var(--pry), var(--dim));
   border-radius: 20px 5px 15px 10px;

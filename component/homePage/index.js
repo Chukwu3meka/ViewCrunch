@@ -8,10 +8,12 @@ import SecBodyContainer from "./SecBodyContainer";
 import introStyles from "./introStyles.module.scss";
 import homeStyles from "./homeStyles.module.scss";
 import trendingStyles from "./trendingStyles.module.scss";
+import newsStyles from "./newsStyles.module.scss";
 import Intro from "./Intro";
 import Trending from "./Trending";
 
 export {
+  newsStyles,
   Trending,
   trendingStyles,
   homeStyles,

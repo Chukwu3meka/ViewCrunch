@@ -1,32 +1,32 @@
-import { styles } from ".";
-import Link from "next/link";
-import { LineText } from "@component/others";
+import { useEffect, useState } from "react";
 import { Paper, Typography } from "@material-ui/core";
-import { dateCalculator } from "@utils/clientFunctions";
-import { useEffect } from "react";
+
+import { newsStyles } from ".";
 import { fetcher } from "@utils/clientFunctions";
 
 const NewsFlash = ({ newsFlash }) => {
+  const [news, setNews] = useState([]);
   useEffect(() => {
-    const { status, followStat } = await fetcher("/api/crunch/unfollowViewscape", JSON.stringify({ id, token, follow }));
+    const getNEWS = async () => {
+      const articles = await fetcher("/api/externalApi/newsApi");
+      setNews(articles);
+    };
+    getNEWS();
   }, []);
 
-  return (
-    <div className={styles.newsFlash}>
-      <LineText title="Headline" />
-      {newsFlash?.length
-        ? newsFlash.map(({ flash, newsLink, date }) => (
-            <Link href={`/news/${newsLink}`} key={newsLink}>
-              <a>
-                <Paper elevation={4}>
-                  <Typography variant="body1">{flash}</Typography>
-                  <Typography variant="caption" color="secondary">{`ViewCrunch | ${dateCalculator({ date })}`}</Typography>
-                </Paper>
-              </a>
-            </Link>
-          ))
-        : ""}
+  return news?.length ? (
+    <div className={newsStyles.news}>
+      <Typography variant="h2">Top Headlines</Typography>
+      {news.map(({ title, link, source }) => (
+        <Paper key={link}>
+          <a href={link}>{title}</a>
+          <Typography variant="body2" color="secondary">
+            {source}
+          </Typography>
+        </Paper>
+      ))}
     </div>
-  );
+  ) : null;
 };
+
 export default NewsFlash;
