@@ -1,9 +1,9 @@
 import Grid from "@material-ui/core/Grid";
 import Hidden from "@material-ui/core/Hidden";
-import { styles, HeaderContainer, Footer, NavbarContainer, Intro } from "/";
+import { layoutStyles, HeaderContainer, Footer, NavbarContainer, Intro } from "/";
 
 const Layout = ({ handleScroll, children, style, pathname, scrollRef, scrollTop }) => (
-  <div className={styles.layout} style={style}>
+  <div className={layoutStyles.layout} style={style} ref={scrollRef}>
     <HeaderContainer />
     {children}
     {/* <Intro /> */}

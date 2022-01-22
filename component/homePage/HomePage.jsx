@@ -2,14 +2,19 @@ import { connect } from "react-redux";
 import Grid from "@material-ui/core/Grid";
 import { Intro, Trending, PrimaryBody, NewsFlash, Highlight, homeStyles } from ".";
 import { Paper, Typography } from "@material-ui/core";
+import { NavigationContainer } from "@component/layout";
 
-const HomePage = ({ highlight, newsFlash, primary, deviceWidth }) => (
+const HomePage = ({ trending, highlight, newsFlash, primary, deviceWidth }) => (
   <div className={homeStyles.home}>
     <Intro />
-    <Trending />
-    {/*  */}
+    <Trending trending={trending} />
 
-    {/*  */}
+    <Grid container spacing={1}>
+      <NavigationContainer />
+      <Grid item xs={12} sm={12} md={8}>
+        list of irtems
+      </Grid>
+    </Grid>
   </div>
 
   // <Grid container alignItems="center" spacing={3}>

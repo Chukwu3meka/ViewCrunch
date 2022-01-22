@@ -23,14 +23,53 @@ const LayoutContainer = (props) => {
     });
   }, [props.theme]);
 
-  // useEffect(() => {
-  //   setDeviceWidth(window.innerWidth);
-  // });
+  useEffect(() => {
+    setDeviceWidth(window.innerWidth);
+  });
 
-  // const userAtBottomHandler = (status) => {
-  //   setUserAtBottom(status);
-  //   props.setUserAtBottom(status);
-  // };
+  const userAtBottomHandler = (status) => {
+    setUserAtBottom(status);
+    props.setUserAtBottom(status);
+  };
+
+  const [scrollDir, setScrollDir] = useState("scrolling down");
+
+  useEffect(() => {
+    const threshold = 0;
+    let lastScrollY = window.pageYOffset;
+    let ticking = false;
+
+    const updateScrollDir = () => {
+      const scrollY = window.pageYOffset;
+
+      if (Math.abs(scrollY - lastScrollY) < threshold) {
+        ticking = false;
+        return;
+      }
+      setScrollDir(scrollY > lastScrollY ? "scrolling down" : "scrolling up");
+      lastScrollY = scrollY > 0 ? scrollY : 0;
+      ticking = false;
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateScrollDir);
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", onScroll);
+
+    if (scrollDir === "scrolling up") {
+      setDisplayHeader("hidden");
+    } else {
+      setDisplayHeader("visible");
+    }
+
+    console.log(scrollDir);
+
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [scrollDir]);
 
   const handleScroll = (e) => {
     //   // user at bottom
@@ -40,11 +79,11 @@ const LayoutContainer = (props) => {
     //   if (e.target.scrollTop > lastScrollPos) setDisplayHeader("hidden");
     //   if (e.target.scrollTop <= lastScrollPos) setDisplayHeader("visible");
     //   setLastScrollPos(e.target.scrollTop);
-    //   console.log("scrolling");
+    // console.log("scrolling");
   };
 
   const scrollTop = () => {
-    //   scrollRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    scrollRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   return <Layout {...{ handleScroll, children, style, pathname, scrollRef, scrollTop }} />;

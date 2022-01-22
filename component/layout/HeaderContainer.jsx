@@ -39,18 +39,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const HeaderContainer = (props) => {
-  useEffect(() => {
-    setHidden(props.headerDisplay);
-    setSearchBar(window.innerWidth >= 400);
-    setHamburger(window.innerWidth < 1280);
-  }, [props.headerDisplay]);
-
   const classes = useStyles(),
     [hidden, setHidden] = useState(false),
     [anchorEl, setAnchorEl] = useState(null),
     [hamburger, setHamburger] = useState(false),
     [searchBar, setSearchBar] = useState(false),
     open = Boolean(anchorEl);
+
+  useEffect(() => {
+    console.log(props.headerDisplay);
+    setHidden(props.headerDisplay);
+    // setSearchBar(window.innerWidth >= 400);
+    // setHamburger(window.innerWidth < 1280);
+  }, [props.headerDisplay]);
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);

@@ -598,3 +598,52 @@ export const fetchViewForRetouch = async ({ ref, myHandle }) => {
     return { error: "Error fetching view" };
   }
 };
+
+export const fetchTrending = async () => {
+  const trending = [];
+  await viewRef
+    .where("visible.status", "==", true)
+    .orderBy("upvote.votes", "desc")
+    .orderBy("stat.date", "desc")
+    .limit(6)
+    .get()
+    .then(async (documentSnapshots) => {
+      if (documentSnapshots?.docs?.length) {
+        for (const doc of documentSnapshots.docs) {
+          const {
+            title,
+            stat: { author: authorLink, crunch, link, date },
+          } = doc.data();
+
+          const author = await profileRef
+            .doc(authorLink)
+            .get()
+            .then((snapshot) => snapshot.data().displayName)
+            .catch((e) => {
+              throw e;
+            });
+
+          // console.log(a);
+
+          trending.push({
+            author: author,
+            authorLink: `/author/${authorLink}`,
+            image: "/images/ViewCrunch-cover.webp",
+            crunch,
+            crunchLink: `/crunch/${crunch}`,
+            link,
+            date: date.toDate().toDateString(),
+            title,
+          });
+        }
+      } else {
+        throw "No document found";
+      }
+    })
+    .catch((error) => {
+      // console.log({ error });
+      return { error: "Server unable to fetch view" };
+    });
+
+  return { trending };
+};

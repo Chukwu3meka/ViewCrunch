@@ -35,8 +35,8 @@ const globalTheme = (mode) => {
         },
         MuiGrid: {
           root: {
-            alignContent: "center",
-            justifyContent: "center",
+            // alignContent: "center",
+            // justifyContent: "center",
           },
         },
       },

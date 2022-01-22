@@ -13,9 +13,6 @@ const Intro = () => {
         <Typography variant="h5" component="h3">
           Without direction, we easily loose focus
         </Typography>
-        <Button variant="contained" color="primary">
-          Share your Views
-        </Button>
         <div>
           <Image src="/images/ViewCrunch.webp" layout="fill" alt="ViewCrunch Intro" />
         </div>
