@@ -41,9 +41,11 @@ const NavbarContainer = (props) => {
     getCrunches();
   }, []);
 
+  console.log(myNotification);
+
   const mainNav = [
     ["Home", "/", <HomeIcon />],
-    ["Notification", "/notification", <NotificationsActiveIcon />],
+    ["Notification", "/notification", myNotification ? <NotificationsActiveIcon /> : <NotificationsOffIcon />],
     ["Favourite", "/favourite", <TimelineIcon />],
     ["Contact Us", "/info/contactus", <ContactUsIcon />],
     ["My Crunch", "/crunch", <ImportantDevicesIcon />],

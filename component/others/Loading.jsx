@@ -16,8 +16,8 @@ const Loading = ({ loadType, failedText, clickHandler, scrollRef }) => {
           <Typography variant="body2" color="textSecondary" align="center">
             {failedText}
           </Typography>
-          <Button size="small" variant="contained" color="primary" onClick={clickHandler}>
-            Refresh Page
+          <Button size="small" variant="outlined" fullWidth onClick={clickHandler}>
+            Refresh Content
           </Button>
         </div>
       );
