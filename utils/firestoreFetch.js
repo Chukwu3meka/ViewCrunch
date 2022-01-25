@@ -570,14 +570,15 @@ export const oldfetchViews = async ({ myHandle, crunch, lastVisible, blacklist =
 };
 
 export const fetchViews = async ({ handle, blacklist, lastVisible }) => {
-  if (!blacklist)
+  if (!blacklist && handle) {
     blacklist = await fetchProfile(handle)
       .then((x) => x.blacklist)
       .catch((e) => {
         throw e;
       });
-
-  console.log({ blacklist });
+  } else {
+    blacklist = [];
+  }
 
   const ref = viewRef.where("visible.status", "==", true).orderBy("stat.date", "desc");
 

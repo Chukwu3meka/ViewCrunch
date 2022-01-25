@@ -1,13 +1,15 @@
-import Fade from "react-reveal/Fade";
-import { Loading } from "@component/others";
-import { Paper, Typography } from "@material-ui/core";
 import Link from "next/link";
 import Image from "next/image";
+import Fade from "react-reveal/Fade";
+
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
+import LoveIcon from "@material-ui/icons/FavoriteBorderTwoTone";
+
 import { viewsStyles } from ".";
+import { Loading } from "@component/others";
 
-import BookmarkAddIcon from "@material-ui/icons/FavoriteBorderTwoTone";
-
-const Views = ({ views, loading, fetchFailed, scrollRef, getViews }) => (
+const Views = ({ views, loading, fetchFailed, getViews }) => (
   <div className={viewsStyles.views}>
     <Typography variant="h2">Recent Views from Great Authors</Typography>
     <div>
@@ -40,7 +42,7 @@ const Views = ({ views, loading, fetchFailed, scrollRef, getViews }) => (
                 <Typography variant="body2">{content.replace(/<[^>]+>/g, "")}</Typography>
                 <div>
                   <Typography variant="body2">{`${date} · ${readTime} ☆ ${keyword}`}</Typography>
-                  <BookmarkAddIcon fontSize="small" />
+                  <LoveIcon fontSize="small" />
                 </div>
               </div>
               <Image src={image} width={140} height={130} alt={title} />
@@ -56,7 +58,7 @@ const Views = ({ views, loading, fetchFailed, scrollRef, getViews }) => (
         // scrollRef={scrollRef}
         loadType="failed"
         failedText="We are unable to fetch any view for you; Please, refresh the page or click the button below."
-        clickHandler={getViews}
+        clickHandler={() => getViews("retry")}
       />
     )}
   </div>
