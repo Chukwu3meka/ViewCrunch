@@ -1,13 +1,15 @@
 @import "@source/_variables.scss";
 
 .navigation {
+  position: -webkit-sticky; /* Safari & IE */
+  position: sticky;
+  top: 50px;
+  z-index: 100;
   @include flexCenter(column);
   justify-content: space-between;
   align-items: flex-start;
   border-top: 1px solid var(--dim);
   border-bottom: 1px solid var(--dim);
-  position: sticky;
-  top: 30px;
   & > div:nth-of-type(1),
   & > div:nth-of-type(2) {
     padding: 10px;

@@ -66,8 +66,6 @@ const LayoutContainer = (props) => {
       setDisplayHeader("visible");
     }
 
-    console.log(scrollDir);
-
     return () => window.removeEventListener("scroll", onScroll);
   }, [scrollDir]);
 
@@ -82,11 +80,23 @@ const LayoutContainer = (props) => {
     // console.log("scrolling");
   };
 
-  const scrollTop = () => {
-    scrollRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
+  // const scrollTop = () => {
+  //   scrollRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+  // };
 
-  return <Layout {...{ handleScroll, children, style, pathname, scrollRef, scrollTop }} />;
+  return (
+    <Layout
+      {...{
+        handleScroll,
+        children,
+        style,
+        pathname,
+        scrollRef,
+        //
+        // scrollTop,
+      }}
+    />
+  );
 };
 
 const mapStateToProps = (state) => ({

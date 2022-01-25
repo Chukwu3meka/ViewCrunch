@@ -9,10 +9,14 @@ import introStyles from "./introStyles.module.scss";
 import homeStyles from "./homeStyles.module.scss";
 import trendingStyles from "./trendingStyles.module.scss";
 import newsStyles from "./newsStyles.module.scss";
+import viewsStyles from "./viewsStyles.module.scss";
 import Intro from "./Intro";
 import Trending from "./Trending";
+import ViewsContainer from "./ViewsContainer";
 
 export {
+  viewsStyles,
+  ViewsContainer,
   newsStyles,
   Trending,
   trendingStyles,

@@ -15,7 +15,9 @@ import { Typography } from "@material-ui/core";
 const Header = ({ classes, hidden, hamburger, handleMenu, anchorEl, handleClose, searchBar, open }) => (
   <div className={hidden === "hidden" ? headerStyles.headerHidden : headerStyles.header}>
     <Link href="/">
-      <Image src="/images/ViewCrunch.webp" height={30} width={30} alt="ViewCrunch" />
+      <div>
+        <Image src="/images/ViewCrunch.webp" layout="fill" alt="ViewCrunch" />
+      </div>
     </Link>
     <Link href="/">
       <Typography variant="h1">ViewCrunch</Typography>

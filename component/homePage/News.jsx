@@ -4,7 +4,7 @@ import { Paper, Typography } from "@material-ui/core";
 import { newsStyles } from ".";
 import { fetcher } from "@utils/clientFunctions";
 
-const NewsFlash = ({ newsFlash }) => {
+const NewsFlash = () => {
   const [news, setNews] = useState([]);
   useEffect(() => {
     const getNEWS = async () => {
@@ -17,12 +17,9 @@ const NewsFlash = ({ newsFlash }) => {
   return news?.length ? (
     <div className={newsStyles.news}>
       <Typography variant="h2">Top Headlines</Typography>
-      {news.map(({ title, link, source }) => (
+      {news.map(({ title, link }) => (
         <Paper key={link}>
           <a href={link}>{title}</a>
-          <Typography variant="body2" color="secondary">
-            {source}
-          </Typography>
         </Paper>
       ))}
     </div>

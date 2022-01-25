@@ -47,7 +47,7 @@ const HeaderContainer = (props) => {
     open = Boolean(anchorEl);
 
   useEffect(() => {
-    console.log(props.headerDisplay);
+    // console.log(props.headerDisplay);
     setHidden(props.headerDisplay);
     // setSearchBar(window.innerWidth >= 400);
     // setHamburger(window.innerWidth < 1280);

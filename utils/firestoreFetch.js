@@ -5,7 +5,7 @@ const profileRef = firestore.collection("profile");
 
 import * as db from "@source/tempdb";
 import firebase, { firestore } from "@utils/firebaseClient";
-import { range, toId, shortNumber, refToPath } from "@utils/clientFunctions";
+import { range, toId, shortNumber, refToPath, dateCalculator } from "@utils/clientFunctions";
 
 export const isHandleTaken = async (handle) => {
   return await profileRef
@@ -441,7 +441,7 @@ export const fetchHomeViews = async ({ crunch, blacklist }) => {
   return { highlight, newsFlash, primary };
 };
 
-export const fetchViews = async ({ myHandle, crunch, lastVisible, blacklist = [] }) => {
+export const oldfetchViews = async ({ myHandle, crunch, lastVisible, blacklist = [] }) => {
   const secondary = [],
     profile = myHandle ? await fetchProfile(myHandle) : null;
 
@@ -537,6 +537,70 @@ export const fetchViews = async ({ myHandle, crunch, lastVisible, blacklist = []
   return { ...initialReq, crunch, blacklist, secondary, lastVisible };
 };
 
+export const fetchViews = async ({ handle, blacklist, lastVisible }) => {
+  if (!blacklist) {
+    blacklist = await fetchProfile(handle).blacklist;
+  }
+
+  const ref = viewRef.where("visible.status", "==", true).orderBy("stat.date", "desc");
+
+  const views = await (lastVisible
+    ? ref
+        .startAfter(firebase.firestore.Timestamp.fromDate(new Date(JSON.parse(lastVisible.date)), lastVisible.title))
+        .limit(5 - secondary.length)
+    : ref.limit(7)
+  )
+    .get()
+    .then(async (snapshot) => {
+      if (!snapshot?.docs?.length) return (lastVisible = "last view");
+
+      const views = [];
+
+      if (snapshot.docs?.length) {
+        for (const doc of snapshot.docs) {
+          const {
+            title,
+            content,
+            stat: { author, crunch, date, readTime, keywords, image, path },
+          } = doc.data();
+
+          const {
+            displayName,
+            profilePicture,
+            stat: { profileLink },
+          } = await fetchProfile(author);
+
+          views.push({
+            path,
+            image,
+            title,
+            author,
+            crunch,
+            readTime,
+            keywords,
+            displayName,
+            profileLink,
+            profilePicture,
+            content,
+            date: dateCalculator({ date: date.toDate().toDateString() }),
+            crunchLink: `/crunch/${toId(crunch)}`,
+          });
+
+          // console.log();
+          lastVisible = { title, date: JSON.stringify(date.toDate()) };
+        }
+
+        return views;
+      }
+    })
+    .catch((err) => {
+      // console.log(err);
+      throw err;
+    });
+
+  return { lastVisible, views, blacklist };
+};
+
 export const fetchViewForRetouch = async ({ ref, myHandle }) => {
   try {
     const [, author] = ref.split("@");
@@ -582,26 +646,23 @@ export const fetchTrending = async () => {
         for (const doc of documentSnapshots.docs) {
           const {
             title,
-            stat: { author: authorLink, crunch, link, date },
+            stat: { author, crunch, link, date },
           } = doc.data();
 
-          const author = await profileRef
-            .doc(authorLink)
-            .get()
-            .then((snapshot) => snapshot.data().displayName)
-            .catch((e) => {
-              throw e;
-            });
+          const {
+            displayName,
+            stat: { profileLink },
+          } = await fetchProfile(author);
 
           trending.push({
-            author: author,
-            authorLink: `/author/${authorLink}`,
-            image: "/images/ViewCrunch-cover.webp",
-            crunch,
-            crunchLink: `/crunch/${crunch}`,
             link,
-            date: date.toDate().toDateString(),
             title,
+            crunch,
+            profileLink,
+            displayName,
+            crunchLink: `/crunch/${crunch}`,
+            date: date.toDate().toDateString(),
+            image: "/images/ViewCrunch-cover.webp",
           });
         }
       } else {

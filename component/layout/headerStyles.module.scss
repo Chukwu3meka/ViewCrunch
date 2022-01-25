@@ -4,13 +4,20 @@
   position: fixed;
   top: 0;
   max-width: 100vw;
-  overflow: hidden;
+  // overflow: hidden;
   z-index: 3;
   background-color: var(--pry);
   transition: all 0.5s linear;
   height: 50px;
   @include flexCenter(row);
   justify-content: space-between;
+
+  & > div:first-of-type {
+    position: relative;
+    width: 40px;
+    height: 40px;
+  }
+
   & > h1 {
     font-size: 2.2em;
     letter-spacing: 2px;

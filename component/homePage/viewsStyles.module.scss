@@ -1,5 +1,78 @@
 @import "@source/_variables.scss";
 
 .views {
-  @include flexCenter(row);
+  // min-height: 1500px;
+  padding: 10px;
+  .view {
+    padding: 0;
+    margin: 10px 0;
+    @include flexCenter(row);
+    justify-content: space-between;
+    align-items: flex-start;
+    overflow: hidden;
+    & > div:first-of-type {
+      padding: 5px;
+      flex: 1;
+      @include flexCenter(column);
+      // border: 3px solid red;
+      align-items: flex-start;
+      & > div:nth-of-type(1) {
+        margin: 0;
+        @include flexCenter(row, initial);
+        & > div {
+          position: relative;
+          margin-right: 5px !important;
+          border-radius: 50%;
+          overflow: hidden;
+          height: 15px;
+          width: 15px;
+        }
+        & > p {
+          text-align: left;
+          display: -webkit-box;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;
+          word-break: break-all;
+          overflow: hidden;
+        }
+      }
+      & > h3 {
+        font-size: 1.7em;
+        text-align: left;
+        font-weight: bold;
+        color: var(--sec);
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        word-break: break-all;
+        overflow: hidden;
+      }
+      & > p {
+        font-size: 1.2em;
+        line-height: 1.1;
+        text-align: left;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        word-break: break-all;
+        overflow: hidden;
+      }
+      & > div:nth-of-type(2) {
+        border: 3px solid red;
+        font-size: 1.2em;
+        line-height: 1.1;
+        text-align: left;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        word-break: break-all;
+        overflow: hidden;
+      }
+    }
+    & > div:last-of-type {
+      // border-radius: 5px;
+      width: 150px;
+      // border: 3px solid green;
+    }
+  }
 }

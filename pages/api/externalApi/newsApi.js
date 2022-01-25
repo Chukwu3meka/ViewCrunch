@@ -11,9 +11,8 @@ const handler = async () => {
       const { date, data } = snapshot.data();
 
       const dateDiff = Math.round((new Date() - new Date(date)) / (1000 * 60 * 60 * 24)) - 1;
-
       if (dateDiff > 0) {
-        const articles = axios
+        const articles = await axios
           .request({
             method: "GET",
             url: "https://google-news1.p.rapidapi.com/top-headlines",
@@ -23,19 +22,16 @@ const handler = async () => {
               "x-rapidapi-key": "7f83d74909msh2c7d2c0befbae21p1bba78jsnfb62d3d51734",
             },
           })
-          .then((response) => response.data.articles)
+          .then((response) => response.data.articles.map(({ title, link }) => ({ title, link })))
           .catch(function (error) {
             throw error;
           });
 
-        await firebaseAdmin
-          .firestore()
-          .collection("news")
-          .doc("today")
-          .update({
-            date: new Date().toDateString(),
-            data: articles.map(({ title, link, source: { title: source } }) => ({ title, link, source })),
-          });
+        await firebaseAdmin.firestore().collection("news").doc("today").update({
+          data: articles,
+          date: new Date().toDateString(),
+        });
+
         return articles;
       } else {
         return data;

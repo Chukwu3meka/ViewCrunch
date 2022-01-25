@@ -46,7 +46,6 @@ const NavbarContainer = (props) => {
     ["My Crunch", "/crunch", <ImportantDevicesIcon />],
     ["Notification", "/notification", <NotificationsActiveIcon />],
     ["Portfolio", `/profile`, <AssignmentIndIcon />],
-    ["NEWS", "/news", <AssignmentIndIcon />],
   ];
 
   const currentThemeHandler = () => {
@@ -56,20 +55,25 @@ const NavbarContainer = (props) => {
     online && fetcher("/api/profile/changeTheme", JSON.stringify({ myHandle, myTheme }));
   };
 
+  // return <div className={navStyles.n}>dsfdsf</div>;
   return (
     <Grid item xs={12} sm={12} md={4}>
       <div className={navStyles.navigation}>
         <div>
-          <Typography component="h2">DISCOVER WHAT MATTERS TO YOU</Typography>
-          <div>
-            {crunches.map(({ title, link }) => (
-              <Link href={{ pathname: link }} key={link}>
-                <Button variant="outlined" size="small">
-                  {title}
-                </Button>
-              </Link>
-            ))}
-          </div>
+          <Typography component="h2">DISCOVER WHICH CRUNCH SUITS YOU</Typography>
+          {crunches.length ? (
+            <div>
+              {crunches.map(({ title, link }) => (
+                <Link href={{ pathname: link }} key={link}>
+                  <Button variant="outlined" size="small">
+                    {title}
+                  </Button>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <Typography variant="body2">We're searching for suitable Crunches</Typography>
+          )}
         </div>
         <div>
           <Typography component="h2">MAIN NAVIGATION</Typography>

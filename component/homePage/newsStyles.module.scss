@@ -12,27 +12,23 @@
 
   & > div {
     @include flexCenter(column);
-    border-left: 3px solid color(primary);
+    border-left: 2px solid color(primary);
     margin: 10px auto;
+    border-radius: 3px !important;
     @include flexCenter(column);
-    max-width: 700px;
     & > a {
-      align-self: flex-start;
       color: var(--sec) !important;
       font-weight: 600;
       font-size: 1.1em;
-      text-align: left;
+      text-align: center;
       display: -webkit-box;
       -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
       word-break: normal;
       overflow: hidden;
     }
-    & > p {
-      align-self: flex-end;
-    }
   }
-  & > a > div:hover {
-    border-left: 3px solid color(secondary);
+  & > div:hover {
+    border-left: 2px solid color(secondary);
   }
 }
