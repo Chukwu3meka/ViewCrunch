@@ -1,171 +1,109 @@
-import { SecBody } from "./";
 import { connect } from "react-redux";
 import { useSnackbar } from "notistack";
 import { sleep } from "@utils/clientFunctions";
 import { getViewAction, resetViewAction } from "@store/actions";
 import { useState, useEffect, useRef } from "react";
 
-import Fade from "react-reveal/Fade";
-import { Loading, Avatar } from "@component/others";
-import { Grid, Paper, Typography } from "@material-ui/core";
-import { shortNumber, trimString, toId } from "@utils/clientFunctions";
-import Link from "next/link";
-import Image from "next/image";
-import { viewsStyles } from ".";
-
-// import BookmarkAddIcon from "@material-ui/icons/BookmarkAdd";
-import BookmarkAddIcon from "@material-ui/icons/FavoriteBorderTwoTone";
+import { Views } from ".";
 
 const ViewsContainer = (props) => {
-  const { crunch, deviceWidth, getViewAction, myHandle } = props,
-    scrollRef = useRef(null),
-    { enqueueSnackbar } = useSnackbar(),
-    [loading, setLoading] = useState(false),
-    [online, setOnline] = useState(props?.online),
-    [fetchFailed, setFetchFailed] = useState(true),
+  const scrollRef = useRef(null),
     [views, setViews] = useState([]),
-    [blacklist, setBlacklist] = useState([]),
     [ready, setReady] = useState(false),
-    [lastVisible, setLastVisible] = useState();
+    { enqueueSnackbar } = useSnackbar(),
+    { getViewAction, myHandle } = props,
+    [loading, setLoading] = useState(false),
+    [lastVisible, setLastVisible] = useState(),
+    [online, setOnline] = useState(props?.online),
+    [fetchFailed, setFetchFailed] = useState(true);
 
   useEffect(() => {
-    getMorePost();
     setReady(true);
+    getViews("initial");
   }, []);
 
   useEffect(() => {
-    // if (!props?.online) stopFetching();
-    if (ready) setOnline(props?.online);
+    if (ready) {
+      setOnline(props?.online);
+      if (!props?.online) stopFetching();
+    }
   }, [props.online]);
 
-  // useEffect(() => {
-  //   if (props?.userAtBottom) getMorePost();
-  // }, [props.userAtBottom]);
-
-  // useEffect(() => {
-  //   let x = true;
-  //   if (x && loading) stopFetching();
-
-  //   return () => (x = false);
-  // }, [loading]);
+  useEffect(() => {
+    if (ready && props?.userAtBottom) getViews("more");
+  }, [props.userAtBottom]);
 
   useEffect(() => {
     if (ready && props.views?.length) {
-      // setLoading(false);
-      // setFetchFailed(false);
-      setViews([...views, ...props.views]);
+      setLoading(false);
+      if (!props.views.length) {
+        setFetchFailed(true);
+        enqueueSnackbar("No View Found, ", { variant: "info" });
+      } else {
+        setLoading(false);
+        setFetchFailed(false);
+        setViews([...views, ...props.views]);
+      }
     }
   }, [props.views]);
 
-  // useEffect(() => {
-  //   if (props.blacklist) setBlacklist(props.blacklist);
-  // }, [props.blacklist]);
+  // get new lastVisible
+  useEffect(() => {
+    if (ready && props.lastVisible) {
+      stopFetching(); // to prevent unwanted error
+      setLastVisible(props.lastVisible);
+    }
+  }, [props.lastVisible]);
 
-  // useEffect(() => {
-  //   if (props.lastVisible) setLastVisible(props.lastVisible);
-  // }, [props.lastVisible]);
-
-  const getMorePost = () => {
+  const getViews = (fetchType) => {
     if (lastVisible === "last view") {
-      // setLoading(false);
-      // setFetchFailed(false);
-      // enqueueSnackbar("You've gotten to the last View", { variant: "info" });
+      setLoading(false);
+      setFetchFailed(false);
+      enqueueSnackbar("You've gotten to the last View", { variant: "info" });
     } else {
-      // if (!online || !views.length) {
-      //   enqueueSnackbar(!views.length ? "Unable to fetch view" : "Network Connectivity issue", { variant: "info" });
-      //   return stopFetching();
-      // }
-
-      // if (!lastVisible) {
-      //   setLoading(false);
-      //   setFetchFailed(false);
-      //   return enqueueSnackbar(`No more view.`, { variant: "info" });
-      // }
-
-      if (!loading && online) {
-        // setLoading(true);
-        // setFetchFailed(false);
-        getViewAction({ myHandle, reduxBlacklist: blacklist, reduxLastVisible: lastVisible });
+      if (online) {
+        switch (fetchType) {
+          case "initial": {
+            setLoading(true);
+            setFetchFailed(false);
+            getViewAction({ handle: myHandle, blacklist: props.blacklist });
+            break;
+          }
+          case "more": {
+            if (!loading) {
+              setLoading(true);
+              setFetchFailed(false);
+              getViewAction({ handle: myHandle, blacklist: props.blacklist, reduxLastVisible: lastVisible });
+              break;
+            }
+          }
+          default: {
+            stopFetching();
+            return enqueueSnackbar("Something went wrong", { variant: "warning" });
+          }
+        }
       }
     }
   };
 
-  // const stopFetching = async () => {
-  //   await sleep(15);
-  //   setFetchFailed(true);
-  //   setLoading(false);
-  //   // scrollRef?.current?.scrollIntoView({ behavior: "smooth", block: "end" });
-  // };
+  const stopFetching = async () => {
+    await sleep(15);
+    setFetchFailed(true);
+    setLoading(false);
+    scrollRef?.current?.scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
+  };
 
-  // return views.length ? <SecBody {...{ views, deviceWidth, loading, getMorePost, fetchFailed, scrollRef }} /> : "";
-
-  return (
-    <div className={viewsStyles.views}>
-      <Typography variant="h2">Recent Views from Great Authors</Typography>
-      <div>
-        {views?.map(
-          ({
-            displayName,
-            profilePicture,
-            profileLink,
-            crunchLink,
-            crunch,
-            title,
-            image,
-            content,
-            date,
-            readTime,
-            keyword,
-            viewLink,
-          }) => (
-            <Fade bottom key={viewLink}>
-              <Paper className={viewsStyles.view}>
-                <div>
-                  <div>
-                    <div>
-                      <Image src={profilePicture} layout="fill" alt={displayName} />
-                    </div>
-                    <Typography variant="body1">
-                      <Link href={profileLink}>
-                        <a>{displayName}</a>
-                      </Link>
-                      &nbsp;in&nbsp;
-                      <Link href={crunchLink}>
-                        <a>{crunch}</a>
-                      </Link>
-                    </Typography>
-                  </div>
-                  <Link href={viewLink}>
-                    <a>
-                      <Typography variant="h5" component="h3">
-                        {title}
-                      </Typography>
-                    </a>
-                  </Link>
-                  <Typography variant="body2">{content.replace(/<[^>]+>/g, "")}</Typography>
-                  <div>
-                    <Typography variant="body2">{`${date} · ${readTime} ☆ ${keyword}`}</Typography>
-                    <BookmarkAddIcon fontSize="small" />
-                  </div>
-                </div>
-                <Image src={image} width={140} height={130} alt={title} />
-              </Paper>
-            </Fade>
-          )
-        )}
-      </div>
-    </div>
-  );
+  return <Views {...{ views, loading, fetchFailed, scrollRef, getViews }} />;
 };
 
 const mapStateToProps = (state) => ({
     myHandle: state.profile?.myHandle,
-    online: state.device?.online,
+    online: state.device.online,
     views: state.view?.views,
     blacklist: state.view?.blacklist,
     lastVisible: state.view?.lastVisible,
-    deviceWidth: state.device?.deviceWidth,
-    userAtBottom: state.device?.userAtBottom,
+    deviceWidth: state.device.deviceWidth,
+    userAtBottom: state.device.userAtBottom,
   }),
   mapDispatchToProps = { getViewAction, resetViewAction };
 

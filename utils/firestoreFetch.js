@@ -19,12 +19,12 @@ export const isHandleTaken = async (handle) => {
 };
 
 export const fetchProfile = async (handle) => {
-  return profileRef
+  return await profileRef
     .doc(handle)
     .get()
     .then((snapshot) => {
       if (snapshot.exists) return snapshot.data();
-      return null;
+      throw "author not found";
     })
     .catch((error) => {
       return null;
@@ -441,6 +441,38 @@ export const fetchHomeViews = async ({ crunch, blacklist }) => {
   return { highlight, newsFlash, primary };
 };
 
+export const fetchViewForRetouch = async ({ ref, myHandle }) => {
+  try {
+    const [, author] = ref.split("@");
+    if (`@${author}` !== myHandle) return { error: "View belongs to someone else" };
+
+    const view = await viewRef
+      .doc(ref)
+      .get()
+      .then((snapshot) => {
+        if (snapshot.exists) return snapshot.data();
+        throw new TypeError("snapshot does not exist");
+      })
+      .catch((err) => {
+        throw new TypeError(err);
+      });
+
+    if (!view) return { error: "Unable to locate view" };
+    const {
+      crunch,
+      content,
+      keywords,
+      description,
+      title: { data: title },
+    } = view;
+
+    return { content, title, description, keywords, crunch: crunch[0] };
+  } catch (err) {
+    // console.log(err);
+    return { error: "Error fetching view" };
+  }
+};
+
 export const oldfetchViews = async ({ myHandle, crunch, lastVisible, blacklist = [] }) => {
   const secondary = [],
     profile = myHandle ? await fetchProfile(myHandle) : null;
@@ -538,24 +570,26 @@ export const oldfetchViews = async ({ myHandle, crunch, lastVisible, blacklist =
 };
 
 export const fetchViews = async ({ handle, blacklist, lastVisible }) => {
-  if (!blacklist) {
-    blacklist = await fetchProfile(handle).blacklist;
-  }
+  console.log({ blacklist });
+
+  if (!blacklist)
+    blacklist = await fetchProfile(handle)
+      .then((x) => x.blacklist)
+      .catch((e) => {
+        throw e;
+      });
+
+  console.log({ blacklist });
 
   const ref = viewRef.where("visible.status", "==", true).orderBy("stat.date", "desc");
 
   const views = await (lastVisible
-    ? ref
-        .startAfter(firebase.firestore.Timestamp.fromDate(new Date(JSON.parse(lastVisible.date)), lastVisible.title))
-        .limit(5 - secondary.length)
+    ? ref.startAfter(firebase.firestore.Timestamp.fromDate(new Date(JSON.parse(lastVisible.date)), lastVisible.title)).limit(5)
     : ref.limit(7)
   )
     .get()
     .then(async (snapshot) => {
-      if (!snapshot?.docs?.length) return (lastVisible = "last view");
-
       const views = [];
-
       if (snapshot.docs?.length) {
         for (const doc of snapshot.docs) {
           const {
@@ -564,73 +598,46 @@ export const fetchViews = async ({ handle, blacklist, lastVisible }) => {
             stat: { author, crunch, date, readTime, keyword, image, viewLink },
           } = doc.data();
 
-          const {
-            displayName,
-            profilePicture,
-            stat: { profileLink },
-          } = await fetchProfile(author);
+          if (!blacklist.includes(author)) {
+            const {
+              displayName,
+              profilePicture,
+              stat: { profileLink },
+            } = await fetchProfile(author);
 
-          views.push({
-            image,
-            title,
-            author,
-            crunch,
-            keyword,
-            content,
-            viewLink,
-            readTime,
-            displayName,
-            profileLink,
-            profilePicture,
-            date: dateCalculator({ date: date.toDate().toDateString() }),
-            crunchLink: `/crunch/${toId(crunch)}`,
-          });
+            views.push({
+              image,
+              title,
+              author,
+              crunch,
+              keyword,
+              content,
+              viewLink,
+              readTime,
+              displayName,
+              profileLink,
+              profilePicture,
+              date: dateCalculator({ date: date.toDate().toDateString() }),
+              crunchLink: `/crunch/${toId(crunch)}`,
+            });
 
-          // console.log();
-          lastVisible = { title, date: JSON.stringify(date.toDate()) };
+            // console.log();
+            lastVisible = { title, date: JSON.stringify(date.toDate()) };
+          }
         }
 
         return views;
+      } else {
+        lastVisible = "last view";
+        return null;
       }
     })
     .catch((err) => {
-      // console.log(err);
+      console.log(err);
       throw err;
     });
 
   return { lastVisible, views, blacklist };
-};
-
-export const fetchViewForRetouch = async ({ ref, myHandle }) => {
-  try {
-    const [, author] = ref.split("@");
-    if (`@${author}` !== myHandle) return { error: "View belongs to someone else" };
-
-    const view = await viewRef
-      .doc(ref)
-      .get()
-      .then((snapshot) => {
-        if (snapshot.exists) return snapshot.data();
-        throw new TypeError("snapshot does not exist");
-      })
-      .catch((err) => {
-        throw new TypeError(err);
-      });
-
-    if (!view) return { error: "Unable to locate view" };
-    const {
-      crunch,
-      content,
-      keywords,
-      description,
-      title: { data: title },
-    } = view;
-
-    return { content, title, description, keywords, crunch: crunch[0] };
-  } catch (err) {
-    // console.log(err);
-    return { error: "Error fetching view" };
-  }
 };
 
 export const fetchTrending = async () => {

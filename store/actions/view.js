@@ -1,12 +1,12 @@
 import { addError, removeError } from "./error";
 import { fetchViews } from "@utils/firestoreFetch";
 
-export const getViewAction = ({ myHandle, reduxBlacklist, reduxLastVisible }) => {
+export const getViewAction = ({ handle, reduxLastVisible }) => {
   return async (dispatch) => {
     try {
       const { lastVisible, views, blacklist } = await fetchViews({
-        handle: myHandle,
-        blacklist: reduxBlacklist,
+        handle,
+        blacklist,
         lastVisible: reduxLastVisible,
       });
 
