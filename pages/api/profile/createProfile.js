@@ -15,12 +15,15 @@ const initialCrunches = [
 ];
 
 const createProfileHandler = async ({ handle, myRefresh }) => {
-  const { access_token: token } = await fetch(`https://securetoken.googleapis.com/v1/token?key=${process.env.FIREBASE_API_KEY}`, {
-    method: "POST",
-    headers: new Headers({ "Content-Type": "application/x-www-form-urlencoded" }),
-    body: `grant_type=refresh_token&refresh_token=${myRefresh}`,
-    credentials: "same-origin",
-  }).then((res) => res.json());
+  const { access_token: token } = await fetch(
+    `https://securetoken.googleapis.com/v1/token?key=${process.env.NEXT_PUBLIC_FIREBASE_API_KEY}`,
+    {
+      method: "POST",
+      headers: new Headers({ "Content-Type": "application/x-www-form-urlencoded" }),
+      body: `grant_type=refresh_token&refresh_token=${myRefresh}`,
+      credentials: "same-origin",
+    }
+  ).then((res) => res.json());
 
   const uid = await firebaseAdmin
     .auth()
