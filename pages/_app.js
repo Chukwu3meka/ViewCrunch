@@ -24,7 +24,8 @@ const App = ({ Component, pageProps }) => {
   config({ ssrFadeout: true });
   const store = useStore(pageProps.initialReduxState),
     { myRefresh } = userControl(),
-    [online, setOnline] = useState(true),
+    //to make sure persistUser handler has finished running, before any page can display
+    [ready, setReady] = useState(false),
     [pageReady, setPageReady] = useState(false),
     [appTheme, setAppTheme] = useState("light"),
     [chooseHandle, setChooseHandle] = useState(false);
@@ -44,22 +45,20 @@ const App = ({ Component, pageProps }) => {
     } else {
       store.dispatch(setProfileAction({}));
     }
+    setReady(true);
   };
 
   useEffect(() => {
     store.dispatch(setOnlineAction(window.navigator.onLine));
-    setOnline(window.navigator.onLine);
   });
 
   useEffect(() => {
-    if (myRefresh && online) persistUser();
+    if (myRefresh && window.navigator.onLine) persistUser();
   }, [myRefresh]);
 
   useEffect(() => {
     let mounted = true;
     if (mounted) {
-      setPageReady(true);
-
       const jssStyles = document.querySelector("#jss-server-side");
       if (jssStyles) jssStyles.parentElement.removeChild(jssStyles);
 
@@ -74,10 +73,12 @@ const App = ({ Component, pageProps }) => {
       Router.events.on("routeChangeError", () => {
         setPageReady(true);
       });
+      setPageReady(true);
     }
 
     return () => {
       mounted = false;
+      setPageReady(true);
       Router.events.off("routeChangeComplete", (url) => gtag.pageview(url));
     };
   }, []);
@@ -133,7 +134,7 @@ const App = ({ Component, pageProps }) => {
           <SnackbarProvider maxSnack={1} preventDuplicate>
             <LayoutContainer setAppTheme={setAppTheme}>
               {/* renable this */}
-              {pageReady ? <Component {...pageProps} /> : <Loading />}
+              {ready && pageReady ? <Component {...pageProps} /> : <Loading />}
               {/* {chooseHandle && <Handle myRefresh={myRefresh} />} */}
             </LayoutContainer>
           </SnackbarProvider>

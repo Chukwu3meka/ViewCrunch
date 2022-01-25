@@ -7,13 +7,14 @@ import { useState, useEffect, useRef } from "react";
 import { Views } from ".";
 
 const ViewsContainer = (props) => {
-  const scrollRef = useRef(null),
+  const { enqueueSnackbar } = useSnackbar(),
+    scrollRef = useRef(null),
+    { getViewAction } = props,
     [views, setViews] = useState([]),
     [ready, setReady] = useState(false),
-    { enqueueSnackbar } = useSnackbar(),
-    { getViewAction, myHandle } = props,
     [loading, setLoading] = useState(false),
     [lastVisible, setLastVisible] = useState(),
+    [handle, setHandle] = useState(props.handle),
     [online, setOnline] = useState(props?.online),
     [fetchFailed, setFetchFailed] = useState(true);
 
@@ -21,6 +22,8 @@ const ViewsContainer = (props) => {
     setReady(true);
     getViews("initial");
   }, []);
+
+  useEffect(() => setHandle(props.handle), [props.handle]);
 
   useEffect(() => {
     if (ready) {
@@ -66,20 +69,23 @@ const ViewsContainer = (props) => {
           case "initial": {
             setLoading(true);
             setFetchFailed(false);
-            getViewAction({ handle: myHandle, blacklist: props.blacklist });
+            getViewAction({ handle, blacklist: props.blacklist });
             break;
           }
           case "more": {
             if (!loading) {
               setLoading(true);
               setFetchFailed(false);
-              getViewAction({ handle: myHandle, blacklist: props.blacklist, reduxLastVisible: lastVisible });
+              getViewAction({ handle, blacklist: props.blacklist, reduxLastVisible: lastVisible });
               break;
             }
           }
           default: {
             stopFetching();
-            return enqueueSnackbar("Something went wrong", { variant: "warning" });
+            getViewAction({ handle, blacklist: props.blacklist, reduxLastVisible: lastVisible });
+            setLoading(true);
+            setFetchFailed(false);
+            // return enqueueSnackbar("Something went wrong", { variant: "warning" });
           }
         }
       }
@@ -97,7 +103,7 @@ const ViewsContainer = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-    myHandle: state.profile?.myHandle,
+    handle: state.profile?.myHandle,
     online: state.device.online,
     views: state.view?.views,
     blacklist: state.view?.blacklist,

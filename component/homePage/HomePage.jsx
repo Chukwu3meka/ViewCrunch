@@ -1,7 +1,7 @@
-import { connect } from "react-redux";
 import Grid from "@material-ui/core/Grid";
-import { Intro, Trending, News, ViewsContainer, homeStyles } from ".";
+
 import { NavContainer, Footer } from "@component/layout";
+import { Intro, Trending, News, ViewsContainer } from ".";
 
 const HomePage = ({ trending }) => (
   <div>
@@ -19,9 +19,4 @@ const HomePage = ({ trending }) => (
   </div>
 );
 
-const mapStateToProps = (state) => ({
-    deviceWidth: state.device?.deviceWidth,
-  }),
-  mapDispatchToProps = {};
-
-export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
+export default HomePage;

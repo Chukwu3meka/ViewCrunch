@@ -10,7 +10,9 @@ const handler = async () => {
     .then(async (snapshot) => {
       const { date, data } = snapshot.data();
 
-      const dateDiff = Math.round((new Date() - new Date(date)) / (1000 * 60 * 60 * 24)) - 1;
+      // (new Date() - new Date(date)) / (1000 * 60 * 60 * 24) - 1;
+      const dateDiff = Math.round(new Date(new Date().toDateString()) - new Date(date)) / (1000 * 60 * 60 * 24);
+
       if (dateDiff > 0) {
         const articles = await axios
           .request({

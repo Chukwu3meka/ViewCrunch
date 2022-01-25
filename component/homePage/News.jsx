@@ -19,7 +19,9 @@ const NewsFlash = () => {
       <Typography variant="h2">Top Headlines</Typography>
       {news.map(({ title, link }) => (
         <Paper key={link}>
-          <a href={link}>{title}</a>
+          <a target="_blank" href={link}>
+            {title}
+          </a>
         </Paper>
       ))}
     </div>
