@@ -41,7 +41,7 @@ const LayoutContainer = (props) => {
       }
 
       // user at bottom
-      setUserAtBottom(scrollY > lastScrollY && scrollY > window.innerHeight + 100);
+      setUserAtBottom(scrollY > lastScrollY && scrollY > window.innerHeight + 200);
       setScrollDir(scrollY > lastScrollY ? "scrolling down" : "scrolling up");
       lastScrollY = scrollY > 0 ? scrollY : 0;
       ticking = false;

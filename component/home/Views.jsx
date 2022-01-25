@@ -11,7 +11,7 @@ import { Loading } from "@component/others";
 
 const Views = ({ views, loading, fetchFailed, getViews }) => (
   <div className={viewsStyles.views}>
-    <Typography variant="h2">Recent Views from Great Authors</Typography>
+    <Typography variant="h2">Recently Published</Typography>
     <div>
       {views?.map(
         ({ displayName, profilePicture, profileLink, crunchLink, crunch, title, image, content, date, readTime, keyword, viewLink }) => (
@@ -33,11 +33,9 @@ const Views = ({ views, loading, fetchFailed, getViews }) => (
                   </Typography>
                 </div>
                 <Link href={viewLink}>
-                  <a>
-                    <Typography variant="h5" component="h3">
-                      {title}
-                    </Typography>
-                  </a>
+                  <Typography variant="h5" component="h2">
+                    <a>{title}</a>
+                  </Typography>
                 </Link>
                 <Typography variant="body2">{content.replace(/<[^>]+>/g, "")}</Typography>
                 <div>

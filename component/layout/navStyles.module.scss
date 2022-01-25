@@ -4,7 +4,6 @@
   position: -webkit-sticky; /* Safari & IE */
   position: sticky;
   top: 50px;
-  z-index: 100;
   @include flexCenter(column);
   justify-content: space-between;
   align-items: flex-start;

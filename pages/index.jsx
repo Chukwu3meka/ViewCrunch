@@ -1,17 +1,12 @@
-import { ErrorPage, SeoHead } from "@component/page";
-import HomePage, { SecBodyContainer } from "@component/homePage";
+import { ErrorPage } from "@component/page";
+import HomeContainer from "@component/home";
 
 const Index = ({ error, trending }) => {
   if (error) return <ErrorPage statusCode={error.code} title={error.title} />;
 
-  return <HomePage trending={trending} />;
-
-  // {/* <SeoHead /> */}
-  // {/* <div style={{ padding: "0 10px 0" }}> */}
-  // <HomePage {...{ highlight, newsFlash, primary }} />
-  // {/* <SecBodyContainer {...{ serverSecondary: secondary, serverLastVisible: lastVisible, crunch, serverBlacklist: blacklist }} /> */}
-  // {/* </div> */}
+  return <HomeContainer trending={trending} />;
 };
+
 export default Index;
 
 export const getServerSideProps = async () => {

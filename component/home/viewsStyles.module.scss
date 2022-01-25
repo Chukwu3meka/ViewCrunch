@@ -37,19 +37,16 @@
             display: -webkit-box;
             -webkit-line-clamp: 1;
             -webkit-box-orient: vertical;
-            word-break: break-all;
             overflow: hidden;
           }
         }
-        a > h3 {
+        h2 > a {
           color: var(--sec) !important;
-          font-size: 1.7em;
           text-align: left;
           font-weight: bold;
           display: -webkit-box;
           -webkit-line-clamp: 1;
           -webkit-box-orient: vertical;
-          word-break: break-all;
           overflow: hidden;
         }
         & > p {
@@ -59,7 +56,6 @@
           display: -webkit-box;
           -webkit-line-clamp: 2;
           -webkit-box-orient: vertical;
-          word-break: break-all;
           overflow: hidden;
         }
         & > div:nth-of-type(2) {

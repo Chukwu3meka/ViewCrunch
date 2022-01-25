@@ -10,6 +10,7 @@ import ImportantDevicesIcon from "@material-ui/icons/ImportantDevices";
 import NotificationsActiveIcon from "@material-ui/icons/NotificationsActive";
 
 import { Nav } from ".";
+import { fetcher } from "@utils/clientFunctions";
 import { setProfileAction } from "@store/actions";
 import { fetchNavCrunches } from "@utils/firestoreFetch";
 

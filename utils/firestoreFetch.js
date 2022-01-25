@@ -570,6 +570,8 @@ export const oldfetchViews = async ({ myHandle, crunch, lastVisible, blacklist =
 };
 
 export const fetchViews = async ({ handle, blacklist, lastVisible }) => {
+  console.log({ handle, blacklist, lastVisible });
+
   if (!blacklist && handle) {
     blacklist = await fetchProfile(handle)
       .then((x) => x.blacklist)
