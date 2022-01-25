@@ -14,7 +14,7 @@ import Image from "next/image";
 import { viewsStyles } from ".";
 
 // import BookmarkAddIcon from "@material-ui/icons/BookmarkAdd";
-import BookmarkAddIcon from "@material-ui/icons/BookmarkBorderOutlined";
+import BookmarkAddIcon from "@material-ui/icons/FavoriteBorderTwoTone";
 
 const ViewsContainer = (props) => {
   const { crunch, deviceWidth, getViewAction, myHandle } = props,
@@ -103,8 +103,9 @@ const ViewsContainer = (props) => {
 
   return (
     <div className={viewsStyles.views}>
+      <Typography variant="h2">Recent Views from Great Authors</Typography>
       {views?.map(
-        ({ displayName, profilePicture, profileLink, crunchLink, crunch, title, image, content, date, readTime, keywords, path }) => (
+        ({ displayName, profilePicture, profileLink, crunchLink, crunch, title, image, content, date, readTime, keyword, path }) => (
           <Fade bottom key={path}>
             <Paper className={viewsStyles.view}>
               <div>
@@ -112,7 +113,7 @@ const ViewsContainer = (props) => {
                   <div>
                     <Image src={profilePicture} layout="fill" alt={displayName} />
                   </div>
-                  <Typography variant="body1" component="p">
+                  <Typography variant="body1">
                     <Link href={profileLink}>
                       <a>{displayName}</a>
                     </Link>
@@ -127,9 +128,8 @@ const ViewsContainer = (props) => {
                 </Typography>
                 <Typography variant="body2">{content.replace(/<[^>]+>/g, "")}</Typography>
                 <div>
-                  <Typography variant="body2" component="p">
-                    {`${date} · ${readTime} ☆ ${keywords.split(", ")[0]}`}
-                  </Typography>
+                  <Typography variant="body2">{`${date} · ${readTime} ☆ ${keyword}`}</Typography>
+                  <BookmarkAddIcon fontSize="small" />
                 </div>
               </div>
               <Image src={image} width={140} height={130} alt={title} />

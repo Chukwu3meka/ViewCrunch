@@ -25,7 +25,7 @@ export default async (req, res) => {
           // console.log(link ? link?.split(" />")[0] : "null;dsdfd");
           // readTime
           await firebaseAdmin.firestore().collection("view").doc(doc.id).update({
-            "stat.keywords": "viewcrunch, chukwuemeka, view",
+            "stat.keyword": "viewcrunch",
             // "stat.author": `@maduekwepedro`,
             // {
             //   author: "chukwuemeka@maduekwe",

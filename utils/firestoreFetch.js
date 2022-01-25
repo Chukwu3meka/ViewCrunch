@@ -561,7 +561,7 @@ export const fetchViews = async ({ handle, blacklist, lastVisible }) => {
           const {
             title,
             content,
-            stat: { author, crunch, date, readTime, keywords, image, path },
+            stat: { author, crunch, date, readTime, keyword, image, path },
           } = doc.data();
 
           const {
@@ -577,7 +577,7 @@ export const fetchViews = async ({ handle, blacklist, lastVisible }) => {
             author,
             crunch,
             readTime,
-            keywords,
+            keyword,
             displayName,
             profileLink,
             profilePicture,

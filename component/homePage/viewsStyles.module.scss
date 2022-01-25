@@ -1,11 +1,15 @@
 @import "@source/_variables.scss";
 
 .views {
-  // min-height: 1500px;
   padding: 10px;
+  & > h2 {
+    font-family: "Playfair Display", serif;
+    font-size: 1.9em;
+    color: color(primary);
+  }
   .view {
     padding: 0;
-    margin: 10px 0;
+    margin: 30px 0;
     @include flexCenter(row);
     justify-content: space-between;
     align-items: flex-start;
@@ -14,7 +18,6 @@
       padding: 5px;
       flex: 1;
       @include flexCenter(column);
-      // border: 3px solid red;
       align-items: flex-start;
       & > div:nth-of-type(1) {
         margin: 0;
@@ -58,21 +61,23 @@
         overflow: hidden;
       }
       & > div:nth-of-type(2) {
-        border: 3px solid red;
-        font-size: 1.2em;
-        line-height: 1.1;
-        text-align: left;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        word-break: break-all;
-        overflow: hidden;
+        margin-top: 7px;
+        @include flexCenter(row);
+        justify-content: space-between;
+        p {
+          font-family: "Playfair Display", serif;
+          line-height: 1;
+          text-align: left;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          word-break: break-all;
+          overflow: hidden;
+        }
       }
     }
     & > div:last-of-type {
-      // border-radius: 5px;
       width: 150px;
-      // border: 3px solid green;
     }
   }
 }

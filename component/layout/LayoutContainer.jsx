@@ -7,12 +7,14 @@ import { setUserAtBottom, setDisplayHeader, setDeviceWidth } from "@store/action
 const LayoutContainer = (props) => {
   const scrollRef = useRef(null),
     [style, setStyle] = useState({}),
-    [lastScrollPos, setLastScrollPos] = useState(0),
-    [userAtBottom, setUserAtBottom] = useState(false),
-    { children, setDisplayHeader, setDeviceWidth, setAppTheme } = props;
+    [scrollDir, setScrollDir] = useState("scrolling down"),
+    { children, setDisplayHeader, setDeviceWidth, setAppTheme, setUserAtBottom } = props;
 
-  const pathname = useRouter().pathname;
+  useEffect(() => {
+    setDeviceWidth(window.innerWidth);
+  });
 
+  // to enable dark/light theme
   useEffect(() => {
     setAppTheme(props.theme);
     setStyle({
@@ -23,17 +25,7 @@ const LayoutContainer = (props) => {
     });
   }, [props.theme]);
 
-  useEffect(() => {
-    setDeviceWidth(window.innerWidth);
-  });
-
-  const userAtBottomHandler = (status) => {
-    setUserAtBottom(status);
-    props.setUserAtBottom(status);
-  };
-
-  const [scrollDir, setScrollDir] = useState("scrolling down");
-
+  // scroll direction and to detect when user is at the bottom
   useEffect(() => {
     const threshold = 0;
     let lastScrollY = window.pageYOffset;
@@ -46,6 +38,10 @@ const LayoutContainer = (props) => {
         ticking = false;
         return;
       }
+
+      // user at bottom
+      setUserAtBottom(scrollY > lastScrollY && scrollY > window.innerHeight + 500);
+
       setScrollDir(scrollY > lastScrollY ? "scrolling down" : "scrolling up");
       lastScrollY = scrollY > 0 ? scrollY : 0;
       ticking = false;
@@ -69,34 +65,7 @@ const LayoutContainer = (props) => {
     return () => window.removeEventListener("scroll", onScroll);
   }, [scrollDir]);
 
-  const handleScroll = (e) => {
-    //   // user at bottom
-    //   if (!userAtBottom && e.target.clientHeight + 400 >= e.target.scrollHeight - e.target.scrollTop) userAtBottomHandler(true);
-    //   if (userAtBottom && e.target.clientHeight + 400 < e.target.scrollHeight - e.target.scrollTop) userAtBottomHandler(false);
-    //   // bottom scroll
-    //   if (e.target.scrollTop > lastScrollPos) setDisplayHeader("hidden");
-    //   if (e.target.scrollTop <= lastScrollPos) setDisplayHeader("visible");
-    //   setLastScrollPos(e.target.scrollTop);
-    // console.log("scrolling");
-  };
-
-  // const scrollTop = () => {
-  //   scrollRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
-  // };
-
-  return (
-    <Layout
-      {...{
-        handleScroll,
-        children,
-        style,
-        pathname,
-        scrollRef,
-        //
-        // scrollTop,
-      }}
-    />
-  );
+  return <Layout children={children} style={style} scrollRef={scrollRef} />;
 };
 
 const mapStateToProps = (state) => ({
