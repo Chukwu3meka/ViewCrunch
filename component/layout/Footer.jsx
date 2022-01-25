@@ -1,8 +1,10 @@
-import { layoutStyles } from "/";
 import Link from "next/link";
 import Image from "next/image";
-import { AuthFirebase } from "@component/page";
+
 import Typography from "@material-ui/core/Typography";
+
+import { layoutStyles } from "/";
+import { AuthFirebase } from "@component/page";
 
 const Footer = () => (
   <div className={layoutStyles.footer}>

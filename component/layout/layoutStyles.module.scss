@@ -1,6 +1,7 @@
 @import "@source/_variables.scss";
 
 .layout {
+  min-height: 100vh;
   box-sizing: border-box;
   font-family: "Amiri", serif;
   a:link {

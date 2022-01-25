@@ -1,28 +1,28 @@
 import Link from "next/link";
 import Image from "next/image";
-import { layoutStyles, NavbarContainer } from "/";
 
-import Menu from "@material-ui/core/Menu";
-import Button from "@material-ui/core/Button";
-import MenuIcon from "@material-ui/icons/Menu";
 import Toolbar from "@material-ui/core/Toolbar";
-import MenuItem from "@material-ui/core/MenuItem";
 import SearchIcon from "@material-ui/icons/Search";
 import InputBase from "@material-ui/core/InputBase";
-import IconButton from "@material-ui/core/IconButton";
-import { Typography } from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
 
-const Header = ({ classes, hidden, hamburger, handleMenu, anchorEl, handleClose, searchBar, open }) => (
+import { layoutStyles } from "/";
+
+const Header = ({ classes, hidden, mobile }) => (
   <div className={hidden === "hidden" ? layoutStyles.headerHidden : layoutStyles.header}>
-    <Link href="/">
-      <div>
-        <Image src="/images/ViewCrunch.webp" layout="fill" alt="ViewCrunch" />
-      </div>
-    </Link>
+    {mobile ? (
+      <Link href="/">
+        <div>
+          <Image src="/images/ViewCrunch.webp" layout="fill" alt="ViewCrunch" />
+        </div>
+      </Link>
+    ) : (
+      <div />
+    )}
     <Link href="/">
       <Typography variant="h1">ViewCrunch</Typography>
     </Link>
-    {searchBar ? (
+    {mobile ? (
       <Toolbar>
         <div className={classes.search}>
           <div className={classes.searchIcon}>

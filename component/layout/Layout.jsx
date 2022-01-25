@@ -1,4 +1,4 @@
-import { layoutStyles, HeaderContainer, Footer } from "/";
+import { layoutStyles, HeaderContainer } from "/";
 
 const Layout = ({ children, style, scrollRef }) => (
   <div className={layoutStyles.layout} style={style} ref={scrollRef}>

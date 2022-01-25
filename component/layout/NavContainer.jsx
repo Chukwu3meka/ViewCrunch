@@ -1,32 +1,25 @@
-import { Button, Typography } from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
-import { fetchNavCrunches } from "@utils/firestoreFetch";
-import { useEffect, useState } from "react";
-import { navStyles, Footer } from ".";
-import ThemeIcon from "@material-ui/icons/EmojiObjects";
-
-import Link from "next/link";
-import { List, ListItem, IconButton, ListItemIcon, ListItemText, Badge } from "@material-ui/core";
 import { connect } from "react-redux";
+import { useEffect, useState } from "react";
 
 import HomeIcon from "@material-ui/icons/Home";
 import TimelineIcon from "@material-ui/icons/Timeline";
 import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
-import ImportantDevicesIcon from "@material-ui/icons/ImportantDevices";
 import ContactUsIcon from "@material-ui/icons/ContactSupportOutlined";
 import NotificationsOffIcon from "@material-ui/icons/NotificationsOff";
+import ImportantDevicesIcon from "@material-ui/icons/ImportantDevices";
 import NotificationsActiveIcon from "@material-ui/icons/NotificationsActive";
+
+import { Nav } from ".";
 import { setProfileAction } from "@store/actions";
-import SettingsIcon from "@material-ui/icons/Settings";
+import { fetchNavCrunches } from "@utils/firestoreFetch";
 
 const NavbarContainer = (props) => {
   const { profile, setProfileAction } = props,
-    // { enqueueSnackbar } = useSnackbar(),
+    [crunches, setCrunches] = useState([]),
+    [activeNav, setActiveNav] = useState("/"),
     [online, setOnline] = useState(props.online),
-    [currentTheme, setCurrentTheme] = useState(profile.myTheme || "light"),
-    [selectedNavBar, setSelectedNavBar] = useState("https://ViewCrunch.com"),
-    { myCoverPicture, myDisplayName, myProfession, myHandle, myProfilePicture, myNotification } = profile || [],
-    [crunches, setCrunches] = useState([]);
+    { myHandle, myNotification } = profile || [],
+    [currentTheme, setCurrentTheme] = useState(profile.myTheme || "light");
 
   useEffect(() => {
     setOnline(props.online);
@@ -38,10 +31,10 @@ const NavbarContainer = (props) => {
       if (!error) setCrunches(crunches);
     };
 
-    getCrunches();
-  }, []);
+    if (online) getCrunches();
 
-  console.log(myNotification);
+    setActiveNav(window.location.pathname);
+  }, []);
 
   const mainNav = [
     ["Home", "/", <HomeIcon />],
@@ -59,53 +52,7 @@ const NavbarContainer = (props) => {
     online && fetcher("/api/profile/changeTheme", JSON.stringify({ myHandle, myTheme }));
   };
 
-  // return <div className={navStyles.n}>dsfdsf</div>;
-  return (
-    <Grid item xs={12} sm={12} md={4}>
-      <div className={navStyles.navigation}>
-        <div>
-          <Typography component="h2">MAIN NAVIGATION</Typography>
-          <div>
-            {mainNav.map(([label, link, icon], index) => (
-              <Link href={{ pathname: link }} key={link}>
-                <Button variant="outlined" size="small" startIcon={icon}>
-                  {label}
-                </Button>
-              </Link>
-            ))}
-          </div>
-        </div>
-        <div>
-          <Typography component="h2">DISCOVER WHICH CRUNCH SUITS YOU</Typography>
-          {crunches.length ? (
-            <div>
-              {crunches.map(({ title, link }) => (
-                <Link href={{ pathname: link }} key={link}>
-                  <Button variant="outlined" size="small">
-                    {title}
-                  </Button>
-                </Link>
-              ))}
-            </div>
-          ) : (
-            <Typography variant="body2">We're searching for suitable Crunches</Typography>
-          )}
-        </div>
-
-        <div>
-          <Link href="/settings">
-            <span>
-              <IconButton>
-                <SettingsIcon fontSize="small" />
-              </IconButton>
-              <Typography variant="body2">Settings</Typography>
-            </span>
-          </Link>
-          <ThemeIcon onClick={currentThemeHandler} style={{ cursor: "pointer" }} />
-        </div>
-      </div>
-    </Grid>
-  );
+  return <Nav {...{ mainNav, activeNav, crunches, currentThemeHandler, myNotification }} />;
 };
 
 const mapStateToProps = (state) => ({

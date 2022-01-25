@@ -152,6 +152,7 @@
   @include flexCenter(column);
   position: relative;
   min-height: 100px;
+  height: 100%;
   .span1 {
     border-top: 3px solid color(secondary);
     height: 50px;

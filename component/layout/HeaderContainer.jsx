@@ -41,27 +41,14 @@ const useStyles = makeStyles((theme) => ({
 const HeaderContainer = (props) => {
   const classes = useStyles(),
     [hidden, setHidden] = useState(false),
-    [anchorEl, setAnchorEl] = useState(null),
-    [hamburger, setHamburger] = useState(false),
-    [searchBar, setSearchBar] = useState(false),
-    open = Boolean(anchorEl);
+    [mobile, setMobile] = useState(false);
 
   useEffect(() => {
-    // console.log(props.headerDisplay);
     setHidden(props.headerDisplay);
-    // setSearchBar(window.innerWidth >= 400);
-    // setHamburger(window.innerWidth < 1280);
+    setMobile(window.innerWidth >= 400);
   }, [props.headerDisplay]);
 
-  const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  return <Header {...{ classes, hidden, hamburger, handleMenu, anchorEl, handleClose, searchBar, open }} />;
+  return <Header {...{ classes, hidden, mobile }} />;
 };
 
 const mapStateToProps = (state) => ({

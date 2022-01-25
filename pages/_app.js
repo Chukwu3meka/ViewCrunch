@@ -134,7 +134,13 @@ const App = ({ Component, pageProps }) => {
           <SnackbarProvider maxSnack={1} preventDuplicate>
             <LayoutContainer setAppTheme={setAppTheme}>
               {/* renable this */}
-              {ready && pageReady ? <Component {...pageProps} /> : <Loading />}
+              {ready && pageReady ? (
+                <Component {...pageProps} />
+              ) : (
+                <div style={{ height: "calc(100vh - 50px)" }}>
+                  <Loading />
+                </div>
+              )}
               {/* {chooseHandle && <Handle myRefresh={myRefresh} />} */}
             </LayoutContainer>
           </SnackbarProvider>

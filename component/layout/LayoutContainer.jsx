@@ -1,7 +1,7 @@
-import { Layout } from "/";
 import { connect } from "react-redux";
-import { useRouter } from "next/router";
 import { useState, useEffect, useRef } from "react";
+
+import { Layout } from "/";
 import { setUserAtBottom, setDisplayHeader, setDeviceWidth } from "@store/actions";
 
 const LayoutContainer = (props) => {
@@ -12,6 +12,7 @@ const LayoutContainer = (props) => {
 
   useEffect(() => {
     setDeviceWidth(window.innerWidth);
+    return () => setDeviceWidth(window.innerWidth);
   });
 
   // to enable dark/light theme
@@ -39,9 +40,8 @@ const LayoutContainer = (props) => {
         return;
       }
 
-      // console.log(scrollY > lastScrollY && scrollY > window.innerHeight + 500, "atBotttom, setAtBotttom");
       // user at bottom
-      setUserAtBottom(scrollY > lastScrollY && scrollY > window.innerHeight + 500);
+      setUserAtBottom(scrollY > lastScrollY && scrollY > window.innerHeight + 100);
       setScrollDir(scrollY > lastScrollY ? "scrolling down" : "scrolling up");
       lastScrollY = scrollY > 0 ? scrollY : 0;
       ticking = false;
@@ -71,10 +71,6 @@ const LayoutContainer = (props) => {
 const mapStateToProps = (state) => ({
     theme: state.profile?.myTheme || "light",
   }),
-  mapDispatchToProps = {
-    setUserAtBottom,
-    setDisplayHeader,
-    setDeviceWidth,
-  };
+  mapDispatchToProps = { setUserAtBottom, setDisplayHeader, setDeviceWidth };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LayoutContainer);
