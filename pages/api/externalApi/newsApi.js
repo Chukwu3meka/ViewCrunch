@@ -21,7 +21,7 @@ const handler = async () => {
             params: { country: "NG", lang: "en", limit: "50" },
             headers: {
               "x-rapidapi-host": "google-news1.p.rapidapi.com",
-              "x-rapidapi-key": "7f83d74909msh2c7d2c0befbae21p1bba78jsnfb62d3d51734",
+              "x-rapidapi-key": process.env.NEWS_API,
             },
           })
           .then((response) => response.data.articles.map(({ title, link }) => ({ title, link })))
