@@ -1,21 +1,17 @@
 import { connect } from "react-redux";
 import { useSnackbar } from "notistack";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 
 import { Views } from ".";
-import { sleep } from "@utils/clientFunctions";
 import { getViewAction, resetViewAction } from "@store/actions";
 
 const ViewsContainer = (props) => {
-  const { enqueueSnackbar } = useSnackbar(),
-    scrollRef = useRef(null),
-    lastElement = useRef(null),
-    { getViewAction } = props,
+  const { getViewAction } = props,
+    { enqueueSnackbar } = useSnackbar(),
     [ready, setReady] = useState(false),
     [uiViews, setUiViews] = useState([]),
     [loading, setLoading] = useState(false),
     [blacklist, setBlacklist] = useState(null),
-    [atBotttom, setAtBotttom] = useState(false),
     [handle, setHandle] = useState(props.handle),
     [online, setOnline] = useState(props?.online),
     [lastVisible, setLastVisible] = useState(null),
@@ -38,11 +34,7 @@ const ViewsContainer = (props) => {
   }, [props.online]);
 
   useEffect(() => {
-    if (ready && lastVisible && props?.userAtBottom) {
-      getViews("more");
-      // console.log("atBotttom, setAtBotttom");
-      // atBotttom, setAtBotttom
-    }
+    if (ready && lastVisible && props?.userAtBottom) getViews("more");
   }, [props.userAtBottom]);
 
   useEffect(() => {
@@ -55,8 +47,7 @@ const ViewsContainer = (props) => {
         stopFetching(); // to prevent unwanted error
         setFetchFailed(false);
       } else if (!views.length) {
-        console.log("no view");
-        // setFetchFailed(true);
+        setFetchFailed(true);
         enqueueSnackbar("No View Found, ", { variant: "info" });
       } else if (views.length) {
         setFetchFailed(false);
@@ -68,7 +59,6 @@ const ViewsContainer = (props) => {
   }, [props.views]);
 
   const getViews = (fetchType) => {
-    console.log(fetchType);
     if (online) {
       if (lastVisible === "last view") {
         setLoading(false);
@@ -78,23 +68,12 @@ const ViewsContainer = (props) => {
         setLoading(true);
         setFetchFailed(false);
         getViewAction({ handle, blacklist });
-      } else if (fetchType === "more" && !loading) {
-        console.log("loaddding ");
+      } else if (["retry", "more"].includes(fetchType) && !loading) {
         setLoading(true);
         setFetchFailed(false);
         getViewAction({ handle, reduxBlacklist: blacklist, reduxLastVisible: lastVisible });
-      } else if (fetchType === "retry" && !loading) {
-        console.log("retry ");
-        // setLoading(true);
-        // setFetchFailed(false);
-        // getViewAction({ handle, reduxBlacklist: blacklist, reduxLastVisible: lastVisible });
       } else {
         stopFetching();
-        // getViewAction({ handle, blacklist, reduxLastVisible: lastVisible });
-        // setLoading(true);
-        // setFetchFailed(false);
-        console.log("issue here");
-        // return enqueueSnackbar("Something went wrong", { variant: "warning" });
       }
     }
   };
@@ -102,17 +81,15 @@ const ViewsContainer = (props) => {
   const stopFetching = () => {
     setLoading(false);
     setFetchFailed(true);
-    // scrollRef?.current?.scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
   };
 
-  return <Views {...{ views: uiViews, loading, fetchFailed, scrollRef, getViews }} />;
+  return <Views {...{ views: uiViews, loading, fetchFailed, getViews }} />;
 };
 
 const mapStateToProps = (state) => ({
-    handle: state.profile?.myHandle,
-    online: state.device.online,
     views: state.view?.views,
-    deviceWidth: state.device.deviceWidth,
+    online: state.device.online,
+    handle: state.profile?.myHandle,
     userAtBottom: state.device.userAtBottom,
   }),
   mapDispatchToProps = { getViewAction, resetViewAction };

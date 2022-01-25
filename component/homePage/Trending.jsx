@@ -1,9 +1,10 @@
-import { trendingStyles } from ".";
-import TimelineIcon from "@material-ui/icons/Timeline";
 import Link from "next/link";
 
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
+import TimelineIcon from "@material-ui/icons/Timeline";
+
+import { trendingStyles } from ".";
 
 const Trending = ({ trending }) => (
   <Grid container className={trendingStyles.trending}>

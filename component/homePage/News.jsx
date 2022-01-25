@@ -1,20 +1,10 @@
-import { useEffect, useState } from "react";
-import { Paper, Typography } from "@material-ui/core";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
 
 import { newsStyles } from ".";
-import { fetcher } from "@utils/clientFunctions";
 
-const NewsFlash = () => {
-  const [news, setNews] = useState([]);
-  useEffect(() => {
-    const getNEWS = async () => {
-      const articles = await fetcher("/api/externalApi/newsApi");
-      setNews(articles);
-    };
-    getNEWS();
-  }, []);
-
-  return news?.length ? (
+const News = ({ news }) =>
+  news?.length ? (
     <div className={newsStyles.news}>
       <Typography variant="h2">Top Headlines</Typography>
       {news.map(({ title, link }) => (
@@ -26,6 +16,5 @@ const NewsFlash = () => {
       ))}
     </div>
   ) : null;
-};
 
-export default NewsFlash;
+export default News;

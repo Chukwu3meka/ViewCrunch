@@ -55,7 +55,6 @@ const Views = ({ views, loading, fetchFailed, getViews }) => (
     {loading && <Loading status={loading} />}
     {fetchFailed && (
       <Loading
-        // scrollRef={scrollRef}
         loadType="failed"
         failedText="We are unable to fetch any view for you; Please, refresh the page or click the button below."
         clickHandler={() => getViews("retry")}
