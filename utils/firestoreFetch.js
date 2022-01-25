@@ -265,7 +265,6 @@ export const fetchTrending = async () => {
             displayName,
             crunchLink: `/crunch/${crunch}`,
             date: date.toDate().toDateString(),
-            image: "/images/ViewCrunch-cover.webp",
           });
         }
       } else {
