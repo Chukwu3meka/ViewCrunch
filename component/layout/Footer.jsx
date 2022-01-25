@@ -1,30 +1,11 @@
-import { styles } from "/";
+import { layoutStyles } from "/";
 import Link from "next/link";
+import Image from "next/image";
 import { AuthFirebase } from "@component/page";
 import Typography from "@material-ui/core/Typography";
 
-const Footer = ({ scrollTop }) => (
-  <div className={styles.footer}>
-    <div>
-      <div
-        className="fb-like"
-        data-href="https://www.facebook.com/viewcrunch/"
-        data-width=""
-        data-layout="button_count"
-        data-action="like"
-        data-size="large"
-        data-share="false"
-      />
-      <div className="fb-share-button" data-href="https://www.viewcrunch.com" data-layout="button_count" data-size="large">
-        <a
-          target="_blank"
-          href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.viewcrunch.com%2F&amp;src=sdkpreparse"
-          className="fb-xfbml-parse-ignore">
-          Share
-        </a>
-      </div>
-    </div>
-
+const Footer = () => (
+  <div className={layoutStyles.footer}>
     <div>
       <span>
         <Link href="/info/terms">
@@ -39,8 +20,6 @@ const Footer = ({ scrollTop }) => (
           <a>Advertise</a>
         </Link>
       </span>
-
-      <img src="/images/ViewCrunch.webp" alt="ViewCrunch footer icon" onClick={scrollTop} />
 
       <span>
         <Link href="/info/contactus">
@@ -57,10 +36,35 @@ const Footer = ({ scrollTop }) => (
       </span>
     </div>
 
-    <AuthFirebase />
+    <div>
+      <div>
+        <div
+          className="fb-like"
+          data-href="https://www.facebook.com/viewcrunch/"
+          data-width=""
+          data-layout="button_count"
+          data-action="like"
+          data-size="large"
+          data-share="false"
+        />
+        <div className="fb-share-button" data-href="https://www.viewcrunch.com" data-layout="button_count" data-size="large">
+          <a
+            target="_blank"
+            href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.viewcrunch.com%2F&amp;src=sdkpreparse"
+            className="fb-xfbml-parse-ignore">
+            Share
+          </a>
+        </div>
+      </div>
 
-    <Typography variant="body2" color="textSecondary">
-      ● © 2018 ~ {new Date().getFullYear()} ViewCrunch ●
+      <div>
+        <Image src="/images/ViewCrunch.webp" layout="fill" alt="ViewCrunch footer icon" />
+      </div>
+      <AuthFirebase />
+    </div>
+
+    <Typography variant="body1" color="textSecondary">
+      ● © 2020 ~ {new Date().getFullYear()} ViewCrunch ●
     </Typography>
   </div>
 );

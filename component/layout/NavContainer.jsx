@@ -2,7 +2,7 @@ import { Button, Typography } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import { fetchNavCrunches } from "@utils/firestoreFetch";
 import { useEffect, useState } from "react";
-import { navStyles } from ".";
+import { navStyles, Footer } from ".";
 import ThemeIcon from "@material-ui/icons/EmojiObjects";
 
 import Link from "next/link";
@@ -13,6 +13,7 @@ import HomeIcon from "@material-ui/icons/Home";
 import TimelineIcon from "@material-ui/icons/Timeline";
 import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
 import ImportantDevicesIcon from "@material-ui/icons/ImportantDevices";
+import ContactUsIcon from "@material-ui/icons/ContactSupportOutlined";
 import NotificationsOffIcon from "@material-ui/icons/NotificationsOff";
 import NotificationsActiveIcon from "@material-ui/icons/NotificationsActive";
 import { setProfileAction } from "@store/actions";
@@ -42,9 +43,10 @@ const NavbarContainer = (props) => {
 
   const mainNav = [
     ["Home", "/", <HomeIcon />],
-    ["Favourite", "/favourite", <TimelineIcon />],
-    ["My Crunch", "/crunch", <ImportantDevicesIcon />],
     ["Notification", "/notification", <NotificationsActiveIcon />],
+    ["Favourite", "/favourite", <TimelineIcon />],
+    ["Contact Us", "/info/contactus", <ContactUsIcon />],
+    ["My Crunch", "/crunch", <ImportantDevicesIcon />],
     ["Portfolio", `/profile`, <AssignmentIndIcon />],
   ];
 
@@ -60,6 +62,18 @@ const NavbarContainer = (props) => {
     <Grid item xs={12} sm={12} md={4}>
       <div className={navStyles.navigation}>
         <div>
+          <Typography component="h2">MAIN NAVIGATION</Typography>
+          <div>
+            {mainNav.map(([label, link, icon], index) => (
+              <Link href={{ pathname: link }} key={link}>
+                <Button variant="outlined" size="small" startIcon={icon}>
+                  {label}
+                </Button>
+              </Link>
+            ))}
+          </div>
+        </div>
+        <div>
           <Typography component="h2">DISCOVER WHICH CRUNCH SUITS YOU</Typography>
           {crunches.length ? (
             <div>
@@ -74,18 +88,6 @@ const NavbarContainer = (props) => {
           ) : (
             <Typography variant="body2">We're searching for suitable Crunches</Typography>
           )}
-        </div>
-        <div>
-          <Typography component="h2">MAIN NAVIGATION</Typography>
-          <div>
-            {mainNav.map(([label, link, icon], index) => (
-              <Link href={{ pathname: link }} key={link}>
-                <Button variant="outlined" size="small" startIcon={icon}>
-                  {label}
-                </Button>
-              </Link>
-            ))}
-          </div>
         </div>
 
         <div>

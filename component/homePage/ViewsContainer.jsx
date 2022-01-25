@@ -99,44 +99,61 @@ const ViewsContainer = (props) => {
 
   // return views.length ? <SecBody {...{ views, deviceWidth, loading, getMorePost, fetchFailed, scrollRef }} /> : "";
 
-  // crunch, content, title, pryImage, displayName, profilePicture, upvote, path
-
   return (
     <div className={viewsStyles.views}>
       <Typography variant="h2">Recent Views from Great Authors</Typography>
-      {views?.map(
-        ({ displayName, profilePicture, profileLink, crunchLink, crunch, title, image, content, date, readTime, keyword, path }) => (
-          <Fade bottom key={path}>
-            <Paper className={viewsStyles.view}>
-              <div>
+      <div>
+        {views?.map(
+          ({
+            displayName,
+            profilePicture,
+            profileLink,
+            crunchLink,
+            crunch,
+            title,
+            image,
+            content,
+            date,
+            readTime,
+            keyword,
+            viewLink,
+          }) => (
+            <Fade bottom key={viewLink}>
+              <Paper className={viewsStyles.view}>
                 <div>
                   <div>
-                    <Image src={profilePicture} layout="fill" alt={displayName} />
+                    <div>
+                      <Image src={profilePicture} layout="fill" alt={displayName} />
+                    </div>
+                    <Typography variant="body1">
+                      <Link href={profileLink}>
+                        <a>{displayName}</a>
+                      </Link>
+                      &nbsp;in&nbsp;
+                      <Link href={crunchLink}>
+                        <a>{crunch}</a>
+                      </Link>
+                    </Typography>
                   </div>
-                  <Typography variant="body1">
-                    <Link href={profileLink}>
-                      <a>{displayName}</a>
-                    </Link>
-                    &nbsp;in&nbsp;
-                    <Link href={crunchLink}>
-                      <a>{crunch}</a>
-                    </Link>
-                  </Typography>
+                  <Link href={viewLink}>
+                    <a>
+                      <Typography variant="h5" component="h3">
+                        {title}
+                      </Typography>
+                    </a>
+                  </Link>
+                  <Typography variant="body2">{content.replace(/<[^>]+>/g, "")}</Typography>
+                  <div>
+                    <Typography variant="body2">{`${date} · ${readTime} ☆ ${keyword}`}</Typography>
+                    <BookmarkAddIcon fontSize="small" />
+                  </div>
                 </div>
-                <Typography variant="h5" component="h3">
-                  {title}
-                </Typography>
-                <Typography variant="body2">{content.replace(/<[^>]+>/g, "")}</Typography>
-                <div>
-                  <Typography variant="body2">{`${date} · ${readTime} ☆ ${keyword}`}</Typography>
-                  <BookmarkAddIcon fontSize="small" />
-                </div>
-              </div>
-              <Image src={image} width={140} height={130} alt={title} />
-            </Paper>
-          </Fade>
-        )
-      )}
+                <Image src={image} width={140} height={130} alt={title} />
+              </Paper>
+            </Fade>
+          )
+        )}
+      </div>
     </div>
   );
 };

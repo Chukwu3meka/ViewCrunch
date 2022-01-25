@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { headerStyles, NavbarContainer } from "/";
+import { layoutStyles, NavbarContainer } from "/";
 
 import Menu from "@material-ui/core/Menu";
 import Button from "@material-ui/core/Button";
@@ -13,7 +13,7 @@ import IconButton from "@material-ui/core/IconButton";
 import { Typography } from "@material-ui/core";
 
 const Header = ({ classes, hidden, hamburger, handleMenu, anchorEl, handleClose, searchBar, open }) => (
-  <div className={hidden === "hidden" ? headerStyles.headerHidden : headerStyles.header}>
+  <div className={hidden === "hidden" ? layoutStyles.headerHidden : layoutStyles.header}>
     <Link href="/">
       <div>
         <Image src="/images/ViewCrunch.webp" layout="fill" alt="ViewCrunch" />

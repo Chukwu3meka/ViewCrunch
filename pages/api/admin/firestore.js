@@ -14,7 +14,7 @@ export default async (req, res) => {
           const {
             title,
             content,
-            stat: { keywords },
+            stat: { link },
           } = doc.data();
 
           //  const title = "40 Life hacks";
@@ -25,7 +25,7 @@ export default async (req, res) => {
           // console.log(link ? link?.split(" />")[0] : "null;dsdfd");
           // readTime
           await firebaseAdmin.firestore().collection("view").doc(doc.id).update({
-            "stat.keyword": "viewcrunch",
+            "stat.viewLink": link,
             // "stat.author": `@maduekwepedro`,
             // {
             //   author: "chukwuemeka@maduekwe",

@@ -561,7 +561,7 @@ export const fetchViews = async ({ handle, blacklist, lastVisible }) => {
           const {
             title,
             content,
-            stat: { author, crunch, date, readTime, keyword, image, path },
+            stat: { author, crunch, date, readTime, keyword, image, viewLink },
           } = doc.data();
 
           const {
@@ -571,17 +571,17 @@ export const fetchViews = async ({ handle, blacklist, lastVisible }) => {
           } = await fetchProfile(author);
 
           views.push({
-            path,
             image,
             title,
             author,
             crunch,
-            readTime,
             keyword,
+            content,
+            viewLink,
+            readTime,
             displayName,
             profileLink,
             profilePicture,
-            content,
             date: dateCalculator({ date: date.toDate().toDateString() }),
             crunchLink: `/crunch/${toId(crunch)}`,
           });
