@@ -25,15 +25,12 @@ export const extractHandle = async (cookie) => {
 
   if (!myRefresh) return undefined;
 
-  const { access_token: token } = await fetch(
-    `https://securetoken.googleapis.com/v1/token?key=${process.env.NEXT_PUBLIC_FIREBASE_API_KEY}`,
-    {
-      method: "POST",
-      headers: new Headers({ "Content-Type": "application/x-www-form-urlencoded" }),
-      body: `grant_type=refresh_token&refresh_token=${myRefresh}`,
-      credentials: "same-origin",
-    }
-  ).then((res) => res.json());
+  const { access_token: token } = await fetch(`https://securetoken.googleapis.com/v1/token?key=${process.env.NEXT_PUBLIC_API}`, {
+    method: "POST",
+    headers: new Headers({ "Content-Type": "application/x-www-form-urlencoded" }),
+    body: `grant_type=refresh_token&refresh_token=${myRefresh}`,
+    credentials: "same-origin",
+  }).then((res) => res.json());
 
   if (!token) return undefined;
 
@@ -78,7 +75,7 @@ export const uploadToFirestorage = async ({ image, myHandle, imageTitle }) => {
         if (err) {
           throw new TypeError(`uploadImages ${err}`);
         } else {
-          return `https://firebasestorage.googleapis.com/v0/b/${process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET}/o/${encodeURIComponent(
+          return `https://firebasestorage.googleapis.com/v0/b/${process.env.NEXT_PUBLIC_STOR}/o/${encodeURIComponent(
             `images/${myHandle}/${imageTitle}`
           )}?alt=media&token=${accessToken}`;
         }
@@ -205,7 +202,7 @@ export const convertContentToArray = async (content) => {
 //       .then((data) => {
 //         const viewDir = data[0];
 //         return Promise.resolve(
-//           `https://firebasestorage.googleapis.com/v0/b/${process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET}/o/${encodeURIComponent(
+//           `https://firebasestorage.googleapis.com/v0/b/${process.env.NEXT_PUBLIC_STOR}/o/${encodeURIComponent(
 //             viewDir.name
 //           )}?alt=media&token=${accessToken}`
 //         );
