@@ -12,6 +12,7 @@ pages/api/profile/upload/
 #misc
 .DS_Store
 package-lock.json
+next.config.js
 .vscode/
 report.*
 .log
