@@ -36,41 +36,44 @@ const View = ({
   return (
     <div className={styles.view}>
       <div>
-        <Link href={crunchLink}>
-          <a style={{ fontSize: ".7em" }}>{crunch}</a>
-        </Link>
         <h1>
           <Fade right>{title}</Fade>
         </h1>
         <div>
-          <Avatar alt={displayName} src={profilePicture} family={"blink"} pathname={profileLink} />
+          <Avatar alt={displayName} src={profilePicture} pathname={profileLink} />
           <div>
-            <Link href={profileLink}>
-              <Typography component="a" variant="inherit" color="secondary">{`by ${displayName}`}</Typography>
-            </Link>
-            <Typography color="secondary" variant="subtitle2">{`${dateCalculator({ date })} ● ${readTime}`}</Typography>
+            <div>
+              <Link href={profileLink}>
+                <Typography component="a" variant="inherit" color="secondary">
+                  {displayName}
+                </Typography>
+              </Link>
+              {" in "}
+              <Link href={crunchLink}>
+                <a>{crunch}</a>
+              </Link>
+            </div>
+            <Typography variant="body2">{`${dateCalculator({ date })} ● ${readTime}`}</Typography>
           </div>
         </div>
       </div>
-      <article dangerouslySetInnerHTML={{ __html: content }} />
+      <Paper dangerouslySetInnerHTML={{ __html: content }} />
+      {/* <article dangerouslySetInnerHTML={{ __html: content }} /> */}
       <div>
-        <Paper>
-          <span>
-            <IconButton style={{ color: upvoted ? "#1197c0" : "" }} onClick={voteHandler(true)}>
-              <UpvoteIcon fontSize="inherit" />
-            </IconButton>
-            <IconButton style={{ color: downvoted ? "#b91818" : "" }} onClick={voteHandler(false)}>
-              <DownvoteIcon fontSize="inherit" />
-            </IconButton>
-          </span>
-          <div>
-            <span>{`${shortNumber(totalUpvote)} upvote${totalUpvote > 1 ? "s" : ""}`}</span>
-            <IconButton color="inherit" onClick={moreActionsHandler}>
-              <MoreVertIcon />
-            </IconButton>
-          </div>
-        </Paper>
-        {/* <CommentsContainer {...{ online, view, profile }} /> */}
+        <span>
+          <IconButton style={{ color: upvoted ? "#1197c0" : "" }} onClick={voteHandler(true)}>
+            <UpvoteIcon fontSize="inherit" />
+          </IconButton>
+          <IconButton style={{ color: downvoted ? "#b91818" : "" }} onClick={voteHandler(false)}>
+            <DownvoteIcon fontSize="inherit" />
+          </IconButton>
+        </span>
+        <div>
+          <span>{`${shortNumber(totalUpvote)} upvote${totalUpvote > 1 ? "s" : ""}`}</span>
+          <IconButton color="inherit" onClick={moreActionsHandler}>
+            <MoreVertIcon />
+          </IconButton>
+        </div>
       </div>
 
       {/* <Drawer title={title} list={moreActions} displayDrawer={moreActions} setDisplayDrawer={setMoreActions} /> */}

@@ -4,8 +4,12 @@ const muiTheme = (theme) => {
   return createTheme({
     typography: {
       fontFamily: "'Playfair Display', serif",
+      allVariants: {
+        color: theme === "light" ? "#424242" : "#fffffa",
+      },
     },
     palette: {
+      text: { color: "#e2ad26" },
       type: theme,
       primary: {
         main: "#e2ad26",

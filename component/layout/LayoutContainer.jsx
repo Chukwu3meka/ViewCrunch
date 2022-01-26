@@ -22,9 +22,10 @@ const LayoutContainer = (props) => {
     setAppTheme(props.theme);
 
     setStyle({
-      "--pry": props.theme === "light" ? "#fff" : "#424242",
+      "--pry": props.theme === "light" ? "#DBD9D9" : "#424242",
+      "--sec": props.theme === "light" ? "#ffffff" : "#0D0D1A",
       "--dim": props.theme === "light" ? "#b1b1b18a" : "#ffffffb3",
-      "--sec": props.theme === "light" ? "#424242" : "#fff",
+      "--opp": props.theme === "light" ? "#424242" : "#fff",
     });
   }, [props.theme]);
 

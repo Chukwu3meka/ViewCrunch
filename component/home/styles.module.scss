@@ -13,7 +13,6 @@
     h2 {
       font-family: "Fredericka the Great", cursive;
       max-width: 500px;
-      font-size: 2em;
       z-index: 1;
       position: relative;
     }
@@ -41,7 +40,7 @@
     justify-content: flex-start;
     h2 {
       font-family: "Fredericka the Great", cursive;
-      font-size: 1.2em;
+      font-size: 1.1em;
       font-weight: 600;
       margin-left: 5px;
     }
@@ -67,10 +66,10 @@
       margin-bottom: 10px;
       & > h2 {
         margin: 5px 0 10px;
-        font-size: 1.5em;
-        font-weight: 600;
+        font-size: 1.2em;
+        font-weight: 700;
         a {
-          color: var(--sec);
+          color: var(--opp);
         }
       }
     }
@@ -81,7 +80,6 @@
   padding: 10px;
   margin-bottom: 10px;
   & > h2 {
-    font-size: 1em;
     font-weight: 700;
     margin-bottom: 5px;
   }
@@ -100,7 +98,7 @@
   & > h2 {
     font-family: "Fredericka the Great", cursive;
     text-align: center;
-    font-size: 1.5em;
+    font-size: 1.7em;
   }
 
   & > div {
@@ -110,9 +108,8 @@
     border-radius: 3px !important;
     @include flexCenter(column);
     & > a {
-      color: var(--sec) !important;
+      color: var(--opp) !important;
       font-weight: 600;
-      font-size: 1.1em;
       text-align: center;
       display: -webkit-box;
       -webkit-line-clamp: 3;
@@ -130,7 +127,7 @@
   .intro > div {
     padding: 30px 180px 30px 10px;
     h2 {
-      font-size: 2.5em;
+      font-size: 3.5em;
       position: relative;
     }
     & > div {
@@ -157,10 +154,6 @@
 @media screen and (min-width: 800px) {
   .intro > div {
     padding: 50px 100px 10px 10px;
-    h2 {
-      font-size: 4.5em;
-      font-weight: 600;
-    }
     & > div {
       top: -50px;
       right: 50px;
