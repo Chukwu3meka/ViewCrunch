@@ -10,9 +10,11 @@ const LayoutContainer = (props) => {
     [scrollDir, setScrollDir] = useState("scrolling down"),
     { children, setDisplayHeader, setDeviceWidth, setAppTheme, setUserAtBottom } = props;
 
+  const handleDeviceResize = () => setDeviceWidth(window.innerWidth);
+
   useEffect(() => {
-    setDeviceWidth(window.innerWidth);
-    return () => setDeviceWidth(window.innerWidth);
+    window.addEventListener("resize", handleDeviceResize);
+    return () => window.removeEventListener("resize", handleDeviceResize);
   });
 
   // to enable dark/light theme

@@ -7,6 +7,7 @@ import { getViewAction, resetViewAction } from "@store/actions";
 
 const ViewsContainer = (props) => {
   const { getViewAction } = props,
+    [mobile, setMobile] = useState(),
     { enqueueSnackbar } = useSnackbar(),
     [ready, setReady] = useState(false),
     [uiViews, setUiViews] = useState([]),
@@ -32,6 +33,10 @@ const ViewsContainer = (props) => {
       if (!props?.online) stopFetching();
     }
   }, [props.online]);
+
+  useEffect(() => {
+    setMobile(props.deviceWidth <= 400 ? true : false);
+  }, [props.deviceWidth]);
 
   useEffect(() => {
     if (ready && lastVisible && props?.userAtBottom) getViews("more");
@@ -83,13 +88,14 @@ const ViewsContainer = (props) => {
     setFetchFailed(true);
   };
 
-  return <Views {...{ views: uiViews, loading, fetchFailed, getViews }} />;
+  return <Views {...{ views: uiViews, loading, fetchFailed, getViews, mobile }} />;
 };
 
 const mapStateToProps = (state) => ({
     views: state.view?.views,
     online: state.device.online,
     handle: state.profile?.myHandle,
+    deviceWidth: state.device.deviceWidth,
     userAtBottom: state.device.userAtBottom,
   }),
   mapDispatchToProps = { getViewAction, resetViewAction };

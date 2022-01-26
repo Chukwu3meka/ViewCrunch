@@ -9,7 +9,7 @@ import LoveIcon from "@material-ui/icons/FavoriteBorderTwoTone";
 import { viewsStyles } from ".";
 import { Loading } from "@component/others";
 
-const Views = ({ views, loading, fetchFailed, getViews }) => (
+const Views = ({ views, loading, fetchFailed, getViews, mobile }) => (
   <div className={viewsStyles.views}>
     <Typography variant="h2">Recently Published</Typography>
     <div>
@@ -20,30 +20,43 @@ const Views = ({ views, loading, fetchFailed, getViews }) => (
               <div>
                 <div>
                   <div>
-                    <Image src={profilePicture} layout="fill" alt={displayName} />
+                    <div>
+                      <Image src={profilePicture} layout="fill" alt={displayName} />
+                    </div>
+                    <Typography variant="body1">
+                      <Link href={profileLink}>
+                        <a>{displayName}</a>
+                      </Link>
+                      &nbsp;in&nbsp;
+                      <Link href={crunchLink}>
+                        <a>{crunch}</a>
+                      </Link>
+                    </Typography>
                   </div>
-                  <Typography variant="body1">
-                    <Link href={profileLink}>
-                      <a>{displayName}</a>
-                    </Link>
-                    &nbsp;in&nbsp;
-                    <Link href={crunchLink}>
-                      <a>{crunch}</a>
-                    </Link>
-                  </Typography>
+                  <Link href={viewLink}>
+                    <Typography variant="h5" component="h2">
+                      <a>{title}</a>
+                    </Typography>
+                  </Link>
+                  <Typography variant="body2">{content.replace(/<[^>]+>/g, "")}</Typography>
+
+                  {!mobile ? (
+                    <div className={viewsStyles.footer}>
+                      <Typography variant="body2">{`${date} · ${readTime} ☆ ${keyword}`}</Typography>
+                      <LoveIcon fontSize="small" />
+                    </div>
+                  ) : null}
                 </div>
-                <Link href={viewLink}>
-                  <Typography variant="h5" component="h2">
-                    <a>{title}</a>
-                  </Typography>
-                </Link>
-                <Typography variant="body2">{content.replace(/<[^>]+>/g, "")}</Typography>
                 <div>
+                  <Image src={image} layout="fill" alt={title} />
+                </div>
+              </div>
+              {mobile ? (
+                <div className={viewsStyles.footer}>
                   <Typography variant="body2">{`${date} · ${readTime} ☆ ${keyword}`}</Typography>
                   <LoveIcon fontSize="small" />
                 </div>
-              </div>
-              <Image src={image} width={140} height={130} alt={title} />
+              ) : null}{" "}
             </Paper>
           </Fade>
         )
