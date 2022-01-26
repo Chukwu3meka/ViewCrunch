@@ -10,93 +10,36 @@ import Typography from "@material-ui/core/Typography";
 import { NavContainer } from "@component/layout";
 
 import { styles } from "/";
-import { SocialShare, LineText } from "@component/others";
-import profile from "@store/reducers/profile";
+import { SocialShare } from "@component/others";
 
-const ViewNav = ({
-  author,
-  advert,
-  similarPost,
-  about,
-  featuredPost,
-  twitterHandle,
-  profilePicture,
-  linkedinHandle,
-  facebookHandle,
-  profile,
-}) => (
+const ViewNav = ({ about, twitterHandle, profilePicture, linkedinHandle, facebookHandle, displayName, myDisplayName }) => (
   <NavContainer>
-    <div className={styles.storyNav}>
-      fsfad
-      {/* <Paper>
+    <Paper className={styles.nav} sx={{ display: { md: "none" } }}>
       <div>
-        <Image src={profilePicture} layout="fill" />
+        <Image src={profilePicture} layout="fill" alt={displayName} />
       </div>
-      <Typography component="div" variant="body2">
-        {about}
-      </Typography>
-      <SocialShare {...{ linkedinHandle, twitterHandle, facebookHandle }} />
+      <Typography variant="body2">{about}</Typography>
       <div>
-        {featuredPost?.length ? (
-          <>
-            <hr width="120px" />
-            <Typography variant="button" color="textSecondary">
-              Featured posts
-            </Typography>
-            {featuredPost.map(({ title, id }) => (
-              // <Link href={{ pathname: `/${author}/${id}` }} key={id}>
-              <Link href={id} key={id}>
-                <a>~ {title}</a>
-              </Link>
-            ))}
-            <hr width="120px" />
-          </>
-        ) : (
-          ""
-        )}
+        <SocialShare {...{ linkedinHandle, twitterHandle, facebookHandle }} />
       </div>
-      {profile.myHandle !== author ? (
+      {myDisplayName !== displayName ? (
         <Button variant="contained" size="small" color="secondary">
           Follow me
         </Button>
-      ) : (
-        ""
-      )}{" "}
+      ) : null}
+      <div>
+        <a href="https://www.soccermass.com">
+          <Typography variant="body1">SoccerMASS</Typography>
+          <div>
+            <Image src="/images/ads/soccermass.webp" layout="fill" />
+          </div>
+          <Typography variant="body2">Online Soccer Manager</Typography>
+          <Typography variant="caption" color="textSecondary">
+            Ads via ViewCrunch
+          </Typography>
+        </a>
+      </div>
     </Paper>
-    <Paper>
-      <a href={advert?.href}>
-        <LineText title={advert?.company || "ADVERT"} style />
-        <div>
-          <Image src={advert?.image || "/images/no-image.webp"} layout="fill" />
-        </div>
-        <Typography variant="body2">{advert?.description || "Save a crunch today on our blog and reach more people"}</Typography>
-        <Typography variant="caption" color="textSecondary">
-          Ads via ViewCrunch
-        </Typography>
-      </a>
-    </Paper>
-    {similarPost?.length ? (
-      <Paper>
-        <span>Similar view</span>
-        {
-          // console.log(similarPost)
-          similarPost.map(({ author, title, pryImage, id }, index) => (
-            // <Link href={{ pathname: `/${author}/${id}` }} key={index}>
-            <Link href={{ pathname: `${id}` }} key={index}>
-              <a>
-                <div>
-                  <Image src={pryImage || "/images/no-image.webp"} layout="fill" />
-                </div>
-                <Typography variant="caption">{title || "View title"}</Typography>
-              </a>
-            </Link>
-          ))
-        }
-      </Paper>
-    ) : (
-      ""
-    )} */}
-    </div>
   </NavContainer>
 );
 

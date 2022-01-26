@@ -90,44 +90,36 @@
   }
 }
 
-.storyNav {
-  max-width: 400px;
+.nav {
+  padding: 10px;
+  @include flexCenter(column);
   & > div:nth-of-type(1) {
-    @include flexCenter(column);
-    padding: 10px;
-    & > div:nth-of-type(1) {
-      margin: 0 auto;
-      height: 150px;
-      width: 150px;
-      position: relative;
-      border-radius: 50%;
-      overflow: hidden;
-    }
-    & > div:nth-of-type(2) {
-      margin: 15px 0;
-      font-weight: bold;
-      font-size: 0.8em;
-      text-align: center;
-    }
-    & > div:nth-of-type(4) {
-      align-items: flex-start;
-      margin: 20px 0;
-      width: 100%;
-      & > a {
-        font-size: 0.9em;
-        display: block;
-      }
-      & > * {
-        margin: 5px 0;
-      }
-    }
+    position: relative;
+    margin: 0 auto;
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
+    overflow: hidden;
   }
   & > div:nth-of-type(2) {
+    margin: 15px 0;
+    font-weight: bold;
+    font-size: 0.8em;
+    text-align: center;
+  }
+  & > div:nth-of-type(3) > a {
+    padding: 10px;
+    border: 1px solid var(--dim);
     margin: 30px 0;
+    border-radius: 10px;
     @include flexCenter(column);
     text-align: center;
-    & > a > * {
-      margin: 5px 0;
+    & > div:nth-of-type(1) {
+      position: relative;
+      height: 150px;
+      width: 200px;
+      border-radius: 10px;
+      overflow: hidden;
     }
     & > a > div:nth-of-type(2) {
       margin: 10px auto;
@@ -138,41 +130,7 @@
       border-radius: 10px;
     }
   }
-
-  & > div:nth-of-type(3) {
-    @include flexCenter(column);
-    & > span {
-      align-self: start;
-    }
-    & > a {
-      width: 100%;
-      padding: 5px;
-      border-radius: 5px;
-      text-align: center;
-      margin: 10px auto 0;
-      & > div {
-        margin: auto;
-        position: relative;
-        max-width: 200px;
-        height: 120px;
-        border-radius: 5px;
-        overflow: hidden;
-      }
-    }
+  & > div:nth-of-type(3) > a:hover {
+    border-color: color(primary);
   }
 }
-
-// @media screen and (min-width: 420px) {
-//   .storyMain {
-//     padding: 10px !important;
-//   }
-//   .storyHeader {
-//     margin-bottom: -35px !important;
-//   }
-// }
-
-// @media screen and (min-width: 1280px) {
-//   .storyHeader {
-//     margin-bottom: -20px !important;
-//   }
-// }

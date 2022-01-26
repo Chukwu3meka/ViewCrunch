@@ -1,3 +1,4 @@
+import { range } from "@utils/clientFunctions";
 import firebaseAdmin from "@utils/firebaseServer";
 
 export default async (req, res) => {
@@ -27,23 +28,27 @@ export default async (req, res) => {
           // const link = content.split('<Image src="')[0] || null;
           // console.log(link ? link?.split(" />")[0] : "null;dsdfd");
           // readTime
-          await firebaseAdmin.firestore().collection("view").add({
-            comments,
-            content,
-            downvote,
-            title,
-            upvote,
-            visible,
-            stat: {
-              author,
-              crunch,
-              date,
-              image,
-              keyword,
-              readTime,
-              viewLink,
-            },
-          });
+          await firebaseAdmin
+            .firestore()
+            .collection("view")
+            .add({
+              title,
+              content,
+              comments,
+              stat: {
+                author,
+                crunch,
+                date,
+                image,
+                keyword,
+                readTime,
+                viewLink,
+              },
+              moderation: {
+                visible,
+              },
+              votes: { downvote: [], upvote: [], total: range(50, 300) },
+            });
 
           await firebaseAdmin.firestore().collection("view").doc(doc.id).delete();
         }

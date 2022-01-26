@@ -4,11 +4,16 @@
   position: -webkit-sticky; /* Safari & IE */
   position: sticky;
   top: 50px;
+  -ms-overflow-style: none; //hide scrollbar
+  overflow: auto;
+  max-height: calc(100vh - 55px);
+  max-width: 350px;
   @include flexCenter(column);
   justify-content: space-between;
   align-items: flex-start;
   border-top: 1px solid var(--dim);
   border-bottom: 1px solid var(--dim);
+  padding: 10px;
   & > div:nth-of-type(1) {
     padding: 10px;
     margin-bottom: 10px;
@@ -40,6 +45,10 @@
       }
     }
   }
+}
+
+.navigation::-webkit-scrollbar {
+  display: none;
 }
 
 @media screen and (min-width: 960px) {

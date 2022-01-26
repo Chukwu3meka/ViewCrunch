@@ -12,13 +12,15 @@ const StoryContainer = (props) => {
     { enqueueSnackbar } = useSnackbar(),
     [online, setOnline] = useState(props.online),
     [reportView, setReportView] = useState(false),
-    { myHandle } = profile,
+    { myHandle, myID, myDisplayName } = profile,
     [moreActions, setMoreActions] = useState(false),
-    [totalUpvote, setTotalUpvote] = useState(view.upvote.votes),
-    [upvoted, setUpvoted] = useState(!!view.upvote.users.includes(myHandle)),
+    [votes, setVotes] = useState(view.upvote.votes),
     [viewInFavourite, setViewInFavourite] = useState(view.viewInFavourite),
     [viewInBlacklist, setViewInBlacklist] = useState(view.viewInBlacklist),
-    [downvoted, setDownvoted] = useState(!!view.downvote.users.includes(myHandle));
+    [upvoted, setUpvoted] = useState(!!view.upvote.users.includes(myID)),
+    [downvoted, setDownvoted] = useState(!!view.downvote.users.includes(myID));
+
+  console.log({ v: view.upvotes });
 
   useEffect(() => {
     setOnline(props.online);
@@ -120,6 +122,7 @@ const StoryContainer = (props) => {
 
   return (
     <Grid container style={{ maxWidth: "1200px", margin: "auto" }}>
+      <ViewNav {...{ ...author, myDisplayName }} />
       <Grid item xs={12} sm={12} md={8}>
         <View
           {...{
@@ -130,7 +133,6 @@ const StoryContainer = (props) => {
           }}
         />
       </Grid>
-      <ViewNav {...{ ...view, ...author }} />
     </Grid>
   );
 };

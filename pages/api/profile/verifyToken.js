@@ -27,13 +27,14 @@ const verifyRefresh = async (myRefresh) => {
         .collection("profile")
         .doc(handle)
         .get()
-        .then((snapshot) => snapshot.data())
+        .then((snapshot) => ({ ...snapshot.data(), id: snapshot.id }))
         .catch((error) => {
           throw new TypeError(error);
         });
 
       return {
         myHandle: handle,
+        myID: profile.id,
         myTheme: profile.stat?.theme,
         myNotification: profile.notification?.length,
         myProfilePicture: profile.profilePicture,
