@@ -35,7 +35,7 @@ const View = ({
 
   return (
     <div className={styles.view}>
-      <Grid item xs={12} sm={12} md={12} lg={9} className={styles.storyHeader}>
+      <div>
         <Link href={crunchLink}>
           <a style={{ fontSize: ".7em" }}>{crunch}</a>
         </Link>
@@ -51,11 +51,9 @@ const View = ({
             <Typography color="secondary" variant="subtitle2">{`${dateCalculator({ date })} ● ${readTime}`}</Typography>
           </div>
         </div>
-      </Grid>
-      {/* <Grid item lg={3} /> */}
-
-      <Grid item xs={12} sm={12} md={12} lg={9} className={styles.storyMain}>
-        <article dangerouslySetInnerHTML={{ __html: content }} />
+      </div>
+      <article dangerouslySetInnerHTML={{ __html: content }} />
+      <div>
         <Paper>
           <span>
             <IconButton style={{ color: upvoted ? "#1197c0" : "" }} onClick={voteHandler(true)}>
@@ -73,7 +71,7 @@ const View = ({
           </div>
         </Paper>
         {/* <CommentsContainer {...{ online, view, profile }} /> */}
-      </Grid>
+      </div>
 
       {/* <Drawer title={title} list={moreActions} displayDrawer={moreActions} setDisplayDrawer={setMoreActions} /> */}
 

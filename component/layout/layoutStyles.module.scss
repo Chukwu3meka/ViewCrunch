@@ -3,7 +3,8 @@
 .layout {
   min-height: 100vh;
   box-sizing: border-box;
-  font-family: "Amiri", serif;
+  font-family: "Playfair Display", serif;
+  color: var(--sec);
   a:link {
     cursor: pointer;
     color: color(secondary);
@@ -46,9 +47,9 @@
     font-size: 2.2em;
     letter-spacing: 2px;
     font-weight: 500;
-    font-family: "Playfair Display", serif;
+    font-family: "Fredericka the Great", cursive;
     text-shadow: 2px 2px 0 var(--dim);
-    color: color(secondary) !important;
+    color: color(secondary);
   }
 }
 

@@ -3,7 +3,7 @@ import { createTheme } from "@material-ui/core/styles";
 const muiTheme = (theme) => {
   return createTheme({
     typography: {
-      fontFamily: "Amiri, serif",
+      fontFamily: "'Playfair Display', serif",
     },
     palette: {
       type: theme,
