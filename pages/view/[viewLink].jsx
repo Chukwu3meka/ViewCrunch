@@ -15,7 +15,7 @@ const Index = ({ error, view, author }) => {
           seo_quote: `${view.title} by ${view.displayName}`,
         }}
       />
-      <ViewContainer view={view} authors={author} />
+      <ViewContainer view={view} author={author} />
     </>
   );
 };

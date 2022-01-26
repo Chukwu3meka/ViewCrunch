@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 import { useSnackbar } from "notistack";
 import Grid from "@material-ui/core/Grid";
-import { Story, StoryNav, styles } from "/";
+import { View, ViewNav, styles } from "/";
 import { SocialShare } from "@component/others";
 import { fetcher } from "@utils/clientFunctions";
 import { useEffect, useRef, useState } from "react";
@@ -119,25 +119,18 @@ const StoryContainer = (props) => {
   };
 
   return (
-    <Grid container className={styles.view}>
-      {/* <Story
-        {...{
-          ...view,
-          profile,
-          moreActionsHandler,
-          online,
-          moreActions,
-          setMoreActions,
-          reportHandler,
-          totalUpvote,
-          reportView,
-          setReportView,
-          voteHandler,
-          upvoted,
-          downvoted,
-        }}
-      />
-      <StoryNav {...{ ...view.author, ...view.post, advert, profile }} /> */}
+    <Grid container style={{ maxWidth: "1200px", margin: "auto" }}>
+      <Grid item xs={12} sm={12} md={8}>
+        <View
+          {...{
+            profile,
+            ...view,
+            ...author,
+            voteHandler,
+          }}
+        />
+      </Grid>
+      <ViewNav {...{ ...view, ...author }} />
     </Grid>
   );
 };

@@ -8,7 +8,7 @@ export default class MyDocument extends Document {
       <Html lang="en">
         <Head>
           <link rel="preconnect" href="https://fonts.googleapis.com" />
-          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin={true} />
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin />
           <link
             href="https://fonts.googleapis.com/css2?family=Amiri:ital@1&amp;family=Cookie&amp;
 family=Playfair+Display:ital,wght@1,500&amp;display=swap"
@@ -36,7 +36,8 @@ family=Playfair+Display:ital,wght@1,500&amp;display=swap"
             async
             defer
             nonce="pJttRA02"
-            crossOrigin="anonymous"
+            // crossOrigin="anonymous"
+            // crossOrigin={"anonymous".toString()}
             src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&amp;version=v11.0&amp;appId=332276848078020&amp;autoLogAppEvents=1"
           />
         </Head>

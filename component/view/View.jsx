@@ -16,65 +16,68 @@ import { time2read, trimString, shortNumber, toId, dateCalculator } from "@utils
 import { SocialShare, Drawer, Dialog } from "@component/others";
 
 const View = ({
-  date,
+  crunchLink,
   crunch,
   title,
-  author: { author, displayName, profilePicture },
+  displayName,
+  profilePicture,
+  profileLink,
+  date,
+  readTime,
   content,
-  totalUpvote,
-  moreActionsHandler,
-  moreActions,
-  setMoreActions,
+  voteHandler,
   upvoted,
   downvoted,
-  reportHandler,
-  reportView,
-  voteHandler,
-  setReportView,
-}) => (
-  <>
-    <Grid item xs={12} sm={12} md={12} lg={9} className={styles.storyHeader}>
-      <Link href={{ pathname: `/crunch/${toId(crunch)}` }}>
-        <a style={{ fontSize: ".7em" }}>{crunch}</a>
-      </Link>
-      <h1>
-        <Fade right>{title}</Fade>
-      </h1>
-      <div>
-        <Avatar alt={displayName} src={profilePicture} family={"blink"} pathname={`/${author}`} />
-        <div>
-          <Link href={`/${author}`}>
-            <Typography component="a" variant="inherit" color="secondary">{`by ${trimString(displayName, 15)}`}</Typography>
-          </Link>
-          <Typography color="secondary" variant="subtitle2">{`${dateCalculator({ date })} ● ${time2read(content)}`}</Typography>
-        </div>
-      </div>
-    </Grid>
-    <Grid item lg={3} />
-    <Grid item xs={12} sm={12} md={12} lg={9} className={styles.storyMain}>
-      <article dangerouslySetInnerHTML={{ __html: content }} />
-      <Paper>
-        <span>
-          <IconButton style={{ color: upvoted ? "#1197c0" : "" }} onClick={voteHandler(true)}>
-            <UpvoteIcon fontSize="inherit" />
-          </IconButton>
-          <IconButton style={{ color: downvoted ? "#b91818" : "" }} onClick={voteHandler(false)}>
-            <DownvoteIcon fontSize="inherit" />
-          </IconButton>
-        </span>
-        <div>
-          <span>{`${shortNumber(totalUpvote)} upvote${totalUpvote > 1 ? "s" : ""}`}</span>
-          <IconButton color="inherit" onClick={moreActionsHandler}>
-            <MoreVertIcon />
-          </IconButton>
-        </div>
-      </Paper>
-      {/* <CommentsContainer {...{ online, view, profile }} /> */}
-    </Grid>
+  totalUpvote,
+  moreActionsHandler,
+}) => {
+  // console.log({ profileLink, crunchLink });
 
-    <Drawer title={title} list={moreActions} displayDrawer={moreActions} setDisplayDrawer={setMoreActions} />
+  return (
+    <div className={styles.view}>
+      <Grid item xs={12} sm={12} md={12} lg={9} className={styles.storyHeader}>
+        <Link href={crunchLink}>
+          <a style={{ fontSize: ".7em" }}>{crunch}</a>
+        </Link>
+        <h1>
+          <Fade right>{title}</Fade>
+        </h1>
+        <div>
+          <Avatar alt={displayName} src={profilePicture} family={"blink"} pathname={profileLink} />
+          <div>
+            <Link href={profileLink}>
+              <Typography component="a" variant="inherit" color="secondary">{`by ${displayName}`}</Typography>
+            </Link>
+            <Typography color="secondary" variant="subtitle2">{`${dateCalculator({ date })} ● ${readTime}`}</Typography>
+          </div>
+        </div>
+      </Grid>
+      {/* <Grid item lg={3} /> */}
 
-    <Dialog
+      <Grid item xs={12} sm={12} md={12} lg={9} className={styles.storyMain}>
+        <article dangerouslySetInnerHTML={{ __html: content }} />
+        <Paper>
+          <span>
+            <IconButton style={{ color: upvoted ? "#1197c0" : "" }} onClick={voteHandler(true)}>
+              <UpvoteIcon fontSize="inherit" />
+            </IconButton>
+            <IconButton style={{ color: downvoted ? "#b91818" : "" }} onClick={voteHandler(false)}>
+              <DownvoteIcon fontSize="inherit" />
+            </IconButton>
+          </span>
+          <div>
+            <span>{`${shortNumber(totalUpvote)} upvote${totalUpvote > 1 ? "s" : ""}`}</span>
+            <IconButton color="inherit" onClick={moreActionsHandler}>
+              <MoreVertIcon />
+            </IconButton>
+          </div>
+        </Paper>
+        {/* <CommentsContainer {...{ online, view, profile }} /> */}
+      </Grid>
+
+      {/* <Drawer title={title} list={moreActions} displayDrawer={moreActions} setDisplayDrawer={setMoreActions} /> */}
+
+      {/* <Dialog
       dialogTitle="Report view"
       dialogBody={`Reporting this view, will automatically add it to your blacklist, pending when an action is taken. Crunch Moderators won't receive your profile details; Do you wish to proceed. Help us know what's wrong with the view below.`}
       dialogHandler={reportHandler}
@@ -82,8 +85,9 @@ const View = ({
       setDisplayDialog={setReportView}
       compareText="feedback"
       proceed="report"
-    />
-  </>
-);
+    /> */}
+    </div>
+  );
+};
 
 export default View;

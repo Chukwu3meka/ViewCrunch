@@ -31,7 +31,6 @@ export const fetchView = async ({ viewLink, myHandle }) => {
           downvote,
           title,
           upvote,
-          visible,
           stat: { author, crunch, date, image, keyword, readTime, viewLink },
         } = snapshot.docs[0].data();
 
@@ -42,10 +41,10 @@ export const fetchView = async ({ viewLink, myHandle }) => {
 
         const {
           about,
-          published,
           displayName,
           profilePicture,
           social: { linkedinHandle, twitterHandle, facebookHandle },
+          stat: { profileLink },
         } = authorData;
 
         return {
@@ -58,6 +57,7 @@ export const fetchView = async ({ viewLink, myHandle }) => {
               upvote,
               author,
               crunch,
+              crunchLink: toId(`/crunch/${crunch}`),
               date: date.toDate().toDateString(),
               image,
               keyword,
@@ -68,6 +68,7 @@ export const fetchView = async ({ viewLink, myHandle }) => {
             author: {
               about,
               displayName,
+              profileLink,
               profilePicture,
               linkedinHandle,
               twitterHandle,
@@ -129,7 +130,7 @@ export const fetchViews = async ({ handle, blacklist, lastVisible }) => {
               profileLink,
               profilePicture,
               date: dateCalculator({ date: date.toDate().toDateString() }),
-              crunchLink: `/crunch/${toId(crunch)}`,
+              crunchLink: toId(`/crunch/${crunch}`),
             });
 
             // console.log();
