@@ -7,14 +7,17 @@ export default async (req, res) => {
     await firebaseAdmin
       .firestore()
       .collection("view")
-      // .doc("@maduekwepedro@introduction-to-client-side-rendering(csr)-and-server-side-rendering-in-react-with-focus-on-next.js")
       .get()
       .then(async (snapshot) => {
         for (const doc of snapshot.docs) {
           const {
-            title,
+            comments,
             content,
-            stat: { link },
+            downvote,
+            title,
+            upvote,
+            visible,
+            stat: { author, crunch, date, image, keyword, readTime, viewLink },
           } = doc.data();
 
           //  const title = "40 Life hacks";
@@ -24,20 +27,27 @@ export default async (req, res) => {
           // const link = content.split('<Image src="')[0] || null;
           // console.log(link ? link?.split(" />")[0] : "null;dsdfd");
           // readTime
-          await firebaseAdmin.firestore().collection("view").doc(doc.id).update({
-            "stat.viewLink": link,
-            // "stat.author": `@maduekwepedro`,
-            // {
-            //   author: "chukwuemeka@maduekwe",
-            //   date: firebaseAdmin.firestore.Timestamp.now(),
-            //   path: `${title}-${doc.id}`.replace(/ /g, "-").toLowerCase(),
-            //   image: `${title}@0.png`,
-            //   keywords: "",
-            //   description: "",
-            //   crunch: "universal",
-            // },
+          await firebaseAdmin.firestore().collection("view").add({
+            comments,
+            content,
+            downvote,
+            title,
+            upvote,
+            visible,
+            stat: {
+              author,
+              crunch,
+              date,
+              image,
+              keyword,
+              readTime,
+              viewLink,
+            },
           });
+
+          await firebaseAdmin.firestore().collection("view").doc(doc.id).delete();
         }
+
         // console.log(snapshot.docs[0].data().title.data);
         // await firebaseAdmin
         //   .firestore()

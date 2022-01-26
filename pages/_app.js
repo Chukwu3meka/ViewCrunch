@@ -83,6 +83,9 @@ const App = ({ Component, pageProps }) => {
     };
   }, []);
 
+  const description =
+    "On ViewCrunch, you find Fascinating and Captivating contents, Breaking NEWS and an option to share your views with the world.";
+
   return (
     <>
       <SeoHead />
@@ -126,6 +129,10 @@ const App = ({ Component, pageProps }) => {
         <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png" />
+
+        <meta name="description" content={description} key="description" />
+        <meta property="og:description" content={description} key="og:description" />
+        <meta property="twitter:description" content={description} key="twitter:description" />
       </Head>
 
       <ThemeProvider theme={muiTheme(appTheme)}>

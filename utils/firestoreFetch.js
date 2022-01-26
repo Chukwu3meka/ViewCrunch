@@ -18,154 +18,70 @@ export const fetchProfile = async (handle) => {
     });
 };
 
-export const fetchView = async ({ author, view: id, myHandle }) => {
-  const view = toId(author, id),
-    authorData = await fetchProfile(author);
-
-  if (!authorData) return { error: "Author does not exist" };
-  if (authorData.suspended) return { error: "Author is suspended" };
-
-  const {
-    about,
-    published,
-    displayName,
-    profilePicture,
-    social: { linkedinHandle, twitterHandle, facebookHandle },
-  } = authorData;
-
-  const full_view = await viewRef
-    .doc(view)
+export const fetchView = async ({ viewLink, myHandle }) => {
+  return await viewRef
+    .where("stat.viewLink", "==", viewLink)
+    .limit(1)
     .get()
-    .then((snapshot) => {
-      if (snapshot.exists) return snapshot.data();
-      return { error: "View not found" };
-    })
-    .catch((error) => {
-      return { error: "View not found" };
-      // console.log(error);
-    });
-
-  if (full_view.error) return { error: "View does not exist" };
-
-  const {
-    crunch,
-    title: { data: title, path },
-    date,
-    content,
-    pryImage,
-    // comments: commentsList,
-    upvote,
-    downvote,
-    description,
-    keywords,
-  } = full_view;
-
-  if (!full_view.visible.status && full_view.visible.moderator !== "ViewCrunch" && full_view.visible.data !== "just published")
-    return { error: "View is hidden" };
-
-  if (author !== full_view.author) return { error: "Wrong Author specified" };
-
-  // const comments = [];
-  // if (commentsList?.length) {
-  //   for (const { author, comment, date } of commentsList) {
-  //     const { displayName, profilePicture } = db.viewer?.find((x) => x.handle === author);
-  //     comments.push({ comment, date, displayName, profilePicture });
-  //   }
-  // }
-
-  const featuredPost1 = [];
-  for (const [key, value] of Object.entries(published)) {
-    featuredPost1.push({ title: value.title, id: key });
-  }
-  const featuredPost2 = featuredPost1.filter((x) => x.id !== view),
-    featuredPost3 = [
-      featuredPost2?.length && featuredPost2.splice(range(0, featuredPost2.length - 1), 1),
-      featuredPost2?.length && featuredPost2.splice(range(0, featuredPost2.length - 1), 1),
-    ]
-      .flat(Infinity)
-      .map(({ title, id }) => ({ title, id: `/${id.split("@").join("/")}`.replace("//", "/@") }));
-
-  const data = {
-    id: view,
-    path,
-    title,
-    content,
-    pryImage,
-    description,
-    keywords,
-    crunch: crunch[0],
-    comments: [],
-    date: date.toDate().toDateString(),
-    upvote,
-    downvote,
-    author: {
-      about,
-      author,
-      displayName,
-      twitterHandle,
-      profilePicture,
-      linkedinHandle,
-      facebookHandle,
-    },
-    post: {
-      featuredPost: featuredPost3,
-      similarPost: [],
-    },
-  };
-
-  if (myHandle) {
-    const profile = await fetchProfile(myHandle);
-
-    data.viewer = profile
-      ? {
-          blacklist: profile?.blacklist,
-          viewInFavourite: profile?.favourite?.find((x) => x.url === path) ? true : false,
-          viewInBlacklist: profile?.blacklist?.find((x) => x.url === path) ? true : false,
-        }
-      : {};
-  }
-
-  await viewRef
-    .where("crunch", "array-contains-any", crunch)
-    .where("visible.status", "==", true)
-    .orderBy("date", "desc")
-    .limit(5)
-    .get()
-    .then((snapshot) => {
-      if (!snapshot?.docs?.length) return;
-
-      for (const doc of snapshot.docs) {
-        // const id = doc.id,
+    .then(async (snapshot) => {
+      if (snapshot.size) {
         const {
-          author,
-          title: { data: title, path: id },
-          pryImage,
-        } = doc.data();
+          comments,
+          content,
+          downvote,
+          title,
+          upvote,
+          visible,
+          stat: { author, crunch, date, image, keyword, readTime, viewLink },
+        } = snapshot.docs[0].data();
 
-        if (data.post.similarPost.length < 3 || data.viewer.blacklist.some((x) => x.title !== title)) {
-          data.post.similarPost.push({ author, title, pryImage, id });
-        }
+        const authorData = await fetchProfile(author);
+
+        if (!authorData) return { error: "Author does not exist" };
+        if (authorData.suspended) return { error: "Author is suspended" };
+
+        const {
+          about,
+          published,
+          displayName,
+          profilePicture,
+          social: { linkedinHandle, twitterHandle, facebookHandle },
+        } = authorData;
+
+        return {
+          pageData: {
+            view: {
+              comments,
+              content,
+              downvote,
+              title,
+              upvote,
+              author,
+              crunch,
+              date: date.toDate().toDateString(),
+              image,
+              keyword,
+              readTime,
+              viewLink,
+            },
+
+            author: {
+              about,
+              published,
+              displayName,
+              profilePicture,
+              linkedinHandle,
+              twitterHandle,
+              facebookHandle,
+            },
+          },
+        };
       }
     })
-    .catch((err) => {
-      // console.log(err);
-      return { error: "View has issues" };
+    .catch((e) => {
+      console.log(e);
+      return { error: e };
     });
-
-  data.post.similarPost = data.post.similarPost.filter((x) => x.id !== `/${view.split("@").join("/")}`.replace("//", "/@"));
-
-  if (!data) return { error: "Error occured while fetching data" };
-  const advert = {
-    company: "SoccerMASS",
-    description: "No. 1 free competitive online Soccer Manager game, with added tactics and realistic transfer.",
-    image: `/images/ads/soccermass.webp`,
-    href: "https://www.soccermass.com",
-  };
-
-  return {
-    view: data,
-    advert,
-  };
 };
 
 export const fetchViews = async ({ handle, blacklist, lastVisible }) => {

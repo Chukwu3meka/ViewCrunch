@@ -1,7 +1,7 @@
-import { styles } from "/";
+import { errorPageStyles } from "/";
 
 const ErrorPage = ({ statusCode = 404, title = "Page not found" }) => (
-  <div className={styles.errorPage}>
+  <div className={errorPageStyles.errorPage}>
     <span>{statusCode}</span>
     <span />
     <span>{title}</span>
