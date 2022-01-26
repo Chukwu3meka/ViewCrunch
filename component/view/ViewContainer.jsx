@@ -14,13 +14,13 @@ const StoryContainer = (props) => {
     [reportView, setReportView] = useState(false),
     { myHandle, myID, myDisplayName } = profile,
     [moreActions, setMoreActions] = useState(false),
-    [votes, setVotes] = useState(view.upvote.votes),
+    [votes, setVotes] = useState(view.votes.total),
     [viewInFavourite, setViewInFavourite] = useState(view.viewInFavourite),
     [viewInBlacklist, setViewInBlacklist] = useState(view.viewInBlacklist),
-    [upvoted, setUpvoted] = useState(!!view.upvote.users.includes(myID)),
-    [downvoted, setDownvoted] = useState(!!view.downvote.users.includes(myID));
+    [upvoted, setUpvoted] = useState(!!view.votes.upvote.includes(myID)),
+    [downvoted, setDownvoted] = useState(!!view.votes.downvote.includes(myID));
 
-  console.log({ v: view.upvotes });
+  console.log({ v: view.votes.total });
 
   useEffect(() => {
     setOnline(props.online);
@@ -129,6 +129,7 @@ const StoryContainer = (props) => {
             profile,
             ...view,
             ...author,
+            votes,
             voteHandler,
           }}
         />

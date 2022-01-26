@@ -18,70 +18,75 @@ export const fetchProfile = async (handle) => {
     });
 };
 
-export const fetchView = async ({ viewLink, myHandle }) => {
-  return await viewRef
-    .where("stat.viewLink", "==", viewLink)
-    .limit(1)
+export const fetchHomeData = async () => {
+  const trending = [];
+
+  await viewRef
+    .where("moderation.visible.status", "==", true)
+    .orderBy("votes.total", "desc")
+    .orderBy("stat.date", "desc")
+    .limit(6)
     .get()
     .then(async (snapshot) => {
       if (snapshot.size) {
-        const {
-          comments,
-          content,
-          downvote,
-          title,
-          upvote,
-          stat: { author, crunch, date, image, keyword, readTime, viewLink },
-        } = snapshot.docs[0].data();
+        for (const doc of snapshot.docs) {
+          const {
+            title,
+            stat: { author, crunch, viewLink, date },
+          } = doc.data();
 
-        const authorData = await fetchProfile(author);
+          const {
+            displayName,
+            stat: { profileLink },
+          } = await fetchProfile(author);
 
-        if (!authorData) return { error: "Author does not exist" };
-        if (authorData.suspended) return { error: "Author is suspended" };
-
-        const {
-          about,
-          displayName,
-          profilePicture,
-          social: { linkedinHandle, twitterHandle, facebookHandle },
-          stat: { profileLink },
-        } = authorData;
-
-        return {
-          pageData: {
-            view: {
-              comments,
-              content,
-              downvote,
-              title,
-              upvote,
-              author,
-              crunch,
-              crunchLink: toId(`/crunch/${crunch}`),
-              date: date.toDate().toDateString(),
-              image,
-              keyword,
-              readTime,
-              viewLink,
-            },
-
-            author: {
-              about,
-              displayName,
-              profileLink,
-              profilePicture,
-              linkedinHandle,
-              twitterHandle,
-              facebookHandle,
-            },
-          },
-        };
+          trending.push({
+            viewLink,
+            title,
+            crunch,
+            profileLink,
+            displayName,
+            crunchLink: `/crunch/${crunch}`,
+            date: date.toDate().toDateString(),
+          });
+        }
+      } else {
+        throw "No document found";
       }
     })
-    .catch((e) => {
-      console.log(e);
-      return { error: e };
+    .catch((error) => {
+      // console.log({ error });
+      return { error: "Server unable to fetch view" };
     });
+
+  const snapshot = await crunchRef.orderBy("dateCreated").get();
+
+  const last = snapshot.docs[range(0, snapshot.docs.length - 5)].data();
+
+  const crunches = await crunchRef
+    .orderBy("dateCreated")
+    .startAfter(last.dateCreated)
+    .limit(13)
+    .get()
+    .then((snapshot) => {
+      const crunches = [];
+      if (snapshot.size) {
+        for (const doc of snapshot.docs) {
+          const title = doc.data().title;
+          crunches.push({
+            title,
+            link: `/crunch/${`${title}-${doc.id}`.replace(/ /g, "-").toLowerCase()}`,
+          });
+        }
+      }
+      return crunches;
+    })
+    .catch((e) => {
+      // console.log(e);
+      return { error: "Server unable to fetch view" };
+    });
+
+  return { trending, crunches };
 };
 
 export const fetchViews = async ({ handle, blacklist, lastVisible }) => {
@@ -93,7 +98,7 @@ export const fetchViews = async ({ handle, blacklist, lastVisible }) => {
     blacklist = [];
   }
 
-  const ref = viewRef.where("visible.status", "==", true).orderBy("stat.date", "desc");
+  const ref = viewRef.where("moderation.visible.status", "==", true).orderBy("stat.date", "desc");
 
   const views = await (lastVisible
     ? ref.startAfter(firebase.firestore.Timestamp.fromDate(new Date(JSON.parse(lastVisible.date)), lastVisible.title)).limit(5)
@@ -102,7 +107,7 @@ export const fetchViews = async ({ handle, blacklist, lastVisible }) => {
     .get()
     .then(async (snapshot) => {
       const views = [];
-      if (snapshot.docs?.length) {
+      if (snapshot.size) {
         for (const doc of snapshot.docs) {
           const {
             title,
@@ -145,77 +150,73 @@ export const fetchViews = async ({ handle, blacklist, lastVisible }) => {
       }
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
       throw err;
     });
 
   return { lastVisible, views, blacklist };
 };
 
-export const fetchHomeData = async () => {
-  const trending = [];
-  await viewRef
-    .where("visible.status", "==", true)
-    .orderBy("upvote.votes", "desc")
-    .orderBy("stat.date", "desc")
-    .limit(6)
+export const fetchView = async ({ viewLink }) => {
+  return await viewRef
+    .where("stat.viewLink", "==", viewLink)
+    .limit(1)
     .get()
-    .then(async (documentSnapshots) => {
-      if (documentSnapshots?.docs?.length) {
-        for (const doc of documentSnapshots.docs) {
-          const {
-            title,
-            stat: { author, crunch, viewLink, date },
-          } = doc.data();
-
-          const {
-            displayName,
-            stat: { profileLink },
-          } = await fetchProfile(author);
-
-          trending.push({
-            viewLink,
-            title,
-            crunch,
-            profileLink,
-            displayName,
-            crunchLink: `/crunch/${crunch}`,
-            date: date.toDate().toDateString(),
-          });
-        }
-      } else {
-        throw "No document found";
-      }
-    })
-    .catch((error) => {
-      // console.log({ error });
-      return { error: "Server unable to fetch view" };
-    });
-
-  const snapshot = await crunchRef.orderBy("dateCreated").get();
-
-  const last = snapshot.docs[range(0, snapshot.docs.length - 5)];
-
-  const crunches = await crunchRef
-    .orderBy("dateCreated")
-    .startAfter(last.data().dateCreated)
-    .limit(13)
-    .get()
-    .then((snapshot) => {
-      const crunches = [];
-      for (const doc of snapshot.docs) {
-        const title = doc.data().title;
-        crunches.push({
+    .then(async (snapshot) => {
+      if (snapshot.size) {
+        const {
+          comments,
+          content,
           title,
-          link: `/crunch/${`${title}-${doc.id}`.replace(/ /g, "-").toLowerCase()}`,
-        });
+          votes,
+          stat: { author, crunch, date, image, keyword, readTime, viewLink },
+        } = snapshot.docs[0].data();
+
+        const authorData = await fetchProfile(author);
+
+        if (!authorData) return { error: "Author does not exist" };
+        if (authorData.suspended) return { error: "Author is suspended" };
+
+        const {
+          about,
+          displayName,
+          profilePicture,
+          social: { linkedinHandle, twitterHandle, facebookHandle },
+          stat: { profileLink },
+        } = authorData;
+
+        return {
+          pageData: {
+            view: {
+              comments,
+              content,
+              votes,
+              title,
+              author,
+              crunch,
+              crunchLink: toId(`/crunch/${crunch}`),
+              date: date.toDate().toDateString(),
+              image,
+              keyword,
+              readTime,
+              viewLink,
+            },
+
+            author: {
+              about,
+              displayName,
+              profileLink,
+              profilePicture,
+              linkedinHandle,
+              twitterHandle,
+              facebookHandle,
+            },
+          },
+        };
       }
-      return crunches;
     })
     .catch((e) => {
       // console.log(e);
-      return { error: "Server unable to fetch view" };
+      return { error: e };
     });
-
-  return { trending, crunches };
 };

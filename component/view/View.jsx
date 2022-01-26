@@ -25,7 +25,7 @@ const View = ({
   voteHandler,
   upvoted,
   downvoted,
-  totalUpvote,
+  votes,
   moreActionsHandler,
 }) => (
   <div className={styles.view}>
@@ -62,7 +62,7 @@ const View = ({
         </IconButton>
       </span>
       <div>
-        <span>{`${shortNumber(totalUpvote)} upvote${totalUpvote > 1 ? "s" : ""}`}</span>
+        <span>{`${shortNumber(votes)} upvote${votes > 1 ? "s" : null}`}</span>
         <IconButton color="inherit" onClick={moreActionsHandler}>
           <MoreVertIcon />
         </IconButton>

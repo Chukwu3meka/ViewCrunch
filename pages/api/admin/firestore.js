@@ -1,4 +1,4 @@
-import { range } from "@utils/clientFunctions";
+import { range, time2read } from "@utils/clientFunctions";
 import firebaseAdmin from "@utils/firebaseServer";
 
 export default async (req, res) => {
@@ -11,15 +11,7 @@ export default async (req, res) => {
       .get()
       .then(async (snapshot) => {
         for (const doc of snapshot.docs) {
-          const {
-            comments,
-            content,
-            downvote,
-            title,
-            upvote,
-            visible,
-            stat: { author, crunch, date, image, keyword, readTime, viewLink },
-          } = doc.data();
+          const { comments, content, title, stat, moderation } = doc.data();
 
           //  const title = "40 Life hacks";
 
@@ -35,19 +27,9 @@ export default async (req, res) => {
               title,
               content,
               comments,
-              stat: {
-                author,
-                crunch,
-                date,
-                image,
-                keyword,
-                readTime,
-                viewLink,
-              },
-              moderation: {
-                visible,
-              },
-              votes: { downvote: [], upvote: [], total: range(50, 300) },
+              stat,
+              moderation,
+              votes: { total: range(50, 300), upvote: [], downvote: [] },
             });
 
           await firebaseAdmin.firestore().collection("view").doc(doc.id).delete();
