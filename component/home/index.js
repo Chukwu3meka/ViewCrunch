@@ -1,25 +1,12 @@
 import News from "./News";
 import Intro from "./Intro";
 import Views from "./Views";
+import NavBar from "./NavBar";
 import Trending from "./Trending";
+import styles from "./styles.module.scss";
 import HomeContainer from "./HomeContainer";
 import NewsContainer from "./NewsContainer";
 import ViewsContainer from "./ViewsContainer";
-import newsStyles from "./newsStyles.module.scss";
-import introStyles from "./introStyles.module.scss";
 import viewsStyles from "./viewsStyles.module.scss";
-import trendingStyles from "./trendingStyles.module.scss";
 
-export {
-  News,
-  Views,
-  Intro,
-  Trending,
-  newsStyles,
-  introStyles,
-  viewsStyles,
-  NewsContainer,
-  ViewsContainer,
-  trendingStyles,
-  HomeContainer as default,
-};
+export { News, Views, Intro, NavBar, styles, Trending, viewsStyles, NewsContainer, ViewsContainer, HomeContainer as default };

@@ -1,0 +1,175 @@
+@import "@source/_variables.scss";
+
+.intro {
+  border-top: 3px solid color(primary);
+  background-color: var(--dim);
+  padding-top: 30px;
+  & > div {
+    overflow: hidden;
+    position: relative;
+    max-width: 1200px;
+    margin: auto;
+    padding: 30px 20px 30px 10px;
+    h2 {
+      max-width: 500px;
+      font-family: "Playfair Display", serif;
+      font-size: 2em;
+      z-index: 1;
+      position: relative;
+    }
+    h3 {
+      margin: 10px 0 15px;
+      position: relative;
+      z-index: 1;
+      font-family: "Cookie", cursive;
+    }
+    & > div {
+      position: absolute;
+      top: 0;
+      right: -90px;
+      height: 100%;
+      width: 300px;
+    }
+  }
+}
+
+.trending {
+  padding: 10px;
+  & > div:nth-of-type(1) {
+    margin: 20px 0 10px 10px;
+    @include flexCenter(row);
+    justify-content: flex-start;
+    h2 {
+      font-family: "Playfair Display", serif;
+      font-size: 1em;
+      font-weight: 600;
+      margin-left: 5px;
+    }
+  }
+  & > div:nth-of-type(2),
+  & > div:nth-of-type(3),
+  & > div:nth-of-type(4),
+  & > div:nth-of-type(5),
+  & > div:nth-of-type(6),
+  & > div:nth-of-type(7) {
+    @include flexCenter(row);
+    align-items: flex-start;
+    padding: 10px;
+    & > span {
+      font-family: "Playfair Display", serif;
+      font-size: 2em;
+      color: var(--dim);
+      margin: -13px 10px 0 0;
+    }
+    & > div {
+      @include flexCenter(column);
+      align-items: flex-start;
+      margin-bottom: 10px;
+      & > p:first-of-type {
+        font-family: Georgia, "Times New Roman", Times, serif;
+        font-weight: 500;
+      }
+      & > h2 {
+        margin: 5px 0 10px;
+        font-size: 1.5em;
+        font-weight: 600;
+        a {
+          color: var(--sec);
+        }
+      }
+    }
+  }
+}
+
+.nav {
+  padding: 10px;
+  margin-bottom: 10px;
+  & > h2 {
+    font-size: 1em;
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+  & > div {
+    @include flexCenter(row);
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 10px 5px;
+  }
+}
+
+.news {
+  padding: 10px;
+  margin: 0 auto 15px;
+  max-width: 600px;
+  & > h2 {
+    text-align: center;
+    font-size: 1.3em;
+    font-family: "Playfair Display", serif;
+  }
+
+  & > div {
+    @include flexCenter(column);
+    border-left: 2px solid color(primary);
+    margin: 10px auto;
+    border-radius: 3px !important;
+    @include flexCenter(column);
+    & > a {
+      color: var(--sec) !important;
+      font-weight: 600;
+      font-size: 1.2em;
+      text-align: center;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      word-break: normal;
+      overflow: hidden;
+    }
+  }
+  & > div:hover {
+    border-left: 2px solid color(secondary);
+  }
+}
+
+@media screen and (min-width: 380px) {
+  .intro > div {
+    padding: 30px 180px 30px 10px;
+    h2 {
+      font-size: 2.5em;
+      position: relative;
+    }
+    & > div {
+      right: -30px;
+    }
+  }
+}
+
+@media screen and (min-width: 520px) {
+  .intro > div {
+    padding: 50px 220px 50px 10px;
+    h2 {
+      font-size: 4em;
+      font-weight: 600;
+    }
+    & > div {
+      right: -30px;
+      height: 400px;
+      width: 400px;
+    }
+  }
+}
+
+@media screen and (min-width: 800px) {
+  .intro > div {
+    padding: 50px 100px 10px 10px;
+    h2 {
+      font-size: 4.5em;
+      font-weight: 600;
+    }
+    & > div {
+      top: -50px;
+      right: 50px;
+      height: 500px;
+      width: 500px;
+    }
+  }
+}

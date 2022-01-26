@@ -12,11 +12,9 @@ import NotificationsActiveIcon from "@material-ui/icons/NotificationsActive";
 import { Nav } from ".";
 import { fetcher } from "@utils/clientFunctions";
 import { setProfileAction } from "@store/actions";
-import { fetchNavCrunches } from "@utils/firestoreFetch";
 
 const NavbarContainer = (props) => {
-  const { profile, setProfileAction } = props,
-    [crunches, setCrunches] = useState([]),
+  const { profile, setProfileAction, children } = props,
     [activeNav, setActiveNav] = useState("/"),
     [online, setOnline] = useState(props.online),
     { myHandle, myNotification } = profile || [],
@@ -27,13 +25,6 @@ const NavbarContainer = (props) => {
   }, [props.online]);
 
   useEffect(() => {
-    const getCrunches = async () => {
-      const { crunches, error } = await fetchNavCrunches();
-      if (!error) setCrunches(crunches);
-    };
-
-    if (online) getCrunches();
-
     setActiveNav(window.location.pathname);
   }, []);
 
@@ -53,7 +44,7 @@ const NavbarContainer = (props) => {
     online && fetcher("/api/profile/changeTheme", JSON.stringify({ myHandle, myTheme }));
   };
 
-  return <Nav {...{ mainNav, activeNav, crunches, currentThemeHandler, myNotification }} />;
+  return <Nav {...{ mainNav, activeNav, currentThemeHandler, myNotification, children }} />;
 };
 
 const mapStateToProps = (state) => ({

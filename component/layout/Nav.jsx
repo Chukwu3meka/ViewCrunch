@@ -10,7 +10,7 @@ import ThemeIcon from "@material-ui/icons/EmojiObjects";
 
 import { navStyles } from ".";
 
-const Nav = ({ mainNav, activeNav, crunches, currentThemeHandler, myNotification }) => (
+const Nav = ({ mainNav, activeNav, currentThemeHandler, myNotification, children }) => (
   <Grid item xs={12} sm={12} md={4}>
     <div className={navStyles.navigation}>
       <div>
@@ -34,23 +34,7 @@ const Nav = ({ mainNav, activeNav, crunches, currentThemeHandler, myNotification
           ))}
         </div>
       </div>
-      <div>
-        <Typography component="h2">DISCOVER WHICH CRUNCH SUITS YOU</Typography>
-        {crunches.length ? (
-          <div>
-            {crunches.map(({ title, link }) => (
-              <Link href={{ pathname: link }} key={link}>
-                <Button variant="outlined" size="small">
-                  {title}
-                </Button>
-              </Link>
-            ))}
-          </div>
-        ) : (
-          <Typography variant="body2">We're searching for suitable Crunches</Typography>
-        )}
-      </div>
-
+      {children}
       <div>
         <Link href="/settings">
           <span>

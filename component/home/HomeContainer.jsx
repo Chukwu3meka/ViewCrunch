@@ -1,15 +1,15 @@
 import Grid from "@material-ui/core/Grid";
 
-import { NavContainer, Footer } from "@component/layout";
-import { Intro, Trending, NewsContainer, ViewsContainer } from ".";
+import { Footer } from "@component/layout";
+import { NavBar, Intro, Trending, NewsContainer, ViewsContainer, viewsStyles } from ".";
 
-const HomePage = ({ trending }) => (
+const HomePage = ({ trending, crunches }) => (
   <div>
     <Intro />
     <Trending trending={trending} />
 
     <Grid container style={{ maxWidth: "1200px", margin: "auto" }}>
-      <NavContainer />
+      <NavBar crunches={crunches} />
       <Grid item xs={12} sm={12} md={8}>
         <NewsContainer />
         <ViewsContainer />

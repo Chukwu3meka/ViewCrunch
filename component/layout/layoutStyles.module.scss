@@ -32,6 +32,7 @@
   background: var(--pry);
   transition: all 0.5s linear;
   height: 50px;
+  cursor: pointer;
   @include flexCenter(row);
   justify-content: space-between;
 

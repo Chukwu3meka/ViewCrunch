@@ -67,7 +67,6 @@ export const fetchView = async ({ viewLink, myHandle }) => {
 
             author: {
               about,
-              published,
               displayName,
               profilePicture,
               linkedinHandle,
@@ -152,7 +151,7 @@ export const fetchViews = async ({ handle, blacklist, lastVisible }) => {
   return { lastVisible, views, blacklist };
 };
 
-export const fetchTrending = async () => {
+export const fetchHomeData = async () => {
   const trending = [];
   await viewRef
     .where("visible.status", "==", true)
@@ -165,7 +164,7 @@ export const fetchTrending = async () => {
         for (const doc of documentSnapshots.docs) {
           const {
             title,
-            stat: { author, crunch, link, date },
+            stat: { author, crunch, viewLink, date },
           } = doc.data();
 
           const {
@@ -174,7 +173,7 @@ export const fetchTrending = async () => {
           } = await fetchProfile(author);
 
           trending.push({
-            link,
+            viewLink,
             title,
             crunch,
             profileLink,
@@ -192,37 +191,30 @@ export const fetchTrending = async () => {
       return { error: "Server unable to fetch view" };
     });
 
-  return { trending };
-};
+  const snapshot = await crunchRef.orderBy("dateCreated").get();
 
-export const fetchNavCrunches = async () => {
-  try {
-    const snapshot = await crunchRef.orderBy("dateCreated").get();
+  const last = snapshot.docs[range(0, snapshot.docs.length - 5)];
 
-    const last = snapshot.docs[range(0, snapshot.docs.length - 5)];
+  const crunches = await crunchRef
+    .orderBy("dateCreated")
+    .startAfter(last.data().dateCreated)
+    .limit(13)
+    .get()
+    .then((snapshot) => {
+      const crunches = [];
+      for (const doc of snapshot.docs) {
+        const title = doc.data().title;
+        crunches.push({
+          title,
+          link: `/crunch/${`${title}-${doc.id}`.replace(/ /g, "-").toLowerCase()}`,
+        });
+      }
+      return crunches;
+    })
+    .catch((e) => {
+      // console.log(e);
+      return { error: "Server unable to fetch view" };
+    });
 
-    const crunches = await crunchRef
-      .orderBy("dateCreated")
-      .startAfter(last.data().dateCreated)
-      .limit(13)
-      .get()
-      .then((snapshot) => {
-        const crunches = [];
-        for (const doc of snapshot.docs) {
-          const title = doc.data().title;
-          crunches.push({
-            title,
-            link: `/crunch/${`${title}-${doc.id}`.replace(/ /g, "-").toLowerCase()}`,
-          });
-        }
-        return crunches;
-      })
-      .catch((e) => {
-        throw e;
-      });
-
-    return { crunches, error: false };
-  } catch (error) {
-    return { error: true };
-  }
+  return { trending, crunches };
 };

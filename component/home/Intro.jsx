@@ -1,10 +1,10 @@
 import Image from "next/image";
 import Typography from "@material-ui/core/Typography";
 
-import { introStyles } from ".";
+import { styles } from ".";
 
 const Intro = () => (
-  <div className={introStyles.intro}>
+  <div className={styles.intro}>
     <div>
       <Typography variant="h3" component="h2">
         There's a lot to learn on the Internet
