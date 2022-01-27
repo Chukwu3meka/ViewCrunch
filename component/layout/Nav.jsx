@@ -1,12 +1,12 @@
 import Link from "next/link";
 
-import Grid from "@material-ui/core/Grid";
-import Badge from "@material-ui/core/Badge";
-import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
-import SettingsIcon from "@material-ui/icons/Settings";
-import ThemeIcon from "@material-ui/icons/EmojiObjects";
+import Grid from "@mui/material/Grid";
+import Badge from "@mui/material/Badge";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import SettingsIcon from "@mui/icons-material/Settings";
+import ThemeIcon from "@mui/icons-material/EmojiObjects";
 
 import { navStyles } from ".";
 

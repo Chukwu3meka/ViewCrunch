@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import { useSnackbar } from "notistack";
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import { View, ViewNav, styles } from "/";
 import { SocialShare } from "@component/others";
 import { fetcher } from "@utils/clientFunctions";

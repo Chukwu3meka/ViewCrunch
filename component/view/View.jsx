@@ -1,12 +1,12 @@
 import Link from "next/link";
 import Fade from "react-reveal/Fade";
 
-import Paper from "@material-ui/core/Paper";
-import UpvoteIcon from "@material-ui/icons/ThumbUp";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import DownvoteIcon from "@material-ui/icons/ThumbDown";
+import Paper from "@mui/material/Paper";
+import UpvoteIcon from "@mui/icons-material/ThumbUp";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import DownvoteIcon from "@mui/icons-material/ThumbDown";
 
 import { styles } from "/";
 import { Avatar } from "@component/others";

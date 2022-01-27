@@ -5,8 +5,8 @@ import { Provider } from "react-redux";
 import config from "react-reveal/globals";
 import { useEffect, useState } from "react";
 import { SnackbarProvider } from "notistack";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import { ThemeProvider } from "@material-ui/core/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import { ThemeProvider } from "@mui/styles";
 
 import * as gtag from "@utils/gtag";
 import muiTheme from "@source/theme";

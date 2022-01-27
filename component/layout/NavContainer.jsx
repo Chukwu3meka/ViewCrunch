@@ -1,13 +1,13 @@
 import { connect } from "react-redux";
 import { useEffect, useState } from "react";
 
-import HomeIcon from "@material-ui/icons/Home";
-import TimelineIcon from "@material-ui/icons/Timeline";
-import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
-import ContactUsIcon from "@material-ui/icons/ContactSupportOutlined";
-import NotificationsOffIcon from "@material-ui/icons/NotificationsOff";
-import ImportantDevicesIcon from "@material-ui/icons/ImportantDevices";
-import NotificationsActiveIcon from "@material-ui/icons/NotificationsActive";
+import HomeIcon from "@mui/icons-material/Home";
+import TimelineIcon from "@mui/icons-material/Timeline";
+import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
+import ContactUsIcon from "@mui/icons-material/ContactSupportOutlined";
+import NotificationsOffIcon from "@mui/icons-material/NotificationsOff";
+import ImportantDevicesIcon from "@mui/icons-material/ImportantDevices";
+import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 
 import { Nav } from ".";
 import { fetcher } from "@utils/clientFunctions";

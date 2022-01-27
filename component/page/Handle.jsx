@@ -4,7 +4,7 @@ import Router from "next/router";
 import { connect } from "react-redux";
 import { useSnackbar } from "notistack";
 import { useEffect, useState } from "react";
-import { Typography, TextField, Button } from "@material-ui/core";
+import { Typography, TextField, Button } from "@mui/material";
 
 import { styles } from "/";
 import validate from "@utils/validator";

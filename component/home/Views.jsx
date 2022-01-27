@@ -2,9 +2,9 @@ import Link from "next/link";
 import Image from "next/image";
 import Fade from "react-reveal/Fade";
 
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
-import LoveIcon from "@material-ui/icons/FavoriteBorderTwoTone";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import LoveIcon from "@mui/icons-material/FavoriteBorderTwoTone";
 
 import { viewsStyles } from ".";
 import { Loading } from "@component/others";

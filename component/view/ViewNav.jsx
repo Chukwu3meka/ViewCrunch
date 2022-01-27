@@ -1,11 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
-import Button from "@material-ui/core/Button";
-import Hidden from "@material-ui/core/Hidden";
-import Typography from "@material-ui/core/Typography";
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
+import Button from "@mui/material/Button";
+import Hidden from "@mui/material/Hidden";
+import Typography from "@mui/material/Typography";
 
 import { NavContainer } from "@component/layout";
 

@@ -36,23 +36,18 @@
   background: var(--pry);
   transition: all 0.5s linear;
   height: 50px;
+  padding: 0 10px;
   cursor: pointer;
   @include flexCenter(row);
   justify-content: space-between;
-
-  & > div:first-of-type {
-    position: relative;
-    width: 40px;
-    height: 40px;
-  }
-
+  gap: 20px;
   & > h1 {
     font-size: 2.2em;
     letter-spacing: 2px;
     font-weight: 500;
     font-family: "Fredericka the Great", cursive;
     text-shadow: 2px 2px 0 var(--dim);
-    color: color(secondary);
+    color: color(primary);
   }
 }
 

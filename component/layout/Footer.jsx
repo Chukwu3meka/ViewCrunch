@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 
 import { layoutStyles } from "/";
 import { AuthFirebase } from "@component/page";

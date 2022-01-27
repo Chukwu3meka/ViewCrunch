@@ -1,9 +1,9 @@
 import { styles } from "/";
-import Reddit from "@material-ui/icons/Reddit";
-import Twitter from "@material-ui/icons/Twitter";
-import Facebook from "@material-ui/icons/Facebook";
-import LinkedIn from "@material-ui/icons/LinkedIn";
-import WhatsApp from "@material-ui/icons/WhatsApp";
+import Reddit from "@mui/icons-material/Reddit";
+import Twitter from "@mui/icons-material/Twitter";
+import Facebook from "@mui/icons-material/Facebook";
+import LinkedIn from "@mui/icons-material/LinkedIn";
+import WhatsApp from "@mui/icons-material/WhatsApp";
 import { toId } from "@utils/clientFunctions";
 
 const SocialShare = ({

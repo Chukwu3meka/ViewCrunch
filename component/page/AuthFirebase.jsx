@@ -1,7 +1,7 @@
 import cookie from "js-cookie";
 import Router from "next/router";
 import { connect } from "react-redux";
-import { Button } from "@material-ui/core";
+import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 
