@@ -4,7 +4,7 @@ import Image from "next/image";
 import Typography from "@mui/material/Typography";
 
 import { layoutStyles } from "/";
-import { AuthFirebase } from "@component/page";
+// import { AuthFirebase } from "@component/page";
 
 const Footer = () => (
   <div className={layoutStyles.footer}>
@@ -52,7 +52,7 @@ const Footer = () => (
         <div className="fb-share-button" data-href="https://www.viewcrunch.com" data-layout="button_count" data-size="large">
           <a
             target="_blank"
-            href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.viewcrunch.com%2F&amp;src=sdkpreparse"
+            href="                                          https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.viewcrunch.com%2F&amp;src=sdkpreparse"
             className="fb-xfbml-parse-ignore">
             Share
           </a>
@@ -62,7 +62,7 @@ const Footer = () => (
       <div>
         <Image src="/images/ViewCrunch.webp" layout="fill" alt="ViewCrunch footer icon" />
       </div>
-      <AuthFirebase />
+      {/* <AuthFirebase /> */}
     </div>
 
     <Typography variant="body1" color="textSecondary">

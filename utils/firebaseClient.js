@@ -1,6 +1,6 @@
-// import { initializeApp } from "firebase/app";
-// import { getFirestore } from "firebase/firestore";
-// import { getStorage } from "firebase/storage";
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 // import firebase from "firebase/app";
 // import {} from "firebase/firestore";
@@ -28,14 +28,14 @@
 
 // Initialize Firebase with a "default" Firebase project
 // const firebase = initializeApp(firebaseConfig);
-// const firebase = initializeApp(process.env.NEXT_PUBLIC_CLIENT);
+const firebase = initializeApp(JSON.parse(process.env.NEXT_PUBLIC_CLIENT));
 
 // console.log(process.env.NEXT_PUBLIC_MEA);
 
 // initializeApp({ ...process.env.NEXT_PUBLIC_CLIENT });
 
-// const storage = getStorage();
-// const firestore = getFirestore();
+const storage = getStorage();
+const firestore = getFirestore();
 
 // // Initialize Firebase
 // if (!firebase?.apps?.length) {
@@ -52,9 +52,5 @@
 //   storage = firebase.storage();
 // const firestore = getFirestore(app);
 // storage = firebase.storage();
-
-// export { firestore=[], storage=[] };
-
-const firestore = [];
 
 export { firestore };

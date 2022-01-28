@@ -1,19 +1,23 @@
-import firebaseAdmin from "@utils/firebaseServer";
+import { auth, firestore } from "@utils/firebaseServer";
 
 const verifyRefresh = async (myRefresh) => {
-  const { access_token: token } = await fetch(`https://securetoken.googleapis.com/v1/token?key=${process.env.NEXT_PUBLIC_API}`, {
-    method: "POST",
-    headers: new Headers({ "Content-Type": "application/x-www-form-urlencoded" }),
-    body: `grant_type=refresh_token&refresh_token=${myRefresh}`,
-    credentials: "same-origin",
-  }).then((res) => res.json());
+  const { access_token: token } = await fetch(
+    `https://securetoken.googleapis.com/v1/token?key=${JSON.parse(process.env.NEXT_PUBLIC_CLIENT).apiKey}`,
+    {
+      method: "POST",
+      headers: new Headers({ "Content-Type": "application/x-www-form-urlencoded" }),
+      body: `grant_type=refresh_token&refresh_token=${myRefresh}`,
+      credentials: "same-origin",
+    }
+  ).then((res) => res.json());
 
   if (!token) return "invalid user";
 
-  // const email = await auth.verifyIdToken(token);
-  // console.log(email);
+  const { uid } = await auth.verifyIdToken(token);
 
-  console.log("server", "auth", firebaseAdmin);
+  console.log(uid, "fdsgfgdf");
+
+  // console.log("server", "auth", firebaseAdmin);
   // return await auth
   //   .verifyIdToken(token)
   //   .then(async (decodedToken) => {

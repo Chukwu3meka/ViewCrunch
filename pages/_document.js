@@ -1,6 +1,7 @@
 import React from "react";
 import { ServerStyleSheets } from "@mui/styles";
 import Document, { Html, Head, Main, NextScript } from "next/document";
+import Script from "next/script";
 
 export default class MyDocument extends Document {
   render() {
@@ -15,16 +16,8 @@ export default class MyDocument extends Document {
             rel="stylesheet"
           />
 
-          {/* <link
-            href="https://fonts.googleapis.com/css2?family=Amiri:ital@1&amp;family=Cookie&amp;
-family=Playfair+Display:ital,wght@1,500&amp;display=swap"
-            rel="stylesheet"
-          />
- */}
-          {/* google  */}
-
-          <script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA}`} defer />
-          <script
+          <Script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA}`} defer />
+          <Script
             dangerouslySetInnerHTML={{
               __html: `
             window.dataLayer = window.dataLayer || [];
@@ -37,13 +30,11 @@ family=Playfair+Display:ital,wght@1,500&amp;display=swap"
             }}
             defer
           />
-          {/* fb   */}
-          <script
+          <Script
             async
             defer
             nonce="pJttRA02"
-            // crossOrigin="anonymous"
-            // crossOrigin={"anonymous".toString()}
+            crossOrigin="anonymous"
             src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&amp;version=v11.0&amp;appId=332276848078020&amp;autoLogAppEvents=1"
           />
         </Head>

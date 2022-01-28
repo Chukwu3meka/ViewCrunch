@@ -3,9 +3,9 @@ import { collection, query, where, doc, getDoc, getDocs, orderBy, limit } from "
 
 import { range, toId, dateCalculator } from "@utils/clientFunctions";
 
-// const viewCollection = collection(firestore, "view");
-// const crunchCollection = collection(firestore, "crunch");
-// const profileCollection = collection(firestore, "profile");
+const viewCollection = collection(firestore, "view");
+const crunchCollection = collection(firestore, "crunch");
+const profileCollection = collection(firestore, "profile");
 
 // export const fetchProfile = async (handle) => {
 //   return await profileCollection
@@ -20,76 +20,81 @@ import { range, toId, dateCalculator } from "@utils/clientFunctions";
 //     });
 // };
 
-// export const fetchHomeData = async () => {
-//   const trending = [];
+export const fetchHomeData = async () => {
 
-//   await viewCollection
-//     .where("moderation.visible.status", "==", true)
-//     .orderBy("votes.total", "desc")
-//     .orderBy("stat.date", "desc")
-//     .limit(6)
-//     .get()
-//     .then(async (snapshot) => {
-//       if (snapshot.size) {
-//         for (const doc of snapshot.docs) {
-//           const {
-//             title,
-//             stat: { author, crunch, viewLink, date },
-//           } = doc.data();
+  
+console.log("sdfassdfsd")
 
-//           const {
-//             displayName,
-//             stat: { profileLink },
-//           } = await fetchProfile(author);
+  const trending = [];
 
-//           trending.push({
-//             viewLink,
-//             title,
-//             crunch,
-//             profileLink,
-//             displayName,
-//             crunchLink: `/crunch/${crunch}`,
-//             date: date.toDate().toDateString(),
-//           });
-//         }
-//       } else {
-//         throw "No document found";
-//       }
-//     })
-//     .catch((error) => {
-//       // console.log({ error });
-//       return { error: "Server unable to fetch view" };
-//     });
+  // await viewCollection
+  //   .where("moderation.visible.status", "==", true)
+  //   .orderBy("votes.total", "desc")
+  //   .orderBy("stat.date", "desc")
+  //   .limit(6)
+  //   .get()
+  //   .then(async (snapshot) => {
+  //     if (snapshot.size) {
+  //       for (const doc of snapshot.docs) {
+  //         const {
+  //           title,
+  //           stat: { author, crunch, viewLink, date },
+  //         } = doc.data();
 
-//   const snapshot = await crunchCollection.orderBy("dateCreated").get();
+  //         const {
+  //           displayName,
+  //           stat: { profileLink },
+  //         } = await fetchProfile(author);
 
-//   const last = snapshot.docs[range(0, snapshot.docs.length - 5)].data();
+  //         trending.push({
+  //           viewLink,
+  //           title,
+  //           crunch,
+  //           profileLink,
+  //           displayName,
+  //           crunchLink: `/crunch/${crunch}`,
+  //           date: date.toDate().toDateString(),
+  //         });
+  //       }
+  //     } else {
+  //       throw "No document found";
+  //     }
+  //   })
+  //   .catch((error) => {
+  //     // console.log({ error });
+  //     return { error: "Server unable to fetch view" };
+  //   });
 
-//   const crunches = await crunchCollection
-//     .orderBy("dateCreated")
-//     .startAfter(last.dateCreated)
-//     .limit(13)
-//     .get()
-//     .then((snapshot) => {
-//       const crunches = [];
-//       if (snapshot.size) {
-//         for (const doc of snapshot.docs) {
-//           const title = doc.data().title;
-//           crunches.push({
-//             title,
-//             link: `/crunch/${`${title}-${doc.id}`.replace(/ /g, "-").toLowerCase()}`,
-//           });
-//         }
-//       }
-//       return crunches;
-//     })
-//     .catch((e) => {
-//       // console.log(e);
-//       return { error: "Server unable to fetch view" };
-//     });
+  // const snapshot = await crunchCollection.orderBy("dateCreated").get();
 
-//   return { trending, crunches };
-// };
+  // const last = snapshot.docs[range(0, snapshot.docs.length - 5)].data();
+
+  // const crunches = await crunchCollection
+  //   .orderBy("dateCreated")
+  //   .startAfter(last.dateCreated)
+  //   .limit(13)
+  //   .get()
+  //   .then((snapshot) => {
+  //     const crunches = [];
+  //     if (snapshot.size) {
+  //       for (const doc of snapshot.docs) {
+  //         const title = doc.data().title;
+  //         crunches.push({
+  //           title,
+  //           link: `/crunch/${`${title}-${doc.id}`.replace(/ /g, "-").toLowerCase()}`,
+  //         });
+  //       }
+  //     }
+  //     return crunches;
+  //   })
+  //   .catch((e) => {
+  //     console.log(e);
+  //     return { error: "Server unable to fetch view" };
+  //   });
+
+  return { error=true };
+  // return { trending=, crunches };
+};
 
 // export const fetchViews = async ({ handle, blacklist, lastVisible }) => {
 //   if (!blacklist && handle) {

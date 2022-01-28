@@ -1,19 +1,31 @@
 const { initializeApp, cert, getApps, getApp, applicationDefault } = require("firebase-admin/app");
-// import { initializeApp, cert } from "firebase-admin";
-// import { getFirestore } from "firebase-admin/firestore";
-// import { getAuth } from "firebase-admin/auth";
-// import { getStorage } from "firebase-admin/storage";
+import { getFirestore } from "firebase-admin/firestore";
+import { getAuth } from "firebase-admin/auth";
+import { getStorage } from "firebase-admin/storage";
 
 // const firebaseAdmin = initializeApp({
 //   credential: process.env.NEXT_PUBLIC_SA,
 //   databaseURL: process.env.NEXT_PUBLIC_URL,
 // });
 
+// console.log(
+//   "server",
+//   getApps().length,
+//   JSON.parse(process.env.NEXT_PUBLIC_SERVER),
+//   JSON.parse(process.env.NEXT_PUBLIC_CLIENT)
+// );
+
+// let firebaseAdmin;
+
 if (!getApps().length) {
-  // initializeApp({
-  //   credential: process.env.NEXT_PUBLIC_SERVER,
-  //   // databaseURL: 'https://<DATABASE_NAME>.firebaseio.com'
-  // });
+  // firebaseAdmin = initializeApp({
+  initializeApp({
+    databaseURL: process.env.NEXT_PUBLIC_DBURL,
+    credential: cert(JSON.parse(process.env.NEXT_PUBLIC_SERVER)),
+    // storageBucket: process.env.NEXT_PUBLIC_STOREBUCKET,
+    storageBucket: JSON.parse(process.env.NEXT_PUBLIC_SERVER).storageBucket,
+  });
+
   // const firebaseAdmin = initializeApp({
   //   credential: process.env.NEXT_PUBLIC_SA,
   //   databaseURL: process.env.NEXT_PUBLIC_URL,
@@ -31,7 +43,14 @@ if (!getApps().length) {
   // });
 }
 
-console.log("getApp().options");
+// console.log(
+//   "server",
+//   getApps().length
+//   //   JSON.parse(process.env.NEXT_PUBLIC_SERVER),
+//   // JSON.parse(process.env.NEXT_PUBLIC_)
+// );
+
+// console.log("getApp().options");
 
 //         projectId: process.env.NEXT_PUBLIC_ID,
 //         clientEmail: process.env.NEXT_PUBLIC_MAIL,
@@ -62,13 +81,13 @@ console.log("getApp().options");
 
 // const auth = getAuth();
 
-// const auth = getAuth(),
-//   firestore = getFirestore(),
-//   bucket = getStorage().bucket();
+const auth = getAuth(),
+  firestore = getFirestore(),
+  bucket = getStorage().bucket();
 
-// export { bucket, auth, firestore, firebaseAdmin as default };
+export { bucket, auth, firestore };
 
-export default "firebaseAdmin";
+// export default "firebaseAdmin";
 
 // import admin from "firebase-admin";
 

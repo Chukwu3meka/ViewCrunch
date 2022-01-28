@@ -12,7 +12,7 @@ const HomePage = ({ trending, crunches }) => (
       <NavBar crunches={crunches} />
       <Grid item xs={12} sm={12} md={8}>
         <NewsContainer />
-        <ViewsContainer />
+        {/* <ViewsContainer /> */}
         <Footer />
       </Grid>
     </Grid>

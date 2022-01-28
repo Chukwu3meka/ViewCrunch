@@ -1,11 +1,11 @@
-import { range, time2read } from "@utils/clientFunctions";
-import firebaseAdmin from "@utils/firebaseServer";
+// import { range, time2read } from "@utils/clientFunctions";
+// import firebaseAdmin from "@utils/firebaseServer";
 
 export default async (req, res) => {
   try {
     if (process.env.NODE_ENV !== "development") throw new TypeError("authentication failed");
 
-    console.log(process.env.NEXT_PUBLIC_CLIENT, "asdasd");
+    // console.log(process.env.NEXT_PUBLIC_CLIENT);
 
     // await firebaseAdmin
     //   .firestore()

@@ -65,7 +65,7 @@ const App = ({ Component, pageProps }) => {
       Router.events.on("routeChangeStart", () => setPageReady(false));
 
       Router.events.on("routeChangeComplete", async (url) => {
-        gtag.pageview(url);
+        // gtag.pageview(url);
         store.dispatch(setDisplayHeader("visible"));
         setPageReady(true);
       });
