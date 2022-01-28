@@ -25,27 +25,19 @@ const App = ({ Component, pageProps }) => {
   const store = useStore(pageProps.initialReduxState),
     { myRefresh } = userControl(),
     //to make sure persistUser handler has finished running, before any page can display
-    [ready, setReady] = useState(false),
-    [pageReady, setPageReady] = useState(false),
+    [authReady, setAuthReady] = useState(false),
+    [pageReady, setPageReady] = useState(true),
     [appTheme, setAppTheme] = useState("light"),
     [chooseHandle, setChooseHandle] = useState(false);
 
   const persistUser = async () => {
     const profile = await fetcher("/api/profile/verifyToken", JSON.stringify({ myRefresh }));
-
-    if (profile?.myHandle) {
-      if (validate("handle", profile?.myHandle)) {
-        setAppTheme(profile.myTheme);
-        store.dispatch(setProfileAction(profile));
-      }
-      if (!isNaN(profile?.myHandle)) {
-        store.dispatch(setProfileAction({}));
-        setChooseHandle(true);
-      }
+    if (profile) {
+      store.dispatch(setProfileAction(profile));
     } else {
       store.dispatch(setProfileAction({}));
     }
-    setReady(true);
+    setAuthReady(true);
   };
 
   useEffect(() => {
@@ -57,30 +49,30 @@ const App = ({ Component, pageProps }) => {
   }, [myRefresh]);
 
   useEffect(() => {
-    let mounted = true;
-    if (mounted) {
-      const jssStyles = document.querySelector("#jss-server-side");
-      if (jssStyles) jssStyles.parentElement.removeChild(jssStyles);
+    const jssStyles = document.querySelector("#jss-server-side");
+    if (jssStyles) jssStyles.parentElement.removeChild(jssStyles);
+    // let mounted = true;
+    // if (mounted) {
 
-      Router.events.on("routeChangeStart", () => setPageReady(false));
+    //   Router.events.on("routeChangeStart", () => setPageReady(false));
 
-      Router.events.on("routeChangeComplete", async (url) => {
-        // gtag.pageview(url);
-        store.dispatch(setDisplayHeader("visible"));
-        setPageReady(true);
-      });
+    //   Router.events.on("routeChangeComplete", async (url) => {
+    //     // gtag.pageview(url);
+    //     store.dispatch(setDisplayHeader("visible"));
+    //     setPageReady(true);
+    //   });
 
-      Router.events.on("routeChangeError", () => {
-        setPageReady(true);
-      });
-      setPageReady(true);
-    }
+    //   Router.events.on("routeChangeError", () => {
+    //     setPageReady(true);
+    //   });
+    //   setPageReady(true);
+    // }
 
-    return () => {
-      mounted = false;
-      setPageReady(true);
-      Router.events.off("routeChangeComplete", (url) => gtag.pageview(url));
-    };
+    // return () => {
+    //   mounted = false;
+    //   setPageReady(true);
+    //   Router.events.off("routeChangeComplete", (url) => gtag.pageview(url));
+    // };
   }, []);
 
   const description =
@@ -141,7 +133,7 @@ const App = ({ Component, pageProps }) => {
           <SnackbarProvider maxSnack={1} preventDuplicate>
             <LayoutContainer setAppTheme={setAppTheme}>
               {/* renable this */}
-              {ready && pageReady ? (
+              {authReady && pageReady ? (
                 <Component {...pageProps} />
               ) : (
                 <div style={{ height: "calc(100vh - 50px)" }}>

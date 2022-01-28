@@ -1,11 +1,52 @@
-// import { range, time2read } from "@utils/clientFunctions";
-// import firebaseAdmin from "@utils/firebaseServer";
+import { firestore, firebaseServer } from "@utils/firebaseServer";
+// import {} from "firebase-admin/firestore"
+// import { collection, query, where, doc, getDoc, getDocs, orderBy, limit } from "firebase/firestore";
 
 export default async (req, res) => {
   try {
     if (process.env.NODE_ENV !== "development") throw new TypeError("authentication failed");
 
-    // console.log(process.env.NEXT_PUBLIC_CLIENT);
+    const uid = "nT2S72k44CT6oBWcqnCp8vMgR1e2";
+
+    await firestore
+      .collection("profile")
+      .doc("@maduekwepedro")
+      .get()
+      .then(async (snapshot) => {
+        const {
+          profilePicture,
+          coverPicture,
+          roles,
+
+          social: { twitterHandle, facebookHandle, linkedinHandle },
+          stat: { profileCreated },
+        } = snapshot.data();
+
+        await firestore
+          .collection("profile")
+          .doc(uid)
+          .set({
+            name: "ChukwuEmeka",
+            picture: {
+              profile: profilePicture,
+              cover: coverPicture,
+            },
+            notifications: [],
+            blacklist: [],
+            social: {
+              twitterHandle,
+              facebookHandle,
+              linkedinHandle,
+              website: `https://www.viewcrunch.com/profile/${uid}`,
+            },
+            details: {
+              theme: "dark",
+              profileCreated,
+              moderation: roles,
+              crunches: ["Lifehack", "Universal", "Career 101", "Finance", "Cyber Security", "Developers"],
+            },
+          });
+      });
 
     // await firebaseAdmin
     //   .firestore()

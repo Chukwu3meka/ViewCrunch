@@ -11,59 +11,37 @@ const verifyRefresh = async (myRefresh) => {
     }
   ).then((res) => res.json());
 
-  if (!token) return "invalid user";
+  if (!token) throw "invalid cookie";
 
-  const { uid } = await auth.verifyIdToken(token);
+  const uid = await auth
+    .verifyIdToken(token)
+    .then(({ uid }) => uid)
+    .catch((err) => {
+      throw err;
+    });
 
-  console.log(uid, "fdsgfgdf");
+  const profile = await firestore
+    .collection("profile")
+    .doc(uid)
+    .get()
+    .then((snapshot) => snapshot.data())
+    .catch((error) => {
+      throw new TypeError(error);
+    });
+  if (!profile) throw "profile not found";
 
-  // console.log("server", "auth", firebaseAdmin);
-  // return await auth
-  //   .verifyIdToken(token)
-  //   .then(async (decodedToken) => {
-  // const handle = await firebaseAdmin
-  //   .auth()
-  //   .getUser(decodedToken?.uid)
-  //   .then((user) => user.displayName);
-
-  // if (!handle.startsWith("@")) return { myHandle: handle };
-  // if (!handle) throw new TypeError("invalid user");
-
-  // const profile = await firebaseAdmin
-  //   .firestore()
-  //   .collection("profile")
-  //   .doc(handle)
-  //   .get()
-  //   .then((snapshot) => ({ ...snapshot.data(), id: snapshot.id }))
-  //   .catch((error) => {
-  //     throw new TypeError(error);
-  //   });
-
-  // return {
-  //   myHandle: handle,
-  //   myID: profile.id,
-  //   myTheme: profile.stat?.theme,
-  //   myNotification: profile.notification?.length,
-  //   myProfilePicture: profile.profilePicture,
-  //   myCoverPicture: profile.coverPicture,
-  //   myDisplayName: profile.displayName,
-  //   myProfession: profile.profession,
-  // };
-  // })
-  // .catch((err) => {
-  //   console.log("server err", { err });
-
-  //   throw new TypeError(err);
-  // });
+  return {
+    myID: uid,
+    myTheme: profile.details.theme,
+  };
 };
 
 export default async (req, res) => {
   try {
     const profile = await verifyRefresh(req.body.myRefresh);
-    if (profile === "invalid user") throw new TypeError("Invalid User");
     return res.status(200).json(profile);
   } catch (error) {
-    console.log(error);
-    return res.status(401).json({});
+    // console.log(error);
+    return res.status(401).send(false);
   }
 };

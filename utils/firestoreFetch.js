@@ -1,4 +1,4 @@
-import { firestore } from "@utils/firebaseClient";
+import { firestore, storage } from "@utils/firebaseClient";
 import { collection, query, where, doc, getDoc, getDocs, orderBy, limit } from "firebase/firestore";
 
 import { range, toId, dateCalculator } from "@utils/clientFunctions";
@@ -21,11 +21,26 @@ const profileCollection = collection(firestore, "profile");
 // };
 
 export const fetchHomeData = async () => {
-
-  
-console.log("sdfassdfsd")
+  console.log("sdfassdfsd");
 
   const trending = [];
+
+  const snapshot = await getDocs(
+    query(
+      viewCollection,
+      where("moderation.visible.status", "==", true),
+      orderBy("votes.total", "desc"),
+      orderBy("stat.date", "desc"),
+      limit(6)
+    )
+  );
+
+  console.log("snapshot", snapshot.size);
+
+  // querySnapshot.forEach((doc) => {
+  //   // doc.data() is never undefined for query doc snapshots
+  //   console.log(doc.id, " => ", doc.data());
+  // });
 
   // await viewCollection
   //   .where("moderation.visible.status", "==", true)
@@ -92,7 +107,7 @@ console.log("sdfassdfsd")
   //     return { error: "Server unable to fetch view" };
   //   });
 
-  return { error=true };
+  return { error: true };
   // return { trending=, crunches };
 };
 
