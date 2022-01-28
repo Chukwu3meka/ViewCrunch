@@ -1,4 +1,4 @@
-import { firestore, storage } from "@utils/firebaseClient";
+import { firestore } from "@utils/firebaseClient";
 import { collection, query, where, doc, getDoc, getDocs, orderBy, limit } from "firebase/firestore";
 
 import { range, toId, dateCalculator } from "@utils/clientFunctions";
@@ -7,22 +7,20 @@ const viewCollection = collection(firestore, "view");
 const crunchCollection = collection(firestore, "crunch");
 const profileCollection = collection(firestore, "profile");
 
-// export const fetchProfile = async (handle) => {
-//   return await profileCollection
-//     .doc(handle)
-//     .get()
-//     .then((snapshot) => {
-//       if (snapshot.exists) return snapshot.data();
-//       throw "author not found";
-//     })
-//     .catch((error) => {
-//       return null;
-//     });
-// };
+export const fetchProfile = async (handle) => {
+  //   return await profileCollection
+  //     .doc(handle)
+  //     .get()
+  //     .then((snapshot) => {
+  //       if (snapshot.exists) return snapshot.data();
+  //       throw "author not found";
+  //     })
+  //     .catch((error) => {
+  //       return null;
+  //     });
+};
 
 export const fetchHomeData = async () => {
-  console.log("sdfassdfsd");
-
   const trending = [];
 
   const snapshot = await getDocs(
@@ -107,8 +105,7 @@ export const fetchHomeData = async () => {
   //     return { error: "Server unable to fetch view" };
   //   });
 
-  return { error: true };
-  // return { trending=, crunches };
+  return { error: true, trending: [], crunches: [] };
 };
 
 // export const fetchViews = async ({ handle, blacklist, lastVisible }) => {
@@ -181,14 +178,11 @@ export const fetchHomeData = async () => {
 
 export const fetchView = async ({ viewLink }) => {
   // const snapshot = await getDocs(query(viewCollection, where("stat.viewLink", "==", viewLink), limit(1)))[0];
-
-  console.log("snapshot");
-
+  // console.log("snapshot");
   // querySnapshot.forEach((doc) => {
   //   // doc.data() is never undefined for query doc snapshots
   //   console.log(doc.id, " => ", doc.data());
   // });
-
   // return await viewCollection
   //   .where("stat.viewLink", "==", viewLink)
   //   .limit(1)
@@ -202,12 +196,9 @@ export const fetchView = async ({ viewLink }) => {
   //         votes,
   //         stat: { author, crunch, date, image, keyword, readTime, viewLink },
   //       } = snapshot.docs[0].data();
-
   //       const authorData = await fetchProfile(author);
-
   //       if (!authorData) return { error: "Author does not exist" };
   //       if (authorData.suspended) return { error: "Author is suspended" };
-
   //       const {
   //         about,
   //         displayName,
@@ -215,7 +206,6 @@ export const fetchView = async ({ viewLink }) => {
   //         social: { linkedinHandle, twitterHandle, facebookHandle },
   //         stat: { profileLink },
   //       } = authorData;
-
   //       return {
   //         pageData: {
   //           view: {
@@ -232,7 +222,6 @@ export const fetchView = async ({ viewLink }) => {
   //             readTime,
   //             viewLink,
   //           },
-
   //           author: {
   //             about,
   //             displayName,

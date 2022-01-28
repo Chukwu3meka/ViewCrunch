@@ -10,16 +10,11 @@ const Index = ({ error, trending, crunches }) => {
 export default Index;
 
 export const getServerSideProps = async () => {
-  const { errorProp } = require("@utils/serverFunctions");
-  try {
-    const { fetchHomeData } = require("@utils/firestoreFetch"),
-      { error, trending, crunches } = await fetchHomeData();
+  const { errorProp } = require("@utils/serverFunctions"),
+    { fetchHomeData } = require("@utils/firestoreFetch"),
+    { error, trending, crunches } = await fetchHomeData();
 
-    if (error) return errorProp(400, "Unable to fetch secondary data");
+  if (error) return errorProp(400, "Unable to fetch Data");
 
-    return { props: { trending, crunches } };
-  } catch (error) {
-    // console.log({ error });
-    if (error) return errorProp(400, "Unable to fetch secondary data");
-  }
+  return { props: { trending, crunches } };
 };
