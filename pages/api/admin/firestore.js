@@ -1,4 +1,4 @@
-import { firestore, firebaseServer } from "@utils/firebaseServer";
+import { firestore } from "@utils/firebaseServer";
 // import {} from "firebase-admin/firestore"
 // import { collection, query, where, doc, getDoc, getDocs, orderBy, limit } from "firebase/firestore";
 

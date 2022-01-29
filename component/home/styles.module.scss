@@ -106,9 +106,8 @@
     border-left: 2px solid color(primary);
     margin: 10px auto;
     border-radius: 3px !important;
-    @include flexCenter(column);
     & > a {
-      color: var(--opp) !important;
+      // color: var(--opp) !important;
       font-weight: 600;
       text-align: center;
       display: -webkit-box;

@@ -1,9 +1,10 @@
 const axios = require("axios").default;
+import { firestore } from "@utils/firebaseServer";
+
 import firebaseAdmin from "@utils/firebaseServer";
 
 const handler = async () => {
-  return await firebaseAdmin
-    .firestore()
+  return await firestore
     .collection("news")
     .doc("today")
     .get()
@@ -29,7 +30,7 @@ const handler = async () => {
             throw error;
           });
 
-        await firebaseAdmin.firestore().collection("news").doc("today").update({
+        await firestore.collection("news").doc("today").update({
           data: articles,
           date: new Date().toDateString(),
         });

@@ -1,15 +1,34 @@
 import { createTheme } from "@mui/material/styles";
 
 const muiTheme = (theme) => {
+  console.log({ theme }, "SAdfdsfasfdsfdsd");
+
+  const color = theme === "light" ? "#424242" : "#fffffa";
+  const background = theme === "light" ? "#fffffa" : "#14141e";
+
   return createTheme({
     typography: {
       fontFamily: "'Playfair Display', serif",
       allVariants: {
-        color: theme === "light" ? "#424242" : "#fffffa",
+        color,
       },
     },
+
+    components: {
+      MuiPaper: {
+        styleOverrides: {
+          root: {
+            color,
+            padding: 5,
+            boxSizing: "border-box",
+            cursor: "pointer",
+            background,
+          },
+        },
+      },
+    },
+
     palette: {
-      text: { color: "#e2ad26" },
       type: theme,
       primary: {
         main: "#e2ad26",
@@ -17,36 +36,13 @@ const muiTheme = (theme) => {
       secondary: {
         main: "#1197c0",
       },
-      background: {
-        default: theme === "light" ? "#fffffa" : "#14141e",
-      },
+      // background: {
+      //   // default: theme === "light" ? "#fffffa" : "#14141e",
+      //   default: "#E71A1A",
+      // },
       spacing: 24,
     },
   });
 };
 
-const globalTheme = (mode) => {
-  const theme = muiTheme(mode);
-  return createTheme(
-    {
-      overrides: {
-        MuiPaper: {
-          root: {
-            padding: 5,
-            boxSizing: "border-box",
-            cursor: "pointer",
-          },
-        },
-        MuiGrid: {
-          root: {
-            // alignContent: "center",
-            // justifyContent: "center",
-          },
-        },
-      },
-    },
-    theme
-  );
-};
-
-export default globalTheme;
+export default muiTheme;

@@ -5,11 +5,7 @@ import { Provider } from "react-redux";
 import config from "react-reveal/globals";
 import { useEffect, useState } from "react";
 import { SnackbarProvider } from "notistack";
-import CssBaseline from "@mui/material/CssBaseline";
-import { ThemeProvider } from "@mui/styles";
 
-import * as gtag from "@utils/gtag";
-import muiTheme from "@source/theme";
 import { useStore } from "@store/index";
 import validate from "@utils/validator";
 import { SeoHead } from "@component/page";
@@ -20,7 +16,17 @@ import LayoutContainer from "@component/layout";
 import { fetcher } from "@utils/clientFunctions";
 import { setDisplayHeader, setOnlineAction, setProfileAction } from "@store/actions";
 
-const App = ({ Component, pageProps }) => {
+import * as React from "react";
+import { ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import { CacheProvider } from "@emotion/react";
+import theme from "@source/theme";
+import createEmotionCache from "@source/createEmotionCache";
+
+// Client-side cache, shared for the whole session of the user in the browser.
+const clientSideEmotionCache = createEmotionCache();
+
+const App = ({ Component, emotionCache = clientSideEmotionCache, pageProps }) => {
   config({ ssrFadeout: true });
   const store = useStore(pageProps.initialReduxState),
     { myRefresh } = userControl(),
@@ -79,7 +85,7 @@ const App = ({ Component, pageProps }) => {
     "On ViewCrunch, you find Fascinating and Captivating contents, Breaking NEWS and an option to share your views with the world.";
 
   return (
-    <>
+    <CacheProvider value={emotionCache}>
       <SeoHead />
 
       <Head>
@@ -105,7 +111,8 @@ const App = ({ Component, pageProps }) => {
         <meta name="theme-color" content="#e2ad26" />
         <meta name="robots" content="index, follow" />
         <meta name="msapplication-TileColor" content="#ffffff" />
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <meta name="viewport" content="initial-scale=1, width=device-width" />
+        {/* <meta name="viewport" content="width=device-width,initial-scale=1" /> */}
         <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
 
         <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png" />
@@ -127,7 +134,8 @@ const App = ({ Component, pageProps }) => {
         <meta property="twitter:description" content={description} key="twitter:description" />
       </Head>
 
-      <ThemeProvider theme={muiTheme(appTheme)}>
+      <ThemeProvider theme={theme(appTheme)}>
+        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
         <Provider store={store}>
           <SnackbarProvider maxSnack={1} preventDuplicate>
@@ -145,7 +153,7 @@ const App = ({ Component, pageProps }) => {
           </SnackbarProvider>
         </Provider>
       </ThemeProvider>
-    </>
+    </CacheProvider>
   );
 };
 
@@ -153,5 +161,6 @@ export default App;
 
 App.propTypes = {
   Component: PropTypes.elementType.isRequired,
+  emotionCache: PropTypes.object,
   pageProps: PropTypes.object.isRequired,
 };

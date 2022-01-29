@@ -7,12 +7,9 @@ const Index = ({ error, trending, crunches }) =>
 export default Index;
 
 export const getServerSideProps = async () => {
-  const { fetchHomeData } = require("@utils/firestoreFetch");
-
-  // console.log(fetchHomeData, "fetchHomeData");
+  const { fetchHomeData } = await require("@utils/firestoreFetch");
 
   const { error = false, trending = [], crunches = [] } = await fetchHomeData();
-  // const { error = false, trending = [], crunches = [] } = [];
 
   return { props: { error, trending, crunches } };
 };

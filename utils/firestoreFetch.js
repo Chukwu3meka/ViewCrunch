@@ -1,121 +1,94 @@
-const { firestore } = require("@utils/firebaseClient");
+import { collection, query, where, doc, getDoc, getDocs, orderBy, limit } from "firebase/firestore";
 
-// import { getDocs } from "firebase/firestore";
-// import { initializeApp } from "firebase/app";
-
-// import { collection, query, where, doc, getDoc, getDocs, orderBy, limit } from "firebase/firestore";
+import { firestore } from "@utils/firebaseClient";
 
 import { range, toId, dateCalculator } from "@utils/clientFunctions";
+
+const viewRef = collection(firestore, "view");
+const crunchRef = collection(firestore, "crunch");
 
 const errorProp = (code = 404, title = "Page not found") => ({
   error: { code, title },
 });
 
-// const viewCollection = collection(firestore, "view");
-// const crunchCollection = collection(firestore, "crunch");
-// const profileCollection = collection(firestore, "profile");
+export const fetchProfile = async (uid) => {
+  const profileRef = doc(firestore, "profile", uid);
+  const snapshot = await getDoc(profileRef);
 
-// export const fetchProfile = async (handle) => {
-//   //   return await profileCollection
-//   //     .doc(handle)
-//   //     .get()
-//   //     .then((snapshot) => {
-//   //       if (snapshot.exists) return snapshot.data();
-//   //       throw "author not found";
-//   //     })
-//   //     .catch((error) => {
-//   //       return null;
-//   //     });
-//   return "hey";
-// };
+  if (snapshot.exists()) return snapshot.data();
+
+  return null;
+};
 
 export const fetchHomeData = async () => {
-  const trending = [];
-  console.log("firestore", firestore);
-  // const snapshot = await getDocs(
-  //   query(
-  //     viewCollection,
-  //     where("moderation.visible.status", "==", true),
-  //     orderBy("votes.total", "desc"),
-  //     orderBy("stat.date", "desc"),
-  //     limit(6)
-  //   )
-  // );
+  try {
+    const trending = [];
+    const snapshot = await getDocs(
+      query(
+        viewRef,
+        where("moderation.visible.status", "==", true),
+        orderBy("votes.total", "desc"),
+        orderBy("stat.date", "desc"),
+        limit(6)
+      )
+    );
 
-  return errorProp(400, "Unable to fetch Data");
+    if (snapshot.size) {
+      for (const doc of snapshot.docs) {
+        const {
+          title,
+          stat: { author, crunch, viewLink, date },
+        } = doc.data();
 
-  console.log("snapshot", "snapshot.size");
-  // querySnapshot.forEach((doc) => {
-  //   // doc.data() is never undefined for query doc snapshots
-  //   console.log(doc.id, " => ", doc.data());
-  // });
+        const {
+          displayName,
+          stat: { profileLink },
+        } = await fetchProfile(author);
 
-  // await viewCollection
-  //   .where("moderation.visible.status", "==", true)
-  //   .orderBy("votes.total", "desc")
-  //   .orderBy("stat.date", "desc")
-  //   .limit(6)
-  //   .get()
-  //   .then(async (snapshot) => {
-  //     if (snapshot.size) {
-  //       for (const doc of snapshot.docs) {
-  //         const {
-  //           title,
-  //           stat: { author, crunch, viewLink, date },
-  //         } = doc.data();
+        trending.push({
+          viewLink,
+          title,
+          crunch,
+          profileLink,
+          displayName,
+          crunchLink: `/crunch/${crunch}`,
+          date: date.toDate().toDateString(),
+        });
+      }
+    }
 
-  //         const {
-  //           displayName,
-  //           stat: { profileLink },
-  //         } = await fetchProfile(author);
+    return { error: false, trending, crunches: [] };
 
-  //         trending.push({
-  //           viewLink,
-  //           title,
-  //           crunch,
-  //           profileLink,
-  //           displayName,
-  //           crunchLink: `/crunch/${crunch}`,
-  //           date: date.toDate().toDateString(),
-  //         });
-  //       }
-  //     } else {
-  //       throw "No document found";
-  //     }
-  //   })
-  //   .catch((error) => {
-  //     // console.log({ error });
-  //     return { error: "Server unable to fetch view" };
-  //   });
+    // const snapshot = await crunchCollection.orderBy("dateCreated").get();
 
-  // const snapshot = await crunchCollection.orderBy("dateCreated").get();
+    // const last = snapshot.docs[range(0, snapshot.docs.length - 5)].data();
 
-  // const last = snapshot.docs[range(0, snapshot.docs.length - 5)].data();
-
-  // const crunches = await crunchCollection
-  //   .orderBy("dateCreated")
-  //   .startAfter(last.dateCreated)
-  //   .limit(13)
-  //   .get()
-  //   .then((snapshot) => {
-  //     const crunches = [];
-  //     if (snapshot.size) {
-  //       for (const doc of snapshot.docs) {
-  //         const title = doc.data().title;
-  //         crunches.push({
-  //           title,
-  //           link: `/crunch/${`${title}-${doc.id}`.replace(/ /g, "-").toLowerCase()}`,
-  //         });
-  //       }
-  //     }
-  //     return crunches;
-  //   })
-  //   .catch((e) => {
-  //     console.log(e);
-  //     return { error: "Server unable to fetch view" };
-  //   });
-
-  return { error: false, trending: [], crunches: [] };
+    // const crunches = await crunchCollection
+    //   .orderBy("dateCreated")
+    //   .startAfter(last.dateCreated)
+    //   .limit(13)
+    //   .get()
+    //   .then((snapshot) => {
+    //     const crunches = [];
+    //     if (snapshot.size) {
+    //       for (const doc of snapshot.docs) {
+    //         const title = doc.data().title;
+    //         crunches.push({
+    //           title,
+    //           link: `/crunch/${`${title}-${doc.id}`.replace(/ /g, "-").toLowerCase()}`,
+    //         });
+    //       }
+    //     }
+    //     return crunches;
+    //   })
+    //   .catch((e) => {
+    // console.log(e);
+    //     return { error: "Server unable to fetch view" };
+    //   });
+  } catch (error) {
+    if (process.env.NODE_ENV !== "development") console.log(error);
+    return errorProp(400, "Unable to fetch Data");
+  }
 };
 
 // export const fetchViews = async ({ handle, blacklist, lastVisible }) => {

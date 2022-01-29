@@ -8,8 +8,7 @@ const NewsContainer = () => {
 
   useEffect(() => {
     const getNEWS = async () => {
-      const articles = await fetcher("/api/externalApi/newsApi");
-      setNews(articles);
+      setNews(await fetcher("/api/externalApi/newsApi"));
     };
     getNEWS();
   }, []);
