@@ -4,7 +4,7 @@ import Fade from "react-reveal/Fade";
 
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import LoveIcon from "@mui/icons-material/FavoriteBorderTwoTone";
+import BookmarkAddIcon from "@mui/icons-material/BookmarkAddOutlined";
 
 import { viewsStyles } from ".";
 import { Loading } from "@component/others";
@@ -34,16 +34,18 @@ const Views = ({ views, loading, fetchFailed, getViews, mobile }) => (
                     </Typography>
                   </div>
                   <Link href={viewLink}>
-                    <Typography variant="h5" component="h2">
-                      <a>{title}</a>
-                    </Typography>
+                    <a>
+                      <Typography variant="h5" component="h2">
+                        {title}
+                      </Typography>
+                    </a>
                   </Link>
                   <Typography variant="body2">{content.replace(/<[^>]+>/g, "")}</Typography>
 
                   {!mobile ? (
                     <div className={viewsStyles.footer}>
                       <Typography variant="body2">{`${date} · ${readTime} ☆ ${keyword}`}</Typography>
-                      <LoveIcon fontSize="small" />
+                      <BookmarkAddIcon fontSize="small" />
                     </div>
                   ) : null}
                 </div>
@@ -54,7 +56,7 @@ const Views = ({ views, loading, fetchFailed, getViews, mobile }) => (
               {mobile ? (
                 <div className={viewsStyles.footer}>
                   <Typography variant="body2">{`${date} · ${readTime} ☆ ${keyword}`}</Typography>
-                  <LoveIcon fontSize="small" />
+                  <BookmarkAddIcon fontSize="small" />
                 </div>
               ) : null}{" "}
             </Paper>

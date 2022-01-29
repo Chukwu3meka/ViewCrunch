@@ -4,6 +4,8 @@
   @include flexCenter(row);
   flex-wrap: wrap;
   height: calc(100vh - 50px);
+  letter-spacing: 1px;
+  font-family: "Fredericka the Great", cursive;
   & > span:nth-of-type(1) {
     font-weight: 900;
     font-size: 1.8em;

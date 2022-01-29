@@ -1,8 +1,6 @@
 import { createTheme } from "@mui/material/styles";
 
 const muiTheme = (theme) => {
-  console.log({ theme }, "SAdfdsfasfdsfdsd");
-
   const color = theme === "light" ? "#424242" : "#fffffa";
   const background = theme === "light" ? "#fffffa" : "#14141e";
 
@@ -21,7 +19,7 @@ const muiTheme = (theme) => {
             color,
             padding: 5,
             boxSizing: "border-box",
-            cursor: "pointer",
+            // cursor: "pointer",
             background,
           },
         },
@@ -36,10 +34,9 @@ const muiTheme = (theme) => {
       secondary: {
         main: "#1197c0",
       },
-      // background: {
-      //   // default: theme === "light" ? "#fffffa" : "#14141e",
-      //   default: "#E71A1A",
-      // },
+      info: {
+        main: theme === "light" ? "#424242" : "#fffffa",
+      },
       spacing: 24,
     },
   });

@@ -17,9 +17,9 @@
     padding: 10px;
     margin-bottom: 10px;
     & > h2 {
-      font-size: 1em;
-      font-weight: 700;
-      margin-bottom: 5px;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+      font-family: "Fredericka the Great", cursive;
     }
     & > div {
       @include flexCenter(row);
@@ -53,6 +53,6 @@
 @media screen and (min-width: 960px) {
   .navigation {
     max-width: 350px;
-    min-height: calc(100vh - 55px);
+    min-height: calc(100vh - 50px);
   }
 }

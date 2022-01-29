@@ -24,7 +24,8 @@ const LayoutContainer = (props) => {
     setStyle({
       "--pry": props.theme === "light" ? "#DBD9D9" : "#424242",
       "--sec": props.theme === "light" ? "#ffffff" : "#0D0D1A",
-      "--dim": props.theme === "light" ? "#b1b1b18a" : "#ffffffb3",
+      // "--dim": props.theme === "light" ? "#b1b1b18a" : "#ffffffb3",
+      "--dim": props.theme === "light" ? "#646362" : "#ffffffb3",
       "--opp": props.theme === "light" ? "#424242" : "#fff",
     });
   }, [props.theme]);

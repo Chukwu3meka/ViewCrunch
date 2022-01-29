@@ -33,6 +33,7 @@ const verifyRefresh = async (myRefresh) => {
   return {
     myID: uid,
     myTheme: profile.details.theme,
+    myNotification: profile.notifications,
   };
 };
 

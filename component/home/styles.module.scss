@@ -80,8 +80,9 @@
   padding: 10px;
   margin-bottom: 10px;
   & > h2 {
-    font-weight: 700;
-    margin-bottom: 5px;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    font-family: "Fredericka the Great", cursive;
   }
   & > div {
     @include flexCenter(row);
@@ -93,9 +94,10 @@
 
 .news {
   padding: 10px;
-  margin: 0 auto 15px;
+  margin: -20px auto 15px;
   max-width: 600px;
   & > h2 {
+    color: color(primary);
     font-family: "Fredericka the Great", cursive;
     text-align: center;
     font-size: 1.7em;
@@ -107,8 +109,7 @@
     margin: 10px auto;
     border-radius: 3px !important;
     & > a {
-      // color: var(--opp) !important;
-      font-weight: 600;
+      color: var(--opp) !important;
       text-align: center;
       display: -webkit-box;
       -webkit-line-clamp: 3;

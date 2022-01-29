@@ -6,6 +6,12 @@ import Typography from "@mui/material/Typography";
 import { styles } from ".";
 import { NavContainer } from "@component/layout";
 
+import Chip from "@mui/material/Chip";
+import Badge from "@mui/material/Badge";
+import IconButton from "@mui/material/IconButton";
+import SettingsIcon from "@mui/icons-material/Settings";
+import ThemeIcon from "@mui/icons-material/EmojiObjects";
+
 const NavBar = ({ crunches }) => (
   <NavContainer>
     <div className={styles.nav}>
@@ -14,9 +20,9 @@ const NavBar = ({ crunches }) => (
         <div>
           {crunches.map(({ title, link }) => (
             <Link href={{ pathname: link }} key={link}>
-              <Button variant="outlined" size="small">
-                {title}
-              </Button>
+              <a>
+                <Chip key={link} label={title} variant="outlined" color="info" />
+              </a>
             </Link>
           ))}
         </div>

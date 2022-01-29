@@ -5,7 +5,6 @@
   box-sizing: border-box;
   font-family: "Playfair Display", serif;
   background: linear-gradient(to bottom right, var(--pry), var(--sec));
-
   color: var(--opp);
   font-size: 16px;
   a:link {
@@ -46,7 +45,7 @@
     letter-spacing: 2px;
     font-weight: 500;
     font-family: "Fredericka the Great", cursive;
-    text-shadow: 2px 2px 0 var(--dim);
+    text-shadow: 2px 2px 0 color(primary);
     color: color(primary);
   }
 }
