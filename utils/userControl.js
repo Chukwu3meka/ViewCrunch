@@ -1,5 +1,5 @@
 import cookies from "js-cookie";
-import firebase from "./firebaseClient";
+// import firebase from "./firebaseClient";
 import { useEffect, useState } from "react";
 
 const useUser = () => {
@@ -7,7 +7,7 @@ const useUser = () => {
 
   const logout = async () => {
     cookies.remove("ViewCrunch");
-    return firebase.auth().signOut();
+    // return firebase.auth().signOut();
   };
 
   useEffect(() => {

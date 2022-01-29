@@ -5,9 +5,9 @@ import { getStorage } from "firebase-admin/storage";
 
 if (!getApps().length) {
   initializeApp({
-    databaseURL: process.env.NEXT_PUBLIC_DBURL,
     credential: cert(JSON.parse(process.env.NEXT_PUBLIC_SERVER)),
-    storageBucket: JSON.parse(process.env.NEXT_PUBLIC_SERVER).storageBucket,
+    databaseURL: JSON.parse(process.env.NEXT_PUBLIC_CLIENT).databaseURL,
+    storageBucket: JSON.parse(process.env.NEXT_PUBLIC_CLIENT).storageBucket,
   });
 }
 

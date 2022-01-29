@@ -1,40 +1,50 @@
-import { firestore } from "@utils/firebaseClient";
-import { collection, query, where, doc, getDoc, getDocs, orderBy, limit } from "firebase/firestore";
+const { firestore } = require("@utils/firebaseClient");
+
+// import { getDocs } from "firebase/firestore";
+// import { initializeApp } from "firebase/app";
+
+// import { collection, query, where, doc, getDoc, getDocs, orderBy, limit } from "firebase/firestore";
 
 import { range, toId, dateCalculator } from "@utils/clientFunctions";
 
-const viewCollection = collection(firestore, "view");
-const crunchCollection = collection(firestore, "crunch");
-const profileCollection = collection(firestore, "profile");
+const errorProp = (code = 404, title = "Page not found") => ({
+  error: { code, title },
+});
 
-export const fetchProfile = async (handle) => {
-  //   return await profileCollection
-  //     .doc(handle)
-  //     .get()
-  //     .then((snapshot) => {
-  //       if (snapshot.exists) return snapshot.data();
-  //       throw "author not found";
-  //     })
-  //     .catch((error) => {
-  //       return null;
-  //     });
-};
+// const viewCollection = collection(firestore, "view");
+// const crunchCollection = collection(firestore, "crunch");
+// const profileCollection = collection(firestore, "profile");
+
+// export const fetchProfile = async (handle) => {
+//   //   return await profileCollection
+//   //     .doc(handle)
+//   //     .get()
+//   //     .then((snapshot) => {
+//   //       if (snapshot.exists) return snapshot.data();
+//   //       throw "author not found";
+//   //     })
+//   //     .catch((error) => {
+//   //       return null;
+//   //     });
+//   return "hey";
+// };
 
 export const fetchHomeData = async () => {
   const trending = [];
+  console.log("firestore", firestore);
+  // const snapshot = await getDocs(
+  //   query(
+  //     viewCollection,
+  //     where("moderation.visible.status", "==", true),
+  //     orderBy("votes.total", "desc"),
+  //     orderBy("stat.date", "desc"),
+  //     limit(6)
+  //   )
+  // );
 
-  const snapshot = await getDocs(
-    query(
-      viewCollection,
-      where("moderation.visible.status", "==", true),
-      orderBy("votes.total", "desc"),
-      orderBy("stat.date", "desc"),
-      limit(6)
-    )
-  );
+  return errorProp(400, "Unable to fetch Data");
 
-  console.log("snapshot", snapshot.size);
-
+  console.log("snapshot", "snapshot.size");
   // querySnapshot.forEach((doc) => {
   //   // doc.data() is never undefined for query doc snapshots
   //   console.log(doc.id, " => ", doc.data());
@@ -105,7 +115,7 @@ export const fetchHomeData = async () => {
   //     return { error: "Server unable to fetch view" };
   //   });
 
-  return { error: true, trending: [], crunches: [] };
+  return { error: false, trending: [], crunches: [] };
 };
 
 // export const fetchViews = async ({ handle, blacklist, lastVisible }) => {
@@ -176,67 +186,68 @@ export const fetchHomeData = async () => {
 //   return { lastVisible, views, blacklist };
 // };
 
-export const fetchView = async ({ viewLink }) => {
-  // const snapshot = await getDocs(query(viewCollection, where("stat.viewLink", "==", viewLink), limit(1)))[0];
-  // console.log("snapshot");
-  // querySnapshot.forEach((doc) => {
-  //   // doc.data() is never undefined for query doc snapshots
-  //   console.log(doc.id, " => ", doc.data());
-  // });
-  // return await viewCollection
-  //   .where("stat.viewLink", "==", viewLink)
-  //   .limit(1)
-  //   .get()
-  //   .then(async (snapshot) => {
-  //     if (snapshot.size) {
-  //       const {
-  //         comments,
-  //         content,
-  //         title,
-  //         votes,
-  //         stat: { author, crunch, date, image, keyword, readTime, viewLink },
-  //       } = snapshot.docs[0].data();
-  //       const authorData = await fetchProfile(author);
-  //       if (!authorData) return { error: "Author does not exist" };
-  //       if (authorData.suspended) return { error: "Author is suspended" };
-  //       const {
-  //         about,
-  //         displayName,
-  //         profilePicture,
-  //         social: { linkedinHandle, twitterHandle, facebookHandle },
-  //         stat: { profileLink },
-  //       } = authorData;
-  //       return {
-  //         pageData: {
-  //           view: {
-  //             comments,
-  //             content,
-  //             votes,
-  //             title,
-  //             author,
-  //             crunch,
-  //             crunchLink: toId(`/crunch/${crunch}`),
-  //             date: date.toDate().toDateString(),
-  //             image,
-  //             keyword,
-  //             readTime,
-  //             viewLink,
-  //           },
-  //           author: {
-  //             about,
-  //             displayName,
-  //             profileLink,
-  //             profilePicture,
-  //             linkedinHandle,
-  //             twitterHandle,
-  //             facebookHandle,
-  //           },
-  //         },
-  //       };
-  //     }
-  //   })
-  //   .catch((e) => {
-  //     // console.log(e);
-  //     return { error: e };
-  //   });
-};
+// export const fetchView = async ({ viewLink }) => {
+//   // const snapshot = await getDocs(query(viewCollection, where("stat.viewLink", "==", viewLink), limit(1)))[0];
+//   // console.log("snapshot");
+//   // querySnapshot.forEach((doc) => {
+//   //   // doc.data() is never undefined for query doc snapshots
+//   //   console.log(doc.id, " => ", doc.data());
+//   // });
+//   // return await viewCollection
+//   //   .where("stat.viewLink", "==", viewLink)
+//   //   .limit(1)
+//   //   .get()
+//   //   .then(async (snapshot) => {
+//   //     if (snapshot.size) {
+//   //       const {
+//   //         comments,
+//   //         content,
+//   //         title,
+//   //         votes,
+//   //         stat: { author, crunch, date, image, keyword, readTime, viewLink },
+//   //       } = snapshot.docs[0].data();
+//   //       const authorData = await fetchProfile(author);
+//   //       if (!authorData) return { error: "Author does not exist" };
+//   //       if (authorData.suspended) return { error: "Author is suspended" };
+//   //       const {
+//   //         about,
+//   //         displayName,
+//   //         profilePicture,
+//   //         social: { linkedinHandle, twitterHandle, facebookHandle },
+//   //         stat: { profileLink },
+//   //       } = authorData;
+//   //       return {
+//   //         pageData: {
+//   //           view: {
+//   //             comments,
+//   //             content,
+//   //             votes,
+//   //             title,
+//   //             author,
+//   //             crunch,
+//   //             crunchLink: toId(`/crunch/${crunch}`),
+//   //             date: date.toDate().toDateString(),
+//   //             image,
+//   //             keyword,
+//   //             readTime,
+//   //             viewLink,
+//   //           },
+//   //           author: {
+//   //             about,
+//   //             displayName,
+//   //             profileLink,
+//   //             profilePicture,
+//   //             linkedinHandle,
+//   //             twitterHandle,
+//   //             facebookHandle,
+//   //           },
+//   //         },
+//   //       };
+//   //     }
+//   //   })
+//   //   .catch((e) => {
+//   //     // console.log(e);
+//   //     return { error: e };
+//   //   });
+//   return "hey";
+// };

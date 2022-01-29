@@ -1,20 +1,18 @@
 import { ErrorPage } from "@component/page";
 import HomeContainer from "@component/home";
 
-const Index = ({ error, trending, crunches }) => {
-  if (error) return <ErrorPage statusCode={error?.code} title={error?.title} />;
-
-  return <HomeContainer trending={trending} crunches={crunches} />;
-};
+const Index = ({ error, trending, crunches }) =>
+  error ? <ErrorPage statusCode={error?.code} title={error?.title} /> : <HomeContainer trending={trending} crunches={crunches} />;
 
 export default Index;
 
 export const getServerSideProps = async () => {
-  const { errorProp } = require("@utils/serverFunctions"),
-    { fetchHomeData } = require("@utils/firestoreFetch"),
-    { error, trending, crunches } = await fetchHomeData();
+  const { fetchHomeData } = require("@utils/firestoreFetch");
 
-  if (error) return errorProp(400, "Unable to fetch Data");
+  // console.log(fetchHomeData, "fetchHomeData");
 
-  return { props: { trending, crunches } };
+  const { error = false, trending = [], crunches = [] } = await fetchHomeData();
+  // const { error = false, trending = [], crunches = [] } = [];
+
+  return { props: { error, trending, crunches } };
 };

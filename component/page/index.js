@@ -4,6 +4,14 @@ import EmptyPage from "./EmptyPage";
 import ErrorPage from "./ErrorPage";
 import styles from "./styles.module.scss";
 import errorPageStyles from "./errorPageStyles.module.scss";
-import AuthFirebase from "./AuthFirebase";
+// import AuthFirebase from "./AuthFirebase";
 
-export { errorPageStyles, styles, Handle, AuthFirebase, SeoHead, ErrorPage, EmptyPage };
+export {
+  errorPageStyles,
+  styles,
+  Handle,
+  // AuthFirebase,
+  SeoHead,
+  ErrorPage,
+  EmptyPage,
+};
