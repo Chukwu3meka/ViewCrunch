@@ -21,7 +21,7 @@
       margin-bottom: 10px;
       font-family: "Fredericka the Great", cursive;
     }
-    & > div {
+    & > nav {
       @include flexCenter(row);
       flex-wrap: wrap;
       justify-content: flex-start;

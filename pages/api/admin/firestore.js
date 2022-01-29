@@ -12,12 +12,10 @@ export default async (req, res) => {
       .get()
       .then(async (snap) => {
         for (const doc of snap.docs) {
-          await firestore
-            .collection("view")
-            .doc(doc.id)
-            .update({
-              "stat.viewLink": `${toId(doc.data().title)}-${doc.id}`,
-            });
+          await firestore.collection("view").doc(doc.id).update({
+            "moderation.visible.moderator": "nT2S72k44CT6oBWcqnCp8vMgR1e2",
+            "stat.author": "nT2S72k44CT6oBWcqnCp8vMgR1e2",
+          });
         }
       });
 

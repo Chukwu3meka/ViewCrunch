@@ -16,7 +16,7 @@ const Nav = ({ mainNav, activeNav, currentThemeHandler, myNotification, children
       {children}
       <div>
         <Typography component="h2">MAIN NAVIGATION</Typography>
-        <div>
+        <nav>
           {mainNav.map(([label, link, icon]) => (
             <Link href={{ pathname: link }} key={link}>
               <a>
@@ -34,7 +34,7 @@ const Nav = ({ mainNav, activeNav, currentThemeHandler, myNotification, children
               </a>
             </Link>
           ))}
-        </div>
+        </nav>
       </div>
       <div>
         <Link href="/settings">

@@ -12,6 +12,17 @@ const muiTheme = (theme) => {
       },
     },
 
+    palette: {
+      primary: {
+        main: "#e2ad26",
+      },
+      secondary: {
+        main: "#1197c0",
+      },
+      info: {
+        main: theme === "light" ? "#424242" : "#fffffa",
+      },
+    },
     components: {
       MuiPaper: {
         styleOverrides: {
@@ -24,20 +35,13 @@ const muiTheme = (theme) => {
           },
         },
       },
-    },
-
-    palette: {
-      type: theme,
-      primary: {
-        main: "#e2ad26",
+      MuiIconButton: {
+        styleOverrides: {
+          root: {
+            color,
+          },
+        },
       },
-      secondary: {
-        main: "#1197c0",
-      },
-      info: {
-        main: theme === "light" ? "#424242" : "#fffffa",
-      },
-      spacing: 24,
     },
   });
 };
