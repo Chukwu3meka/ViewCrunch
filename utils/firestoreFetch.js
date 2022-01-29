@@ -12,12 +12,17 @@ const errorProp = (code = 404, title = "Page not found") => ({
 });
 
 export const fetchProfile = async (uid) => {
-  const profileRef = doc(firestore, "profile", uid);
-  const snapshot = await getDoc(profileRef);
+  try {
+    const profileRef = doc(firestore, "profile", uid);
+    const snapshot = await getDoc(profileRef);
 
-  if (snapshot.exists()) return snapshot.data();
+    if (snapshot.exists()) return snapshot.data();
 
-  return null;
+    return null;
+  } catch (error) {
+    if (process.env.NODE_ENV === "development") console.log(error);
+    return null;
+  }
 };
 
 export const fetchHomeData = async () => {
@@ -146,68 +151,86 @@ export const fetchViews = async ({ handle, blacklist, lastVisible }) => {
   }
 };
 
-export const fetchView = async ({ viewLink }) => {
-  // const snapshot = await getDocs(query(viewCollection, where("stat.viewLink", "==", viewLink), limit(1)))[0];
-  // console.log("snapshot");
-  // querySnapshot.forEach((doc) => {
-  //   // doc.data() is never undefined for query doc snapshots
-  //   console.log(doc.id, " => ", doc.data());
-  // });
-  // return await viewCollection
-  //   .where("stat.viewLink", "==", viewLink)
-  //   .limit(1)
-  //   .get()
-  //   .then(async (snapshot) => {
-  //     if (snapshot.size) {
-  //       const {
-  //         comments,
-  //         content,
-  //         title,
-  //         votes,
-  //         stat: { author, crunch, date, image, keyword, readTime, viewLink },
-  //       } = snapshot.docs[0].data();
-  //       const authorData = await fetchProfile(author);
-  //       if (!authorData) return { error: "Author does not exist" };
-  //       if (authorData.suspended) return { error: "Author is suspended" };
-  //       const {
-  //         about,
-  //         displayName,
-  //         profilePicture,
-  //         social: { linkedinHandle, twitterHandle, facebookHandle },
-  //         stat: { profileLink },
-  //       } = authorData;
-  //       return {
-  //         pageData: {
-  //           view: {
-  //             comments,
-  //             content,
-  //             votes,
-  //             title,
-  //             author,
-  //             crunch,
-  //             crunchLink: toId(`/crunch/${crunch}`),
-  //             date: date.toDate().toDateString(),
-  //             image,
-  //             keyword,
-  //             readTime,
-  //             viewLink,
-  //           },
-  //           author: {
-  //             about,
-  //             displayName,
-  //             profileLink,
-  //             profilePicture,
-  //             linkedinHandle,
-  //             twitterHandle,
-  //             facebookHandle,
-  //           },
-  //         },
-  //       };
-  //     }
-  //   })
-  //   .catch((e) => {
-  //     // console.log(e);
-  //     return { error: e };
-  //   });
-  return "hey";
+export const fetchView = async (viewLink) => {
+  try {
+    const viewSnapshot = await getDocs(query(viewRef, where("stat.viewLink", "==", viewLink), limit(1)));
+
+    if (viewSnapshot.size) {
+      const {
+        comments,
+        content,
+        title,
+        votes,
+        stat: { author, crunch, date, image, keyword, readTime, viewLink },
+      } = viewSnapshot.docs[0].data();
+
+      const {
+        about,
+        displayName,
+        profilePicture,
+        social: { linkedinHandle, twitterHandle, facebookHandle },
+        stat: { profileLink },
+      } = await fetchProfile(author);
+
+      return {
+        pageData: {
+          view: {
+            comments,
+            content,
+            votes,
+            title,
+            author,
+            crunch,
+            crunchLink: toId(`/crunch/${crunch}`),
+            date: date.toDate().toDateString(),
+            image,
+            keyword,
+            readTime,
+          },
+          author: {
+            about,
+            displayName,
+            profileLink,
+            profilePicture,
+            linkedinHandle,
+            twitterHandle,
+            facebookHandle,
+          },
+        },
+      };
+
+      console.log();
+    } else {
+      return errorProp(400, "Unable to fetch Data");
+    }
+
+    // const profileRef = doc(firestore, "profile", uid);
+    // const snapshot = await getDoc(profileRef);
+
+    // if (snapshot.exists()) return snapshot.data();
+
+    // return null;
+
+    // const snapshot = await getDocs(query(viewCollection, where("stat.viewLink", "==", viewLink), limit(1)))[0];
+    // console.log("snapshot");
+    // querySnapshot.forEach((doc) => {
+    //   // doc.data() is never undefined for query doc snapshots
+    //   console.log(doc.id, " => ", doc.data());
+    // });
+    // return await viewCollection
+    //   .where("stat.viewLink", "==", viewLink)
+    //   .limit(1)
+    //   .get()
+    //   .then(async (snapshot) => {
+    //     if (snapshot.size) {
+    //     }
+    //   })
+    //   .catch((e) => {
+    //     // console.log(e);
+    //     return { error: e };
+    //   });
+  } catch (error) {
+    if (process.env.NODE_ENV === "development") console.log(error);
+    return { error: true };
+  }
 };

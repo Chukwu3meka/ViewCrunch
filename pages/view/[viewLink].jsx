@@ -23,20 +23,9 @@ const Index = ({ error, view, author }) => {
 export default Index;
 
 export const getServerSideProps = async (ctx) => {
-  // const { fetchView } = require("@utils/firestoreFetch");
-  // const { extractHandle, errorProp } = require("@utils/serverFunctions");
+  const { fetchView } = await require("@utils/firestoreFetch");
 
-  // const myHandle = await extractHandle(ctx.req.headers.cookie);
+  const { pageData = {}, error = false } = await fetchView(ctx.query.viewLink);
 
-  // console.log("Sdfgfdg");
-
-  // const { pageData, error } = await fetchView({
-  //   myHandle,
-  //   viewLink: `/view/${ctx.query.viewLink}`,
-  // });
-
-  // if (error) return errorProp(500, error);
-
-  // return { props: { ...pageData } };
-  return { props: { error: true } };
+  return { props: { error, ...pageData } };
 };

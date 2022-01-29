@@ -33,7 +33,10 @@ const ViewNav = ({ about, twitterHandle, profilePicture, linkedinHandle, faceboo
           <div>
             <Image src="/images/ads/soccermass.webp" layout="fill" />
           </div>
-          <Typography variant="body2">Online Soccer Manager</Typography>
+          <Typography variant="body2">
+            SoccerMASS is the No 1. Online Football Management Game. Advanced formations and tactics, realistic transfer market and much
+            more
+          </Typography>
           <Typography variant="caption" color="textSecondary">
             Ads via ViewCrunch
           </Typography>

@@ -55,7 +55,7 @@ const Views = ({ views, loading, fetchFailed, getViews, mobile }) => (
               </div>
               {mobile ? (
                 <div className={viewsStyles.footer}>
-                  <Typography variant="body2">{`${date} · ${readTime} ☆ ${keyword}`}</Typography>
+                  <Typography variant="body2">{`${readTime} ☆ ${keyword}`}</Typography>
                   <BookmarkAddIcon fontSize="small" />
                 </div>
               ) : null}{" "}

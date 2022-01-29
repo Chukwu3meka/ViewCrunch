@@ -13,6 +13,7 @@ import { navStyles } from ".";
 const Nav = ({ mainNav, activeNav, currentThemeHandler, myNotification, children }) => (
   <Grid item xs={12} sm={12} md={4}>
     <div className={navStyles.navigation}>
+      {children}
       <div>
         <Typography component="h2">MAIN NAVIGATION</Typography>
         <div>
@@ -35,7 +36,6 @@ const Nav = ({ mainNav, activeNav, currentThemeHandler, myNotification, children
           ))}
         </div>
       </div>
-      {children}
       <div>
         <Link href="/settings">
           <span>
