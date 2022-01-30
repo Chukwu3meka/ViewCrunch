@@ -1,48 +1,48 @@
 import Image from "next/image";
-import Link from "next/link";
 
-import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
-import Hidden from "@mui/material/Hidden";
 import Typography from "@mui/material/Typography";
-
-import { NavContainer } from "@component/layout";
 
 import { styles } from "/";
 import { SocialShare } from "@component/others";
+import { NavContainer } from "@component/layout";
 
-const ViewNav = ({ about, twitterHandle, profilePicture, linkedinHandle, facebookHandle, displayName, myDisplayName }) => (
+const ViewNav = ({ about, twitterHandle, profilePicture, linkedinHandle, facebookHandle, authorID, displayName, myID, mobile }) => (
   <NavContainer>
-    <Paper className={styles.nav} sx={{ display: { md: "none" } }}>
-      <div>
-        <Image src={profilePicture} layout="fill" alt={displayName} />
+    {mobile ? (
+      <div />
+    ) : (
+      <div className={styles.nav} sx={{ display: { md: "none" } }}>
+        <div>
+          <Image src={profilePicture} layout="fill" alt={displayName} />
+        </div>
+        <Typography variant="body2">{about}</Typography>
+        <div>
+          <SocialShare {...{ linkedinHandle, twitterHandle, facebookHandle }} />
+        </div>
+        {myID !== authorID ? (
+          <Button variant="contained" size="small" color="secondary">
+            Follow me
+          </Button>
+        ) : null}
+        <div>
+          <a href="https://www.soccermass.com">
+            <Typography variant="body1">SoccerMASS</Typography>
+            <div>
+              <Image src="/images/ads/soccermass.webp" layout="fill" />
+            </div>
+            <Typography variant="body2">
+              SoccerMASS is the No 1. Online Football Management Game. Advanced formations and tactics, realistic transfer market and
+              much more
+            </Typography>
+            <Typography variant="caption" color="textSecondary">
+              Ads via ViewCrunch
+            </Typography>
+          </a>
+        </div>
       </div>
-      <Typography variant="body2">{about}</Typography>
-      <div>
-        <SocialShare {...{ linkedinHandle, twitterHandle, facebookHandle }} />
-      </div>
-      {myDisplayName !== displayName ? (
-        <Button variant="contained" size="small" color="secondary">
-          Follow me
-        </Button>
-      ) : null}
-      <div>
-        <a href="https://www.soccermass.com">
-          <Typography variant="body1">SoccerMASS</Typography>
-          <div>
-            <Image src="/images/ads/soccermass.webp" layout="fill" />
-          </div>
-          <Typography variant="body2">
-            SoccerMASS is the No 1. Online Football Management Game. Advanced formations and tactics, realistic transfer market and much
-            more
-          </Typography>
-          <Typography variant="caption" color="textSecondary">
-            Ads via ViewCrunch
-          </Typography>
-        </a>
-      </div>
-    </Paper>
+    )}
   </NavContainer>
 );
 

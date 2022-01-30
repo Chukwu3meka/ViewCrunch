@@ -189,6 +189,7 @@ export const fetchView = async (viewLink) => {
           },
           author: {
             about,
+            authorID,
             displayName,
             profileLink,
             profilePicture,

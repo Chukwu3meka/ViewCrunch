@@ -7,12 +7,17 @@ const muiTheme = (theme) => {
   return createTheme({
     typography: {
       fontFamily: "'Playfair Display', serif",
+
       allVariants: {
         color,
       },
     },
 
     palette: {
+      text: {
+        primary: color,
+        secondary: theme === "light" ? "#7E7C7C" : "#A1A1A1",
+      },
       primary: {
         main: "#e2ad26",
       },

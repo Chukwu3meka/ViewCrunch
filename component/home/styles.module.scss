@@ -2,7 +2,7 @@
 
 .intro {
   border-top: 3px solid color(primary);
-  background-color: var(--dim);
+  background-color: var(--pry);
   padding-top: 30px;
   & > div {
     overflow: hidden;
@@ -94,7 +94,7 @@
 
 .news {
   padding: 10px;
-  margin: -20px auto 15px;
+  margin: -10px auto 15px;
   max-width: 600px;
   & > h2 {
     color: color(primary);

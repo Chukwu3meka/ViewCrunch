@@ -14,7 +14,6 @@
   border-bottom: 1px solid var(--dim);
   padding: 10px;
   & > div:nth-of-type(2) {
-    padding: 10px;
     margin-bottom: 10px;
     & > h2 {
       letter-spacing: 1px;
@@ -50,7 +49,7 @@
   display: none;
 }
 
-@media screen and (min-width: 960px) {
+@media screen and (min-width: 900px) {
   .navigation {
     border: none;
     max-width: 350px;

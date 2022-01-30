@@ -47,7 +47,7 @@ const View = ({
               <a>{crunch}</a>
             </Link>
           </div>
-          <Typography variant="body2">{`${dateCalculator({ date })} ● ${readTime}`}</Typography>
+          <Typography variant="body2">{`Published ${dateCalculator({ date })} ● ${readTime}`}</Typography>
         </div>
       </div>
     </div>

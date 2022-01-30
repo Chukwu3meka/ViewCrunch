@@ -2,6 +2,7 @@ import { connect } from "react-redux";
 import { useEffect, useState } from "react";
 
 import HomeIcon from "@mui/icons-material/Home";
+import PublicIcon from "@mui/icons-material/Public";
 import TimelineIcon from "@mui/icons-material/Timeline";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import ContactUsIcon from "@mui/icons-material/ContactSupportOutlined";
@@ -31,10 +32,11 @@ const NavbarContainer = (props) => {
   const mainNav = [
     ["Home", "/", <HomeIcon />],
     ["Notification", "/notification", myNotification ? <NotificationsActiveIcon /> : <NotificationsOffIcon />],
-    ["Favourite", "/favourite", <TimelineIcon />],
-    ["Contact Us", "/info/contactus", <ContactUsIcon />],
-    ["My Crunch", "/crunch", <ImportantDevicesIcon />],
-    ["Portfolio", `/profile`, <AssignmentIndIcon />],
+    ["Crunch", "/crunch", <ImportantDevicesIcon />],
+    ["Bookmarks", "/favourite", <TimelineIcon />],
+    ["Contact", "/info/contactus", <ContactUsIcon />],
+    ["Profile", `/profile`, <AssignmentIndIcon />],
+    ["Organization", "/Organization", <PublicIcon />],
   ];
 
   const currentThemeHandler = () => {

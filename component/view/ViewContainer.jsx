@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from "react";
 
 const StoryContainer = (props) => {
   const scrollRef = useRef(null),
+    [mobile, setMobile] = useState(),
     { view, profile, author } = props,
     { enqueueSnackbar } = useSnackbar(),
     [online, setOnline] = useState(props.online),
@@ -20,11 +21,15 @@ const StoryContainer = (props) => {
     [upvoted, setUpvoted] = useState(!!view.votes.upvote.includes(myID)),
     [downvoted, setDownvoted] = useState(!!view.votes.downvote.includes(myID));
 
-  console.log({ v: view.votes.total });
+  // console.log({ v: view.votes.total });
 
   useEffect(() => {
     setOnline(props.online);
   }, [props.online]);
+
+  useEffect(() => {
+    setMobile(props.deviceWidth < 900 ? true : false);
+  }, [props.deviceWidth]);
 
   const reportHandler = async (report) => {
     // if (online && profile.myHandle) {
@@ -58,39 +63,35 @@ const StoryContainer = (props) => {
   };
 
   const moreActionsHandler = () => {
-    // if (online) {
-    //   setMoreActions([
-    //     { label: viewInBlacklist ? "Whitelist" : "Blacklist", handler: () => favouriteHandler("blacklist", !viewInBlacklist) },
-    //     {
-    //       label: viewInFavourite ? "Remove from favourite" : "Add to favourite",
-    //       handler: () => favouriteHandler("favourite", !viewInFavourite),
-    //     },
-    //     {
-    //       label: "Report view to Moderators and ViewCrunch",
-    //       handler: () => {
-    //         if (online && profile.myHandle) {
-    //           setReportView(true);
-    //         } else {
-    //           enqueueSnackbar("Network or Authentication error", { variant: "error" });
-    //         }
-    //       },
-    //     },
-    //     {
-    //       jsx: (
-    //         <SocialShare
-    //           share
-    //           {...{
-    //             viewHref: `/${view.id}`,
-    //             title: view?.title,
-    //             author: view?.author?.author,
-    //           }}
-    //         />
-    //       ),
-    //     },
-    //   ]);
-    // } else {
-    //   enqueueSnackbar(`No network connection`, { variant: "warning" });
-    // }
+    setMoreActions([
+      { label: viewInBlacklist ? "Whitelist" : "Blacklist", handler: () => favouriteHandler("blacklist", !viewInBlacklist) },
+      {
+        label: viewInFavourite ? "Remove from favourite" : "Add to favourite",
+        handler: () => favouriteHandler("favourite", !viewInFavourite),
+      },
+      {
+        label: "Report view to Moderators and ViewCrunch",
+        handler: () => {
+          if (online && profile.myHandle) {
+            setReportView(true);
+          } else {
+            enqueueSnackbar("Network or Authentication error", { variant: "error" });
+          }
+        },
+      },
+      {
+        jsx: (
+          <SocialShare
+            share
+            {...{
+              viewHref: `/${view.id}`,
+              title: view?.title,
+              author: view?.author?.author,
+            }}
+          />
+        ),
+      },
+    ]);
   };
 
   const voteHandler = (vote) => async () => {
@@ -122,7 +123,7 @@ const StoryContainer = (props) => {
 
   return (
     <Grid container style={{ maxWidth: "1200px", margin: "auto" }}>
-      <ViewNav {...{ ...author, myDisplayName }} />
+      <ViewNav {...{ ...author, myDisplayName, mobile }} />
       <Grid item xs={12} sm={12} md={8}>
         <View
           {...{
