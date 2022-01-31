@@ -22,12 +22,9 @@
       position: relative;
       z-index: 1;
     }
+
     & > div {
-      position: absolute;
-      top: 0;
-      right: -90px;
-      height: 100%;
-      width: 300px;
+      display: none;
     }
   }
 }
@@ -128,37 +125,50 @@
     padding: 30px 180px 30px 10px;
     h2 {
       font-size: 3.5em;
-      position: relative;
     }
     & > div {
-      right: -30px;
+      display: unset;
+      position: absolute;
+      top: 20px;
+      height: 400px;
+      width: 350px;
+      right: -50px;
     }
   }
 }
 
 @media screen and (min-width: 520px) {
   .intro > div {
-    padding: 50px 220px 50px 10px;
+    padding: 30px 210px 30px 10px;
     h2 {
       font-size: 4em;
-      font-weight: 600;
     }
     & > div {
+      top: 40px;
       right: -30px;
-      height: 400px;
-      width: 400px;
     }
+  }
+}
+@media screen and (min-width: 607px) {
+  .intro > div > div {
+    top: -30px;
   }
 }
 
-@media screen and (min-width: 800px) {
-  .intro > div {
-    padding: 50px 100px 10px 10px;
-    & > div {
-      top: -50px;
-      right: 50px;
-      height: 500px;
-      width: 500px;
-    }
+@media screen and (min-width: 1200px) {
+  .intro > div > div {
+    left: 700px;
   }
 }
+
+// @media screen and (min-width: 800px) {
+//   .intro > div {
+//     padding: 50px 100px 10px 10px;
+//     & > div {
+//       top: -50px;
+//       right: 50px;
+//       height: 500px;
+//       width: 500px;
+//     }
+//   }
+// }

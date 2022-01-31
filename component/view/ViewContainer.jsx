@@ -31,6 +31,8 @@ const StoryContainer = (props) => {
     setMobile(props.deviceWidth < 900 ? true : false);
   }, [props.deviceWidth]);
 
+  console.log(author);
+
   const reportHandler = async (report) => {
     // if (online && profile.myHandle) {
     //   const status = await fetcher(

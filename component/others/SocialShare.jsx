@@ -18,28 +18,34 @@ const SocialShare = ({
 }) =>
   share || crunch ? (
     <div className={styles.socialShare}>
-      <a href={`https://www.facebook.com/sharer/sharer.php?u=https://ViewCrunch.com${crunch ? `/crunch/${toId(crunch)}` : viewHref}`}>
+      <a
+        target="_blank"
+        href={`https://www.facebook.com/sharer/sharer.php?u=https://ViewCrunch.com${crunch ? `/crunch/${toId(crunch)}` : viewHref}`}>
         <Facebook fontSize="inherit" />
       </a>
       <a
+        target="_blank"
         href={`https://twitter.com/home?status=https://ViewCrunch.com${
           crunch ? `/crunch/${toId(crunch)}` : `${viewHref} ${`${title} written by ${author}`}`
         }`}>
         <Twitter fontSize="inherit" />
       </a>
       <a
+        target="_blank"
         href={`https://api.whatsapp.com/send?text=https://ViewCrunch.com${crunch ? `/crunch/${toId(crunch)}` : viewHref} ${
           crunch || title
         }`}>
         <WhatsApp fontSize="inherit" />
       </a>
       <a
+        target="_blank"
         href={`https://reddit.com/submit?url=https://ViewCrunch.com${crunch ? `/crunch/${toId(crunch)}` : viewHref}&title=${
           crunch || title
         }`}>
         <Reddit fontSize="inherit" />
       </a>
       <a
+        target="_blank"
         href={`https://www.linkedin.com/shareArticle?url=https://ViewCrunch.com${crunch ? `/crunch/${toId(crunch)}` : viewHref}&title=${
           crunch || title
         }`}>
@@ -48,13 +54,13 @@ const SocialShare = ({
     </div>
   ) : (
     <div className={styles.socialShare}>
-      <a href={`https://www.facebook.com/${facebookHandle}`}>
+      <a target="_blank" href={`https://www.facebook.com/${facebookHandle}`}>
         <Facebook fontSize="inherit" />
       </a>
-      <a href={`https://twitter.com/${twitterHandle}`}>
+      <a target="_blank" href={`https://twitter.com/${twitterHandle}`}>
         <Twitter fontSize="inherit" />
       </a>
-      <a href={`https://www.linkedin.com/in/${linkedinHandle}`}>
+      <a target="_blank" href={`https://www.linkedin.com/in/${linkedinHandle}`}>
         <LinkedIn fontSize="inherit" />
       </a>
     </div>

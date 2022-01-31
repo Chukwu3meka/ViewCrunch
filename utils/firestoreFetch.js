@@ -189,7 +189,7 @@ export const fetchView = async (viewLink) => {
           },
           author: {
             about,
-            authorID,
+            author,
             displayName,
             profileLink,
             profilePicture,
@@ -199,8 +199,6 @@ export const fetchView = async (viewLink) => {
           },
         },
       };
-
-      console.log();
     } else {
       return errorProp(400, "Unable to fetch Data");
     }

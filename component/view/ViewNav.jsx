@@ -8,7 +8,7 @@ import { styles } from "/";
 import { SocialShare } from "@component/others";
 import { NavContainer } from "@component/layout";
 
-const ViewNav = ({ about, twitterHandle, profilePicture, linkedinHandle, facebookHandle, authorID, displayName, myID, mobile }) => (
+const ViewNav = ({ about, twitterHandle, profilePicture, linkedinHandle, facebookHandle, author, displayName, myID, mobile }) => (
   <NavContainer>
     {mobile ? (
       <div />
@@ -21,9 +21,9 @@ const ViewNav = ({ about, twitterHandle, profilePicture, linkedinHandle, faceboo
         <div>
           <SocialShare {...{ linkedinHandle, twitterHandle, facebookHandle }} />
         </div>
-        {myID !== authorID ? (
+        {myID !== author ? (
           <Button variant="contained" size="small" color="secondary">
-            Follow me
+            Follow
           </Button>
         ) : null}
         <div>
