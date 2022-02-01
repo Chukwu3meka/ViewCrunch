@@ -9,6 +9,7 @@ import ContactUsIcon from "@mui/icons-material/ContactSupportOutlined";
 import NotificationsOffIcon from "@mui/icons-material/NotificationsOff";
 import ImportantDevicesIcon from "@mui/icons-material/ImportantDevices";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
+import NewsIcon from "@mui/icons-material/NewspaperRounded";
 
 import { Nav } from ".";
 import { fetcher } from "@utils/clientFunctions";
@@ -36,7 +37,8 @@ const NavbarContainer = (props) => {
     ["Bookmarks", "/favourite", <TimelineIcon />],
     ["Contact", "/info/contactus", <ContactUsIcon />],
     ["Profile", `/profile`, <AssignmentIndIcon />],
-    ["Organization", "/Organization", <PublicIcon />],
+    ["Organization", "/organization", <PublicIcon />],
+    ["NEWS", "/news", <NewsIcon />],
   ];
 
   const currentThemeHandler = () => {

@@ -1,8 +1,8 @@
 import Grid from "@mui/material/Grid";
 
 import { Footer } from "@component/layout";
-import { NavBar, Intro, Trending, NewsContainer, ViewsContainer } from ".";
-import { Paper } from "@mui/material";
+import { NavBar, Intro, Trending, ViewsContainer } from ".";
+import NewsContainer from "@component/news/NewsContainer";
 
 const HomePage = ({ trending, crunches }) => (
   <div>

@@ -134,6 +134,8 @@ const StoryContainer = (props) => {
             ...author,
             votes,
             voteHandler,
+            moreActions,
+            setMoreActions,
           }}
         />
       </Grid>

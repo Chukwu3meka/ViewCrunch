@@ -89,37 +89,6 @@
   }
 }
 
-.news {
-  padding: 10px;
-  margin: -10px auto 15px;
-  max-width: 600px;
-  & > h2 {
-    color: color(primary);
-    font-family: "Fredericka the Great", cursive;
-    text-align: center;
-    font-size: 1.7em;
-  }
-
-  & > div {
-    @include flexCenter(column);
-    border-left: 2px solid color(primary);
-    margin: 10px auto;
-    border-radius: 3px !important;
-    & > a {
-      color: var(--opp) !important;
-      text-align: center;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      word-break: normal;
-      overflow: hidden;
-    }
-  }
-  & > div:hover {
-    border-left: 2px solid color(secondary);
-  }
-}
-
 @media screen and (min-width: 380px) {
   .intro > div {
     padding: 30px 180px 30px 10px;
