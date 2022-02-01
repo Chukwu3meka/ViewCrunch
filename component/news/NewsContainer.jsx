@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 import { News } from ".";
 import { fetcher } from "@utils/clientFunctions";
-import { NavContainer } from "@component/layout";
+import { Footer, NavContainer } from "@component/layout";
 
 const NewsContainer = (props) => {
   const [news, setNews] = useState([]),
@@ -27,6 +27,7 @@ const NewsContainer = (props) => {
       </NavContainer>
       <Grid item xs={12} sm={12} md={8}>
         <News news={news} />
+        <Footer />
       </Grid>
     </Grid>
   ) : (

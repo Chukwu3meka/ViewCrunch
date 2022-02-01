@@ -11,6 +11,7 @@ import ShareIcon from "@mui/icons-material/Share";
 import BlacklistIcon from "@mui/icons-material/VisibilityOff";
 import BookmarkIcon from "@mui/icons-material/BookmarkAddRounded";
 import ReportIcon from "@mui/icons-material/FlagRounded";
+import { Footer } from "@component/layout";
 
 const StoryContainer = (props) => {
   const scrollRef = useRef(null),
@@ -155,6 +156,7 @@ const StoryContainer = (props) => {
             actions,
           }}
         />
+        <Footer />
       </Grid>
     </Grid>
   );

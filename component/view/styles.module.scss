@@ -80,10 +80,12 @@
     & > div:last-of-type {
       margin: -240px -10px 0 0;
       & > button {
+        background-color: unset;
+        // border: 3px solid red;
         background-color: var(--sec);
         color: var(--opp);
         height: max-content;
-        width: max-content;
+        width: 40px;
         margin: 0 !important;
       }
     }
