@@ -67,41 +67,24 @@
     justify-content: space-between;
     margin: 10px auto;
     position: relative;
-    & > span {
+    & > div:first-of-type {
       @include flexCenter(row, fit-content);
       border: 1px solid var(--dim);
       border-radius: 10px;
-      margin-left: 5px;
+      margin: 0 5px;
       & > button {
-        // color: red;
         padding: 5px 7px;
         font-size: 1.3em !important;
-      }
-      border: 3px solid red;
-    }
-    border: 3px solid red;
-    & > div:first-of-type {
-      @include flexCenter(row);
-      width: fit-content;
-      & > button {
-        padding: 5px;
-      }
-      & > span {
-        font-size: 0.8em;
-        margin: 0 5px 0 3px;
       }
     }
     & > div:last-of-type {
       margin: -240px -10px 0 0;
-      // color: red;
       & > button {
         background-color: var(--sec);
         color: var(--opp);
         height: max-content;
         width: max-content;
         margin: 0 !important;
-        // position: absolute;
-        border: 3px solid red;
       }
     }
   }

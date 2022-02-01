@@ -19,7 +19,7 @@ const NavbarContainer = (props) => {
   const { profile, setProfileAction, children } = props,
     [activeNav, setActiveNav] = useState("/"),
     [online, setOnline] = useState(props.online),
-    { myHandle, myNotification } = profile || [],
+    { myID, myNotification } = profile || [],
     [currentTheme, setCurrentTheme] = useState(profile.myTheme || "light");
 
   useEffect(() => {
@@ -45,7 +45,7 @@ const NavbarContainer = (props) => {
     const myTheme = currentTheme === "light" ? "dark" : "light";
     setCurrentTheme(myTheme);
     setProfileAction({ ...profile, myTheme });
-    online && fetcher("/api/profile/changeTheme", JSON.stringify({ myHandle, myTheme }));
+    online && fetcher("/api/profile/changeTheme", JSON.stringify({ myID, myTheme }));
   };
 
   return <Nav {...{ mainNav, activeNav, currentThemeHandler, myNotification, children }} />;

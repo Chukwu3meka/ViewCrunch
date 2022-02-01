@@ -44,13 +44,6 @@ const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
   },
 }));
 
-const actions = [
-  { icon: <BlacklistIcon />, name: "Blcaklist" },
-  { icon: <BookmarkIcon />, name: "Bookmark" },
-  { icon: <ReportIcon />, name: "Print" },
-  { icon: <ShareIcon />, name: "Share" },
-];
-
 const View = ({
   crunchLink,
   crunch,
@@ -68,6 +61,8 @@ const View = ({
   moreActionsHandler,
   moreActions,
   setMoreActions,
+  shareHandler,
+  actions,
 }) => {
   const [direction, setDirection] = React.useState("up");
   const [hidden, setHidden] = React.useState(false);
@@ -105,20 +100,15 @@ const View = ({
       </div>
       <Paper dangerouslySetInnerHTML={{ __html: content }} />
       <div>
-        <span>
+        <div>
           <IconButton style={{ color: upvoted ? "#1197c0" : "" }} onClick={voteHandler(true)}>
             <UpvoteIcon fontSize="inherit" />
           </IconButton>
           <IconButton style={{ color: downvoted ? "#b91818" : "" }} onClick={voteHandler(false)}>
             <DownvoteIcon fontSize="inherit" />
           </IconButton>
-        </span>
-        <div>
-          <span>{`${shortNumber(votes)} upvote${votes > 1 ? "s" : null}`}</span>
-          <IconButton color="inherit" onClick={moreActionsHandler}>
-            <MoreVertIcon />
-          </IconButton>
         </div>
+        <Typography>{`${shortNumber(votes)} upvote${votes > 1 ? "s" : null}`}</Typography>
         <SpeedDial
           ariaLabel="SpeedDial basic example"
           // direction="left"
@@ -133,7 +123,7 @@ const View = ({
               icon={action.icon}
               tooltipTitle={action.name}
               // tooltipOpen
-              // onClick={handleClose}
+              onClick={action.handler}
             />
           ))}
         </SpeedDial>

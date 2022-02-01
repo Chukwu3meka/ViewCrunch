@@ -6,10 +6,16 @@ import { SocialShare } from "@component/others";
 import { fetcher } from "@utils/clientFunctions";
 import { useEffect, useRef, useState } from "react";
 
+import PrintIcon from "@mui/icons-material/Print";
+import ShareIcon from "@mui/icons-material/Share";
+import BlacklistIcon from "@mui/icons-material/VisibilityOff";
+import BookmarkIcon from "@mui/icons-material/BookmarkAddRounded";
+import ReportIcon from "@mui/icons-material/FlagRounded";
+
 const StoryContainer = (props) => {
   const scrollRef = useRef(null),
-    [mobile, setMobile] = useState(),
-    { view, profile, author } = props,
+    [mobile, setMobile] = useState(true),
+    { view, profile, author, url } = props,
     { enqueueSnackbar } = useSnackbar(),
     [online, setOnline] = useState(props.online),
     [reportView, setReportView] = useState(false),
@@ -31,7 +37,16 @@ const StoryContainer = (props) => {
     setMobile(props.deviceWidth < 900 ? true : false);
   }, [props.deviceWidth]);
 
-  console.log(author);
+  const shareHandler = () => {
+    if (navigator) navigator.share({ title: view.title, text: "dfasd", url });
+  };
+
+  const actions = [
+    { icon: <BlacklistIcon />, name: "Blcaklist" },
+    { icon: <BookmarkIcon />, name: "Bookmark" },
+    { icon: <ReportIcon />, name: "Report" },
+    { icon: <ShareIcon />, name: "Share", handler: shareHandler },
+  ];
 
   const reportHandler = async (report) => {
     // if (online && profile.myHandle) {
@@ -136,6 +151,8 @@ const StoryContainer = (props) => {
             voteHandler,
             moreActions,
             setMoreActions,
+            shareHandler,
+            actions,
           }}
         />
       </Grid>

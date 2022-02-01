@@ -7,6 +7,9 @@
   background: linear-gradient(to bottom right, var(--pry), var(--sec));
   color: var(--opp);
   font-size: 16px;
+  * {
+    outline: none;
+  }
   a:link {
     cursor: pointer;
     color: color(secondary);

@@ -1,12 +1,11 @@
-import firebaseAdmin from "@utils/firebaseServer";
+import { firestore } from "@utils/firebaseServer";
 
-const changeTheme = ({ myHandle, myTheme }) => {
-  return firebaseAdmin
-    .firestore()
+const changeTheme = ({ myID, myTheme }) => {
+  return firestore
     .collection("profile")
-    .doc(myHandle)
+    .doc(myID)
     .update({
-      "stat.theme": myTheme,
+      "details.theme": myTheme,
     })
     .catch((error) => {
       throw new TypeError(error);
@@ -15,11 +14,11 @@ const changeTheme = ({ myHandle, myTheme }) => {
 
 export default async (req, res) => {
   try {
-    const { myHandle, myTheme } = req.body;
-    await changeTheme({ myHandle, myTheme });
+    const { myID, myTheme } = req.body;
+    await changeTheme({ myID, myTheme });
     return res.status(200).send(true);
   } catch (error) {
-    // console.log(error);
+    console.log(error);
     return res.status(401).send(false);
   }
 };
