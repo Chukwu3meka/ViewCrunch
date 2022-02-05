@@ -1,3 +1,4 @@
+import { toId } from "@utils/clientFunctions";
 import { firestore } from "@utils/firebaseServer";
 import { Timestamp } from "firebase-admin/firestore";
 
@@ -27,11 +28,11 @@ const createProfileHandler = async ({ uid, displayName, photoURL, refreshToken }
       name: displayName,
       picture: { cover: photoURL, profile: photoURL },
       social: {
-        handle: uid,
         twitter: null,
         website: null,
         facebook: null,
         linkedin: null,
+        profileLink: toId(`/${displayName}-${uid}`),
       },
       details: {
         crunches: ["Lifehack", "Universal", "Career 101", "Finance", "Cyber Security", "Developers"],
