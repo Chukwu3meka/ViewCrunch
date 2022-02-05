@@ -1,172 +1,56 @@
-import { toId } from "@utils/clientFunctions";
-import firebaseAdmin from "@utils/firebaseServer";
+import { firestore } from "@utils/firebaseServer";
+import { Timestamp } from "firebase-admin/firestore";
 
-const initialCrunches = [
-  "Justnow",
-  "Warfare",
-  "Politics",
-  "Lifehack",
-  "Universal",
-  "Career 101",
-  "Investment",
-  "Catholic Church",
-  "Cyber Security",
-  "Software Developers",
-];
+const createProfileHandler = async ({ uid, displayName, photoURL, refreshToken }) => {
+  const { access_token: token } = await fetch(
+    `https://securetoken.googleapis.com/v1/token?key=${JSON.parse(process.env.NEXT_PUBLIC_CLIENT).apiKey}`,
+    {
+      method: "POST",
+      headers: new Headers({ "Content-Type": "application/x-www-form-urlencoded" }),
+      body: `grant_type=refresh_token&refresh_token=${refreshToken}`,
+      credentials: "same-origin",
+    }
+  ).then((res) => res.json());
 
-const createProfileHandler = async ({ handle, myRefresh }) => {
-  const { access_token: token } = await fetch(`https://securetoken.googleapis.com/v1/token?key=${process.env.NEXT_PUBLIC_API}`, {
-    method: "POST",
-    headers: new Headers({ "Content-Type": "application/x-www-form-urlencoded" }),
-    body: `grant_type=refresh_token&refresh_token=${myRefresh}`,
-    credentials: "same-origin",
-  }).then((res) => res.json());
+  if (!token) throw "invalid cookie";
 
-  const uid = await firebaseAdmin
-    .auth()
-    .verifyIdToken(token)
-    .then((decodedToken) => decodedToken?.uid);
+  const profileRef = firestore.collection("profile").doc(uid);
+  const profile = await profileRef.get();
 
-  await firebaseAdmin
-    .auth()
-    .getUser(uid)
-    .then(async (user) => {
-      const profilePicture = handle === "maduekwepedro" ? "/images/no-image.webp" : user.photoURL || "/images/no-image.webp",
-        profileCreated = user.metadata.creationTime,
-        displayName = user.providerData[0].displayName;
-
-      await firebaseAdmin
-        .firestore()
-        .collection("profile")
-        .doc(`@${handle}`)
-        .set({
-          profilePicture,
-          about: "new Viewer and Writer",
-          coverPicture: "/images/no-image-cover.webp",
-          displayName,
-          profession: "Viewer and Writter",
-          notification: [
-            {
-              body: "To understand more on what ViewCrunch is all about visit this page at anytime",
-              link: "/info/about",
-              title: "About ViewCrunch",
-            },
-            {
-              body: "Visit the link at the bottom of any page on ViewCrunch to read more on our terms and conditions",
-              link: "/info/terms",
-              title: "Terms and Conditions",
-            },
-            {
-              body: "Visit the link at the bottom of any page on ViewCrunch to read more on our privacy policy",
-              link: "/info/privacy",
-              title: "Privacy Policy",
-            },
-            {
-              body: "To view frequently asked questions, check out our FAQ",
-              link: "/info/faq",
-              title: "FAQ: Frequently Asked Question",
-            },
-            { body: "Have a product or service to advertise on ViewCrunch", link: "/info/advertise", title: "Advertise" },
-            { body: "Contact us here", link: "/info/contactus", title: "Contact Us" },
-          ],
-          roles: { comment: true, vote: true, suspended: false, moderate: true, createCrunch: true },
-          crunches: initialCrunches
-            .map((title) => ({
-              id: toId(title),
-              roles: { publish: true, retouch: true, moderate: handle === "maduekwepedro" ? true : false },
-            }))
-            .reduce((acc, cur) => ({ ...acc, [cur.id]: cur.roles }), {}),
-          favourite: [
-            { link: "/info/contactus", title: "Make suggestions here, or reach out to our team" },
-            { link: "/info/advertise", title: "Have a product or service to advertise on ViewCrunch" },
-          ],
-          blacklist: [],
-          published: {},
-          chat: {
-            followers: handle === "maduekwepedro" ? [] : ["@maduekwepedro"],
-            blocked: [],
-            following: handle === "maduekwepedro" ? [] : ["@maduekwepedro"],
-          },
-          social: {
-            twitterHandle: "viewcrunch",
-            facebookHandle: "viewcrunch",
-            linkedinHandle: "viewcrunch",
-            website: `https://viewcrunch.com/${handle}`,
-          },
-          stat: {
-            theme: handle === "maduekwepedro" ? "dark" : "light",
-            profileCreated: firebaseAdmin.firestore.Timestamp.fromDate(new Date(profileCreated)),
-          },
-        })
-        .then(async () => {
-          await firebaseAdmin
-            .auth()
-            .updateUser(uid, {
-              displayName: `@${handle}`,
-            })
-            .then(async () => {
-              for (const x of initialCrunches) {
-                // if (handle === "maduekwepedro") {
-                //   await firebaseAdmin
-                //     .firestore()
-                //     .collection("crunch")
-                //     .doc(toId(x))
-                //     .set({
-                //       title: x,
-                //       coverPicture: "/images/no-image-cover.webp",
-                //       primaryPicture: "/images/no-image.webp",
-                //       dateCreated: firebaseAdmin.firestore.Timestamp.now(),
-                //       about: `${x} was invented by Maduekwe Pedro for all`,
-                //       moderators: ["@maduekwepedro"],
-                //       followers: ["@maduekwepedro"],
-                //       inventor: ["@maduekwepedro"],
-                //     });
-                // }
-                await firebaseAdmin
-                  .firestore()
-                  .collection("crunch")
-                  .doc(toId(x))
-                  .update({
-                    followers: firebaseAdmin.firestore.FieldValue.arrayUnion(`@${handle}`),
-                  })
-                  .then(async () => {
-                    await firebaseAdmin
-                      .firestore()
-                      .collection("profile")
-                      .doc("@maduekwepedro")
-                      .update({
-                        chat: {
-                          followers: firebaseAdmin.firestore.FieldValue.arrayUnion(`@${handle}`),
-                          following: firebaseAdmin.firestore.FieldValue.arrayUnion(`@${handle}`),
-                        },
-                      })
-                      .catch((error) => {
-                        throw new TypeError(`follow Maduekwe Pedro: ${error}`);
-                      });
-                  })
-                  .catch((error) => {
-                    throw new TypeError(`Subcribe to crunches: ${error}`);
-                  });
-              }
-            })
-            .catch((error) => {
-              throw new TypeError(`Auth updateUser: ${error}`);
-            });
-        })
-        .catch((error) => {
-          throw new TypeError(`Auth getUser: ${error}`);
-        });
+  if (profile.exists) {
+    const doc = profile.data();
+    return { myID: uid, myTheme: doc?.details?.theme, myNotification: doc?.notifications?.length };
+  } else {
+    await profileRef.set({
+      blacklist: [],
+      notifications: [],
+      name: displayName,
+      picture: { cover: photoURL, profile: photoURL },
+      social: {
+        handle: uid,
+        twitter: null,
+        website: null,
+        facebook: null,
+        linkedin: null,
+      },
+      details: {
+        crunches: ["Lifehack", "Universal", "Career 101", "Finance", "Cyber Security", "Developers"],
+        moderation: { comment: true, vote: true, suspended: false, moderate: true, createCrunch: true },
+        profileCreated: Timestamp.now(),
+        theme: "light",
+      },
     });
+    return { myID: uid, myTheme: "light", myNotification: 0 };
+  }
 };
 
 export default async (req, res) => {
   try {
-    const { handle, myRefresh } = req.body;
-    if (handle === "maduekwepedro") throw new TypeError("Reserved handle");
-    await createProfileHandler({ handle, myRefresh });
-    return res.status(200).send(true);
+    const { uid, displayName, photoURL, refreshToken } = req.body;
+    const profile = await createProfileHandler({ uid, displayName, photoURL, refreshToken });
+    return res.status(200).json(profile);
   } catch (error) {
     // console.log(error);
-    return res.status(401).send(false);
+    return res.status(401).json(null);
   }
 };

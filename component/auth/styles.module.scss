@@ -1,0 +1,6 @@
+@import "@source/_variables.scss";
+
+.auth {
+  @include flexCenter(row);
+  gap: 10px;
+}

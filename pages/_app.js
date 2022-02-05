@@ -33,15 +33,17 @@ const App = ({ Component, emotionCache = clientSideEmotionCache, pageProps }) =>
     //to make sure persistUser handler has finished running, before any page can display
     [authReady, setAuthReady] = useState(false),
     [pageReady, setPageReady] = useState(true),
-    [appTheme, setAppTheme] = useState("light"),
-    [chooseHandle, setChooseHandle] = useState(false);
+    [appTheme, setAppTheme] = useState("light");
 
   const persistUser = async () => {
-    const profile = await fetcher("/api/profile/verifyToken", JSON.stringify({ myRefresh }));
-    if (profile) {
-      store.dispatch(setProfileAction(profile));
-    } else {
-      store.dispatch(setProfileAction({}));
+    if (myRefresh) {
+      const profile = await fetcher("/api/profile/verifyToken", JSON.stringify({ myRefresh }));
+
+      if (profile) {
+        store.dispatch(setProfileAction(profile));
+      } else {
+        store.dispatch(setProfileAction({}));
+      }
     }
     setAuthReady(true);
   };
@@ -51,7 +53,7 @@ const App = ({ Component, emotionCache = clientSideEmotionCache, pageProps }) =>
   });
 
   useEffect(() => {
-    if (myRefresh && window.navigator.onLine) persistUser();
+    if (window.navigator.onLine) persistUser();
   }, [myRefresh]);
 
   useEffect(() => {

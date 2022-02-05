@@ -15,4 +15,6 @@ const auth = getAuth(),
   firestore = getFirestore(),
   bucket = getStorage().bucket();
 
+// firestore.settings({ ignoreUndefinedProperties: true }),
+
 export { bucket, auth, firestore };

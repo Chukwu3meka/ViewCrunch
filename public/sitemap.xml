@@ -18,10 +18,10 @@
     <loc>https://www.viewcrunch.com/news</loc>
     <changefreq>daily</changefreq>
     <image:image>
-        <image:loc>https://www.viewcrunch.com/images/ViewCrunch-cover</image:loc>
+        <image:loc>https://www.viewcrunch.com/images/ViewCrunch-cover.webp</image:loc>
     </image:image>
   </url>
-  <url>
+  <!-- <url>
     <loc>https://www.viewcrunch.com/info/terms</loc>
     <changefreq>yearly</changefreq>
     <lastmod>2021-07-23</lastmod>
@@ -50,6 +50,6 @@
     <loc>https://www.viewcrunch.com/info/privacy</loc>  
     <changefreq>yearly</changefreq>
     <lastmod>2021-07-23</lastmod>
-  </url>
+  </url> -->
 
 </urlset>

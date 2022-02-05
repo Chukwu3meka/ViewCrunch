@@ -79,16 +79,14 @@
   }
 
   & > div:nth-of-type(2) {
-    @include flexCenter(row);
-    justify-content: space-evenly;
-    & > div:nth-of-type(2) {
-      position: relative;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background-color: var(--dim);
-      border: 3px solid var(--dim);
-    }
+    overflow: hidden;
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--sec);
+    border: 3px solid var(--sec);
+    margin: 10px auto;
   }
 
   & > p {

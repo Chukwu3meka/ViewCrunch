@@ -18,7 +18,7 @@ export default class MyDocument extends Document {
             rel="stylesheet"
           />
 
-          <Script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA}`} defer />
+          {/* <Script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA}`} defer />
           <Script
             dangerouslySetInnerHTML={{
               __html: `
@@ -39,7 +39,7 @@ export default class MyDocument extends Document {
             crossOrigin="anonymous"
             src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&amp;version=v11.0&amp;appId=332276848078020&amp;autoLogAppEvents=1"
           />
-
+ */}
           {/* Inject MUI styles first to match with the prepend: true configuration. */}
           {this.props.emotionStyleTags}
         </Head>
