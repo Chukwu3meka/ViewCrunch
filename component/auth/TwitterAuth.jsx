@@ -1,21 +1,14 @@
-import { connect } from "react-redux";
-import cookie from "js-cookie";
-import userControl from "@utils/userControl";
-import { setProfileAction } from "@store/actions";
+import Button from "@mui/material/Button";
+import LoginIcon from "@mui/icons-material/Google";
+import { TwitterAuthProvider, signInWithRedirect } from "firebase/auth";
+
 import { auth } from "@utils/firebaseClient";
-import { getAuth, getRedirectResult, TwitterAuthProvider, signInWithRedirect } from "firebase/auth";
-import { useEffect, useState } from "react";
-import { fetcher } from "@utils/clientFunctions";
-import LoginIcon from "@mui/icons-material/Twitter";
-import { Button } from "@mui/material";
 
 const provider = new TwitterAuthProvider();
 
-const TwitterAuth = ({ online, authUser }) => {
-  const handler = () => {
-    signInWithRedirect(auth, provider);
-  };
-  // #4285F4
+const TwitterAuth = ({ online }) => {
+  const handler = () => online && signInWithRedirect(auth, provider);
+
   return (
     <Button
       variant="outlined"
@@ -31,12 +24,4 @@ const TwitterAuth = ({ online, authUser }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-    online: state.device?.online,
-    authenticated: state.profile?.myID,
-  }),
-  mapDispatchToProps = {
-    setProfileAction,
-  };
-
-export default connect(mapStateToProps, mapDispatchToProps)(TwitterAuth);
+export default TwitterAuth;

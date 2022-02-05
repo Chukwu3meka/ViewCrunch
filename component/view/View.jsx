@@ -101,10 +101,10 @@ const View = ({
       <Paper dangerouslySetInnerHTML={{ __html: content }} />
       <div>
         <div>
-          <IconButton style={{ color: upvoted ? "#1197c0" : "" }} onClick={voteHandler(true)}>
+          <IconButton style={{ color: upvoted ? "#1197c0" : "inherit" }} onClick={voteHandler(true)}>
             <UpvoteIcon fontSize="inherit" />
           </IconButton>
-          <IconButton style={{ color: downvoted ? "#b91818" : "" }} onClick={voteHandler(false)}>
+          <IconButton style={{ color: downvoted ? "#b91818" : "inherit" }} onClick={voteHandler(false)}>
             <DownvoteIcon fontSize="inherit" />
           </IconButton>
         </div>

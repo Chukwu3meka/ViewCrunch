@@ -1,62 +1,14 @@
-import { connect } from "react-redux";
-import cookie from "js-cookie";
-import userControl from "@utils/userControl";
-import { setProfileAction } from "@store/actions";
-import { auth } from "@utils/firebaseClient";
-import { getAuth, getRedirectResult, GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
-import { useEffect, useState } from "react";
-import { fetcher } from "@utils/clientFunctions";
+import Button from "@mui/material/Button";
 import LoginIcon from "@mui/icons-material/Google";
-import { Button } from "@mui/material";
+import { GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
+
+import { auth } from "@utils/firebaseClient";
 
 const provider = new GoogleAuthProvider();
 
-const GoogleAuth = ({ online, authUser }) => {
-  // useEffect(() => {
-  //   if (online) {
-  //     getRedirectResult(auth)
-  //       .then(async (result) => {
-  //         if (result) {
-  //           // // // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-  //           // const credential = GoogleAuthProvider.credentialFromResult(result);
-  //           // // const token = credential.accessToken;
-  //           // const user = result.user;
+const GoogleAuth = ({ online }) => {
+  const handler = () => online && signInWithRedirect(auth, provider);
 
-  //           console.log(result.user);
-
-  //           const {
-  //             uid,
-  //             photoURL,
-  //             displayName,
-  //             stsTokenManager: { refreshToken },
-  //           } = result.user;
-
-  //           const profile = await fetcher("/api/profile/createProfile", JSON.stringify({ uid, displayName, photoURL, refreshToken }));
-
-  //           if (profile) authUser(profile);
-  //         }
-  //       })
-  //       .catch((error) => {
-  //         console.log({ error });
-  //         // Handle Errors here.
-  //         const errorCode = error.code;
-  //         const errorMessage = error.message;
-  //         // The email of the user's account used.
-  //         const email = error.email;
-  //         // AuthCredential type that was used.
-  //         const credential = GoogleAuthProvider.credentialFromError(error);
-  //         // // ...
-  //         console.log({ errorCode, errorMessage, email, credential });
-  //       });
-  //   }
-  // }, []);
-
-  const handler = () => {
-    signInWithRedirect(auth, provider);
-  };
-  // color="#3b5998"
-  // #00acee
-  // #4285F4
   return (
     <Button
       variant="outlined"
@@ -72,12 +24,4 @@ const GoogleAuth = ({ online, authUser }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-    online: state.device?.online,
-    authenticated: state.profile?.myID,
-  }),
-  mapDispatchToProps = {
-    setProfileAction,
-  };
-
-export default connect(mapStateToProps, mapDispatchToProps)(GoogleAuth);
+export default GoogleAuth;

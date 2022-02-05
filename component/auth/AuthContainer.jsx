@@ -1,21 +1,15 @@
-import { connect } from "react-redux";
 import cookie from "js-cookie";
+import { connect } from "react-redux";
+import { Button } from "@mui/material";
+import { useEffect, useState } from "react";
+import { signOut, getRedirectResult } from "firebase/auth";
 
 import userControl from "@utils/userControl";
-import { setProfileAction } from "@store/actions";
 import { auth } from "@utils/firebaseClient";
-import {
-  signOut,
-  getAuth,
-  getRedirectResult,
-  FacebookAuthProvider,
-  signInWithRedirect,
-  fetchSignInMethodsForEmail,
-} from "firebase/auth";
-import { useEffect, useState } from "react";
+import { setProfileAction } from "@store/actions";
+
 import { fetcher } from "@utils/clientFunctions";
 import { FacebookAuth, TwitterAuth, GoogleAuth, styles } from ".";
-import { Button } from "@mui/material";
 
 const AuthContainer = (props) => {
   const { logout } = userControl(),
@@ -60,7 +54,7 @@ const AuthContainer = (props) => {
     if (profile) {
       setAuthenticated(profile);
       setProfileAction(profile);
-      cookie.set("ViewCrunch", authenticated, { expires: 183, path: "" });
+      cookie.set("ViewCrunch", refreshToken, { expires: 183, path: "" });
     }
   };
 

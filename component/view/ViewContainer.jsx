@@ -43,7 +43,7 @@ const StoryContainer = (props) => {
   };
 
   const actions = [
-    { icon: <BlacklistIcon />, name: "Blcaklist" },
+    { icon: <BlacklistIcon />, name: "Blacklist" },
     { icon: <BookmarkIcon />, name: "Bookmark" },
     { icon: <ReportIcon />, name: "Report" },
     { icon: <ShareIcon />, name: "Share", handler: shareHandler },
@@ -113,30 +113,29 @@ const StoryContainer = (props) => {
   };
 
   const voteHandler = (vote) => async () => {
-    // enqueueSnackbar("Please wait");
-    // if (online && profile.myHandle) {
-    //   const { status, newTotalUpvote } = await fetcher(
-    //     "/api/crunch/voteView",
-    //     JSON.stringify({ viewId: view.id, myHandle: profile.myHandle, vote, author: view?.author?.author })
-    //   );
-    //   if (status) {
-    //     if (vote) {
-    //       setTotalUpvote(newTotalUpvote);
-    //       // totalUpvote.includes(profile?.myHandle)
-    //       //   ? totalUpvote.filter((x) => x !== profile?.myHandle)
-    //       //   : [...totalUpvote, profile?.myHandle]
-    //       setUpvoted(!upvoted);
-    //       setDownvoted(false);
-    //     } else {
-    //       setDownvoted(!downvoted);
-    //       setUpvoted(false);
-    //     }
-    //   } else {
-    //     enqueueSnackbar("Error occured", { variant: "warning" });
-    //   }
-    // } else {
-    //   enqueueSnackbar("Network or Authentication error", { variant: "warning" });
-    // }
+    if (online) {
+      if (profile.myID) {
+        if (vote) {
+          // upvote
+          setUpvoted(true);
+          setDownvoted(false);
+          setVotes(upvoted ? votes + 1 : votes);
+          //     "/api/crunch/voteView",
+          //     JSON.stringify({ viewId: view.id, myHandle: profile.myHandle, vote, author: view?.author?.author })
+        } else {
+          // downvote
+          setDownvoted(true);
+          setUpvoted(false);
+          setVotes(upvoted ? votes - 1 : votes);
+          // addtodownvotes
+          // reduce votes
+        }
+      } else {
+        enqueueSnackbar("Kindly signin at bottom of the page", { variant: "warning" });
+      }
+    } else {
+      enqueueSnackbar("Network", { variant: "warning" });
+    }
   };
 
   return (
@@ -154,6 +153,8 @@ const StoryContainer = (props) => {
             setMoreActions,
             shareHandler,
             actions,
+            upvoted,
+            downvoted,
           }}
         />
         <Footer />
