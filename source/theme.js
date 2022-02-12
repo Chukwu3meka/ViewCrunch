@@ -25,7 +25,10 @@ const muiTheme = (theme) => {
         main: "#1197c0",
       },
       info: {
-        main: theme === "light" ? "#424242" : "#fffffa",
+        main: theme === "light" ? "#686767" : "#fffffa",
+      },
+      action: {
+        disabled: theme === "light" ? "#888885" : "#7E7D7D",
       },
     },
     components: {

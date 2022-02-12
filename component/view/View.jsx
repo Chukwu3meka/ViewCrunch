@@ -1,4 +1,6 @@
 import Link from "next/link";
+import Dialog from "@component/others/Dialog";
+
 import Fade from "react-reveal/Fade";
 
 import Paper from "@mui/material/Paper";
@@ -58,22 +60,22 @@ const View = ({
   upvoted,
   downvoted,
   votes,
-  moreActionsHandler,
-  moreActions,
-  setMoreActions,
-  shareHandler,
   actions,
+  report,
+  setReport,
+  reportHandler,
 }) => {
-  const [direction, setDirection] = React.useState("up");
-  const [hidden, setHidden] = React.useState(false);
+  // const [direction, setDirection] = React.useState("up");
+  // const [hidden, setHidden] = React.useState(false);
 
-  const handleDirectionChange = (event) => {
-    setDirection(event.target.value);
-  };
+  // const handleDirectionChange = (event) => {
+  //   setDirection(event.target.value);
+  // };
 
-  const handleHiddenChange = (event) => {
-    setHidden(event.target.checked);
-  };
+  // const handleHiddenChange = (event) => {
+  //   setHidden(event.target.checked);
+  // };
+
   return (
     <div className={styles.view}>
       <div>
@@ -131,15 +133,16 @@ const View = ({
       </div>
       {/* <Drawer title={title} list={moreActions} displayDrawer={moreActions} setDisplayDrawer={setMoreActions} /> */}
 
-      {/* <Dialog
-      dialogTitle="Report view"
-      dialogBody={`Reporting this view, will automatically add it to your blacklist, pending when an action is taken. Crunch Moderators won't receive your profile details; Do you wish to proceed. Help us know what's wrong with the view below.`}
-      dialogHandler={reportHandler}
-      displayDialog={reportView}
-      setDisplayDialog={setReportView}
-      compareText="feedback"
-      proceed="report"
-    /> */}
+      <Dialog
+        dialogTitle="Report view"
+        dialogBody="Reporting this view, will automatically add it to your blacklist. Kindly give detailed description why you think this view should be flagged, to enable ViewCrunch Moderators act swiftly and precisely on this view."
+        dialogHandler={reportHandler}
+        displayDialog={report}
+        placeholder="start typing to enable report button"
+        setDisplayDialog={setReport}
+        compareText="feedback"
+        proceed="report"
+      />
     </div>
   );
 };

@@ -27,6 +27,7 @@ const StoryContainer = (props) => {
     [viewInFavourite, setViewInFavourite] = useState(view.viewInFavourite),
     [viewInBlacklist, setViewInBlacklist] = useState(view.viewInBlacklist),
     [upvoted, setUpvoted] = useState(false),
+    [report, setReport] = useState(false),
     [downvoted, setDownvoted] = useState(false);
 
   useEffect(() => {
@@ -43,14 +44,10 @@ const StoryContainer = (props) => {
     setMobile(props.deviceWidth < 900 ? true : false);
   }, [props.deviceWidth]);
 
-  const reportHandler = async () => {
-    console.log("reportHandler");
-  };
-  const bookmarkHandler = async () => {
-    console.log("bookmarkHandler");
-  };
-  const blacklistHandler = async () => {
-    console.log("blacklisted");
+  const reportHandler = async (report) => {
+    const reprtSent = await fetcher("/api/report/reportView", JSON.stringify({ myID: profile.myID, viewID, report }));
+
+    if (reprtSent) enqueueSnackbar("Report sent successfully, We'll get back to you soon", { variant: "success" });
   };
 
   const actionsHandler = async (name) => {
@@ -87,6 +84,12 @@ const StoryContainer = (props) => {
           break;
         }
 
+        case "report": {
+          if (author.author === profile.myID) return enqueueSnackbar(`You can't report a view written by you`, { variant: "error" });
+
+          setReport(true);
+        }
+
         default:
           throw "No action specified";
       }
@@ -101,37 +104,6 @@ const StoryContainer = (props) => {
     { icon: <ReportIcon />, name: "Report", handler: () => actionsHandler("report") },
     { icon: <ShareIcon />, name: "Share", handler: () => actionsHandler("share") },
   ];
-
-  // const reportHandler = async (report) => {
-  // if (online && profile.myHandle) {
-  //   const status = await fetcher(
-  //     "/api/crunch/report",
-  //     JSON.stringify({ myHandle: profile.myHandle, id: view.id, report, section: "view" })
-  //   );
-  //   enqueueSnackbar(status ? "success" : "failed", { variant: status ? "success" : "error" });
-  //   setReportView(false);
-  // } else {
-  //   enqueueSnackbar("You're not Connected to the internet or Authentication error", { variant: "warning" });
-  // }
-  // };
-
-  const favouriteHandler = async (list, append) => {
-    // if (online && profile.myHandle) {
-    //   const { status, favourite, blacklist } = await fetcher(
-    //     "/api/profile/favourite",
-    //     JSON.stringify({ url: view.path, title: view.title, myHandle: profile.myHandle, list, append })
-    //   );
-    //   if (status) {
-    //     setViewInFavourite(favourite.find((x) => x.url === view.path) ? true : false);
-    //     setViewInBlacklist(blacklist.find((x) => x.url === view.path) ? true : false);
-    //     enqueueSnackbar("Successful", { variant: "success" });
-    //   } else {
-    //     enqueueSnackbar("Error occured", { variant: "error" });
-    //   }
-    // } else {
-    //   enqueueSnackbar("You're not Connected to the internet or Authentication error", { variant: "error" });
-    // }
-  };
 
   const voteHandler = (vote) => async () => {
     if (online) {
@@ -178,6 +150,9 @@ const StoryContainer = (props) => {
             actions,
             upvoted,
             downvoted,
+            report,
+            setReport,
+            reportHandler,
           }}
         />
         <Footer />
