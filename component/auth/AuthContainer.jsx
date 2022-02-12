@@ -1,6 +1,6 @@
-import cookie from "js-cookie";
 import { connect } from "react-redux";
 import { Button } from "@mui/material";
+import { useSnackbar } from "notistack";
 import { useEffect, useState } from "react";
 import { signOut, getRedirectResult } from "firebase/auth";
 
@@ -12,8 +12,9 @@ import { fetcher } from "@utils/clientFunctions";
 import { FacebookAuth, TwitterAuth, GoogleAuth, styles } from ".";
 
 const AuthContainer = (props) => {
-  const { logout } = userControl(),
+  const { destroyCookie, saveCookie } = userControl(),
     { setProfileAction } = props,
+    { enqueueSnackbar } = useSnackbar(),
     [online, setOnline] = useState(false),
     [authenticated, setAuthenticated] = useState(false);
 
@@ -31,14 +32,16 @@ const AuthContainer = (props) => {
   }, []);
 
   const logoutHandler = () => {
-    signOut(auth)
-      .then(() => {
-        setProfileAction({});
-        logout();
-      })
-      .catch((error) => {
-        // console.log({ error }, "Signout failed");
+    try {
+      signOut(auth).catch((error) => {
+        throw ({ error }, "Signout failed");
       });
+      setProfileAction({});
+      destroyCookie();
+    } catch (error) {
+      enqueueSnackbar("Cannot acces Server", { variant: "error" });
+      process.env.NODE_ENV !== "production" && console.log("Signout err", error);
+    }
   };
 
   const authUser = async (auth) => {
@@ -54,7 +57,7 @@ const AuthContainer = (props) => {
     if (profile) {
       setAuthenticated(profile);
       setProfileAction(profile);
-      cookie.set("ViewCrunch", refreshToken, { expires: 183, path: "" });
+      saveCookie(refreshToken);
     }
   };
 

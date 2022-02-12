@@ -1,21 +1,20 @@
-import cookies from "js-cookie";
-// import firebase from "./firebaseClient";
+import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 
 const useUser = () => {
   const [myRefresh, setMyRefresh] = useState("");
 
-  const logout = async () => {
-    cookies.remove("ViewCrunch");
-    // return firebase.auth().signOut();
-  };
+  const destroyCookie = () => Cookies.remove("ViewCrunch", { path: "" });
+
+  // users should login after six months
+  const saveCookie = (refreshToken) => Cookies.set("ViewCrunch", refreshToken, { expires: 18, path: "" });
 
   useEffect(() => {
-    const cookie = cookies.get("ViewCrunch");
+    const cookie = Cookies.get("ViewCrunch");
     if (cookie) setMyRefresh(cookie);
   }, []);
 
-  return { myRefresh, logout };
+  return { myRefresh, destroyCookie, saveCookie };
 };
 
 export default useUser;
