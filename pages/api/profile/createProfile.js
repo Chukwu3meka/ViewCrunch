@@ -19,26 +19,36 @@ const createProfileHandler = async ({ uid, displayName, photoURL, refreshToken }
   const profile = await profileRef.get();
 
   if (profile.exists) {
-    const doc = profile.data();
-    return { myID: uid, myTheme: doc?.details?.theme, myNotification: doc?.notifications?.length };
+    const { details, notifications } = profile.data();
+    return { myID: uid, myTheme: details?.theme, myNotification: notifications?.length };
   } else {
     await profileRef.set({
       blacklist: [],
+      following: [],
+      followers: [],
       notifications: [],
       name: displayName,
       picture: { cover: photoURL, profile: photoURL },
-      social: {
-        twitter: null,
-        website: null,
-        facebook: null,
-        linkedin: null,
-        profileLink: toId(`/${displayName}-${uid}`),
-      },
+      crunches: ["Lifehack", "Universal", "Career 101", "Finance", "Cyber Security", "Developers"],
       details: {
-        crunches: ["Lifehack", "Universal", "Career 101", "Finance", "Cyber Security", "Developers"],
-        moderation: { comment: true, vote: true, suspended: false, moderate: true, createCrunch: true },
-        profileCreated: Timestamp.now(),
         theme: "light",
+        profileCreated: Timestamp.now(),
+        social: {
+          twitter: null,
+          website: null,
+          facebook: null,
+          linkedin: null,
+          profileLink: toId(`/${displayName}-${uid}`),
+        },
+      },
+      moderation: {
+        vote: true,
+        comment: true,
+        moderate: true,
+        suspended: false,
+        createCrunch: true,
+        viewCrunchAdmin: false,
+        viewCrunchSuperAdmin: false,
       },
     });
     return { myID: uid, myTheme: "light", myNotification: 0 };

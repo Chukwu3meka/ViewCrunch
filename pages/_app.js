@@ -9,7 +9,6 @@ import { SnackbarProvider } from "notistack";
 import { useStore } from "@store/index";
 import validate from "@utils/validator";
 import { SeoHead } from "@component/page";
-import Handle from "@component/page/Handle";
 import { Loading } from "@component/others";
 import userControl from "@utils/userControl";
 import LayoutContainer from "@component/layout";
@@ -130,10 +129,6 @@ const App = ({ Component, emotionCache = clientSideEmotionCache, pageProps }) =>
         <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png" />
-
-        <meta name="description" content={description} key="description" />
-        <meta property="og:description" content={description} key="og:description" />
-        <meta property="twitter:description" content={description} key="twitter:description" />
       </Head>
 
       <ThemeProvider theme={theme(appTheme)}>

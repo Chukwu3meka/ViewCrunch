@@ -43,29 +43,61 @@ const StoryContainer = (props) => {
     setMobile(props.deviceWidth < 900 ? true : false);
   }, [props.deviceWidth]);
 
-  const shareHandler = () => {
-    if (navigator) navigator.share({ title: view.title, text: "dfasd", url });
+  const reportHandler = async () => {
+    console.log("reportHandler");
+  };
+  const bookmarkHandler = async () => {
+    console.log("bookmarkHandler");
+  };
+  const blacklistHandler = async () => {
+    console.log("blacklisted");
+  };
+
+  const actionsHandler = async (name) => {
+    if (!online) return enqueueSnackbar("You're not Connected to the internet", { variant: "warning" });
+    if (!profile.myID) return enqueueSnackbar("Kindly signin at bottom of the page", { variant: "warning" });
+
+    switch (name) {
+      case "Share": {
+        if (navigator) navigator.share({ title: view.title, text: view.description, url });
+        break;
+      }
+
+      case "blacklist": {
+        if (author === profile.myID) {
+          if (res) enqueueSnackbar(`You can't blaclist yourself`, { variant: "error" });
+        } else {
+          const res = await fetcher("/api/profile/blacklist", JSON.stringify({ myID: profile.myID, author: author.author }));
+
+          if (res)
+            enqueueSnackbar(`${author.displayName} ${res.blacklist ? "added to" : "removed from"} blacklist`, { variant: "success" });
+        }
+        break;
+      }
+      default:
+        break;
+    }
   };
 
   const actions = [
-    { icon: <BlacklistIcon />, name: "Blacklist" },
-    { icon: <BookmarkIcon />, name: "Bookmark" },
-    { icon: <ReportIcon />, name: "Report" },
-    { icon: <ShareIcon />, name: "Share", handler: shareHandler },
+    { icon: <BlacklistIcon />, name: "Blacklist", handler: () => actionsHandler("blacklist") },
+    { icon: <BookmarkIcon />, name: "Bookmark", handler: () => actionsHandler() },
+    { icon: <ReportIcon />, name: "Report", handler: () => actionsHandler() },
+    { icon: <ShareIcon />, name: "Share", handler: () => actionsHandler("share") },
   ];
 
-  const reportHandler = async (report) => {
-    // if (online && profile.myHandle) {
-    //   const status = await fetcher(
-    //     "/api/crunch/report",
-    //     JSON.stringify({ myHandle: profile.myHandle, id: view.id, report, section: "view" })
-    //   );
-    //   enqueueSnackbar(status ? "success" : "failed", { variant: status ? "success" : "error" });
-    //   setReportView(false);
-    // } else {
-    //   enqueueSnackbar("Network or Authentication error", { variant: "warning" });
-    // }
-  };
+  // const reportHandler = async (report) => {
+  // if (online && profile.myHandle) {
+  //   const status = await fetcher(
+  //     "/api/crunch/report",
+  //     JSON.stringify({ myHandle: profile.myHandle, id: view.id, report, section: "view" })
+  //   );
+  //   enqueueSnackbar(status ? "success" : "failed", { variant: status ? "success" : "error" });
+  //   setReportView(false);
+  // } else {
+  //   enqueueSnackbar("You're not Connected to the internet or Authentication error", { variant: "warning" });
+  // }
+  // };
 
   const favouriteHandler = async (list, append) => {
     // if (online && profile.myHandle) {
@@ -81,52 +113,18 @@ const StoryContainer = (props) => {
     //     enqueueSnackbar("Error occured", { variant: "error" });
     //   }
     // } else {
-    //   enqueueSnackbar("Network or Authentication error", { variant: "error" });
+    //   enqueueSnackbar("You're not Connected to the internet or Authentication error", { variant: "error" });
     // }
-  };
-
-  const moreActionsHandler = () => {
-    setMoreActions([
-      { label: viewInBlacklist ? "Whitelist" : "Blacklist", handler: () => favouriteHandler("blacklist", !viewInBlacklist) },
-      {
-        label: viewInFavourite ? "Remove from favourite" : "Add to favourite",
-        handler: () => favouriteHandler("favourite", !viewInFavourite),
-      },
-      {
-        label: "Report view to Moderators and ViewCrunch",
-        handler: () => {
-          if (online && profile.myHandle) {
-            setReportView(true);
-          } else {
-            enqueueSnackbar("Network or Authentication error", { variant: "error" });
-          }
-        },
-      },
-      {
-        jsx: (
-          <SocialShare
-            share
-            {...{
-              viewHref: `/${view.id}`,
-              title: view?.title,
-              author: view?.author?.author,
-            }}
-          />
-        ),
-      },
-    ]);
   };
 
   const voteHandler = (vote) => async () => {
     if (online) {
       if (profile.myID) {
         if (vote) {
-          // upvote
           if (!upvoted) setVotes(upvoted ? votes + 1 : votes);
           setUpvoted(!upvoted);
           setDownvoted(false);
         } else {
-          // downvote
           setDownvoted(!downvoted);
           if (upvoted) setUpvoted(false);
         }
@@ -144,7 +142,7 @@ const StoryContainer = (props) => {
         enqueueSnackbar("Kindly signin at bottom of the page", { variant: "warning" });
       }
     } else {
-      enqueueSnackbar("Network", { variant: "warning" });
+      enqueueSnackbar("You're not Connected to the internet", { variant: "warning" });
     }
   };
 
@@ -161,7 +159,7 @@ const StoryContainer = (props) => {
             voteHandler,
             moreActions,
             setMoreActions,
-            shareHandler,
+            // shareHandler,
             actions,
             upvoted,
             downvoted,

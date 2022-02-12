@@ -115,15 +115,16 @@ const View = ({
           icon={<MoreVertIcon />}
           // sx={{ position: "absolute", bottom: 16, right: 16 }}
         >
-          {actions.map((action) => (
+          {actions.map(({ icon, name, handler }) => (
             <SpeedDialAction
               color="red"
-              key={action.name}
+              key={name}
+              id={name}
               // icon={action.icon}
-              icon={action.icon}
-              tooltipTitle={action.name}
+              icon={icon}
+              tooltipTitle={name}
               // tooltipOpen
-              onClick={action.handler}
+              onClick={handler}
             />
           ))}
         </SpeedDial>

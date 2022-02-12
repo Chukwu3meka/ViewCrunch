@@ -29,13 +29,7 @@ export const fetchHomeData = async () => {
   try {
     const trending = [];
     const trendingSnapshot = await getDocs(
-      query(
-        viewRef,
-        where("moderation.visible.status", "==", true),
-        orderBy("votes.total", "desc"),
-        orderBy("stat.date", "desc"),
-        limit(6)
-      )
+      query(viewRef, where("status.data", "==", "visible"), orderBy("votes.total", "desc"), orderBy("stat.date", "desc"), limit(6))
     );
 
     if (trendingSnapshot.size) {
@@ -96,12 +90,12 @@ export const fetchViews = async ({ handle, blacklist, lastVisible }) => {
       lastVisible
         ? query(
             viewRef,
-            where("moderation.visible.status", "==", true),
+            where("status.data", "==", "visible"),
             orderBy("stat.date", "desc"),
             startAfter(Timestamp.fromDate(new Date(JSON.parse(lastVisible.date)), lastVisible.title)),
             limit(5)
           )
-        : query(viewRef, where("moderation.visible.status", "==", true), orderBy("stat.date", "desc"), limit(7))
+        : query(viewRef, where("status.data", "==", "visible"), orderBy("stat.date", "desc"), limit(7))
     );
 
     const views = [];
@@ -161,7 +155,7 @@ export const fetchView = async (viewLink) => {
         content,
         title,
         votes,
-        stat: { author, crunch, date, image, keyword, readTime, viewLink },
+        stat: { author, crunch, date, image, keyword, readTime, viewLink, description },
       } = viewSnapshot.docs[0].data();
 
       const {
@@ -186,6 +180,7 @@ export const fetchView = async (viewLink) => {
             image,
             keyword,
             readTime,
+            description: description || title,
           },
           author: {
             about,

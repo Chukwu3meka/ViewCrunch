@@ -14,6 +14,7 @@ const Index = ({ error, view, author, viewID }) => {
         {...{
           seo_title: view.title,
           seo_image: view.pryImage,
+          seo_description: view.description,
           seo_hashtag: `#${view.displayName}`,
           seo_keywords: `${view.keyword}, ${view.title}`,
           seo_quote: `${view.title} by ${view.displayName}`,
