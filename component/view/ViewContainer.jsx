@@ -54,40 +54,51 @@ const StoryContainer = (props) => {
   };
 
   const actionsHandler = async (name) => {
-    if (!online) return enqueueSnackbar("You're not Connected to the internet", { variant: "warning" });
-    if (!profile.myID) return enqueueSnackbar("Kindly signin at bottom of the page", { variant: "warning" });
+    try {
+      if (!online) return enqueueSnackbar("You're not Connected to the internet", { variant: "warning" });
+      if (!profile.myID) return enqueueSnackbar("Kindly signin at bottom of the page", { variant: "warning" });
 
-    switch (name) {
-      case "Share": {
-        if (navigator) navigator.share({ title: view.title, text: view.description, url });
-        break;
-      }
+      switch (name) {
+        case "share": {
+          if (navigator) navigator.share({ title: view.title, text: view.description, url });
+          break;
+        }
 
-      case "blacklist": {
-        if (author.author === profile.myID) return enqueueSnackbar(`You can't blacklist yourself`, { variant: "error" });
+        case "blacklist": {
+          if (author.author === profile.myID) return enqueueSnackbar(`You can't blacklist yourself`, { variant: "error" });
 
-        const res = await fetcher("/api/profile/blacklist", JSON.stringify({ myID: profile.myID, author: author.author }));
+          const blacklisted = await fetcher("/api/profile/blacklist", JSON.stringify({ myID: profile.myID, author: author.author }));
 
-        if (res)
           enqueueSnackbar(
-            `${author.displayName}, has been ${res.blacklisted ? "added to" : "removed from"} blacklist. ${
-              res.blacklisted ? `You won't see views, published by ${author.displayName}` : ""
+            `${author.displayName}, has been ${blacklisted ? "added to" : "removed from"} blacklist. ${
+              blacklisted ? `You won't see views, published by ${author.displayName}` : ""
             }`,
             { variant: "success" }
           );
 
-        break;
-      }
+          break;
+        }
 
-      default:
-        break;
+        case "bookmark": {
+          const bookmarked = await fetcher("/api/profile/bookmark", JSON.stringify({ myID: profile.myID, viewID }));
+
+          enqueueSnackbar(`${view.title}, has been ${bookmarked ? "added to" : "removed from"} bookmark.`, { variant: "success" });
+
+          break;
+        }
+
+        default:
+          throw "No action specified";
+      }
+    } catch (error) {
+      process.env.NODE_ENV !== "production" && console.log(error);
     }
   };
 
   const actions = [
     { icon: <BlacklistIcon />, name: "Blacklist", handler: () => actionsHandler("blacklist") },
-    { icon: <BookmarkIcon />, name: "Bookmark", handler: () => actionsHandler() },
-    { icon: <ReportIcon />, name: "Report", handler: () => actionsHandler() },
+    { icon: <BookmarkIcon />, name: "Bookmark", handler: () => actionsHandler("bookmark") },
+    { icon: <ReportIcon />, name: "Report", handler: () => actionsHandler("report") },
     { icon: <ShareIcon />, name: "Share", handler: () => actionsHandler("share") },
   ];
 

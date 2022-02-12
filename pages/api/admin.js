@@ -7,33 +7,31 @@ export default async (req, res) => {
   try {
     if (process.env.NODE_ENV !== "development") throw new TypeError("authentication failed");
 
+    // await firestore
+    //   .collection("view")
+    //   .get()
+    //   .then(async (snap) => {
+    //     for (const doc of snap.docs) {
+    //       await firestore.collection("view").doc(doc.id).update({
+    //         "status.moderator": "zqWXUjfcFXPGKzgN3HCvoFuOz043",
+    //         "stat.author": "zqWXUjfcFXPGKzgN3HCvoFuOz043",
+    //       });
+    //     }
+    //   });
+
     await firestore
-      .collection("view")
+      .collection("profile")
+      .doc("zqWXUjfcFXPGKzgN3HCvoFuOz043")
       .get()
       .then(async (snap) => {
-        for (const doc of snap.docs) {
-          await firestore.collection("view").doc(doc.id).update({
-            "status.moderator": "zqWXUjfcFXPGKzgN3HCvoFuOz043",
-            "stat.author": "zqWXUjfcFXPGKzgN3HCvoFuOz043",
-          });
-        }
-      });
+        const doc = snap.data();
 
-    // for (const title of ["Lifehack", "Universal", "Career 101", "Finance", "Cyber Security", "Developers"]) {
-    //   await firestore
-    //     .collection("crunch")
-    //     .doc(toId(title))
-    //     .set({
-    //       about: `${title} about`,
-    //       picture: "/images/ViewCrunch-cover.webp",
-    //       date: Timestamp.now(),
-    //       follower: ["nT2S72k44CT6oBWcqnCp8vMgR1e2"],
-    //       admin: ["nT2S72k44CT6oBWcqnCp8vMgR1e2"],
-    //       moderator: [],
-    //       title,
-    //       suspended: false,
-    //     });
-    // }
+        await firestore.collection("profile").doc(snap.id).update({
+          // moderation: FieldValue.delete(),
+          // status: doc.moderation,
+          // bookmarks: [],
+        });
+      });
 
     return res.status(200).send(true);
   } catch (error) {

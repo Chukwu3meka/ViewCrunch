@@ -1,6 +1,5 @@
 import * as React from "react";
 import Document, { Html, Head, Main, NextScript } from "next/document";
-import Script from "next/script";
 
 import createEmotionServer from "@emotion/server/create-instance";
 import createEmotionCache from "@source/createEmotionCache";
@@ -18,28 +17,6 @@ export default class MyDocument extends Document {
             rel="stylesheet"
           />
 
-          {/* <Script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA}`} defer />
-          <Script
-            dangerouslySetInnerHTML={{
-              __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${process.env.NEXT_PUBLIC_GA}', {
-              page_path: window.location.pathname,
-            });
-          `,
-            }}
-            defer
-          />
-          <Script
-            async
-            defer
-            nonce="pJttRA02"
-            crossOrigin="anonymous"
-            src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&amp;version=v11.0&amp;appId=332276848078020&amp;autoLogAppEvents=1"
-          />
- */}
           {/* Inject MUI styles first to match with the prepend: true configuration. */}
           {this.props.emotionStyleTags}
         </Head>

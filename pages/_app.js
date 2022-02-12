@@ -1,5 +1,4 @@
 import Head from "next/head";
-import Router from "next/router";
 import PropTypes from "prop-types";
 import { Provider } from "react-redux";
 import config from "react-reveal/globals";
@@ -7,8 +6,8 @@ import { useEffect, useState } from "react";
 import { SnackbarProvider } from "notistack";
 
 import { useStore } from "@store/index";
-import validate from "@utils/validator";
-import { SeoHead } from "@component/page";
+import SeoHead from "@component/others/SeoHead";
+
 import { Loading } from "@component/others";
 import userControl from "@utils/userControl";
 import LayoutContainer from "@component/layout";

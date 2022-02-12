@@ -1,5 +1,5 @@
-import { ErrorPage } from "@component/page";
 import HomeContainer from "@component/home";
+import ErrorPage from "@component/others/ErrorPage";
 
 const Index = ({ error, trending, crunches }) =>
   error ? <ErrorPage statusCode={error?.code} title={error?.title} /> : <HomeContainer trending={trending} crunches={crunches} />;

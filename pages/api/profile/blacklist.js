@@ -14,7 +14,7 @@ const handler = async ({ myID, author }) => {
         blacklist: blacklist.includes(author) ? FieldValue.arrayRemove(author) : FieldValue.arrayUnion(author),
       });
 
-      return { blacklisted: !blacklist.includes(author) };
+      return !blacklist.includes(author);
     });
   } catch (error) {
     throw error;

@@ -27,6 +27,7 @@ const createProfileHandler = async ({ uid, displayName, photoURL, refreshToken }
       blacklist: [],
       following: [],
       followers: [],
+      bookmarks: [],
       notifications: [],
       picture: { cover: photoURL, profile: photoURL },
       crunches: ["Lifehack", "Universal", "Career 101", "Finance", "Cyber Security", "Developers"],
@@ -42,7 +43,7 @@ const createProfileHandler = async ({ uid, displayName, photoURL, refreshToken }
           linkedin: null,
         },
       },
-      moderation: {
+      status: {
         vote: true,
         comment: true,
         moderate: true,
