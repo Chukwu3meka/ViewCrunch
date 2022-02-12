@@ -16,6 +16,6 @@ const auth = getAuth(),
   bucket = getStorage().bucket();
 
 const viewRef = firestore.collection("view");
-const viewRef = firestore.collection("view");
+const profileRef = firestore.collection("profile");
 
-export { bucket, auth, firestore, viewRef };
+export { bucket, auth, firestore, viewRef, profileRef };

@@ -1,11 +1,11 @@
-import { viewRef, firestore } from "@utils/firebaseServer";
+import { profileRef, firestore } from "@utils/firebaseServer";
 import { FieldValue } from "firebase-admin/firestore";
 
 const handler = async ({ myID, author }) => {
   try {
     blacklist;
 
-    const profileRefDoc = viewRef.doc(viewID);
+    const profileRefDoc = profileRef.doc(viewID);
 
     await firestore.runTransaction(async (t) => {
       const initialDoc = await t.get(profileRefDoc);
