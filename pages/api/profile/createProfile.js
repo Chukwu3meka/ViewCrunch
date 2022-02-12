@@ -23,22 +23,23 @@ const createProfileHandler = async ({ uid, displayName, photoURL, refreshToken }
     return { myID: uid, myTheme: details?.theme, myNotification: notifications?.length };
   } else {
     await profileRef.set({
+      about: "",
       blacklist: [],
       following: [],
       followers: [],
       notifications: [],
-      name: displayName,
       picture: { cover: photoURL, profile: photoURL },
       crunches: ["Lifehack", "Universal", "Career 101", "Finance", "Cyber Security", "Developers"],
       details: {
+        displayName,
         theme: "light",
         profileCreated: Timestamp.now(),
+        profileLink: toId(`${displayName}-${uid}`),
         social: {
           twitter: null,
           website: null,
           facebook: null,
           linkedin: null,
-          profileLink: toId(`/${displayName}-${uid}`),
         },
       },
       moderation: {

@@ -12,19 +12,10 @@ export default async (req, res) => {
       .get()
       .then(async (snap) => {
         for (const doc of snap.docs) {
-          await firestore
-            .collection("view")
-            .doc(doc.id)
-            .update({
-              moderation: FieldValue.delete(),
-              status: {
-                data: "visible",
-                description: "approved by ViewCrunch Moderator",
-                date: doc.data().moderation.visible.date,
-                moderator: "bGJpRNju7WduTFQ5MMB9ElGxxDz1",
-              },
-              "stat.author": "bGJpRNju7WduTFQ5MMB9ElGxxDz1",
-            });
+          await firestore.collection("view").doc(doc.id).update({
+            "status.moderator": "zqWXUjfcFXPGKzgN3HCvoFuOz043",
+            "stat.author": "zqWXUjfcFXPGKzgN3HCvoFuOz043",
+          });
         }
       });
 

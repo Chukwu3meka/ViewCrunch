@@ -40,8 +40,7 @@ export const fetchHomeData = async () => {
         } = doc.data();
 
         const {
-          displayName,
-          stat: { profileLink },
+          details: { displayName, profileLink },
         } = await fetchProfile(author);
 
         trending.push({
@@ -110,9 +109,8 @@ export const fetchViews = async ({ handle, blacklist, lastVisible }) => {
 
         if (!blacklist.includes(author)) {
           const {
-            displayName,
-            profilePicture,
-            stat: { profileLink },
+            picture: { profile: profilePicture },
+            details: { profileLink, displayName },
           } = await fetchProfile(author);
 
           views.push({
@@ -159,11 +157,13 @@ export const fetchView = async (viewLink) => {
       } = viewSnapshot.docs[0].data();
 
       const {
-        about,
-        displayName,
-        profilePicture,
-        social: { linkedinHandle, twitterHandle, facebookHandle },
-        stat: { profileLink },
+        picture: { profile: profilePicture },
+        details: {
+          about,
+          displayName,
+          profileLink,
+          social: { linkedinHandle, twitterHandle, facebookHandle },
+        },
       } = await fetchProfile(author);
 
       return {
