@@ -1,6 +1,8 @@
+# ViewCrunch: Views and Crunches
+
 [![ViewCrunch Banner](./public/images/ViewCrunch.webp)](https://viewcrunch.com)
 
-# ViewCrunch: Blog
+## About ViewCrunch
 
 ViewCrunch is an online blog, where user being authors or viewers can publish their views or any subject, like/dislike views, follow crunches or users(author/viewers), update/delete published views, authenticate using Twitter, Facebook and Google. There's a lot to learn from this project and i advice you follow through in order to learn and build something even greater, instead of copying a code you cannot explain, just to impress recruiters
 
@@ -22,6 +24,41 @@ This project goes over all of the fundamentals of Next.js and Firebase including
 - HTTP Requests
 
 ---
+
+## What You'll learn
+
+1. How to initialize a Next.js and Firebase app
+2. Add Packages/Libraries to the app
+3. Layout
+4. Setup Redux and Material-UI
+5. OAuth with Firebase Authentication
+
+> We'll add more to the list as we progresss
+
+## Tools/Libraries Used
+
+As can be seen from the package.json, We'll be using the following tools
+
+1. Material-UI
+2. Axios
+3. Firebase
+4. Firebase-admin
+5. js-cookie
+6. Next.js
+7. Notistack
+8. Redux
+9. React-reveal
+10. SASS
+
+> That's a whole lot, you'll be learning, and i hope you'll enjoy it.
+
+## Usage
+
+### Install dependencies
+
+`npm install //to install all dependencies with their versions as listed in the package.json`
+
+`npm run dev //to start the development server`
 
 ## Author
 
