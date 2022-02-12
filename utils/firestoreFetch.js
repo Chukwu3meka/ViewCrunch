@@ -162,7 +162,7 @@ export const fetchView = async (viewLink) => {
           about,
           displayName,
           profileLink,
-          social: { linkedinHandle, twitterHandle, facebookHandle },
+          social: { linkedin, twitter, facebook },
         },
       } = await fetchProfile(author);
 
@@ -185,12 +185,12 @@ export const fetchView = async (viewLink) => {
           author: {
             about,
             author,
+            twitter,
+            linkedin,
+            facebook,
             displayName,
             profileLink,
             profilePicture,
-            linkedinHandle,
-            twitterHandle,
-            facebookHandle,
           },
           viewID: viewLink?.split("-")[viewLink?.split("-").length - 1],
         },

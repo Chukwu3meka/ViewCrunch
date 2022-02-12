@@ -17,5 +17,6 @@ const auth = getAuth(),
 
 const viewRef = firestore.collection("view");
 const profileRef = firestore.collection("profile");
+const crunchRef = firestore.collection("crunch");
 
-export { bucket, auth, firestore, viewRef, profileRef };
+export { bucket, auth, firestore, viewRef, profileRef, crunchRef };

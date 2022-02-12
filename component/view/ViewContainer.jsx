@@ -133,7 +133,6 @@ const StoryContainer = (props) => {
 
         if (res) {
           const { downvoted, total, upvoted } = res;
-          console.log({ downvoted, total, upvoted });
           setVotes(total);
           setUpvoted(upvoted);
           setDownvoted(downvoted);
