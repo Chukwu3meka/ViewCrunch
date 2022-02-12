@@ -64,16 +64,21 @@ const StoryContainer = (props) => {
       }
 
       case "blacklist": {
-        if (author === profile.myID) {
-          if (res) enqueueSnackbar(`You can't blaclist yourself`, { variant: "error" });
-        } else {
-          const res = await fetcher("/api/profile/blacklist", JSON.stringify({ myID: profile.myID, author: author.author }));
+        if (author.author === profile.myID) return enqueueSnackbar(`You can't blacklist yourself`, { variant: "error" });
 
-          if (res)
-            enqueueSnackbar(`${author.displayName} ${res.blacklist ? "added to" : "removed from"} blacklist`, { variant: "success" });
-        }
+        const res = await fetcher("/api/profile/blacklist", JSON.stringify({ myID: profile.myID, author: author.author }));
+
+        if (res)
+          enqueueSnackbar(
+            `${author.displayName}, has been ${res.blacklisted ? "added to" : "removed from"} blacklist. ${
+              res.blacklisted ? `You won't see views, published by ${author.displayName}` : ""
+            }`,
+            { variant: "success" }
+          );
+
         break;
       }
+
       default:
         break;
     }
