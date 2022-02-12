@@ -6,7 +6,7 @@ export default Index;
 
 export const getServerSideProps = async () => {
   const { fetcher } = require("@utils/clientFunctions");
-  const news = await fetcher(`${process.env.SERVER_URL}/api/externalApi/newsApi`);
+  const news = await fetcher(`${process.env.SERVER_URL}/api/news/newsApi`);
 
   return { props: { news } };
 };

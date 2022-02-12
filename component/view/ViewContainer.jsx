@@ -14,25 +14,30 @@ import ReportIcon from "@mui/icons-material/FlagRounded";
 import { Footer } from "@component/layout";
 
 const StoryContainer = (props) => {
-  const scrollRef = useRef(null),
+  const { view, author, url, viewID } = props,
+    scrollRef = useRef(null),
     [mobile, setMobile] = useState(true),
-    { view, profile, author, url } = props,
     { enqueueSnackbar } = useSnackbar(),
     [online, setOnline] = useState(props.online),
     [reportView, setReportView] = useState(false),
+    [profile, setProfile] = useState({}),
     { myHandle, myID, myDisplayName } = profile,
     [moreActions, setMoreActions] = useState(false),
     [votes, setVotes] = useState(view.votes.total),
     [viewInFavourite, setViewInFavourite] = useState(view.viewInFavourite),
     [viewInBlacklist, setViewInBlacklist] = useState(view.viewInBlacklist),
-    [upvoted, setUpvoted] = useState(!!view.votes.upvote.includes(myID)),
-    [downvoted, setDownvoted] = useState(!!view.votes.downvote.includes(myID));
-
-  // console.log({ v: view.votes.total });
+    [upvoted, setUpvoted] = useState(false),
+    [downvoted, setDownvoted] = useState(false);
 
   useEffect(() => {
     setOnline(props.online);
   }, [props.online]);
+
+  useEffect(() => {
+    setProfile(props.profile);
+    setUpvoted(view.votes.upvote.includes(props.profile.myID));
+    setDownvoted(view.votes.downvote.includes(props.profile.myID));
+  }, [props.profile]);
 
   useEffect(() => {
     setMobile(props.deviceWidth < 900 ? true : false);
@@ -117,18 +122,23 @@ const StoryContainer = (props) => {
       if (profile.myID) {
         if (vote) {
           // upvote
-          setUpvoted(true);
+          if (!upvoted) setVotes(upvoted ? votes + 1 : votes);
+          setUpvoted(!upvoted);
           setDownvoted(false);
-          setVotes(upvoted ? votes + 1 : votes);
-          //     "/api/crunch/voteView",
-          //     JSON.stringify({ viewId: view.id, myHandle: profile.myHandle, vote, author: view?.author?.author })
         } else {
           // downvote
-          setDownvoted(true);
-          setUpvoted(false);
-          setVotes(upvoted ? votes - 1 : votes);
-          // addtodownvotes
-          // reduce votes
+          setDownvoted(!downvoted);
+          if (upvoted) setUpvoted(false);
+        }
+
+        const res = await fetcher("/api/view/voteView", JSON.stringify({ myID: profile.myID, vote, viewID }));
+
+        if (res) {
+          const { downvoted, total, upvoted } = res;
+          console.log({ downvoted, total, upvoted });
+          setVotes(total);
+          setUpvoted(upvoted);
+          setDownvoted(downvoted);
         }
       } else {
         enqueueSnackbar("Kindly signin at bottom of the page", { variant: "warning" });
@@ -140,7 +150,7 @@ const StoryContainer = (props) => {
 
   return (
     <Grid container style={{ maxWidth: "1200px", margin: "auto" }}>
-      <ViewNav {...{ ...author, myDisplayName, mobile }} />
+      <ViewNav {...{ ...author, myDisplayName: profile.myDisplayName, mobile }} />
       <Grid item xs={12} sm={12} md={8}>
         <View
           {...{

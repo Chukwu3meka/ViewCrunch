@@ -197,6 +197,7 @@ export const fetchView = async (viewLink) => {
             twitterHandle,
             facebookHandle,
           },
+          viewID: viewLink?.split("-")[viewLink?.split("-").length - 1],
         },
       };
     } else {

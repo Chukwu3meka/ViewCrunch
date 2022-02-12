@@ -17,4 +17,6 @@ const auth = getAuth(),
 
 // firestore.settings({ ignoreUndefinedProperties: true }),
 
-export { bucket, auth, firestore };
+const viewRef = firestore.collection("view");
+
+export { bucket, auth, firestore, viewRef };

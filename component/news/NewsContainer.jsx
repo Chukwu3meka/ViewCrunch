@@ -14,7 +14,7 @@ const NewsContainer = (props) => {
     } else {
       setNewsPage(false);
       const getNEWS = async () => {
-        setNews(await fetcher("/api/externalApi/newsApi"));
+        setNews(await fetcher("/api/news/newsApi"));
       };
       getNEWS();
     }

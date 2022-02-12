@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import ViewContainer from "@component/view";
 import { ErrorPage, SeoHead } from "@component/page";
 
-const Index = ({ error, view, author }) => {
+const Index = ({ error, view, author, viewID }) => {
   if (error) return <ErrorPage statusCode={error.code} title={error.title} />;
 
   const router = useRouter();
@@ -19,7 +19,7 @@ const Index = ({ error, view, author }) => {
           seo_quote: `${view.title} by ${view.displayName}`,
         }}
       />
-      <ViewContainer view={view} author={author} url={`${process.env.SERVER_URL}/view${viewLink}`} />
+      <ViewContainer view={view} author={author} url={`${process.env.SERVER_URL}/view${viewLink}`} viewID={viewID} />
     </>
   );
 };
