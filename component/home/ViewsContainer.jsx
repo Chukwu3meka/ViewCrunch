@@ -24,12 +24,10 @@ const ViewsContainer = (props) => {
   useEffect(() => {
     setMyID(props.myID);
     setReady(1);
-    // console.log({ myID, p: props.myID });
 
     if (ready === 1) {
-      console.log(myID, props.myID, ready);
+      getViews({ fetchType: "initial", reduxMyID: props.myID });
       setReady(2);
-      // getViews("initial");
     }
   }, [props.myID]);
 
@@ -45,7 +43,7 @@ const ViewsContainer = (props) => {
   }, [props.deviceWidth]);
 
   useEffect(() => {
-    if (ready == "2" && lastVisible && props?.userAtBottom) getViews("more");
+    if (ready == "2" && lastVisible && props?.userAtBottom) getViews({ fetchType: "more" });
   }, [props.userAtBottom]);
 
   useEffect(() => {
@@ -55,6 +53,8 @@ const ViewsContainer = (props) => {
       setBlacklist(blacklist);
       setLastVisible(lastVisible);
       if (bookmarks) setBookmarks(bookmarks);
+      if (bookmarks) console.log(bookmarks);
+
       if (lastVisible === "last view") {
         stopFetching(); // to prevent unwanted error
         setFetchFailed(false);
@@ -70,7 +70,7 @@ const ViewsContainer = (props) => {
     }
   }, [props.views]);
 
-  const getViews = (fetchType) => {
+  const getViews = ({ fetchType, reduxMyID = myID }) => {
     if (online) {
       if (lastVisible === "last view") {
         setLoading(false);
@@ -79,13 +79,11 @@ const ViewsContainer = (props) => {
       } else if (fetchType === "initial") {
         setLoading(true);
         setFetchFailed(false);
-        // bookmarks
-        console.log(myID, props.myID);
-        // getViewsAction({ myID, initialFetch: true });
+        getViewsAction({ reduxMyID, initialFetch: true });
       } else if (["retry", "more"].includes(fetchType) && !loading) {
         setLoading(true);
         setFetchFailed(false);
-        getViewsAction({ myID, reduxBlacklist: blacklist, reduxLastVisible: lastVisible });
+        getViewsAction({ reduxMyID, reduxBlacklist: blacklist, reduxLastVisible: lastVisible });
       } else {
         stopFetching();
       }

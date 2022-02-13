@@ -79,22 +79,15 @@ export const fetchViews = async ({ myID, blacklist, lastVisible, initialFetch })
   try {
     let bookmarks;
 
-    console.log({ bookmarks, blacklist, myID, initialFetch });
-
     if (initialFetch && myID) {
       const profile = await fetchProfile(myID)
-        .then((x) => x.blacklist)
+        .then((x) => x)
         .catch((e) => {
           throw "wrong user ID";
         });
 
       blacklist = profile.blacklist;
-
-      console.log(profile.bookmarks);
-
-      bookmarks = fetchBookmarks ? profile.bookmarks : [];
-    } else {
-      blacklist = [];
+      bookmarks = profile.bookmarks;
     }
 
     const viewsSnapshot = await getDocs(
@@ -149,8 +142,10 @@ export const fetchViews = async ({ myID, blacklist, lastVisible, initialFetch })
       lastVisible = "last view";
     }
 
-    return { lastVisible, views, blacklist, bookmarks };
+    return { lastVisible: lastVisible || "lastview", views, blacklist, bookmarks };
   } catch (error) {
+    console.log(error);
+
     if (process.env.NODE_ENV === "development") console.log(error);
     return { lastVisible, views: null, blacklist };
   }

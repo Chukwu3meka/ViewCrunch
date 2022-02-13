@@ -1,20 +1,17 @@
-const axios = require("axios").default;
-import { firestore } from "@utils/firebaseServer";
-
-import firebaseAdmin from "@utils/firebaseServer";
+import { newsRef } from "@utils/firebaseServer";
 
 const handler = async () => {
-  return await firestore
-    .collection("news")
+  return await newsRef
     .doc("today")
     .get()
     .then(async (snapshot) => {
       const { date, data } = snapshot.data();
 
-      // (new Date() - new Date(date)) / (1000 * 60 * 60 * 24) - 1;
+      //check if news in firestore is older than 24hrs
       const dateDiff = Math.round(new Date(new Date().toDateString()) - new Date(date)) / (1000 * 60 * 60 * 24);
 
       if (dateDiff > 0) {
+        const axios = require("axios").default;
         const articles = await axios
           .request({
             method: "GET",
@@ -30,7 +27,7 @@ const handler = async () => {
             throw error;
           });
 
-        await firestore.collection("news").doc("today").update({
+        await newsRef.doc("today").update({
           data: articles,
           date: new Date().toDateString(),
         });
@@ -50,7 +47,6 @@ export default async (req, res) => {
     const articles = await handler();
     return res.status(200).json(articles);
   } catch (error) {
-    console.log(error);
     return res.status(401).send(false);
   }
 };

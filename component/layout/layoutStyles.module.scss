@@ -45,11 +45,12 @@
   gap: 20px;
   & > h1 {
     font-size: 2.2em;
-    letter-spacing: 2px;
-    font-weight: 500;
+    letter-spacing: 6px;
+    // font-weight: 900;
     font-family: "Fredericka the Great", cursive;
     text-shadow: 2px 2px 0 color(primary);
-    color: color(primary);
+    // color: color(secondary);
+    // color: color(primary);
   }
 }
 

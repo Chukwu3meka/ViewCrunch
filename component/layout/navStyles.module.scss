@@ -23,7 +23,8 @@
     & > nav {
       @include flexCenter(row);
       flex-wrap: wrap;
-      gap: 10px 5px;
+      gap: 10px;
+
       justify-content: flex-start;
       & > a > div {
         cursor: pointer;
