@@ -75,12 +75,24 @@ export const fetchHomeData = async () => {
   }
 };
 
-export const fetchViews = async ({ handle, blacklist, lastVisible }) => {
+export const fetchViews = async ({ myID, blacklist, lastVisible, initialFetch }) => {
   try {
-    if (!blacklist && handle) {
-      blacklist = await fetchProfile(handle)
+    let bookmarks;
+
+    console.log({ bookmarks, blacklist, myID, initialFetch });
+
+    if (initialFetch && myID) {
+      const profile = await fetchProfile(myID)
         .then((x) => x.blacklist)
-        .catch((e) => []);
+        .catch((e) => {
+          throw "wrong user ID";
+        });
+
+      blacklist = profile.blacklist;
+
+      console.log(profile.bookmarks);
+
+      bookmarks = fetchBookmarks ? profile.bookmarks : [];
     } else {
       blacklist = [];
     }
@@ -126,6 +138,7 @@ export const fetchViews = async ({ handle, blacklist, lastVisible }) => {
             profilePicture,
             viewLink: `/view/${viewLink}`,
             crunchLink: toId(`/crunch/${crunch}`),
+            viewID: viewLink.split("-")[viewLink.split("-").length - 1],
             date: dateCalculator({ date: date.toDate().toDateString() }),
           });
 
@@ -136,7 +149,7 @@ export const fetchViews = async ({ handle, blacklist, lastVisible }) => {
       lastVisible = "last view";
     }
 
-    return { lastVisible, views, blacklist };
+    return { lastVisible, views, blacklist, bookmarks };
   } catch (error) {
     if (process.env.NODE_ENV === "development") console.log(error);
     return { lastVisible, views: null, blacklist };

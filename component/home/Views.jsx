@@ -4,17 +4,31 @@ import Fade from "react-reveal/Fade";
 
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import BookmarkAddIcon from "@mui/icons-material/BookmarkAddOutlined";
 
-import { viewsStyles } from ".";
+import { viewsStyles, ViewsFooter } from ".";
 import { Loading } from "@component/others";
 
-const Views = ({ views, loading, fetchFailed, getViews, mobile }) => (
+const Views = ({ views, loading, fetchFailed, getViews, mobile, bookmarkHandler, bookmarks }) => (
   <div className={viewsStyles.views}>
     <Typography variant="h2">Recently Published</Typography>
     <div>
       {views?.map(
-        ({ displayName, profilePicture, profileLink, crunchLink, crunch, title, image, content, date, readTime, keyword, viewLink }) => (
+        ({
+          displayName,
+          profilePicture,
+          profileLink,
+          crunchLink,
+          crunch,
+          image,
+          content,
+          date,
+          readTime,
+          keywords,
+          viewLink,
+          title,
+          author,
+          viewID,
+        }) => (
           <Fade bottom key={viewLink}>
             <Paper className={viewsStyles.view}>
               <div>
@@ -43,10 +57,7 @@ const Views = ({ views, loading, fetchFailed, getViews, mobile }) => (
                   <Typography variant="body2">{content.replace(/<[^>]+>/g, "")}</Typography>
 
                   {!mobile ? (
-                    <div className={viewsStyles.footer}>
-                      <Typography variant="body2">{`${date} · ${readTime} ☆ ${keyword}`}</Typography>
-                      <BookmarkAddIcon fontSize="small" />
-                    </div>
+                    <ViewsFooter {...{ mobile: false, date, readTime, keywords, title, author, viewID, bookmarks, bookmarkHandler }} />
                   ) : null}
                 </div>
                 <div>
@@ -54,11 +65,8 @@ const Views = ({ views, loading, fetchFailed, getViews, mobile }) => (
                 </div>
               </div>
               {mobile ? (
-                <div className={viewsStyles.footer}>
-                  <Typography variant="body2">{`${readTime} ☆ ${keyword}`}</Typography>
-                  <BookmarkAddIcon fontSize="small" />
-                </div>
-              ) : null}{" "}
+                <ViewsFooter {...{ mobile: true, date, readTime, keywords, title, author, viewID, bookmarks, bookmarkHandler }} />
+              ) : null}
             </Paper>
           </Fade>
         )

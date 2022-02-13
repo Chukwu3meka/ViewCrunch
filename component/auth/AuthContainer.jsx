@@ -2,7 +2,14 @@ import { connect } from "react-redux";
 import { Button } from "@mui/material";
 import { useSnackbar } from "notistack";
 import { useEffect, useState } from "react";
-import { signOut, getRedirectResult } from "firebase/auth";
+import {
+  signOut,
+  getRedirectResult,
+  signInWithRedirect,
+  linkWithCredential,
+  TwitterAuthProvider,
+  FacebookAuthProvider,
+} from "firebase/auth";
 
 import userControl from "@utils/userControl";
 import { auth } from "@utils/firebaseClient";
@@ -10,6 +17,14 @@ import { setProfileAction } from "@store/actions";
 
 import { fetcher } from "@utils/clientFunctions";
 import { FacebookAuth, TwitterAuth, GoogleAuth, styles } from ".";
+
+import { GoogleAuthProvider } from "firebase/auth";
+
+const providers = {
+  google: new GoogleAuthProvider(),
+  twitter: new TwitterAuthProvider(),
+  facebook: new FacebookAuthProvider(),
+};
 
 const AuthContainer = (props) => {
   const { destroyCookie, saveCookie } = userControl(),
@@ -24,20 +39,38 @@ const AuthContainer = (props) => {
   useEffect(() => {
     getRedirectResult(auth)
       .then(async (result) => {
-        if (result) authUser(result.user);
+        if (auth.currentUser) await authUser(auth.currentUser);
+        if (result) await authUser(result.user);
       })
-      .catch(async (error) => {
-        if (error.code === "auth/account-exists-with-different-credential") authUser(auth.currentUser);
+      .catch(async (err) => {
+        const savedProvider = sessionStorage.getItem("providerType");
+
+        if (err?.code === "auth/account-exists-with-different-credential") {
+          // The AuthCredential type that was used before conflict.
+          const credential =
+            savedProvider === "twitter"
+              ? TwitterAuthProvider.credentialFromError(err)
+              : savedProvider === "facebook"
+              ? FacebookAuthProvider.credentialFromError(err)
+              : null;
+
+          linkWithCredential(auth.currentUser, credential)
+            .then(() => sessionStorage.removeItem("providerType"))
+            .catch(() => sessionStorage.removeItem("providerType"));
+        }
       });
   }, []);
 
   const logoutHandler = () => {
     try {
-      signOut(auth).catch((error) => {
-        throw ({ error }, "Signout failed");
-      });
-      setProfileAction({});
-      destroyCookie();
+      signOut(auth)
+        .then(() => {
+          setProfileAction({});
+          destroyCookie();
+        })
+        .catch((error) => {
+          throw ({ error }, "Signout failed");
+        });
     } catch (error) {
       enqueueSnackbar("Cannot acces Server", { variant: "error" });
       process.env.NODE_ENV !== "production" && console.log("Signout err", error);
@@ -45,19 +78,33 @@ const AuthContainer = (props) => {
   };
 
   const authUser = async (auth) => {
-    const {
-      uid,
-      photoURL,
-      displayName,
-      stsTokenManager: { refreshToken },
-    } = auth;
+    if (auth) {
+      const {
+        uid,
+        photoURL,
+        displayName,
+        stsTokenManager: { refreshToken },
+      } = auth;
 
-    const profile = await fetcher("/api/profile/createProfile", JSON.stringify({ uid, displayName, photoURL, refreshToken }));
+      const profile = await fetcher("/api/profile/createProfile", JSON.stringify({ uid, displayName, photoURL, refreshToken }));
 
-    if (profile) {
-      setAuthenticated(profile);
-      setProfileAction(profile);
-      saveCookie(refreshToken);
+      if (profile) {
+        setAuthenticated(profile);
+        setProfileAction(profile);
+        saveCookie(refreshToken);
+      }
+    }
+  };
+
+  const signInHandler = (e) => {
+    if (online) {
+      const providerType = e.target.id,
+        provider = providers[providerType];
+
+      signInWithRedirect(auth, provider);
+      sessionStorage.setItem("providerType", providerType);
+    } else {
+      enqueueSnackbar("You're not connected to the Internet", { variant: "error" });
     }
   };
 
@@ -69,9 +116,9 @@ const AuthContainer = (props) => {
         </Button>
       ) : (
         <>
-          <TwitterAuth online={online} authUser={authUser} />
-          <GoogleAuth online={online} authUser={authUser} />
-          <FacebookAuth online={online} authUser={authUser} />
+          <TwitterAuth signInHandler={signInHandler} />
+          <GoogleAuth signInHandler={signInHandler} />
+          <FacebookAuth signInHandler={signInHandler} />
         </>
       )}
     </div>
