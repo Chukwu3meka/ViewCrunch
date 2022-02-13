@@ -34,11 +34,11 @@ const NavbarContainer = (props) => {
     ["Home", "/", <HomeIcon />],
     ["Notification", "/notification", myNotification ? <NotificationsActiveIcon /> : <NotificationsOffIcon />],
     ["Crunch", "/crunch", <ImportantDevicesIcon />],
-    ["Bookmarks", "/favourite", <TimelineIcon />],
     ["Contact", "/info/contactus", <ContactUsIcon />],
+    ["NEWS", "/news", <NewsIcon />],
+    ["Bookmarks", "/favourite", <TimelineIcon />],
     ["Profile", `/profile`, <AssignmentIndIcon />],
     ["Organization", "/organization", <PublicIcon />],
-    ["NEWS", "/news", <NewsIcon />],
   ];
 
   const currentThemeHandler = () => {

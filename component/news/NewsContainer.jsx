@@ -25,9 +25,7 @@ const NewsContainer = (props) => {
     <Grid container style={{ maxWidth: "1200px", margin: "auto" }}>
       <NavContainer>
         <div className={styles.nav}>
-          <Typography component="h2" variant="h4">
-            NEWS Page
-          </Typography>
+          <Typography variant="h4">NEWS Page</Typography>
           <Typography fontSize={15}>
             Our NEWS Page is powered by
             <a target="_blank" href="https://rapidapi.com/">
@@ -35,7 +33,7 @@ const NewsContainer = (props) => {
             </a>
             : The Next-Generation API Platform
             <hr />
-            We update our NEWS page daily at 12:00AM
+            We update our NEWS page daily at 12:00AM with the latest headlines in the country
           </Typography>
         </div>
       </NavContainer>
