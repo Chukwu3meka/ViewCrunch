@@ -27,7 +27,7 @@ const NewsContainer = (props) => {
         <div className={styles.nav}>
           <Typography variant="h4">NEWS Page</Typography>
           <Typography fontSize={15}>
-            Our NEWS Page is powered by
+            Our NEWS Page is powered by&nbsp;
             <a target="_blank" href="https://rapidapi.com/">
               RAPIDAPI
             </a>

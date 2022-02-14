@@ -122,3 +122,7 @@ export const toId = (a) => a.replace(/ /g, "-").toLowerCase();
 export const dateDiff = (date) => Math.round((new Date() - new Date(date)) / (1000 * 60 * 60 * 24)) - 1;
 
 //filter to remove duplicate .filter((v, i, a) => a.indexOf(v) === i);
+
+export const errorProp = (code = 404, title = "Page not found") => ({
+  error: { code, title },
+});

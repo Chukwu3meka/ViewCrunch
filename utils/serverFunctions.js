@@ -10,38 +10,56 @@ const connected = fetch("https://google.com", {
   .then(() => true)
   .catch(() => false);
 
-export const extractHandle = async (cookie) => {
-  // const noNetwork = !(await connected);
-  // if (noNetwork) return "Network connectivity issue";
-  // if (!cookie) return undefined;
-  // let myRefresh;
-  // await cookie?.split("; ").forEach((x) => {
-  //   if (x.split("=")[0] === "ViewCrunch") {
-  //     myRefresh = x.split("=")[1];
-  //   }
-  // });
-  // if (!myRefresh) return undefined;
-  // const { access_token: token } = await fetch(`https://securetoken.googleapis.com/v1/token?key=${process.env.NEXT_PUBLIC_API}`, {
-  //   method: "POST",
-  //   headers: new Headers({ "Content-Type": "application/x-www-form-urlencoded" }),
-  //   body: `grant_type=refresh_token&refresh_token=${myRefresh}`,
-  //   credentials: "same-origin",
-  // }).then((res) => res.json());
-  // if (!token) return undefined;
-  // const handle = await firebaseAdmin
-  //   .auth()
-  //   .verifyIdToken(token)
-  //   .then(
-  //     async (decodedToken) =>
-  //       await firebaseAdmin
-  //         .auth()
-  //         .getUser(decodedToken?.uid)
-  //         .then((user) => user.displayName)
-  //   )
-  //   .catch((error) => {
-  //     throw new TypeError(error);
-  //   });
-  // return handle.startsWith("@") ? handle : undefined;
+export const profileFromRefresh = async ({ refresh, cookie }) => {
+  const { auth, firestore } = await require("@utils/firebaseServer");
+
+  if (!refresh) {
+    const noNetwork = !(await connected);
+    if (noNetwork) throw "Network connectivity issue";
+    if (!cookie) throw "No Authenticated";
+
+    let cookieRefresh;
+
+    await cookie?.split("; ").forEach((x) => {
+      if (x.split("=")[0] === "ViewCrunch") {
+        cookieRefresh = x.split("=")[1];
+      }
+    });
+
+    if (!cookieRefresh) throw "cookie not found";
+    refresh = cookieRefresh;
+  }
+
+  const { access_token: token } = await fetch(
+    `https://securetoken.googleapis.com/v1/token?key=${JSON.parse(process.env.NEXT_PUBLIC_CLIENT).apiKey}`,
+    {
+      method: "POST",
+      headers: new Headers({ "Content-Type": "application/x-www-form-urlencoded" }),
+      body: `grant_type=refresh_token&refresh_token=${refresh}`,
+      credentials: "same-origin",
+    }
+  ).then((res) => res.json());
+  if (!token) throw "invalid cookie";
+
+  const uid = await auth
+    .verifyIdToken(token)
+    .then(({ uid }) => uid)
+    .catch((err) => {
+      throw err;
+    });
+  if (!uid) throw "invalid token";
+
+  const profile = await firestore
+    .collection("profile")
+    .doc(uid)
+    .get()
+    .then((snapshot) => ({ id: snapshot.id, ...snapshot.data() }))
+    .catch((error) => {
+      throw error;
+    });
+
+  if (!profile) throw "profile not found";
+  return profile;
 };
 
 export const uploadToFirestorage = async ({ image, myHandle, imageTitle }) => {

@@ -2,14 +2,10 @@ import { collection, query, where, doc, getDoc, getDocs, orderBy, limit, startAf
 
 import { firestore } from "@utils/firebaseClient";
 
-import { range, toId, dateCalculator } from "@utils/clientFunctions";
+import { range, toId, dateCalculator, errorProp } from "@utils/clientFunctions";
 
 const viewRef = collection(firestore, "view");
 const crunchRef = collection(firestore, "crunch");
-
-const errorProp = (code = 404, title = "Page not found") => ({
-  error: { code, title },
-});
 
 export const fetchProfile = async (uid) => {
   try {
@@ -206,32 +202,15 @@ export const fetchView = async (viewLink) => {
     } else {
       return errorProp(400, "Unable to fetch Data");
     }
+  } catch (error) {
+    if (process.env.NODE_ENV === "development") console.log(error);
+    return { error: true };
+  }
+};
 
-    // const profileRef = doc(firestore, "profile", uid);
-    // const snapshot = await getDoc(profileRef);
-
-    // if (snapshot.exists()) return snapshot.data();
-
-    // return null;
-
-    // const snapshot = await getDocs(query(viewCollection, where("stat.viewLink", "==", viewLink), limit(1)))[0];
-    // console.log("snapshot");
-    // querySnapshot.forEach((doc) => {
-    //   // doc.data() is never undefined for query doc snapshots
-    //   console.log(doc.id, " => ", doc.data());
-    // });
-    // return await viewCollection
-    //   .where("stat.viewLink", "==", viewLink)
-    //   .limit(1)
-    //   .get()
-    //   .then(async (snapshot) => {
-    //     if (snapshot.size) {
-    //     }
-    //   })
-    //   .catch((e) => {
-    //     // console.log(e);
-    //     return { error: e };
-    //   });
+export const fetchNotification = async (myID) => {
+  try {
+    console.log({ myID }, "fetchNotification");
   } catch (error) {
     if (process.env.NODE_ENV === "development") console.log(error);
     return { error: true };
