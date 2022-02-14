@@ -28,7 +28,10 @@ const createProfileHandler = async ({ uid, displayName, photoURL, refreshToken }
       following: [],
       followers: [],
       bookmarks: [],
-      notifications: [],
+      notification: {
+        messages: [],
+        unread: 0,
+      },
       picture: { cover: photoURL, profile: photoURL },
       crunches: ["Lifehack", "Universal", "Career 101", "Finance", "Cyber Security", "Developers"],
       details: {

@@ -15,8 +15,8 @@ export const profileFromRefresh = async ({ refresh, cookie }) => {
 
   if (!refresh) {
     const noNetwork = !(await connected);
-    if (noNetwork) throw "Network connectivity issue";
-    if (!cookie) throw "No Authenticated";
+    if (noNetwork) throw 1000;
+    if (!cookie) throw 1001;
 
     let cookieRefresh;
 
@@ -26,9 +26,10 @@ export const profileFromRefresh = async ({ refresh, cookie }) => {
       }
     });
 
-    if (!cookieRefresh) throw "cookie not found";
+    if (!cookieRefresh) throw 1002;
     refresh = cookieRefresh;
   }
+  if (!refresh) throw 1003;
 
   const { access_token: token } = await fetch(
     `https://securetoken.googleapis.com/v1/token?key=${JSON.parse(process.env.NEXT_PUBLIC_CLIENT).apiKey}`,
@@ -39,15 +40,15 @@ export const profileFromRefresh = async ({ refresh, cookie }) => {
       credentials: "same-origin",
     }
   ).then((res) => res.json());
-  if (!token) throw "invalid cookie";
+  if (!token) throw 1004;
 
   const uid = await auth
     .verifyIdToken(token)
     .then(({ uid }) => uid)
     .catch((err) => {
-      throw err;
+      throw 1005;
     });
-  if (!uid) throw "invalid token";
+  if (!uid) throw 1005;
 
   const profile = await firestore
     .collection("profile")
@@ -58,7 +59,7 @@ export const profileFromRefresh = async ({ refresh, cookie }) => {
       throw error;
     });
 
-  if (!profile) throw "profile not found";
+  if (!profile) throw 1006;
   return profile;
 };
 

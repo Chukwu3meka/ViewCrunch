@@ -207,12 +207,3 @@ export const fetchView = async (viewLink) => {
     return { error: true };
   }
 };
-
-export const fetchNotification = async (myID) => {
-  try {
-    console.log({ myID }, "fetchNotification");
-  } catch (error) {
-    if (process.env.NODE_ENV === "development") console.log(error);
-    return { error: true };
-  }
-};

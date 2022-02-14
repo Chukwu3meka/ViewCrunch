@@ -2,8 +2,8 @@ import ErrorPage from "@component/others/ErrorPage";
 import SeoHead from "@component/others/SeoHead";
 import NotificationContainer from "@component/notification";
 
-const NotificationPage = ({ notification, error }) => {
-  if (error) return <ErrorPage statusCode={error.code} title={error.title} />;
+const NotificationPage = ({ notification, error: { code, title } }) => {
+  if (code) return <ErrorPage statusCode={code} title={title} />;
 
   return <NotificationContainer notification={notification} />;
 };
@@ -11,35 +11,26 @@ const NotificationPage = ({ notification, error }) => {
 export default NotificationPage;
 
 export const getServerSideProps = async (ctx) => {
+  const errorCodes = require("@source/errorCodes").default;
   try {
-    const { errorProp } = require("@utils/clientFunctions");
-    const { fetchNotification } = await require("@utils/firestoreFetch");
-
-    // const { fetchProfile } = require("@utils/firestoreFetch");
     const { profileFromRefresh } = require("@utils/serverFunctions");
 
-    // const myID = await profileFromRefresh({ cookie: ctx.req.headers.cookie });
-    const myID = await profileFromRefresh({ cookie: "sadA" });
+    const myID = await profileFromRefresh({ cookie: ctx.req.headers.cookie });
 
-    console.log(myID);
-    // if (!myHandle) return errorProp(401, "User not logged in");
-
-    // const { notification } = await fetchProfile(myHandle);
-    // if (typeof notification !== "object") return errorProp(404, "Favourite and Blacklist not found");
+    console.log(myID.notification);
 
     return {
       props: {
-        error: true,
+        error: {},
         notification: [],
       },
     };
   } catch (error) {
-    console.log(error);
-    return {
-      props: {
-        error: true,
-        notification: [],
-      },
-    };
+    const { code, dev, title } =
+      typeof error === "number" ? errorCodes[error] : { code: 400, dev: error, title: "Internal Server Error" };
+
+    if (process.env.NODE_ENV === "development") console.log("Error Occured::: ", { code, dev, title });
+
+    return { props: { error: { code, title } } };
   }
 };
