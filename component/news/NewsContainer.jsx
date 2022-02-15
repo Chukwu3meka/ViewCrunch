@@ -9,6 +9,7 @@ import { Typography } from "@mui/material";
 const NewsContainer = (props) => {
   const [news, setNews] = useState([]),
     [newsPage, setNewsPage] = useState(true);
+
   useEffect(() => {
     if (props.news) {
       setNews(props.news);

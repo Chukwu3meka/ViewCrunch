@@ -1,16 +1,9 @@
 import Link from "next/link";
-
-import Button from "@mui/material/Button";
+import Chip from "@mui/material/Chip";
 import Typography from "@mui/material/Typography";
 
 import { styles } from ".";
 import { NavContainer } from "@component/layout";
-
-import Chip from "@mui/material/Chip";
-import Badge from "@mui/material/Badge";
-import IconButton from "@mui/material/IconButton";
-import SettingsIcon from "@mui/icons-material/Settings";
-import ThemeIcon from "@mui/icons-material/EmojiObjects";
 
 const NavBar = ({ crunches }) => (
   <NavContainer>

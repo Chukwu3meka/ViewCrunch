@@ -1,11 +1,23 @@
-import ErrorPage from "@component/others/ErrorPage";
 import SeoHead from "@component/others/SeoHead";
+import ErrorPage from "@component/others/ErrorPage";
 import NotificationContainer from "@component/notification";
 
 const NotificationPage = ({ notification, error: { code, title } }) => {
   if (code) return <ErrorPage statusCode={code} title={title} />;
 
-  return <NotificationContainer notification={notification} />;
+  return (
+    <>
+      <SeoHead
+        {...{
+          seo_title: "ViewCrunch Notification Page",
+          seo_description: "ViewsCrunch Notification page. Here you get a report on all activities relating to your account.",
+          seo_hashtag: "#ViewCrunch Notification",
+          seo_keywords: "viewcrunch notification, viewcrunch, notification",
+        }}
+      />
+      <NotificationContainer notification={notification} />;
+    </>
+  );
 };
 
 export default NotificationPage;
@@ -17,19 +29,16 @@ export const getServerSideProps = async (ctx) => {
 
     const myID = await profileFromRefresh({ cookie: ctx.req.headers.cookie });
 
-    console.log(myID.notification);
-
     return {
       props: {
         error: {},
-        notification: [],
+        notification: myID.notification,
       },
     };
   } catch (error) {
-    const { code, dev, title } =
-      typeof error === "number" ? errorCodes[error] : { code: 400, dev: error, title: "Internal Server Error" };
+    const { code, title } = typeof error === "number" ? errorCodes[error] : { code: 400, title: "Internal Server Error" };
 
-    if (process.env.NODE_ENV === "development") console.log("Error Occured::: ", { code, dev, title });
+    if (process.env.NODE_ENV === "development") console.log("Error Occured::: ", error);
 
     return { props: { error: { code, title } } };
   }
