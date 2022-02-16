@@ -1,13 +1,12 @@
-import { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
-
 import { connect } from "react-redux";
 import { useSnackbar } from "notistack";
+import { useEffect, useState } from "react";
+import Typography from "@mui/material/Typography";
 
-import { Notification, NotificationDialog, styles } from ".";
-import { Typography } from "@mui/material";
 import { fetcher } from "@utils/clientFunctions";
 import { Footer, NavContainer } from "@component/layout";
+import { Notification, NotificationDialog, styles } from ".";
 
 const NotificationContainer = (props) => {
   const {

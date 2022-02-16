@@ -1,5 +1,4 @@
 import { styles } from ".";
-import { dateCalculator } from "@utils/clientFunctions";
 
 import InfoIcon from "@mui/icons-material/Help";
 import { Paper, Typography } from "@mui/material";
@@ -41,5 +40,3 @@ const Notification = ({ messages, openMessageHandler, deleteMessageHandler }) =>
 );
 
 export default Notification;
-
-// notification schema: {message, date, icon, seen}

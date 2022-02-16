@@ -1,5 +1,5 @@
-import Notification from "./Notification";
 import styles from "./styles.module.scss";
+import Notification from "./Notification";
 import NotificationDialog from "./NotificationDialog";
 import NotificationContainer from "./NotificationContainer";
 
