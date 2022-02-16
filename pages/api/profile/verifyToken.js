@@ -7,7 +7,7 @@ const verifyRefresh = async (myRefresh) => {
   return {
     myID: uid,
     myTheme: profile.details.theme,
-    myNotification: profile.notification.unread,
+    myNotification: profile.notification.unseen,
   };
 };
 

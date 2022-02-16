@@ -1,5 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
+
+import { connect } from "react-redux";
+import { useSnackbar } from "notistack";
 
 import { Notification, NotificationDialog, styles } from ".";
 import { Typography } from "@mui/material";
@@ -10,31 +13,37 @@ const NotificationContainer = (props) => {
   const {
       notification: { messages: propsMessages, unread: propsUnread },
     } = props,
+    [myID, setMyID] = useState(null),
+    { enqueueSnackbar } = useSnackbar(),
     [unread, setUnread] = useState(propsUnread),
     [openMessage, setOpenMessage] = useState(-1),
     [messages, setMessages] = useState(propsMessages);
 
+  useEffect(() => {
+    setMyID(props.myID);
+  }, [props.myID]);
+
   const deleteMessageHandler = (index) => () => {
+    // enqueueSnackbar("Something went wrong, ", { variant: "error" });
     console.log("delete", index);
   };
 
-  const openMessageHandler = (index) => () => {
+  const openMessageHandler = (index) => async () => {
     if (index >= 0) {
       const { message, seen } = messages[index];
 
-      if (!messages[index].seen) {
+      if (!seen) {
         let items = [...messages];
         let item = { ...messages[index] };
         item.seen = true;
         items[index] = item;
         setMessages(items);
         setUnread(unread - 1);
-        setOpenMessage(index);
+
+        if (myID) await fetcher("/api/profile/notificationOpened", JSON.stringify({ myID, message: messages[index] }));
       }
 
-      // setMessages(...messages);
-
-      console.log(message);
+      setOpenMessage(index);
     }
   };
 
@@ -75,4 +84,7 @@ const NotificationContainer = (props) => {
   );
 };
 
-export default NotificationContainer;
+const mapStateToProps = (state) => ({ myID: state.profile?.myID }),
+  mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(NotificationContainer);

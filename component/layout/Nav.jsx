@@ -24,7 +24,7 @@ const Nav = ({ mainNav, activeNav, currentThemeHandler, myNotification, children
                   key={link}
                   label={label}
                   icon={
-                    <Badge color="secondary" badgeContent={link === "/notification" && !!myNotification ? myNotification.length : null}>
+                    <Badge color="secondary" badgeContent={link === "/notification" && !!myNotification ? myNotification : null}>
                       {icon}
                     </Badge>
                   }

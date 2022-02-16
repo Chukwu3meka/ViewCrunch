@@ -1,7 +1,7 @@
 const profile = (state = {}, { type, payload }) => {
   switch (type) {
     case "SET_PROFILE":
-      return { ...payload };
+      return payload;
     default:
       return state;
   }

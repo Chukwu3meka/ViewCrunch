@@ -5,7 +5,7 @@ export const setProfileAction = (profile) => {
     try {
       dispatch({
         type: "SET_PROFILE",
-        payload: { ...profile },
+        payload: profile,
       });
       dispatch(removeError("profile not valid"));
     } catch {

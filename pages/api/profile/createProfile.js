@@ -19,8 +19,13 @@ const createProfileHandler = async ({ uid, displayName, photoURL, refreshToken }
   const profile = await profileRef.get();
 
   if (profile.exists) {
-    const { details, notifications } = profile.data();
-    return { myID: uid, myTheme: details?.theme, myNotification: notifications?.length };
+    let unseen = 0;
+
+    for (const value of Object.values(profile.data().notification)) {
+      unseen = unseen + (value.seen ? 0 : 1);
+    }
+
+    return { myID: uid, myTheme: profile.data()?.details?.theme, myNotification: unseen };
   } else {
     await profileRef.set({
       about: "",

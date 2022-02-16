@@ -54,16 +54,28 @@ export const profileFromRefresh = async ({ refresh, cookie }) => {
     .collection("profile")
     .doc(uid)
     .get()
-    .then((snapshot) => ({
-      id: snapshot.id,
-      ...snapshot.data(),
-      notification: {
-        unread: snapshot.data().notification.unread,
-        messages: snapshot.data().notification.messages.map((x) => {
-          return { ...x, date: x.date.toDate().toDateString() };
-        }),
-      },
-    }))
+    .then((snapshot) => {
+      const notification = [];
+      let unseen = 0;
+
+      for (const [key, value] of Object.entries(snapshot.data().notification)) {
+        notification.push({
+          ...value,
+          message: key,
+          date: value.date.toDate().toDateString(),
+        });
+        unseen = unseen + (value.seen ? 0 : 1);
+      }
+
+      return {
+        id: snapshot.id,
+        ...snapshot.data(),
+        notification: {
+          unseen,
+          messages: notification,
+        },
+      };
+    })
     .catch((error) => {
       throw error;
     });

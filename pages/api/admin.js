@@ -30,61 +30,51 @@ export default async (req, res) => {
 
         await firestore
           .collection("profile")
-          .doc(snap.id)
+          .doc("backup copy")
           .update({
-            "notification.unread": 5,
-
-            "notification.messages": [
-              {
-                message: "About ViewCrunch: To understand more on what ViewCrunch is all about",
+            notification: {
+              "About ViewCrunch: To understand more on what ViewCrunch is all about": {
                 date: Timestamp.now(),
                 href: "/info/about",
                 seen: false,
                 icon: "achievement",
               },
-              {
+              "Terms and Conditions: Visit the link at the bottom of any page on ViewCrunch to read more on our Terms and Conditions": {
                 date: Timestamp.now(),
-                message:
-                  "Terms and Conditions: Visit the link at the bottom of any page on ViewCrunch to read more on our Terms and Conditions",
                 icon: "info",
                 href: "/info/terms",
                 seen: false,
               },
-              {
+              "FAQ: Frequently Asked Question: To view frequently asked questions, check out our": {
                 date: Timestamp.now(),
-                message: "FAQ: Frequently Asked Question: To view frequently asked questions, check out our",
                 href: "/info/faq",
                 icon: "info",
                 seen: false,
               },
-              {
+              "Privacy Policy: Visit the link at the bottom of any page on ViewCrunch to read more on our Privacy Policy": {
                 date: Timestamp.now(),
-                message: "Privacy Policy: Visit the link at the bottom of any page on ViewCrunch to read more on our Privacy Policy",
                 href: "/info/privacy",
                 icon: "info",
                 seen: false,
               },
-              {
+              "Advertise: You have a product or service, you want to advertise ViewCrunch": {
                 date: Timestamp.now(),
-                message: "Advertise: You have a product or service, you want to advertise ViewCrunch",
                 href: "/info/advertise",
                 icon: "finance",
                 seen: false,
               },
-              {
+              "Contact Us, if you have a direct messag for us, reach out to one of our agents": {
                 date: Timestamp.now(),
-                message: "Contact Us, if you have a direct messag for us, reach out to one of our agents",
                 icon: "info",
                 href: "/info/contactus",
                 seen: false,
               },
-              {
+              "It is with great joy in our heart, that we welcome you to ViewCrunch: Views and Crunches": {
                 date: Timestamp.now(),
-                message: "It is with great joy in our heart, that we welcome you to ViewCrunch: Views and Crunches",
                 icon: "info",
                 seen: false,
               },
-            ],
+            },
           });
       });
 
