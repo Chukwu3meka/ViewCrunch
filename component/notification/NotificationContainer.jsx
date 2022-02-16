@@ -11,26 +11,31 @@ import { Footer, NavContainer } from "@component/layout";
 
 const NotificationContainer = (props) => {
   const {
-      notification: { messages: propsMessages, unread: propsUnread },
+      notification: { messages: propsMessages, unseen: propsUnseen },
     } = props,
     [myID, setMyID] = useState(null),
     { enqueueSnackbar } = useSnackbar(),
-    [unread, setUnread] = useState(propsUnread),
-    [openMessage, setOpenMessage] = useState(-1),
+    [unseen, setUnseen] = useState(propsUnseen),
+    [openMessage, setOpenMessage] = useState({}),
     [messages, setMessages] = useState(propsMessages);
 
   useEffect(() => {
     setMyID(props.myID);
   }, [props.myID]);
 
-  const deleteMessageHandler = (index) => () => {
-    // enqueueSnackbar("Something went wrong, ", { variant: "error" });
-    console.log("delete", index);
+  const deleteMessageHandler = (index) => async () => {
+    const { message, seen } = messages[index];
+    const res = await fetcher("/api/profile/deleteNotification", JSON.stringify({ myID, messageID: message }));
+
+    setMessages(messages.filter((x) => x.message !== message));
+    if (!seen) setUnseen(unseen - 1);
+    if (!res) enqueueSnackbar("Something went wrong", { variant: "error" });
   };
 
   const openMessageHandler = (index) => async () => {
     if (index >= 0) {
-      const { message, seen } = messages[index];
+      const { seen, message } = messages[index];
+      setOpenMessage(messages[index]);
 
       if (!seen) {
         let items = [...messages];
@@ -38,18 +43,14 @@ const NotificationContainer = (props) => {
         item.seen = true;
         items[index] = item;
         setMessages(items);
-        setUnread(unread - 1);
+        setUnseen(unseen - 1);
 
-        if (myID) await fetcher("/api/profile/notificationOpened", JSON.stringify({ myID, message: messages[index] }));
+        await fetcher("/api/profile/notificationOpened", JSON.stringify({ myID, messageID: message }));
       }
-
-      setOpenMessage(index);
     }
   };
 
-  const closeMessageHandler = () => {
-    setOpenMessage(-1);
-  };
+  const closeMessageHandler = () => setOpenMessage({});
 
   return (
     <Grid container style={{ maxWidth: "1200px", margin: "auto" }}>
@@ -58,9 +59,9 @@ const NotificationContainer = (props) => {
           <Typography variant="h4">Notifications</Typography>
           <hr />
           <Typography fontSize={15}>Here you get a report on all activities relating to your account.</Typography>
-          {unread ? (
-            <Typography fontSize={10} color="aqua">
-              You have {unread} unread {unread > 1 ? "messages" : "messages"}
+          {unseen ? (
+            <Typography fontSize={12} color="aqua">
+              You have {unseen} unread {unseen > 1 ? "messages" : "messages"}
             </Typography>
           ) : null}{" "}
         </div>

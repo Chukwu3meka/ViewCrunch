@@ -30,9 +30,27 @@ export default async (req, res) => {
 
         await firestore
           .collection("profile")
-          .doc("backup copy")
+          .doc(snap.id)
           .update({
             notification: {
+              1: {
+                date: Timestamp.now(),
+                href: "/info/about",
+                seen: false,
+                icon: "achievement",
+              },
+              2: {
+                date: Timestamp.now(),
+                href: "/info/about",
+                seen: false,
+                icon: "achievement",
+              },
+              3: {
+                date: Timestamp.now(),
+                href: "/info/about",
+                seen: false,
+                icon: "achievement",
+              },
               "About ViewCrunch: To understand more on what ViewCrunch is all about": {
                 date: Timestamp.now(),
                 href: "/info/about",
@@ -63,7 +81,7 @@ export default async (req, res) => {
                 icon: "finance",
                 seen: false,
               },
-              "Contact Us, if you have a direct messag for us, reach out to one of our agents": {
+              "Contact Us, if you have a direct message for us, reach out to one of our agents": {
                 date: Timestamp.now(),
                 icon: "info",
                 href: "/info/contactus",

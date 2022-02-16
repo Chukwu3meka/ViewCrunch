@@ -1,5 +1,6 @@
 import { forwardRef } from "react";
 
+import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -13,28 +14,26 @@ const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const NotificationDialog = ({ messages, openMessage, closeMessageHandler }) => (
-  <Dialog
-    open={openMessage >= 0}
-    TransitionComponent={Transition}
-    keepMounted
-    onClose={closeMessageHandler}
-    aria-describedby="notification">
-    <DialogTitle>ViewCrunch Notification</DialogTitle>
-    <DialogContent>
-      <DialogContentText color="HighlightText" id="notification">
-        {messages[openMessage]?.message}
-      </DialogContentText>
-    </DialogContent>
-    {messages[openMessage]?.href ? (
-      <DialogActions>
-        <Link href={messages[openMessage]?.href}>
-          <Button>Visit Page</Button>
-        </Link>
-      </DialogActions>
-    ) : null}{" "}
-  </Dialog>
-);
+const NotificationDialog = ({ openMessage: { message, date, href }, closeMessageHandler }) =>
+  message ? (
+    <Dialog open={!!message} TransitionComponent={Transition} keepMounted onClose={closeMessageHandler} aria-describedby="notification">
+      <DialogTitle>
+        <Typography textTransform="capitalize">{date}</Typography>
+      </DialogTitle>
+      <DialogContent>
+        <DialogContentText color="HighlightText" id="notification">
+          {message}{" "}
+        </DialogContentText>
+      </DialogContent>
+      {href ? (
+        <DialogActions>
+          <Link href={href}>
+            <Button>Visit Page</Button>
+          </Link>
+        </DialogActions>
+      ) : null}
+    </Dialog>
+  ) : null;
 
 export default NotificationDialog;
 

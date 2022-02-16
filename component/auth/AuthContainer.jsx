@@ -34,7 +34,6 @@ const AuthContainer = (props) => {
     [authenticated, setAuthenticated] = useState(false);
 
   useEffect(() => setOnline(props.online), [props.online]);
-  useEffect(() => setAuthenticated(!!props.authenticated), [props.authenticated]);
 
   useEffect(() => {
     getRedirectResult(auth)
@@ -127,7 +126,6 @@ const AuthContainer = (props) => {
 
 const mapStateToProps = (state) => ({
     online: state.device?.online,
-    authenticated: state.profile?.myID,
   }),
   mapDispatchToProps = {
     setProfileAction,

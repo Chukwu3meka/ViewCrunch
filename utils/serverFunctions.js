@@ -1,21 +1,37 @@
+import { dateCalculator } from "./clientFunctions";
+
 const { v4 } = require("uuid");
 // import firebaseAdmin, { bucket } from "@utils/firebaseServer";
 
-const connected = fetch("https://google.com", {
-  method: "FET",
-  cache: "no-cache",
-  headers: { "Content-Type": "application/json" },
-  referrerPolicy: "no-referrer",
-})
-  .then(() => true)
-  .catch(() => false);
+// const connected = fetch("https://google.com", {
+//   method: "FET",
+//   cache: "no-cache",
+//   headers: { "Content-Type": "application/json" },
+//   referrerPolicy: "no-referrer",
+// })
+//   .then(() => true)
+//   .catch(() => false);
+
+function checkInternet(cb) {
+  require("dns").lookup("google.com", function (err) {
+    if (err && err.code == "ENOTFOUND") {
+      cb(false);
+    } else {
+      cb(true);
+    }
+  });
+}
+
+// example usage:
 
 export const profileFromRefresh = async ({ refresh, cookie }) => {
   const { auth, firestore } = await require("@utils/firebaseServer");
 
   if (!refresh) {
-    const noNetwork = !(await connected);
-    if (noNetwork) throw 1000;
+    // const noNetwork = !(await connected);
+    // if (noNetwork) throw 1000;
+    const connected = checkInternet((isConnected) => (isConnected ? true : false));
+    if (connected) throw 1000;
     if (!cookie) throw 1001;
 
     let cookieRefresh;
@@ -62,7 +78,7 @@ export const profileFromRefresh = async ({ refresh, cookie }) => {
         notification.push({
           ...value,
           message: key,
-          date: value.date.toDate().toDateString(),
+          date: dateCalculator({ date: value.date.toDate().toDateString() }),
         });
         unseen = unseen + (value.seen ? 0 : 1);
       }

@@ -29,7 +29,7 @@ const Notification = ({ messages, openMessageHandler, deleteMessageHandler }) =>
 
         <div>
           <Typography fontSize={10} textTransform="capitalize">
-            {dateCalculator({ date })}
+            {date}
           </Typography>
           <Typography fontSize={16} onClick={openMessageHandler(index)} sx={{ cursor: "pointer" }}>
             {message}
