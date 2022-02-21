@@ -9,13 +9,7 @@ const ViewsFooter = ({ mobile, date, readTime, keywords, title, author, viewID, 
   <div className={viewsStyles.footer}>
     <Typography variant="body2">{`${mobile ? `${date} ·` : `${date} · ${readTime}`} ☆ ${keywords}`}</Typography>
 
-    <IconButton
-      aria-label="bookmark"
-      onClick={bookmarkHandler({ title, author, viewID })}
-      // color={bookmarks.includes(viewID) ? "secondary" : "default"}
-
-      //
-    >
+    <IconButton aria-label="bookmark" onClick={bookmarkHandler({ title, author, viewID })}>
       {bookmarks.includes(viewID) ? (
         <BookmarkAddedIcon fontSize="small" color="success" />
       ) : (
