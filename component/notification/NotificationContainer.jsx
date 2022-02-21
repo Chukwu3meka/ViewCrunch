@@ -5,11 +5,13 @@ import { useEffect, useState } from "react";
 import Typography from "@mui/material/Typography";
 
 import { fetcher } from "@utils/clientFunctions";
+import { setNotificationAction } from "@store/actions";
 import { Footer, NavContainer } from "@component/layout";
 import { Notification, NotificationDialog, styles } from ".";
 
 const NotificationContainer = (props) => {
   const {
+      setNotificationAction,
       notification: { messages: propsMessages, unseen: propsUnseen },
     } = props,
     [myID, setMyID] = useState(null),
@@ -27,7 +29,10 @@ const NotificationContainer = (props) => {
     const res = await fetcher("/api/profile/deleteNotification", JSON.stringify({ myID, messageID: message }));
 
     setMessages(messages.filter((x) => x.message !== message));
-    if (!seen) setUnseen(unseen - 1);
+    if (!seen) {
+      setUnseen(unseen - 1);
+      setNotificationAction(unseen - 1);
+    }
     if (!res) enqueueSnackbar("Something went wrong", { variant: "error" });
   };
 
@@ -43,6 +48,7 @@ const NotificationContainer = (props) => {
         items[index] = item;
         setMessages(items);
         setUnseen(unseen - 1);
+        setNotificationAction(unseen - 1);
 
         await fetcher("/api/profile/notificationOpened", JSON.stringify({ myID, messageID: message }));
       }
@@ -85,6 +91,6 @@ const NotificationContainer = (props) => {
 };
 
 const mapStateToProps = (state) => ({ myID: state.profile?.myID }),
-  mapDispatchToProps = {};
+  mapDispatchToProps = { setNotificationAction };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NotificationContainer);

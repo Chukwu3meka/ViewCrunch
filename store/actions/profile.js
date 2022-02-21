@@ -14,4 +14,18 @@ export const setProfileAction = (profile) => {
   };
 };
 
+export const setNotificationAction = (notification) => {
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: "SET_NOTIFICATIONS",
+        payload: notification,
+      });
+      dispatch(removeError("notification error"));
+    } catch {
+      dispatch(addError("notification error"));
+    }
+  };
+};
+
 // export const setTheme = (data) => async (dispatch) => dispatch({ type: "THEME", payload: data });
