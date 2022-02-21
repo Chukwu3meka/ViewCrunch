@@ -5,13 +5,11 @@ export const getViewsAction = ({ reduxMyID, reduxLastVisible, reduxBlacklist, in
   return async (dispatch) => {
     try {
       const { lastVisible, views, blacklist, bookmarks } = await fetchViews({
-        myID: reduxMyID,
         initialFetch,
+        myID: reduxMyID,
         blacklist: reduxBlacklist,
         lastVisible: reduxLastVisible,
       });
-
-      console.log({ lastVisible, views, blacklist, bookmarks });
 
       dispatch({ type: "VIEWS", payload: { views, blacklist, lastVisible, bookmarks } });
       dispatch(removeError("error fetching view"));

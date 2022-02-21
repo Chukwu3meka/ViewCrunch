@@ -14,12 +14,12 @@ const ViewsContainer = (props) => {
     [ready, setReady] = useState(0),
     [uiViews, setUiViews] = useState([]),
     [myID, setMyID] = useState(props.myID),
-    [loading, setLoading] = useState(false),
+    [loading, setLoading] = useState(true),
     [bookmarks, setBookmarks] = useState([]),
     [blacklist, setBlacklist] = useState(null),
     [online, setOnline] = useState(props?.online),
     [lastVisible, setLastVisible] = useState(null),
-    [fetchFailed, setFetchFailed] = useState(true);
+    [fetchFailed, setFetchFailed] = useState(false);
 
   useEffect(() => {
     setMyID(props.myID);
@@ -32,14 +32,12 @@ const ViewsContainer = (props) => {
   }, [props.myID]);
 
   useEffect(() => {
-    if (ready == "2") {
-      setOnline(props?.online);
-      if (!props?.online) stopFetching();
-    }
+    setOnline(props.online);
+    if (!props?.online) stopFetching();
   }, [props.online]);
 
   useEffect(() => {
-    if (ready == "2") setMobile(props.deviceWidth <= 400 ? true : false);
+    setMobile(props.deviceWidth <= 400 ? true : false);
   }, [props.deviceWidth]);
 
   useEffect(() => {
@@ -53,15 +51,15 @@ const ViewsContainer = (props) => {
       setBlacklist(blacklist);
       setLastVisible(lastVisible);
       if (bookmarks) setBookmarks(bookmarks);
-      if (bookmarks) console.log(bookmarks);
+      // if (bookmarks) console.log(bookmarks);
 
       if (lastVisible === "last view") {
         stopFetching(); // to prevent unwanted error
         setFetchFailed(false);
-      } else if (!views.length) {
+      } else if (!views?.length) {
         setFetchFailed(true);
         enqueueSnackbar("No View Found, ", { variant: "info" });
-      } else if (views.length) {
+      } else if (views?.length) {
         setFetchFailed(false);
         setUiViews([...uiViews, ...views]);
       } else {
