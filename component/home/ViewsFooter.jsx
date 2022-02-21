@@ -5,9 +5,9 @@ import BookmarkAddIcon from "@mui/icons-material/BookmarkAddOutlined";
 
 import { viewsStyles } from ".";
 
-const ViewsFooter = ({ mobile, date, readTime, keywords, title, author, viewID, bookmarks, bookmarkHandler }) => (
+const ViewsFooter = ({ mobile, date, readTime, keyword, title, author, viewID, bookmarks, bookmarkHandler }) => (
   <div className={viewsStyles.footer}>
-    <Typography variant="body2">{`${mobile ? `${date} ·` : `${date} · ${readTime}`} ☆ ${keywords}`}</Typography>
+    <Typography variant="body2">{`${mobile ? `${date} ·` : `${date} · ${readTime}`} ☆ ${keyword}`}</Typography>
 
     <IconButton aria-label="bookmark" onClick={bookmarkHandler({ title, author, viewID })}>
       {bookmarks.includes(viewID) ? (

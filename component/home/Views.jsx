@@ -23,7 +23,7 @@ const Views = ({ views, loading, fetchFailed, getViews, mobile, bookmarkHandler,
           content,
           date,
           readTime,
-          keywords,
+          keyword,
           viewLink,
           title,
           author,
@@ -57,7 +57,7 @@ const Views = ({ views, loading, fetchFailed, getViews, mobile, bookmarkHandler,
                   <Typography variant="body2">{content.replace(/<[^>]+>/g, "")}</Typography>
 
                   {!mobile ? (
-                    <ViewsFooter {...{ mobile: false, date, readTime, keywords, title, author, viewID, bookmarks, bookmarkHandler }} />
+                    <ViewsFooter {...{ mobile: false, date, readTime, keyword, title, author, viewID, bookmarks, bookmarkHandler }} />
                   ) : null}
                 </div>
                 <div>
@@ -65,7 +65,7 @@ const Views = ({ views, loading, fetchFailed, getViews, mobile, bookmarkHandler,
                 </div>
               </div>
               {mobile ? (
-                <ViewsFooter {...{ mobile: true, date, readTime, keywords, title, author, viewID, bookmarks, bookmarkHandler }} />
+                <ViewsFooter {...{ mobile: true, date, readTime, keyword, title, author, viewID, bookmarks, bookmarkHandler }} />
               ) : null}
             </Paper>
           </Fade>

@@ -105,7 +105,7 @@ export const fetchViews = async ({ myID, blacklist, lastVisible, initialFetch })
         const {
           title,
           content,
-          stat: { author, crunch, date, readTime, keyword, image, viewLink },
+          stat: { author, crunch, date, readTime, keywords, description, image, viewLink },
         } = doc.data();
 
         if (!blacklist.includes(author)) {
@@ -119,14 +119,15 @@ export const fetchViews = async ({ myID, blacklist, lastVisible, initialFetch })
             title,
             author,
             crunch,
-            keyword,
             content,
             readTime,
+            description,
             displayName,
             profileLink,
             profilePicture,
             viewLink: `/view/${viewLink}`,
             crunchLink: toId(`/crunch/${crunch}`),
+            keyword: keywords[range(0, keywords.length - 1)],
             viewID: viewLink.split("-")[viewLink.split("-").length - 1],
             date: dateCalculator({ date: date.toDate().toDateString() }),
           });
@@ -157,7 +158,7 @@ export const fetchView = async (viewLink) => {
         content,
         title,
         votes,
-        stat: { author, crunch, date, image, keyword, readTime, viewLink, description },
+        stat: { author, crunch, date, image, keywords, readTime, viewLink, description },
       } = viewSnapshot.docs[0].data();
 
       const {
@@ -182,7 +183,7 @@ export const fetchView = async (viewLink) => {
             crunchLink: toId(`/crunch/${crunch}`),
             date: date.toDate().toDateString(),
             image,
-            keyword,
+            keywords,
             readTime,
             description: description || title,
           },
