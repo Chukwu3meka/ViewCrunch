@@ -56,6 +56,20 @@ const ContactContainer = (props) => {
     ],
     values = { email, name, comment, section, formError, commentRef };
 
+  const sectionHandler = ({ target: { value } }) => {
+    setSection(value);
+    setTimeout(() => {
+      commentRef.current.focus();
+    }, 100);
+  };
+
+  const changeHandler = (value, setValue, textType) => {
+    setValues[setValue](value);
+    const validInput = validate(textType === "name" ? "displayName" : textType, value);
+    if (!validInput) enqueueSnackbar(`${textType} is invalid`, { variant: "error" });
+    setFormError({ ...formError, [textType]: !validInput });
+  };
+
   const Section = ({ supportType, image, description, faqSection, buttonType }) => (
     <Paper elevation={4}>
       <Typography variant="h6">
@@ -80,20 +94,6 @@ const ContactContainer = (props) => {
       </Button>
     </Paper>
   );
-
-  const sectionHandler = ({ target: { value } }) => {
-    setSection(value);
-    setTimeout(() => {
-      commentRef.current.focus();
-    }, 100);
-  };
-
-  const changeHandler = (value, setValue, textType) => {
-    setValues[setValue](value);
-    const validInput = validate(textType === "name" ? "displayName" : textType, value);
-    if (!validInput) enqueueSnackbar(`${textType} is invalid`, { variant: "error" });
-    setFormError({ ...formError, [textType]: !validInput });
-  };
 
   const submitHandler = async () => {
     if (name && email && comment && section) {
