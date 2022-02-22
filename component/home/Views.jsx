@@ -78,7 +78,7 @@ const Views = ({ views, loading, fetchFailed, getViews, mobile, bookmarkHandler,
       <Loading
         loadType="failed"
         failedText="We are unable to fetch any view for you; Kindly click the button below."
-        clickHandler={() => getViews("retry")}
+        clickHandler={() => getViews({ fetchType: "retry" })}
       />
     )}
   </div>

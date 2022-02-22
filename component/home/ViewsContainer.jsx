@@ -23,12 +23,9 @@ const ViewsContainer = (props) => {
 
   useEffect(() => {
     setMyID(props.myID);
-    setReady(1);
 
-    if (ready === 1) {
-      getViews({ fetchType: "initial", reduxMyID: props.myID });
-      setReady(2);
-    }
+    // to fetch views whether user is not logged in or not
+    if (ready === 0) setReady(props.myID ? 1 : 2);
   }, [props.myID]);
 
   useEffect(() => {
@@ -37,15 +34,24 @@ const ViewsContainer = (props) => {
   }, [props.online]);
 
   useEffect(() => {
+    // get views only when app is ready
+    if ([1, 2].includes(ready)) {
+      if (ready === 1) getViews({ fetchType: "initial", reduxMyID: props.myID, appIsOnline: props.online });
+      if (ready === 2) getViews({ fetchType: "initial", reduxMyID: null, appIsOnline: props.online });
+      setReady(3);
+    }
+  }, [ready]);
+
+  useEffect(() => {
     setMobile(props.deviceWidth <= 400 ? true : false);
   }, [props.deviceWidth]);
 
   useEffect(() => {
-    if (ready == "2" && lastVisible && props?.userAtBottom) getViews({ fetchType: "more" });
+    if (ready === 3 && lastVisible && props?.userAtBottom) getViews({ fetchType: "more" });
   }, [props.userAtBottom]);
 
   useEffect(() => {
-    if (ready == "2" && props.views) {
+    if (ready === 3 && props.views) {
       setLoading(false);
       const { views, bookmarks, blacklist, lastVisible } = props.views;
       setBlacklist(blacklist);
@@ -68,8 +74,8 @@ const ViewsContainer = (props) => {
     }
   }, [props.views]);
 
-  const getViews = ({ fetchType, reduxMyID = myID }) => {
-    if (online) {
+  const getViews = ({ fetchType, reduxMyID = myID, appIsOnline = online }) => {
+    if (appIsOnline) {
       if (lastVisible === "last view") {
         setLoading(false);
         setFetchFailed(false);
@@ -77,7 +83,7 @@ const ViewsContainer = (props) => {
       } else if (fetchType === "initial") {
         setLoading(true);
         setFetchFailed(false);
-        getViewsAction({ reduxMyID, initialFetch: true });
+        getViewsAction({ reduxMyID });
       } else if (["retry", "more"].includes(fetchType) && !loading) {
         setLoading(true);
         setFetchFailed(false);

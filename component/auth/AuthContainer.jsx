@@ -61,6 +61,7 @@ const AuthContainer = (props) => {
   }, []);
 
   const logoutHandler = () => {
+    setAuthenticated(false);
     try {
       signOut(auth)
         .then(() => {

@@ -71,19 +71,26 @@ export const fetchHomeData = async () => {
   }
 };
 
-export const fetchViews = async ({ myID, blacklist, lastVisible, initialFetch }) => {
+export const fetchViews = async ({ myID, blacklist, lastVisible }) => {
   try {
     let bookmarks;
 
-    if (initialFetch && myID) {
-      const profile = await fetchProfile(myID)
-        .then((x) => x)
-        .catch((e) => {
-          throw "wrong user ID";
-        });
+    // run snippet only when its initial fetch
+    if (!blacklist) {
+      // if myID(user logged in), then fetch user details else assign empty array
+      if (myID) {
+        const profile = await fetchProfile(myID)
+          .then((x) => x)
+          .catch((e) => {
+            throw "wrong user ID";
+          });
 
-      blacklist = profile.blacklist;
-      bookmarks = profile.bookmarks;
+        blacklist = profile.blacklist;
+        bookmarks = profile.bookmarks;
+      } else {
+        blacklist = [];
+        bookmarks = [];
+      }
     }
 
     const viewsSnapshot = await getDocs(
@@ -141,8 +148,6 @@ export const fetchViews = async ({ myID, blacklist, lastVisible, initialFetch })
 
     return { lastVisible: lastVisible || "lastview", views, blacklist, bookmarks };
   } catch (error) {
-    console.log(error);
-
     if (process.env.NODE_ENV === "development") console.log(error);
     return { lastVisible, views: null, blacklist };
   }
