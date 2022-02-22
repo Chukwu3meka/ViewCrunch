@@ -57,8 +57,6 @@ const ViewsContainer = (props) => {
       setBlacklist(blacklist);
       setLastVisible(lastVisible);
       if (bookmarks) setBookmarks(bookmarks);
-      // if (bookmarks) console.log(bookmarks);
-
       if (lastVisible === "last view") {
         stopFetching(); // to prevent unwanted error
         setFetchFailed(false);
@@ -102,6 +100,8 @@ const ViewsContainer = (props) => {
   const bookmarkHandler =
     ({ title, viewID }) =>
     async () => {
+      if (!myID) return enqueueSnackbar("You're not authenticated, signin at the bottom of any page", { variant: "error" });
+
       setBookmarks(bookmarks.includes(viewID) ? bookmarks.filter((x) => x !== viewID) : [...bookmarks, viewID]);
 
       const bookmarked = await fetcher("/api/profile/bookmark", JSON.stringify({ myID, viewID }));
