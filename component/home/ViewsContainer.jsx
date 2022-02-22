@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { fetcher } from "@utils/clientFunctions";
 
 import { Views } from ".";
-import { getViewsAction, resetViewAction } from "@store/actions";
+import { getViewsAction } from "@store/actions";
 
 const ViewsContainer = (props) => {
   const { getViewsAction } = props,
@@ -113,6 +113,6 @@ const mapStateToProps = (state) => ({
     deviceWidth: state.device.deviceWidth,
     userAtBottom: state.device.userAtBottom,
   }),
-  mapDispatchToProps = { getViewsAction, resetViewAction };
+  mapDispatchToProps = { getViewsAction };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewsContainer);
