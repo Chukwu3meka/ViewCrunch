@@ -36,7 +36,7 @@ const NavbarContainer = (props) => {
     ["Crunch", "/crunch", <ImportantDevicesIcon />],
     ["Contact", "/info/contactus", <ContactUsIcon />],
     ["NEWS", "/news", <NewsIcon />],
-    ["Bookmarks", "/favourite", <TimelineIcon />],
+    ["Bookmarks", "/bookmarks", <TimelineIcon />],
     ["Profile", `/profile`, <AssignmentIndIcon />],
     ["Organization", "/organization", <PublicIcon />],
   ];

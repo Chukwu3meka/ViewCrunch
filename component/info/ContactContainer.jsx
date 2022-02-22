@@ -16,7 +16,6 @@ const ContactContainer = (props) => {
     [comment, setComment] = useState(""),
     [online, setOnline] = useState(props.online),
     [section, setSection] = useState("others"),
-    setValues = { setEmail, setName, setComment, sectionHandler },
     [formError, setFormError] = useState({ comment: false, email: false, name: false });
 
   useEffect(() => {
@@ -69,6 +68,8 @@ const ContactContainer = (props) => {
     if (!validInput) enqueueSnackbar(`${textType} is invalid`, { variant: "error" });
     setFormError({ ...formError, [textType]: !validInput });
   };
+
+  const setValues = { setEmail, setName, setComment, sectionHandler };
 
   const Section = ({ supportType, image, description, faqSection, buttonType }) => (
     <Paper elevation={4}>
