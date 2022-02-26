@@ -30,11 +30,13 @@ export const getServerSideProps = async (ctx) => {
 
     const profile = await profileFromRefresh({ cookie: ctx.req.headers.cookie });
 
-    const messages = Object.entries(profile.notification).map(([key, value]) => ({
-      ...value,
-      message: key,
-      date: dateCalculator({ date: value.date.toDate().toDateString() }),
-    }));
+    const messages = Object.entries(profile.notification)
+      .map(([key, value]) => ({
+        ...value,
+        message: key,
+        date: dateCalculator({ date: value.date.toDate().toDateString() }),
+      }))
+      .reverse();
 
     return {
       props: {

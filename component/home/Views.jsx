@@ -8,9 +8,9 @@ import Typography from "@mui/material/Typography";
 import { viewsStyles, ViewsFooter } from ".";
 import { Loading } from "@component/others";
 
-const Views = ({ views, loading, fetchFailed, getViews, mobile, bookmarkHandler, bookmarks }) => (
+const Views = ({ label = "Recently Published", views, loading, fetchFailed, getViews, mobile, bookmarkHandler, bookmarks }) => (
   <div className={viewsStyles.views}>
-    <Typography variant="h2">Recently Published</Typography>
+    <Typography variant="h2">{label}</Typography>
     <div>
       {views?.map(
         ({
