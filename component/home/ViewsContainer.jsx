@@ -22,41 +22,40 @@ const ViewsContainer = (props) => {
     [fetchFailed, setFetchFailed] = useState(false);
 
   useEffect(() => {
-    setMyID(props.myID);
-
-    // to fetch views whether user is not logged in or not
-    if (ready === 0) setReady(props.myID ? 1 : 2);
-  }, [props.myID]);
-
-  useEffect(() => {
-    setOnline(props.online);
-    if (!props?.online) stopFetching();
+    if (ready === 0) setReady(1);
+    if (ready >= 1) {
+      setOnline(props.online);
+      if (!props?.online) stopFetching();
+    }
   }, [props.online]);
 
   useEffect(() => {
-    // get views only when app is ready
-    if ([1, 2].includes(ready)) {
-      if (ready === 1) getViews({ fetchType: "initial", reduxMyID: props.myID, appIsOnline: props.online });
-      if (ready === 2) getViews({ fetchType: "initial", reduxMyID: null, appIsOnline: props.online });
-      setReady(3);
+    if (ready === 1) {
+      if (props.myID) {
+        getViews({ fetchType: "initial", reduxMyID: props.myID, appIsOnline: props.online });
+      } else {
+        getViews({ fetchType: "initial", reduxMyID: null, appIsOnline: props.online });
+      }
+      setReady(2);
+      setMyID(props.myID);
     }
-  }, [ready]);
+  }, [props.myID]);
 
   useEffect(() => {
     setMobile(props.deviceWidth <= 400 ? true : false);
   }, [props.deviceWidth]);
 
   useEffect(() => {
-    if (ready === 3 && lastVisible && props?.userAtBottom) getViews({ fetchType: "more" });
+    if (ready === 2 && lastVisible && props.userAtBottom) getViews({ fetchType: "more" });
   }, [props.userAtBottom]);
 
   useEffect(() => {
-    if (ready === 3 && props.views) {
+    if (ready === 2 && props.views) {
       setLoading(false);
-      const { views, bookmarks, blacklist, lastVisible } = props.views;
+      const { views, bookmarks: propsBookmarks, blacklist, lastVisible } = props.views;
       setBlacklist(blacklist);
       setLastVisible(lastVisible);
-      if (bookmarks) setBookmarks(bookmarks);
+      if (!bookmarks.length && propsBookmarks) setBookmarks(propsBookmarks);
       if (lastVisible === "last view") {
         stopFetching(); // to prevent unwanted error
         setFetchFailed(false);
@@ -89,6 +88,9 @@ const ViewsContainer = (props) => {
       } else {
         stopFetching();
       }
+    } else {
+      stopFetching();
+      enqueueSnackbar("You're not connected to the internet", { variant: "info" });
     }
   };
 

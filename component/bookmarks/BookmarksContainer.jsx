@@ -7,9 +7,9 @@ import Typography from "@mui/material/Typography";
 import { fetcher } from "@utils/clientFunctions";
 import { setNotificationAction } from "@store/actions";
 import { Footer, NavContainer } from "@component/layout";
-import { Notification, NotificationDialog, styles } from ".";
+import { Bookmarks, BookmarksDialog, styles } from ".";
 
-const NotificationContainer = (props) => {
+const BookmarksContainer = (props) => {
   const {
       setNotificationAction,
       notification: { messages: propsMessages, unseen: propsUnseen },
@@ -72,14 +72,14 @@ const NotificationContainer = (props) => {
         </div>
       </NavContainer>
       <Grid item xs={12} sm={12} md={8}>
-        <Notification
+        <Bookmarks
           messages={messages}
           openMessage={openMessage}
           openMessageHandler={openMessageHandler}
           deleteMessageHandler={deleteMessageHandler}
         />
         <Footer />
-        <NotificationDialog
+        <BookmarksDialog
           messages={messages}
           openMessage={openMessage}
           openMessageHandler={openMessageHandler}
@@ -93,4 +93,4 @@ const NotificationContainer = (props) => {
 const mapStateToProps = (state) => ({ myID: state.profile?.myID }),
   mapDispatchToProps = { setNotificationAction };
 
-export default connect(mapStateToProps, mapDispatchToProps)(NotificationContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(BookmarksContainer);

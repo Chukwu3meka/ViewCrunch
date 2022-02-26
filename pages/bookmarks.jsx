@@ -1,21 +1,21 @@
 import SeoHead from "@component/others/SeoHead";
 import ErrorPage from "@component/others/ErrorPage";
-import NotificationContainer from "@component/notification";
+import BookmarksContainer from "@component/bookmarks";
 
-const NotificationPage = ({ notification, error: { code, title } }) => {
+const NotificationPage = ({ bookmarks, error: { code, title } }) => {
   if (code) return <ErrorPage statusCode={code} title={title} />;
 
   return (
     <>
       <SeoHead
         {...{
-          seo_title: "ViewCrunch Notification Page",
-          seo_description: "ViewsCrunch Notification page. Here you get a report on all activities relating to your account.",
-          seo_hashtag: "#ViewCrunch Notification",
-          seo_keywords: "viewcrunch notification, viewcrunch, notification",
+          seo_title: "ViewCrunch Bookmarks Page",
+          seo_description: "ViewsCrunch Bookmarks page. Here you get a views yoyu have bookmarked.",
+          seo_hashtag: "#ViewCrunch Bookmarks",
+          seo_keywords: "viewcrunch bookmarks, viewcrunch, bookmarks",
         }}
       />
-      <NotificationContainer notification={notification} />;
+      <BookmarksContainer bookmarks={bookmarks} />;
     </>
   );
 };
@@ -32,7 +32,7 @@ export const getServerSideProps = async (ctx) => {
     return {
       props: {
         error: {},
-        notification: myID.notification,
+        bookmarks: myID.bookmarks,
       },
     };
   } catch (error) {

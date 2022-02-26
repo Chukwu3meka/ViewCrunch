@@ -73,11 +73,14 @@ export const fetchHomeData = async () => {
 
 export const fetchViews = async ({ myID, blacklist, lastVisible }) => {
   try {
-    let bookmarks;
+    let bookmarks = null;
 
     // run snippet only when its initial fetch
-    if (!blacklist) {
+    // if (!blacklist) {
+    // console.log("lastVisible ", { lastVisible });
+    if (!lastVisible) {
       // if myID(user logged in), then fetch user details else assign empty array
+      // console.log("myID", { myID });
       if (myID) {
         const profile = await fetchProfile(myID)
           .then((x) => x)
@@ -92,6 +95,8 @@ export const fetchViews = async ({ myID, blacklist, lastVisible }) => {
         bookmarks = [];
       }
     }
+
+    // console.log("bookmarks, blacklist", { bookmarks, blacklist });
 
     const viewsSnapshot = await getDocs(
       lastVisible

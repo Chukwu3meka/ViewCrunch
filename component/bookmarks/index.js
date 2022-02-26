@@ -1,6 +1,6 @@
 import styles from "./styles.module.scss";
-import Notification from "./Notification";
-import NotificationDialog from "./NotificationDialog";
-import NotificationContainer from "./NotificationContainer";
+import Bookmarks from "./Bookmarks";
+import BookmarksDialog from "./BookmarksDialog";
+import BookmarksContainer from "./BookmarksContainer";
 
-export { NotificationDialog, Notification, styles, NotificationContainer as default };
+export { BookmarksDialog, Bookmarks, styles, BookmarksContainer as default };

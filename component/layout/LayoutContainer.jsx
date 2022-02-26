@@ -7,11 +7,25 @@ import { setUserAtBottom, setDisplayHeader, setDeviceWidth } from "@store/action
 const LayoutContainer = (props) => {
   const scrollRef = useRef(null),
     [style, setStyle] = useState({}),
+    [atBottom, setAtBottom] = useState(false),
     [pageReady, setPageReady] = useState(false),
     [scrollDir, setScrollDir] = useState("scrolling down"),
     { children, setDisplayHeader, setDeviceWidth, setAppTheme, setUserAtBottom } = props;
 
   const handleDeviceResize = () => setDeviceWidth(window.innerWidth);
+
+  // detect when user has scrolled to the bottom of the page
+  useEffect(() => setUserAtBottom(atBottom), [atBottom]);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll, {
+      passive: true,
+    });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   useState(() => {
     setPageReady(true);
@@ -49,7 +63,7 @@ const LayoutContainer = (props) => {
       }
 
       // user at bottom
-      setUserAtBottom(scrollY > lastScrollY && scrollY > window.innerHeight + 300);
+      // setUserAtBottom(scrollY > lastScrollY && scrollY > window.innerHeight + 300);
       setScrollDir(scrollY > lastScrollY ? "scrolling down" : "scrolling up");
       lastScrollY = scrollY > 0 ? scrollY : 0;
       ticking = false;
@@ -72,6 +86,11 @@ const LayoutContainer = (props) => {
 
     return () => window.removeEventListener("scroll", onScroll);
   }, [scrollDir]);
+
+  const handleScroll = () => {
+    const bottom = Math.ceil(window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight;
+    setAtBottom(bottom);
+  };
 
   return <Layout children={children} style={style} scrollRef={scrollRef} pageReady={pageReady} />;
 };
