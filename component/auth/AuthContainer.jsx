@@ -7,6 +7,7 @@ import {
   getRedirectResult,
   signInWithRedirect,
   linkWithCredential,
+  GoogleAuthProvider,
   TwitterAuthProvider,
   FacebookAuthProvider,
 } from "firebase/auth";
@@ -17,8 +18,6 @@ import { setProfileAction } from "@store/actions";
 
 import { fetcher } from "@utils/clientFunctions";
 import { FacebookAuth, TwitterAuth, GoogleAuth, styles } from ".";
-
-import { GoogleAuthProvider } from "firebase/auth";
 
 const providers = {
   google: new GoogleAuthProvider(),

@@ -68,7 +68,7 @@ const NotificationContainer = (props) => {
             <Typography fontSize={12} color="aqua">
               You have {unseen} unread {unseen > 1 ? "messages" : "messages"}
             </Typography>
-          ) : null}{" "}
+          ) : null}
         </div>
       </NavContainer>
       <Grid item xs={12} sm={12} md={8}>

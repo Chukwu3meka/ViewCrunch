@@ -22,31 +22,7 @@ function checkInternet(cb) {
   });
 }
 
-// example usage:
-
-export const profileFromRefresh = async ({ refresh, cookie }) => {
-  const { auth, firestore } = await require("@utils/firebaseServer");
-
-  if (!refresh) {
-    // const noNetwork = !(await connected);
-    // if (noNetwork) throw 1000;
-    const connected = checkInternet((isConnected) => (isConnected ? true : false));
-    if (connected) throw 1000;
-    if (!cookie) throw 1001;
-
-    let cookieRefresh;
-
-    await cookie?.split("; ").forEach((x) => {
-      if (x.split("=")[0] === "ViewCrunch") {
-        cookieRefresh = x.split("=")[1];
-      }
-    });
-
-    if (!cookieRefresh) throw 1002;
-    refresh = cookieRefresh;
-  }
-  if (!refresh) throw 1003;
-
+export const verifyToken = async (refresh) => {
   const { access_token: token } = await fetch(
     `https://securetoken.googleapis.com/v1/token?key=${JSON.parse(process.env.NEXT_PUBLIC_CLIENT).apiKey}`,
     {
@@ -56,6 +32,31 @@ export const profileFromRefresh = async ({ refresh, cookie }) => {
       credentials: "same-origin",
     }
   ).then((res) => res.json());
+
+  return token;
+};
+
+export const profileFromRefresh = async ({ refresh, cookie }) => {
+  const { auth, firestore } = await require("@utils/firebaseServer");
+
+  if (!refresh) {
+    if (!cookie) throw 1001;
+
+    const notConnected = checkInternet((isNotConnected) => (isNotConnected ? true : false));
+    if (notConnected) throw 1000;
+
+    let cookieRefresh;
+    await cookie?.split("; ").forEach((x) => {
+      if (x.split("=")[0] === "ViewCrunch") cookieRefresh = x.split("=")[1];
+    });
+
+    if (!cookieRefresh) throw 1002;
+    refresh = cookieRefresh;
+  }
+
+  if (!refresh) throw 1003;
+
+  const token = await verifyToken(refresh);
   if (!token) throw 1004;
 
   const uid = await auth
@@ -71,25 +72,15 @@ export const profileFromRefresh = async ({ refresh, cookie }) => {
     .doc(uid)
     .get()
     .then((snapshot) => {
-      const notification = [];
-      let unseen = 0;
-
-      for (const [key, value] of Object.entries(snapshot.data().notification)) {
-        notification.push({
-          ...value,
-          message: key,
-          date: dateCalculator({ date: value.date.toDate().toDateString() }),
-        });
-        unseen = unseen + (value.seen ? 0 : 1);
-      }
+      const data = snapshot.data();
 
       return {
         id: snapshot.id,
-        ...snapshot.data(),
-        notification: {
-          unseen,
-          messages: notification,
-        },
+        ...data,
+        unseenNotification: Object.values(data.notification).reduce((unread, { seen }) => unread + (seen ? 0 : 1), 0),
+        // notification: {
+        //   messages: notification,
+        // },
       };
     })
     .catch((error) => {

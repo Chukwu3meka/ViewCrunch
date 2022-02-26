@@ -8,10 +8,8 @@ import { SnackbarProvider } from "notistack";
 import { useStore } from "@store/index";
 import SeoHead from "@component/others/SeoHead";
 
-import userControl from "@utils/userControl";
 import LayoutContainer from "@component/layout";
-import { fetcher } from "@utils/clientFunctions";
-import { setDisplayHeader, setOnlineAction, setProfileAction } from "@store/actions";
+import { setDisplayHeader, setOnlineAction } from "@store/actions";
 
 import * as React from "react";
 import { ThemeProvider } from "@mui/material/styles";

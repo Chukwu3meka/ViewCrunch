@@ -1,31 +1,26 @@
 import { toId } from "@utils/clientFunctions";
 import { firestore } from "@utils/firebaseServer";
+import { profileFromRefresh, verifyToken } from "@utils/serverFunctions";
 import { Timestamp } from "firebase-admin/firestore";
 
 const createProfileHandler = async ({ uid, displayName, photoURL, refreshToken }) => {
-  const { access_token: token } = await fetch(
-    `https://securetoken.googleapis.com/v1/token?key=${JSON.parse(process.env.NEXT_PUBLIC_CLIENT).apiKey}`,
-    {
-      method: "POST",
-      headers: new Headers({ "Content-Type": "application/x-www-form-urlencoded" }),
-      body: `grant_type=refresh_token&refresh_token=${refreshToken}`,
-      credentials: "same-origin",
-    }
-  ).then((res) => res.json());
-
+  // verify if refresh is actually from firebase and has not been tampered
+  const token = await verifyToken(refreshToken);
   if (!token) throw "invalid cookie";
 
+  // check if profile already exist
   const profileRef = firestore.collection("profile").doc(uid);
   const profile = await profileRef.get();
 
   if (profile.exists) {
-    let unseen = 0;
+    const profileData = await profileFromRefresh({ refresh: refreshToken });
+    if (!profileData) throw "Invalid token";
 
-    for (const value of Object.values(profile.data().notification)) {
-      unseen = unseen + (value.seen ? 0 : 1);
-    }
-
-    return { myID: uid, myTheme: profile.data()?.details?.theme, myNotification: unseen };
+    return {
+      myID: uid,
+      myTheme: profileData.details?.theme,
+      myNotification: profileData.unseenNotification,
+    };
   } else {
     await profileRef.set({
       about: "",
@@ -110,7 +105,6 @@ export default async (req, res) => {
     const profile = await createProfileHandler({ uid, displayName, photoURL, refreshToken });
     return res.status(200).json(profile);
   } catch (error) {
-    // console.log(error);
     return res.status(401).json(null);
   }
 };

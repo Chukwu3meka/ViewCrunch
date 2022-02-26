@@ -1,6 +1,7 @@
 import SeoHead from "@component/others/SeoHead";
 import ErrorPage from "@component/others/ErrorPage";
 import NotificationContainer from "@component/notification";
+import { dateCalculator } from "@utils/clientFunctions";
 
 const NotificationPage = ({ notification, error: { code, title } }) => {
   if (code) return <ErrorPage statusCode={code} title={title} />;
@@ -27,12 +28,18 @@ export const getServerSideProps = async (ctx) => {
   try {
     const { profileFromRefresh } = require("@utils/serverFunctions");
 
-    const myID = await profileFromRefresh({ cookie: ctx.req.headers.cookie });
+    const profile = await profileFromRefresh({ cookie: ctx.req.headers.cookie });
+
+    const messages = Object.entries(profile.notification).map(([key, value]) => ({
+      ...value,
+      message: key,
+      date: dateCalculator({ date: value.date.toDate().toDateString() }),
+    }));
 
     return {
       props: {
         error: {},
-        notification: myID.notification,
+        notification: { messages, unseen: profile.unseenNotification },
       },
     };
   } catch (error) {
