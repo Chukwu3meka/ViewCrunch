@@ -37,6 +37,10 @@ const Privacy = () => (
         of your Personal Information is important to us and comes first in our design and development, but remember that no method of
         transmission over the Internet, or any method of electronic storage, is 99.9% secure. While we strive to use commercially
         acceptable means to protect your Personal Information, we cannot guarantee its absolute security.
+        <u>DATA DELETION INSTRUCTION</u>
+        We only use Email for authentication across social platforms(Twitter, Facebook and Google), Display Name and Picture. After a
+        certain period of inactivity on our site, your profile data will be deleted by one of our moderators, though views published by
+        you will remain visible but author becomes anonymous.
         <u>CHANGES TO TERMS OF USE AND CONDITIONS</u>
         This Terms of use and Conditions is effective as of Sunday, 24th May 2020 and will remain in effect except with respect to any
         changes in its provisions in the future, which will be in effect immediately after being posted on this page. We reserve the

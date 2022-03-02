@@ -1,42 +1,35 @@
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+
 import { styles } from ".";
+import { Views } from "@component/home";
+import { Footer, NavContainer } from "@component/layout";
 
-import InfoIcon from "@mui/icons-material/Help";
-import { Paper, Typography } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
-import StatIcon from "@mui/icons-material/BarChart";
-import DefaultIcon from "@mui/icons-material/AcUnitOutlined";
-import AchievementIcon from "@mui/icons-material/EmojiEvents";
-import FinanceIcon from "@mui/icons-material/AttachMoneyOutlined";
-
-const Notification = ({ messages, openMessageHandler, deleteMessageHandler }) => (
-  <div className={styles.notification}>
-    {messages.map(({ message, date, icon, seen }, index) => (
-      <Paper key={index} className={seen ? "" : styles.unread}>
-        <IconButton size="large" onClick={deleteMessageHandler(index)}>
-          {icon === "achievement" ? (
-            <AchievementIcon fontSize="large" />
-          ) : icon === "info" ? (
-            <InfoIcon fontSize="large" />
-          ) : icon === "finance" ? (
-            <FinanceIcon fontSize="large" />
-          ) : icon === "stat" ? (
-            <StatIcon fontSize="large" />
-          ) : (
-            <DefaultIcon />
-          )}
-        </IconButton>
-
-        <div>
-          <Typography fontSize={10} textTransform="capitalize">
-            {date}
-          </Typography>
-          <Typography fontSize={16} onClick={openMessageHandler(index)} sx={{ cursor: "pointer" }}>
-            {message}
-          </Typography>
-        </div>
-      </Paper>
-    ))}
-  </div>
+const Notification = ({ uiViews, mobile, bookmarkHandler, bookmarks }) => (
+  <Grid container style={{ maxWidth: "1200px", margin: "auto" }}>
+    <NavContainer>
+      <div className={styles.nav}>
+        <Typography variant="h4">Bookmarks</Typography>
+        <hr />
+        <Typography fontSize={15}>Here you get a list of views you have bookmarked.</Typography>
+      </div>
+    </NavContainer>
+    <Grid item xs={12} sm={12} md={8}>
+      <Views
+        {...{
+          label: "Bookmarks",
+          views: uiViews,
+          loading: false,
+          fetchFailed: false,
+          getViews: () => {},
+          mobile,
+          bookmarkHandler,
+          bookmarks,
+        }}
+      />
+      <Footer />
+    </Grid>
+  </Grid>
 );
 
 export default Notification;
