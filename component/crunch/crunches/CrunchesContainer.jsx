@@ -2,14 +2,17 @@ import { connect } from "react-redux";
 import { useSnackbar } from "notistack";
 import { useEffect, useState } from "react";
 
-import { fetcher } from "@utils/clientFunctions";
+import { fetcher, chunkArray } from "@utils/clientFunctions";
 import { setNotificationAction } from "@store/actions";
-import { Bookmarks } from ".";
+
+import dynamic from "next/dynamic";
+import validate from "@utils/validator";
+import { Crunches } from "/";
 
 const BookmarksContainer = (props) => {
   const [mobile, setMobile] = useState(),
     { enqueueSnackbar } = useSnackbar(),
-    [uiViews, setUiViews] = useState(props.bookmarks || []),
+    [myCrunches, setMyCrunches] = useState(props.myCrunches || []),
     [myID, setMyID] = useState(props.myID),
     [bookmarks, setBookmarks] = useState((props.bookmarks || []).map(({ viewID }) => viewID));
 
@@ -33,8 +36,10 @@ const BookmarksContainer = (props) => {
       enqueueSnackbar(`${title}, has been ${bookmarked ? "added to" : "removed from"} bookmark.`, { variant: "success" });
     };
 
-  return "CrunchesContainer";
-  // return <Bookmarks {...{ uiViews, mobile, bookmarkHandler, bookmarks }} />;
+  console.log(myCrunches);
+
+  return <Crunches myCrunches={myCrunches} />;
+  // return <Bookmarks {...{ myCrunches, mobile, bookmarkHandler, bookmarks }} />;
 };
 
 const mapStateToProps = (state) => ({ myID: state.profile?.myID }),

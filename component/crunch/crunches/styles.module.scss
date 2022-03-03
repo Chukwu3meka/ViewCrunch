@@ -1,5 +1,14 @@
 @import "@source/_variables.scss";
 
+.myCrunches {
+  border: 3px solid blue;
+}
+.myCrunch {
+  // margin: 0 !important;
+  border: 3px solid red;
+  min-width: 270px;
+}
+
 .notification {
   padding: 10px;
   margin: 20px auto;

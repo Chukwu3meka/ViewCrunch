@@ -1,22 +1,22 @@
 import SeoHead from "@component/others/SeoHead";
 import ErrorPage from "@component/others/ErrorPage";
 import CrunchesContainer from "@component/crunch/crunches";
-import { dateCalculator, range, toId } from "@utils/clientFunctions";
+import { dateCalculator, toId } from "@utils/clientFunctions";
 
-const BookmarksPage = ({ bookmarks, error: { code, title } }) => {
+const BookmarksPage = ({ myCrunches, error: { code, title } }) => {
   if (code) return <ErrorPage statusCode={code} title={title} />;
 
   return (
     <>
       <SeoHead
         {...{
-          seo_title: "ViewCrunch Bookmarks Page",
-          seo_description: "ViewsCrunch Bookmarks page. Here you get a list of views you have bookmarked.",
-          seo_hashtag: "#ViewCrunch Bookmarks",
-          seo_keywords: "viewcrunch bookmarks, viewcrunch, bookmarks",
+          seo_title: "ViewCrunch Crunches Page",
+          seo_description: "ViewsCrunch Crunches page. Here you get a list of views you have bookmarked.",
+          seo_hashtag: "#ViewCrunch Crunches",
+          seo_keywords: "viewcrunch crunches, viewcrunch, crunches",
         }}
       />
-      <CrunchesContainer bookmarks={bookmarks} />;
+      <CrunchesContainer myCrunches={myCrunches} />;
     </>
   );
 };
@@ -32,50 +32,32 @@ export const getServerSideProps = async (ctx) => {
 
     const { crunchRef, profileRef } = await require("@utils/firebaseServer");
 
-    const crunches = [];
+    const myCrunches = [];
 
     for (const crunch of profile.crunches) {
       const crunchID = toId(crunch);
-
-      console.log(crunchID);
 
       await crunchRef
         .doc(crunchID)
         .get()
         .then(async (snapshot) => {
-          const { about, admin, date, follower, moderator, contributor, picture, title, suspended } = snapshot.data();
+          const { about, contributors, date, followers, moderators, picture, suspended, title, stat } = snapshot.data();
 
-          // const { profilePicture, profileLink, displayName } = await profileRef
-          //   .doc(author)
-          //   .get()
-          //   .then((snapshot) => {
-          //     const {
-          //       picture: { profile: profilePicture },
-          //       details: { profileLink, displayName },
-          //     } = snapshot.data();
-          //     return { profilePicture, profileLink, displayName };
-          //   });
-          // bookmarks.push({
-          //   image,
-          //   title,
-          //   author,
-          //   crunch,
-          //   content,
-          //   readTime,
-          //   description,
-          //   displayName,
-          //   profileLink,
-          //   profilePicture,
-          //   viewLink: `/view/${viewLink}`,
-          //   crunchLink: toId(`/crunch/${crunch}`),
-          //   keyword: keywords[range(0, keywords.length - 1)],
-          //   viewID: viewLink.split("-")[viewLink.split("-").length - 1],
-          //   date: dateCalculator({ date: date.toDate().toDateString() }),
-          // });
+          myCrunches.push({
+            about,
+            contributor: contributors?.includes(profile.id),
+            date: dateCalculator({ date: date.toDate().toDateString() }),
+            follower: followers?.includes(profile.id),
+            moderator: moderators?.includes(profile.id),
+            picture,
+            suspended,
+            title,
+            stat,
+          });
         });
     }
 
-    return { props: { error: { code: 303 }, crunches } };
+    return { props: { error: {}, myCrunches } };
   } catch (error) {
     const { code, title } = typeof error === "number" ? errorCodes[error] : { code: 400, title: "Internal Server Error" };
 

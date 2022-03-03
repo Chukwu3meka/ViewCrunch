@@ -18,16 +18,16 @@ export default async (req, res) => {
             .collection("crunch")
             .doc(doc.id)
             .update({
-              admin: FieldValue.delete(),
-              follower: FieldValue.delete(),
-              moderator: FieldValue.delete(),
-              moderators: ["zqWXUjfcFXPGKzgN3HCvoFuOz043"],
-              followers: ["zqWXUjfcFXPGKzgN3HCvoFuOz043"],
-              contributors: ["zqWXUjfcFXPGKzgN3HCvoFuOz043"],
+              // admin: FieldValue.delete(),
+              // follower: FieldValue.delete(),
+              // moderator: FieldValue.delete(),
+              // moderators: ["zqWXUjfcFXPGKzgN3HCvoFuOz043"],
+              // followers: ["zqWXUjfcFXPGKzgN3HCvoFuOz043"],
+              // contributors: ["zqWXUjfcFXPGKzgN3HCvoFuOz043"],
               stat: {
-                moderators: 1,
-                contributors: 1,
-                followers: 1,
+                totalModerators: 1,
+                totalContributors: 1,
+                totalFollowers: 1,
               },
             });
         }

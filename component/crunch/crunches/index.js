@@ -1,5 +1,5 @@
 import styles from "./styles.module.scss";
-import Bookmarks from "./Bookmarks";
+import Crunches from "./Crunches";
 import CrunchesContainer from "./CrunchesContainer";
 
-export { Bookmarks, styles, CrunchesContainer as default };
+export { Crunches, styles, CrunchesContainer as default };
