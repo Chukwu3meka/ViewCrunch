@@ -1,8 +1,14 @@
 @import "@source/_variables.scss";
 
+.crunchesTitle {
+  font-family: "Fredericka the Great", cursive;
+  color: var(--dim);
+}
+
 .crunches {
   margin: 10px auto;
   & > a {
+    margin-bottom: 10px;
     @include flexCenter(row, initial);
     max-width: 300px;
     justify-content: flex-start;
@@ -43,6 +49,71 @@
         overflow: hidden;
       }
     }
+  }
+  & > div {
+    @include flexCenter(row);
+  }
+}
+
+.otherCrunchesContainer {
+  height: 300px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -ms-overflow-style: none;
+  white-space: nowrap;
+  padding: 5px;
+}
+
+.otherCrunchesContainer::-webkit-scrollbar {
+  display: none;
+}
+
+.otherCrunches {
+  // height: 100%;
+  display: inline-block;
+  // border: 3px solid blue;
+  margin-right: 10px;
+  max-width: 270px;
+  overflow: hidden;
+  & > a {
+    @include flexCenter(column, initial);
+    margin-bottom: 10px;
+    width: 100%;
+    & > div:first-of-type {
+      height: 130px;
+      width: 100%;
+      margin: auto;
+      position: relative;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    & > p {
+      margin: 10px 0 5px;
+      @include flexCenter(row, initial);
+      // justify-content: flex-start;
+      align-self: flex-start;
+      h2 {
+        font-family: "Fredericka the Great", cursive;
+        text-align: left;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+    }
+
+    & > summary {
+      width: 100%;
+      white-space: normal;
+      text-align: left;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  }
+  & > div {
+    @include flexCenter(row);
   }
 }
 

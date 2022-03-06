@@ -4,12 +4,13 @@ import { useEffect, useState } from "react";
 import HomeIcon from "@mui/icons-material/Home";
 import PublicIcon from "@mui/icons-material/Public";
 import TimelineIcon from "@mui/icons-material/Timeline";
+import WriteIcon from "@mui/icons-material/CreateOutlined";
+import NewsIcon from "@mui/icons-material/NewspaperRounded";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import ContactUsIcon from "@mui/icons-material/ContactSupportOutlined";
 import NotificationsOffIcon from "@mui/icons-material/NotificationsOff";
 import ImportantDevicesIcon from "@mui/icons-material/ImportantDevices";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
-import NewsIcon from "@mui/icons-material/NewspaperRounded";
 
 import { Nav } from ".";
 import { fetcher } from "@utils/clientFunctions";
@@ -39,6 +40,7 @@ const NavbarContainer = (props) => {
     ["Bookmarks", "/bookmarks", <TimelineIcon />],
     ["Profile", `/profile`, <AssignmentIndIcon />],
     ["Organization", "/organization", <PublicIcon />],
+    ["Write", `/crunch/write`, <WriteIcon />],
   ];
 
   const currentThemeHandler = () => {

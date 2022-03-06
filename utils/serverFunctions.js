@@ -36,12 +36,14 @@ export const verifyToken = async (refresh) => {
   return token;
 };
 
-export const profileFromRefresh = async ({ refresh, cookie }) => {
+export const profileFromRefresh = async ({ refresh, cookie, optional }) => {
   const { auth, firestore } = await require("@utils/firebaseServer");
 
   if (!refresh) {
-    if (!cookie) throw 1001;
-
+    if (!cookie) {
+      if (optional) return null;
+      throw 1001;
+    }
     const notConnected = checkInternet((isNotConnected) => (isNotConnected ? true : false));
     if (notConnected) throw 1000;
 

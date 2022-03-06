@@ -52,7 +52,9 @@ export const fetchHomeData = async () => {
     }
 
     const crunches = [];
-    const crunchesSnapshot = await getDocs(query(crunchRef, where("suspended", "==", false), orderBy("date"), limit(13)));
+    const crunchesSnapshot = await getDocs(
+      query(crunchRef, where("suspended", "==", false), orderBy("stat.lastPublished", "desc"), limit(7))
+    );
 
     if (crunchesSnapshot.size) {
       for (const doc of crunchesSnapshot.docs) {
