@@ -9,7 +9,7 @@ const useUser = () => {
     // if (document.cookie) document.cookie = "ViewCrunch" + "=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
   };
   // users should login after six months
-  const saveCookie = (refreshToken) => cookies.set("ViewCrunch", refreshToken, { expires: 18, path: "" });
+  const saveCookie = (refreshToken) => cookies.set("ViewCrunch", refreshToken, { expires: 180, path: "" });
 
   useEffect(() => {
     const cookie = cookies.get("ViewCrunch");
