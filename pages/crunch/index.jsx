@@ -44,7 +44,9 @@ export const getServerSideProps = async (ctx) => {
           const { about, contributors, date, followers, moderators, picture, suspended, title, stat } = snapshot.data();
 
           myCrunches.push({
+            crunchID,
             about,
+
             contributor: contributors?.includes(profile.id),
             date: dateCalculator({ date: date.toDate().toDateString() }),
             follower: followers?.includes(profile.id),

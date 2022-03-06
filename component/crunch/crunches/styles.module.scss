@@ -1,12 +1,49 @@
 @import "@source/_variables.scss";
 
-.myCrunches {
-  border: 3px solid blue;
-}
-.myCrunch {
-  // margin: 0 !important;
-  border: 3px solid red;
-  min-width: 270px;
+.crunches {
+  margin: 10px auto;
+  & > a {
+    @include flexCenter(row, initial);
+    max-width: 300px;
+    justify-content: flex-start;
+    align-items: stretch;
+    & > div:first-of-type {
+      height: 40px;
+      min-width: 40px;
+      width: 40px;
+      margin: auto;
+      margin-right: 5px;
+      position: relative;
+      border-radius: 50%;
+      overflow: hidden;
+    }
+
+    & > div:last-of-type {
+      @include flexCenter(column, initial);
+      align-items: flex-start;
+      justify-content: space-between;
+      & > p {
+        margin: 0;
+        @include flexCenter(row, initial);
+        h2 {
+          font-family: "Fredericka the Great", cursive;
+          text-align: left;
+          display: -webkit-box;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+      }
+
+      & > summary {
+        text-align: left;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+    }
+  }
 }
 
 .notification {

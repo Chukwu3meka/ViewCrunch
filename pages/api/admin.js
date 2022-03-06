@@ -1,4 +1,4 @@
-import { toId } from "@utils/clientFunctions";
+import { range, toId } from "@utils/clientFunctions";
 import { firestore } from "@utils/firebaseServer";
 
 import { FieldValue, Timestamp } from "firebase-admin/firestore";
@@ -24,10 +24,15 @@ export default async (req, res) => {
               // moderators: ["zqWXUjfcFXPGKzgN3HCvoFuOz043"],
               // followers: ["zqWXUjfcFXPGKzgN3HCvoFuOz043"],
               // contributors: ["zqWXUjfcFXPGKzgN3HCvoFuOz043"],
+              about: `${
+                doc.data().title
+              } is one of the initial crunches created on ViewCrunch. As of January 2022, new users automatically follow ${
+                doc.data().title
+              }.`,
               stat: {
                 totalModerators: 1,
                 totalContributors: 1,
-                totalFollowers: 1,
+                totalFollowers: range(30, 250),
               },
             });
         }
