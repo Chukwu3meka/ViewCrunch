@@ -28,7 +28,7 @@ export const getServerSideProps = async (ctx) => {
   try {
     const { profileFromRefresh } = require("@utils/serverFunctions");
 
-    const profile = await profileFromRefresh({ cookie: ctx.req.headers.cookie, optional: true });
+    const profile = (await profileFromRefresh({ cookie: ctx.req.headers.cookie, optional: true })) || {};
 
     const { crunchRef } = await require("@utils/firebaseServer");
     const { Timestamp } = require("firebase-admin/firestore");
@@ -38,7 +38,7 @@ export const getServerSideProps = async (ctx) => {
       otherCrunches = [],
       recentCrunches = [];
 
-    if (profile) {
+    if (profile.id) {
       for (const crunch of profile.crunches) {
         const crunchID = toId(crunch);
         crunches.push(crunchID);
