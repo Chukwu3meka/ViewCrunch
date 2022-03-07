@@ -1,60 +1,65 @@
 import SeoHead from "@component/others/SeoHead";
 import ErrorPage from "@component/others/ErrorPage";
-import CrunchesContainer from "@component/crunch/crunches";
-import { dateCalculator, toId } from "@utils/clientFunctions";
+import CrunchIDContainer from "@component/crunch/crunchID";
 
-const BookmarksPage = ({ myCrunches, error: { code, title } }) => {
+const CrunchID = ({ crunchDetails, error: { code, title } }) => {
   if (code) return <ErrorPage statusCode={code} title={title} />;
 
   return (
     <>
       <SeoHead
         {...{
-          seo_title: "ViewCrunch Crunches Page",
-          seo_description: "ViewsCrunch Crunches page. Here you get a list of views you have bookmarked.",
-          seo_hashtag: "#ViewCrunch Crunches",
-          seo_keywords: "viewcrunch crunches, viewcrunch, crunches",
+          seo_title: crunchDetails.title,
+          seo_description: crunchDetails.about,
+          seo_hashtag: `#${crunchDetails.title}`,
+          seo_keywords: `viewcrunch crunches, viewcrunch, crunches, ${crunchDetails.title?.toLowerCase()}`,
         }}
       />
-      <CrunchesContainer myCrunches={myCrunches} />;
+      <CrunchIDContainer crunchDetails={crunchDetails} />
     </>
   );
 };
 
-export default BookmarksPage;
+export default CrunchID;
 
 export const getServerSideProps = async (ctx) => {
   const errorCodes = require("@source/errorCodes").default;
+
   try {
+    const { dateCalculator, toId } = require("@utils/clientFunctions");
     const { profileFromRefresh } = require("@utils/serverFunctions");
 
-    const profile = await profileFromRefresh({ cookie: ctx.req.headers.cookie });
+    const profile = (await profileFromRefresh({ cookie: ctx.req.headers.cookie, optional: true })) || {};
 
-    const { crunchRef, profileRef } = await require("@utils/firebaseServer");
+    const { crunchRef } = await require("@utils/firebaseServer");
 
-    const id = ctx.query.crunch;
+    const crunchID = ctx.query.id;
 
-    const crunch = await crunchRef
-      .doc(id)
+    const crunchDetails = await crunchRef
+      .doc(crunchID)
       .get()
       .then(async (snapshot) => {
         const { about, contributors, date, followers, moderators, picture, suspended, title, stat } = snapshot.data();
 
-        myCrunches.push({
-          crunchID,
+        return {
           about,
-          contributor: contributors?.includes(profile.id),
-          date: dateCalculator({ date: date.toDate().toDateString() }),
+          title,
+          picture,
+          crunchID,
+          suspended,
           follower: followers?.includes(profile.id),
           moderator: moderators?.includes(profile.id),
-          picture,
-          suspended,
-          title,
-          stat,
-        });
+          contributor: contributors?.includes(profile.id),
+          date: dateCalculator({ date: date.toDate().toDateString() }),
+          ...stat,
+          lastPublished: dateCalculator({ date: stat.lastPublished.toDate().toDateString() }),
+        };
+      })
+      .catch((err) => {
+        throw err;
       });
 
-    return { props: { error: {}, myCrunches } };
+    return { props: { error: {}, crunchDetails } };
   } catch (error) {
     const { code, title } = typeof error === "number" ? errorCodes[error] : { code: 400, title: "Internal Server Error" };
 

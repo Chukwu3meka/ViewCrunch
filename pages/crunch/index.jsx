@@ -1,9 +1,8 @@
 import SeoHead from "@component/others/SeoHead";
 import ErrorPage from "@component/others/ErrorPage";
 import CrunchesContainer from "@component/crunch/crunches";
-import { dateCalculator, toId } from "@utils/clientFunctions";
 
-const BookmarksPage = ({ myCrunches, recentCrunches, otherCrunches, error: { code, title } }) => {
+const CrunchIndex = ({ myCrunches, recentCrunches, otherCrunches, error: { code, title } }) => {
   if (code) return <ErrorPage statusCode={code} title={title} />;
 
   return (
@@ -21,11 +20,12 @@ const BookmarksPage = ({ myCrunches, recentCrunches, otherCrunches, error: { cod
   );
 };
 
-export default BookmarksPage;
+export default CrunchIndex;
 
 export const getServerSideProps = async (ctx) => {
   const errorCodes = require("@source/errorCodes").default;
   try {
+    const { dateCalculator, toId } = require("@utils/clientFunctions");
     const { profileFromRefresh } = require("@utils/serverFunctions");
 
     const profile = (await profileFromRefresh({ cookie: ctx.req.headers.cookie, optional: true })) || {};

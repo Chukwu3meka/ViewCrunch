@@ -1,0 +1,30 @@
+@import "@source/_variables.scss";
+
+.crunch {
+  max-width: 1200px;
+  margin: 10px auto;
+  // border: 3px solid red;
+  // font-family: "Fredericka the Great", cursive;
+  // color: var(--dim);
+}
+
+.crunchDescription {
+  margin-bottom: 20px;
+  & > div:nth-of-type(1) {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    height: 300px;
+    width: 100%;
+  }
+  & > h2:nth-of-type(1) {
+    font-family: "Fredericka the Great", cursive;
+    color: var(--dim);
+    font-size: 1.8em;
+  }
+  // & > div:nth-of-type(2) {
+  //   @include flexCenter(row);
+  //   border: 3px solid red;
+  // }
+  // border: 3px solid red;
+}
