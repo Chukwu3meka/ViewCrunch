@@ -16,7 +16,7 @@ const BookmarksPage = ({ myCrunches, recentCrunches, otherCrunches, error: { cod
           seo_keywords: "viewcrunch crunches, viewcrunch, crunches",
         }}
       />
-      <CrunchesContainer myCrunches={myCrunches} recentCrunches={recentCrunches} otherCrunches={otherCrunches} />;
+      <CrunchesContainer myCrunches={myCrunches} recentCrunches={recentCrunches} otherCrunches={otherCrunches} />
     </>
   );
 };
@@ -123,10 +123,11 @@ export const getServerSideProps = async (ctx) => {
         });
     }
 
+    // get recently created crunches
     await crunchRef
       .where("suspended", "==", false)
       .orderBy("date", "desc")
-      .limit(5)
+      .limit(3)
       .get()
       .then(async (snapshot) => {
         for (const crunch of snapshot.docs) {

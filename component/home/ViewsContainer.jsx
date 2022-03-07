@@ -37,8 +37,8 @@ const ViewsContainer = (props) => {
         getViews({ fetchType: "initial", reduxMyID: null, appIsOnline: props.online });
       }
       setReady(2);
-      setMyID(props.myID);
     }
+    setMyID(props.myID);
   }, [props.myID]);
 
   useEffect(() => {

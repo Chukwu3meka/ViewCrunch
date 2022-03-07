@@ -37,8 +37,12 @@ const AuthContainer = (props) => {
   useEffect(() => {
     getRedirectResult(auth)
       .then(async (result) => {
-        if (auth.currentUser) await authUser(auth.currentUser);
-        if (result) await authUser(result.user);
+        if (auth.currentUser || result?.user) {
+          if (auth.currentUser) await authUser(auth.currentUser);
+          if (result) await authUser(result.user);
+        } else {
+          setProfileAction({ myID: null });
+        }
       })
       .catch(async (err) => {
         const savedProvider = sessionStorage.getItem("providerType");

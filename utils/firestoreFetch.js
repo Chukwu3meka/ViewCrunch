@@ -98,8 +98,6 @@ export const fetchViews = async ({ myID, blacklist, lastVisible }) => {
       }
     }
 
-    // console.log("bookmarks, blacklist", { bookmarks, blacklist });
-
     const viewsSnapshot = await getDocs(
       lastVisible
         ? query(

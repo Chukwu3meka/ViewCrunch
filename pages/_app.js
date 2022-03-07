@@ -27,7 +27,12 @@ const App = ({ Component, emotionCache = clientSideEmotionCache, pageProps }) =>
     [appTheme, setAppTheme] = useState("light");
 
   useEffect(() => {
-    store.dispatch(setOnlineAction(window.navigator.onLine));
+    window.addEventListener("offline", store.dispatch(setOnlineAction(window.navigator.onLine)));
+    window.addEventListener("online", store.dispatch(setOnlineAction(window.navigator.onLine)));
+    return () => {
+      window.removeEventListener("offline", store.dispatch(setOnlineAction(window.navigator.onLine)));
+      window.removeEventListener("online", store.dispatch(setOnlineAction(window.navigator.onLine)));
+    };
   });
 
   useEffect(() => {
