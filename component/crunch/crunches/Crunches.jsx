@@ -10,7 +10,7 @@ import { styles } from ".";
 import { shortNumber } from "@utils/clientFunctions";
 import { Footer, NavContainer } from "@component/layout";
 
-const Crunches = ({ myCrunches, otherCrunches, recentCrunches, followHandler }) => (
+const Crunches = ({ myCrunches, otherCrunches, followHandler }) => (
   <Grid container style={{ maxWidth: "1200px", margin: "auto" }}>
     <NavContainer>
       <div className={styles.nav}>
@@ -21,7 +21,51 @@ const Crunches = ({ myCrunches, otherCrunches, recentCrunches, followHandler }) 
     </NavContainer>
 
     <Grid item xs={12} sm={12} md={8}>
-      <CrunchList title="Recently created crunches" crunches={recentCrunches} followHandler={followHandler} />
+      <>
+        <Typography component="h1" className={styles.crunchesTitle}>
+          Suggested crunches for you
+        </Typography>
+
+        <div className={styles.otherCrunchesContainer}>
+          {otherCrunches.map(({ crunchID, about, picture, title, follower, totalFollowers }, index) => (
+            <Paper key={index} elevation={2} className={styles.otherCrunches}>
+              <Link href={`/crunch/${crunchID}`}>
+                <a>
+                  <div>
+                    <Image src={picture} alt={title} layout="fill" />
+                  </div>
+                  <p>
+                    <Typography component="h2">{title}</Typography>
+                    <Typography color="burlywood" fontSize={13}>
+                      &nbsp; ● {shortNumber(totalFollowers)} followers
+                    </Typography>
+                  </p>
+                  <Typography component="summary" fontSize={13}>
+                    {about}
+                  </Typography>
+                </a>
+              </Link>
+              <div>
+                <Button
+                  variant="outlined"
+                  size="small"
+                  color="secondary"
+                  fullWidth
+                  onClick={followHandler({ follower, id: crunchID, title })}>
+                  {follower ? "Unfollow" : "follow"}
+                </Button>
+                {follower && (
+                  <Link href={`/crunch/write?id=${crunchID}`}>
+                    <Button variant="outlined" size="small" color="secondary" fullWidth>
+                      Publish
+                    </Button>
+                  </Link>
+                )}
+              </div>
+            </Paper>
+          ))}
+        </div>
+      </>
 
       <hr />
       <Typography component="h1" className={styles.crunchesTitle}>
@@ -63,56 +107,10 @@ const Crunches = ({ myCrunches, otherCrunches, recentCrunches, followHandler }) 
           </Paper>
         ))}
       </Stack>
-      <hr />
 
-      <CrunchList title="Suggested crunches for you" crunches={otherCrunches} followHandler={followHandler} />
       <Footer />
     </Grid>
   </Grid>
 );
 
 export default Crunches;
-
-const CrunchList = ({ crunches, followHandler, title }) =>
-  crunches.length ? (
-    <>
-      <Typography component="h1" className={styles.crunchesTitle}>
-        {title}
-      </Typography>
-
-      <div className={styles.otherCrunchesContainer}>
-        {crunches.map(({ crunchID, about, picture, title, follower, totalFollowers }, index) => (
-          <Paper key={index} elevation={2} className={styles.otherCrunches}>
-            <Link href={`/crunch/${crunchID}`}>
-              <a>
-                <div>
-                  <Image src={picture} alt={title} layout="fill" />
-                </div>
-                <p>
-                  <Typography component="h2">{title}</Typography>
-                  <Typography color="burlywood" fontSize={13}>
-                    &nbsp; ● {shortNumber(totalFollowers)} followers
-                  </Typography>
-                </p>
-                <Typography component="summary" fontSize={13}>
-                  {about}
-                </Typography>
-              </a>
-            </Link>
-            <div>
-              <Button variant="outlined" size="small" fullWidth onClick={followHandler({ follower, id: crunchID, title })}>
-                {follower ? "Unfollow" : "follow"}
-              </Button>
-              {follower && (
-                <Link href={`/crunch/write?id=${crunchID}`}>
-                  <Button variant="outlined" size="small" fullWidth>
-                    Publish
-                  </Button>
-                </Link>
-              )}
-            </div>
-          </Paper>
-        ))}
-      </div>
-    </>
-  ) : null;

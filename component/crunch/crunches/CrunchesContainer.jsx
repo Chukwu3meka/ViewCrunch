@@ -10,8 +10,7 @@ const CrunchesContainer = (props) => {
   const { enqueueSnackbar } = useSnackbar(),
     [myID, setMyID] = useState(props.myID),
     [myCrunches, setMyCrunches] = useState(props.myCrunches || []),
-    [otherCrunches, setOtherCrunches] = useState(props.otherCrunches || []),
-    [recentCrunches, setRecentCrunches] = useState(props.recentCrunches || []);
+    [otherCrunches, setOtherCrunches] = useState(props.otherCrunches || []);
 
   useEffect(() => {
     setMyID(props.myID);
@@ -48,17 +47,6 @@ const CrunchesContainer = (props) => {
               : x
           )
         );
-        setRecentCrunches(
-          recentCrunches.map((x) =>
-            x.crunchID === id
-              ? {
-                  ...x,
-                  follower: !follower,
-                  totalFollowers: x.totalFollowers + (follower ? -1 : 1),
-                }
-              : x
-          )
-        );
       };
 
       updateCrunch();
@@ -68,9 +56,7 @@ const CrunchesContainer = (props) => {
       enqueueSnackbar("Cannot acces Server", { variant: "error" });
     };
 
-  return (
-    <Crunches myCrunches={myCrunches} otherCrunches={otherCrunches} followHandler={followHandler} recentCrunches={recentCrunches} />
-  );
+  return <Crunches myCrunches={myCrunches} otherCrunches={otherCrunches} followHandler={followHandler} />;
 };
 
 const mapStateToProps = (state) => ({ myID: state.profile?.myID }),

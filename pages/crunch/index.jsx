@@ -2,7 +2,7 @@ import SeoHead from "@component/others/SeoHead";
 import ErrorPage from "@component/others/ErrorPage";
 import CrunchesContainer from "@component/crunch/crunches";
 
-const CrunchIndex = ({ myCrunches, recentCrunches, otherCrunches, error: { code, title } }) => {
+const CrunchIndex = ({ myCrunches, otherCrunches, error: { code, title } }) => {
   if (code) return <ErrorPage statusCode={code} title={title} />;
 
   return (
@@ -15,7 +15,7 @@ const CrunchIndex = ({ myCrunches, recentCrunches, otherCrunches, error: { code,
           seo_keywords: "viewcrunch crunches, viewcrunch, crunches",
         }}
       />
-      <CrunchesContainer myCrunches={myCrunches} recentCrunches={recentCrunches} otherCrunches={otherCrunches} />
+      <CrunchesContainer myCrunches={myCrunches} otherCrunches={otherCrunches} />
     </>
   );
 };
@@ -30,13 +30,11 @@ export const getServerSideProps = async (ctx) => {
 
     const profile = (await profileFromRefresh({ cookie: ctx.req.headers.cookie, optional: true })) || {};
 
-    const { crunchRef } = await require("@utils/firebaseServer");
-    const { Timestamp } = require("firebase-admin/firestore");
-
-    const crunches = [],
-      myCrunches = [],
+    const { crunchRef } = await require("@utils/firebaseServer"),
+      { Timestamp } = require("firebase-admin/firestore"),
       otherCrunches = [],
-      recentCrunches = [];
+      myCrunches = [],
+      crunches = [];
 
     if (profile.id) {
       for (const crunch of profile.crunches) {
@@ -123,43 +121,7 @@ export const getServerSideProps = async (ctx) => {
         });
     }
 
-    // get recently created crunches
-    await crunchRef
-      .where("suspended", "==", false)
-      .orderBy("date", "desc")
-      .limit(3)
-      .get()
-      .then(async (snapshot) => {
-        for (const crunch of snapshot.docs) {
-          const crunchID = crunch.id,
-            {
-              about,
-              contributors,
-              date,
-              followers,
-              moderators,
-              picture,
-              suspended,
-              title,
-              stat: { totalFollowers },
-            } = crunch.data();
-
-          recentCrunches.push({
-            crunchID,
-            about,
-            contributor: contributors?.includes(profile.id),
-            date: dateCalculator({ date: date.toDate().toDateString() }),
-            follower: followers?.includes(profile.id),
-            moderator: moderators?.includes(profile.id),
-            picture,
-            suspended,
-            title,
-            totalFollowers,
-          });
-        }
-      });
-
-    return { props: { error: {}, myCrunches, otherCrunches, recentCrunches } };
+    return { props: { error: {}, myCrunches, otherCrunches } };
   } catch (error) {
     const { code, title } = typeof error === "number" ? errorCodes[error] : { code: 400, title: "Internal Server Error" };
 
