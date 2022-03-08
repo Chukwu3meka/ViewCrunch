@@ -21,35 +21,40 @@
         <image:loc>https://www.viewcrunch.com/images/ViewCrunch-cover.webp</image:loc>
     </image:image>
   </url>
-  <!-- <url>
+  <url>
+    <loc>https://www.viewcrunch.com/crunch</loc>
+    <changefreq>yearly</changefreq>
+    <lastmod>2022-01-22</lastmod>
+  </url>
+  <url>
     <loc>https://www.viewcrunch.com/info/terms</loc>
     <changefreq>yearly</changefreq>
-    <lastmod>2021-07-23</lastmod>
+    <lastmod>2022-01-22</lastmod>
   </url>
   <url>
     <loc>https://www.viewcrunch.com/info/faq</loc>
     <changefreq>yearly</changefreq>
-    <lastmod>2021-07-23</lastmod>
+    <lastmod>2022-01-22</lastmod>
   </url>
   <url>
     <loc>https://www.viewcrunch.com/info/advertise</loc>  
     <changefreq>yearly</changefreq>
-    <lastmod>2021-07-23</lastmod>
+    <lastmod>2022-01-22</lastmod>
   </url>
   <url>
     <loc>https://www.viewcrunch.com/info/contactus</loc>  
     <changefreq>yearly</changefreq>
-    <lastmod>2021-07-23</lastmod>
+    <lastmod>2022-01-22</lastmod>
   </url>
   <url>
     <loc>https://www.viewcrunch.com/info/about</loc>  
     <changefreq>yearly</changefreq>
-    <lastmod>2021-07-23</lastmod>
+    <lastmod>2022-01-22</lastmod>
   </url>
   <url>
     <loc>https://www.viewcrunch.com/info/privacy</loc>  
     <changefreq>yearly</changefreq>
-    <lastmod>2021-07-23</lastmod>
-  </url> -->
+    <lastmod>2022-01-22</lastmod>
+  </url>
 
 </urlset>
