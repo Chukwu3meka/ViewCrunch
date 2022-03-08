@@ -59,6 +59,7 @@ const ViewsContainer = (props) => {
       if (lastVisible === "last view") {
         stopFetching(); // to prevent unwanted error
         setFetchFailed(false);
+        enqueueSnackbar("No View Found, ", { variant: "info" });
       } else if (!views?.length) {
         setFetchFailed(true);
         enqueueSnackbar("No View Found, ", { variant: "info" });

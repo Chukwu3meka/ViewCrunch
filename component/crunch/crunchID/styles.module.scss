@@ -3,24 +3,27 @@
 .crunch {
   max-width: 1200px;
   margin: 10px auto;
-  // border: 3px solid red;
-  // font-family: "Fredericka the Great", cursive;
-  // color: var(--dim);
 }
 
 .crunchDescription {
-  margin-bottom: 20px;
+  // border: 3px solid red;
   & > div:nth-of-type(1) {
     position: relative;
-    border-radius: 10px;
+    border-radius: 5px 5px 0 0;
     overflow: hidden;
     height: 300px;
     width: 100%;
   }
-  & > h2:nth-of-type(1) {
-    font-family: "Fredericka the Great", cursive;
-    color: var(--dim);
-    font-size: 1.8em;
+  & > div:nth-of-type(2) {
+    position: relative;
+    margin: -60px auto 10px;
+    width: calc(100% - 10px);
+    & > h2:nth-of-type(1) {
+      font-family: "Fredericka the Great", cursive;
+      color: var(--dim);
+      font-size: 1.8em;
+    }
+    // border: 3px solid red;
   }
   // & > div:nth-of-type(2) {
   //   @include flexCenter(row);

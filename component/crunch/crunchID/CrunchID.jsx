@@ -9,8 +9,10 @@ import Typography from "@mui/material/Typography";
 import { styles } from ".";
 import { shortNumber } from "@utils/clientFunctions";
 import { Footer, NavContainer } from "@component/layout";
+import { Views } from "@component/home";
 
 const CrunchID = ({
+  crunchViews,
   crunchDetails: { title, about, picture, date, totalContributors, totalFollowers, totalModerators, lastPublished },
 }) => (
   <Grid container style={{ maxWidth: "1200px", margin: "auto" }}>
@@ -27,18 +29,21 @@ const CrunchID = ({
           <div>
             <Image src={picture} alt={title} layout="fill" />
           </div>
-          <Typography component="h2">{title}</Typography>
-          <Typography variant="body1">{about}</Typography>
-          <Typography color="burlywood" fontSize={13}>
-            {`
+          <Paper>
+            <Typography component="h2">{title}</Typography>
+            <Typography variant="body1">{about}</Typography>
+            <Typography color="burlywood" fontSize={13}>
+              {`
             Created ${date} ● 
             ${totalFollowers} Follower${totalFollowers > 1 ? "s" : ""} ●
             ${totalContributors} Contributor${totalContributors > 1 ? "s" : ""} ●
             ${totalModerators} Moderator${totalModerators > 1 ? "s" : ""} ●
             Last View Published ${lastPublished}
             `}
-          </Typography>
+            </Typography>
+          </Paper>
         </Paper>
+        <Views {...crunchViews} />
       </div>
       <Footer />
     </Grid>

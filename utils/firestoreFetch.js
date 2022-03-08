@@ -73,7 +73,7 @@ export const fetchHomeData = async () => {
   }
 };
 
-export const fetchViews = async ({ myID, blacklist, lastVisible }) => {
+export const fetchViews = async ({ crunch, myID, blacklist, lastVisible }) => {
   try {
     let bookmarks = null;
 
@@ -99,7 +99,24 @@ export const fetchViews = async ({ myID, blacklist, lastVisible }) => {
     }
 
     const viewsSnapshot = await getDocs(
-      lastVisible
+      lastVisible && crunch
+        ? query(
+            viewRef,
+            where("status.data", "==", "visible"),
+            where("stat.crunch", "==", crunch),
+            orderBy("stat.date", "desc"),
+            startAfter(Timestamp.fromDate(new Date(JSON.parse(lastVisible.date)), lastVisible.title)),
+            limit(5)
+          )
+        : !lastVisible && crunch
+        ? query(
+            viewRef,
+            where("status.data", "==", "visible"),
+            where("stat.crunch", "==", crunch),
+            orderBy("stat.date", "desc"),
+            limit(7)
+          )
+        : lastVisible && !crunch
         ? query(
             viewRef,
             where("status.data", "==", "visible"),
@@ -148,6 +165,7 @@ export const fetchViews = async ({ myID, blacklist, lastVisible }) => {
         }
       }
     } else {
+      console.log("last view");
       lastVisible = "last view";
     }
 
