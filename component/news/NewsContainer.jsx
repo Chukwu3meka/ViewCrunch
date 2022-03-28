@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { News, styles } from ".";
 import { fetcher } from "@utils/clientFunctions";
 import { Footer, NavContainer } from "@component/layout";
-import { Typography } from "@mui/material";
+import { Divider, Typography } from "@mui/material";
 
 const NewsContainer = (props) => {
   const [news, setNews] = useState([]),
@@ -27,7 +27,7 @@ const NewsContainer = (props) => {
       <NavContainer>
         <div className={styles.nav}>
           <Typography variant="h4">NEWS Page</Typography>
-          <Typography fontSize={15}>
+          <Typography fontSize={15} component="div">
             Our NEWS Page is powered by&nbsp;
             <a target="_blank" href="https://rapidapi.com/">
               RAPIDAPI

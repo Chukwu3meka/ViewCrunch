@@ -3,7 +3,7 @@ import ErrorPage from "@component/others/ErrorPage";
 import CrunchesContainer from "@component/crunch/crunches";
 
 const CrunchIndex = ({ myCrunches, otherCrunches, error: { code, title } }) => {
-  if (code) return <ErrorPage statusCode={code} title={title} />;
+  if (code) return <ErrorPage code={code} title={title} />;
 
   return (
     <>

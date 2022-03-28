@@ -5,7 +5,7 @@ import SeoHead from "@component/others/SeoHead";
 import ErrorPage from "@component/others/ErrorPage";
 
 const Index = ({ error, view, author, viewID }) => {
-  if (error) return <ErrorPage statusCode={error.code} title={error.title} />;
+  if (error) return <ErrorPage code={error.code} title={error.title} />;
 
   const router = useRouter();
   const { viewLink } = router.query;

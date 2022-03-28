@@ -1,5 +1,5 @@
 import ErrorPage from "@component/others/ErrorPage";
 
-const Error = ({ statusCode, title }) => <ErrorPage {...{ statusCode, title }} />;
+const Error = ({ code, title }) => <ErrorPage {...{ code, title }} />;
 
 export default Error;

@@ -36,6 +36,7 @@ export const verifyToken = async (refresh) => {
   return token;
 };
 
+// optional: rep if authentication is optional
 export const profileFromRefresh = async ({ refresh, cookie, optional }) => {
   const { auth, firestore } = await require("@utils/firebaseServer");
 

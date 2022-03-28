@@ -4,7 +4,7 @@ import NotificationContainer from "@component/notification";
 import { dateCalculator } from "@utils/clientFunctions";
 
 const NotificationPage = ({ notification, error: { code, title } }) => {
-  if (code) return <ErrorPage statusCode={code} title={title} />;
+  if (code) return <ErrorPage code={code} title={title} />;
 
   return (
     <>

@@ -4,7 +4,7 @@ import BookmarksContainer from "@component/bookmarks";
 import { dateCalculator, range, toId } from "@utils/clientFunctions";
 
 const BookmarksPage = ({ bookmarks, error: { code, title } }) => {
-  if (code) return <ErrorPage statusCode={code} title={title} />;
+  if (code) return <ErrorPage code={code} title={title} />;
 
   return (
     <>
