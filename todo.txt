@@ -1,0 +1,1 @@
+Remove contributors from crunch, as all users have right to publish, moderators have option to review before views are made public, and public views can still be taken down
