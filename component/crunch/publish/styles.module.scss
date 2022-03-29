@@ -1,5 +1,58 @@
 @import "@source/_variables.scss";
 
+.publish {
+  // border: 3px solid red;
+}
+
+#content {
+  margin-top: 10px;
+
+  // border: 1px solid var(--pry);
+  caret-color: color(primary);
+  @include flexCenter(column);
+  justify-content: flex-start;
+  padding: 10px;
+  margin: 0 0 20px;
+  // height: 100% !important;
+  // min-height: 200px;
+  // & > div:last-of-type > * {
+  //   // height: 100% !important;
+  //   align-items: flex-start !important;
+  //   border: 3px solid red;
+  // }
+  border-radius: 5px;
+
+  // height: 1000px;
+  // min-height: calc(100vh - 340px);
+  // border: 3px solid red;
+  & > span {
+    @include flexCenter(column);
+    width: initial;
+    padding: 5px 10px 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    max-width: 400px;
+    & > button {
+      display: none;
+      position: absolute;
+      // cursor: pointer;
+    }
+    & > img {
+      max-width: 100%;
+      border-radius: 5px;
+    }
+    transition-property: transform;
+    transition-timing-function: ease-in-out;
+    transition-delay: 0.2s;
+  }
+  & > span:hover {
+    & > button {
+      display: initial;
+    }
+    transform: scale(1.06);
+  }
+}
+
 .crunchesTitle {
   font-family: "Fredericka the Great", cursive;
   color: var(--dim);
