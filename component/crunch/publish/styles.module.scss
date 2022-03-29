@@ -1,0 +1,155 @@
+@import "@source/_variables.scss";
+
+.crunchesTitle {
+  font-family: "Fredericka the Great", cursive;
+  color: var(--dim);
+}
+
+.crunches {
+  margin: 10px auto;
+  & > a {
+    margin-bottom: 10px;
+    @include flexCenter(row, initial);
+    max-width: 300px;
+    justify-content: flex-start;
+    align-items: stretch;
+    & > div:first-of-type {
+      height: 40px;
+      min-width: 40px;
+      width: 40px;
+      margin: auto;
+      margin-right: 5px;
+      position: relative;
+      border-radius: 50%;
+      overflow: hidden;
+    }
+
+    & > div:last-of-type {
+      @include flexCenter(column, initial);
+      align-items: flex-start;
+      justify-content: space-between;
+      & > p {
+        margin: 0;
+        @include flexCenter(row, initial);
+        h2 {
+          font-family: "Fredericka the Great", cursive;
+          text-align: left;
+          display: -webkit-box;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+      }
+
+      & > summary {
+        text-align: left;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+    }
+  }
+  & > div {
+    @include flexCenter(row);
+  }
+}
+
+.otherCrunchesContainer {
+  height: 300px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -ms-overflow-style: none;
+  white-space: nowrap;
+  padding: 5px;
+}
+
+.otherCrunchesContainer::-webkit-scrollbar {
+  display: none;
+}
+
+.otherCrunches {
+  // height: 100%;
+  display: inline-block;
+  // border: 3px solid blue;
+  margin-right: 10px;
+  max-width: 270px;
+  overflow: hidden;
+  & > a {
+    @include flexCenter(column, initial);
+    margin-bottom: 10px;
+    width: 100%;
+    & > div:first-of-type {
+      height: 130px;
+      width: 100%;
+      margin: auto;
+      position: relative;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    & > p {
+      margin: 10px 0 5px;
+      @include flexCenter(row, initial);
+      // justify-content: flex-start;
+      align-self: flex-start;
+      h2 {
+        font-family: "Fredericka the Great", cursive;
+        text-align: left;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+    }
+
+    & > summary {
+      width: 100%;
+      white-space: normal;
+      text-align: left;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  }
+  & > div {
+    @include flexCenter(row);
+  }
+}
+
+.notification {
+  padding: 10px;
+  margin: 20px auto;
+  max-width: 700px;
+  & > div {
+    margin: 5px auto;
+    @include flexCenter(row);
+    justify-content: space-between;
+    & > div {
+      @include flexCenter(column);
+      align-items: flex-start;
+      & > span {
+        align-self: flex-end;
+        background: green;
+        height: 10px;
+        width: 10px;
+        border-radius: 50%;
+        margin: -10px -10px 0 0;
+      }
+      & > p:last-of-type {
+        text-align: left;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+    }
+  }
+  & > div:hover {
+    background: var(--pry);
+  }
+}
+
+.unread {
+  border-left: 1px solid color(primary);
+}
