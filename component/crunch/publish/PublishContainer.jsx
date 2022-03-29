@@ -3,12 +3,11 @@ import Joi from "joi";
 import { useSnackbar } from "notistack";
 import { useState } from "react";
 
-import { Publish } from ".";
+import { PreviewContainer, Publish } from ".";
 
 const PublishContainer = (props) => {
   const [title, setTitle] = useState("");
-  const [content, setcontent] = useState("second");
-  // const [titleErr, setTitleErr] = useState(false);
+  const [displayPreview, setDisplayPreview] = useState(false);
 
   const titleChangeHandler = (e) => setTitle(e.target.value);
 
@@ -61,43 +60,57 @@ const PublishContainer = (props) => {
     }
   };
 
+  const previewHandler = () => {
+    setLoading(true);
+    // console.log("publish");
+    setDisplayPreview(true);
+    setLoading(false);
+  };
+
   return (
-    <Publish
-      //
+    <>
+      (
+      <Publish
+        //
 
-      {...{
-        // title,
-        // crunch,
-        // classes,
-        // loading,
-        // preview,
+        {...{
+          // title,
+          // crunch,
+          // classes,
+          // loading,
+          // preview,
 
-        // contentArray,contentText,setContentText
+          // contentArray,contentText,setContentText
 
-        // keywords,
-        // scrollRef,
-        // moderator,
-        // setPreview,
-        // scroll2Ref,
-        contentText,
-        // description,
-        imageHandler,
-        // titleHandler,
-        contentArray,
-        // retouchWarning,
-        setContentText,
-        // previewHandler,
-        setContentArray,
-        // keywordsHandler,
-        // setRetouchWarning,
-        // descriptionHandler,
-        formatContentArray,
-        // oldContent: viewToBeModified.content,
-      }}
-      titleChangeHandler={titleChangeHandler}
-      title={title}
-      // content={content}
-    />
+          // keywords,
+          // scrollRef,
+          // moderator,
+          // setPreview,
+          // scroll2Ref,
+          contentText,
+          // description,
+          imageHandler,
+          // titleHandler,
+          contentArray,
+          // retouchWarning,
+          setContentText,
+          // previewHandler,
+          setContentArray,
+          // keywordsHandler,
+          // setRetouchWarning,
+          previewHandler,
+          loading,
+          // descriptionHandler,
+          formatContentArray,
+          // oldContent: viewToBeModified.content,
+        }}
+        titleChangeHandler={titleChangeHandler}
+        title={title}
+        // content={content}
+      />
+      )
+      <PreviewContainer displayPreview={displayPreview} setDisplayPreview={setDisplayPreview} view={{ title }} />
+    </>
   );
 };
 

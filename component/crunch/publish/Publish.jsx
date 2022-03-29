@@ -4,6 +4,11 @@ import { Box, Grid, Input, TextField, Tooltip, Typography } from "@mui/material"
 import AddPhotoIcon from "@mui/icons-material/AddAPhoto";
 import Fab from "@mui/material/Fab";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import LoadingButton from "@mui/lab/LoadingButton";
+import PublishIcon from "@mui/icons-material/Publish";
+
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
 
 const Publish = ({
   //
@@ -14,7 +19,8 @@ const Publish = ({
   contentArray,
   contentText,
   setContentText,
-  content,
+  previewHandler,
+  loading,
   imageHandler,
 }) => (
   <Grid container>
@@ -84,14 +90,34 @@ const Publish = ({
               sx={{
                 fontSize: "1.1em",
                 caretColor: "#1197c0",
+                // minHeight: 100,
+                // minHeight: 100,
+                paddingTop: 4,
               }}
               placeholder="Tell the world your view..."
             />
           )}
         </div>
-      </Box>
 
-      {/* <FixedIcon icon="publish" clickHandler={{ image: imageHandler, down: () => scroll2Ref("end"), up: () => scroll2Ref("start") }} /> */}
+        <LoadingButton
+          sx={{ margin: "auto", display: "flex" }}
+          size="small"
+          onClick={previewHandler}
+          endIcon={<PublishIcon />}
+          loading={loading}
+          loadingPosition="end"
+          variant="contained">
+          Publish
+        </LoadingButton>
+      </Box>
+      <Alert variant="standard" severity="info" color="warning" sx={{ mt: 3, mb: 1 }}>
+        <AlertTitle>Title Info</AlertTitle>
+        Title should be within the range of 15 to 100 characters, Title supports alphanumeric characters
+      </Alert>
+      <Alert variant="standard" severity="info" color="warning">
+        <AlertTitle>Content Info</AlertTitle>
+        Article should have at least 100 words or 3 images and at most 10,000 words or 30MB of photos
+      </Alert>
 
       <Fab color="primary" aria-label="add-image" sx={{ position: "fixed", bottom: 16, right: 16, overflow: "hidden" }}>
         <input

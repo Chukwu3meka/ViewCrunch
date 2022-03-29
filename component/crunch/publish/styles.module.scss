@@ -14,7 +14,7 @@
   padding: 10px;
   margin: 0 0 20px;
   // height: 100% !important;
-  // min-height: 200px;
+  min-height: 400px;
   // & > div:last-of-type > * {
   //   // height: 100% !important;
   //   align-items: flex-start !important;
@@ -31,7 +31,7 @@
     padding: 5px 10px 10px;
     margin: 10px 0;
     border-radius: 5px;
-    max-width: 400px;
+    // max-width: 400px;
     & > button {
       display: none;
       position: absolute;
