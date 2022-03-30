@@ -1,7 +1,13 @@
 @import "@source/_variables.scss";
 
-.publish {
-  // border: 3px solid red;
+.preview {
+  figure {
+    position: relative;
+    width: 300px;
+    height: 250px;
+    border: 3px solid red;
+  }
+  border: 3px solid red;
 }
 
 #content {

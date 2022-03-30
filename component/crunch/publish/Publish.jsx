@@ -1,6 +1,6 @@
 import { styles } from ".";
 import { NavContainer } from "@component/layout";
-import { Box, Grid, Input, TextField, Tooltip, Typography } from "@mui/material";
+import { Box, Button, Grid, Input, TextField, Tooltip, Typography } from "@mui/material";
 import AddPhotoIcon from "@mui/icons-material/AddAPhoto";
 import Fab from "@mui/material/Fab";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
@@ -99,25 +99,18 @@ const Publish = ({
           )}
         </div>
 
-        <LoadingButton
-          sx={{ margin: "auto", display: "flex" }}
+        <Button size="small" onClick={previewHandler} color="success" variant="contained">
+          Publish
+        </Button>
+        {/* <LoadingButton
           size="small"
           onClick={previewHandler}
-          endIcon={<PublishIcon />}
           loading={loading}
-          loadingPosition="end"
+          color="success"
           variant="contained">
           Publish
-        </LoadingButton>
+        </LoadingButton> */}
       </Box>
-      <Alert variant="standard" severity="info" color="warning" sx={{ mt: 3, mb: 1 }}>
-        <AlertTitle>Title Info</AlertTitle>
-        Title should be within the range of 15 to 100 characters, Title supports alphanumeric characters
-      </Alert>
-      <Alert variant="standard" severity="info" color="warning">
-        <AlertTitle>Content Info</AlertTitle>
-        Article should have at least 100 words or 3 images and at most 10,000 words or 30MB of photos
-      </Alert>
 
       <Fab color="primary" aria-label="add-image" sx={{ position: "fixed", bottom: 16, right: 16, overflow: "hidden" }}>
         <input
