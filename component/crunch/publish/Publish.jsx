@@ -1,5 +1,5 @@
 import { styles } from ".";
-import { NavContainer } from "@component/layout";
+import { Footer, NavContainer } from "@component/layout";
 import { Box, Button, Grid, Input, TextField, Tooltip, Typography } from "@mui/material";
 import AddPhotoIcon from "@mui/icons-material/AddAPhoto";
 import Fab from "@mui/material/Fab";
@@ -14,8 +14,8 @@ const Publish = ({
   //
   titleChangeHandler,
   title,
-  setTags,
-  tags,
+  setKeywords,
+  keywords,
   formatContentArray,
   setContentArray,
   contentArray,
@@ -98,8 +98,8 @@ const Publish = ({
           )}
         </div>
 
-        <Typography variant="subtitle1" fontSize={14} mt={3}>
-          Add tags, so readers know what your view is about
+        <Typography variant="subtitle1" fontSize={14} my={2}>
+          Add keywords, so readers know what your view is about
         </Typography>
 
         <TextField
@@ -107,16 +107,16 @@ const Publish = ({
           fullWidth
           // error={keywords.length && !!keywordsHandler(keywords) ? true : false}
           label="Keywords"
-          value={tags}
+          value={keywords}
           variant="outlined"
           // multiline
-          label="Add or change tags (up to 5) separated by comma,"
-          onChange={(e) => setTags(e.target.value)}
+          label="Add or change keywords (up to 5) separated by comma,"
+          onChange={(e) => setKeywords(e.target.value)}
           // onChange={(e) => keywordsHandler(e.target.value.trimStart().replace(/\s+/g, " "))}
         />
 
         <Button size="small" onClick={previewHandler} color="success" variant="contained" sx={{ mt: 2 }}>
-          Publish
+          preview
         </Button>
         {/* <LoadingButton
           size="small"
@@ -147,6 +147,8 @@ const Publish = ({
 
         <AddPhotoIcon />
       </Fab>
+
+      <Footer />
     </Grid>
   </Grid>
 );

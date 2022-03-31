@@ -1,3 +1,4 @@
+import { Footer } from "@component/layout";
 import { imageObject } from "@utils/clientFunctions";
 import Joi from "joi";
 import { useSnackbar } from "notistack";
@@ -8,13 +9,11 @@ import { PreviewContainer, Publish } from ".";
 const PublishContainer = (props) => {
   const [title, setTitle] = useState("");
 
-  const [tags, setTags] = useState("");
-
   const [displayPreview, setDisplayPreview] = useState(false);
 
   const titleChangeHandler = (e) => setTitle(e.target.value);
 
-  const { viewToBeModified = {}, crunch, published, moderator } = props,
+  const { viewToBeModified = {}, crunch, published, moderator, crunches, displayName } = props,
     { enqueueSnackbar } = useSnackbar(),
     [loading, setLoading] = useState(false),
     [preview, setPreview] = useState(false),
@@ -72,7 +71,6 @@ const PublishContainer = (props) => {
 
   return (
     <>
-      (
       <Publish
         //
 
@@ -106,8 +104,8 @@ const PublishContainer = (props) => {
           // descriptionHandler,
           formatContentArray,
 
-          setTags,
-          tags,
+          setKeywords,
+          keywords,
 
           // oldContent: viewToBeModified.content,
         }}
@@ -115,13 +113,14 @@ const PublishContainer = (props) => {
         title={title}
         // content={content}
       />
-      )
       <PreviewContainer
         displayPreview={displayPreview}
         setDisplayPreview={setDisplayPreview}
+        crunches={crunches}
+        displayName={displayName}
         view={{
           title,
-          tags,
+          keywords,
 
           content: [...contentArray, contentText],
         }}

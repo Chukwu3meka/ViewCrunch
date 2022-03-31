@@ -27,6 +27,9 @@ import CloseIcon from "@mui/icons-material/Close";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 
+import LoadingButton from "@mui/lab/LoadingButton";
+import PublishIcon from "@mui/icons-material/Publish";
+
 import Slide from "@mui/material/Slide";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
@@ -41,7 +44,18 @@ const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const Preview = ({ displayPreview, hidePreview, view, publishingOption, setPublishTo, publishTo }) => (
+const Preview = ({
+  displayPreview,
+  hidePreview,
+  view,
+  publishingOption,
+  setPublishTo,
+  publishTo,
+  loading,
+  publishHandler,
+  description,
+  descriptionChangeHandler,
+}) => (
   <Dialog fullScreen open={displayPreview} onClose={hidePreview} TransitionComponent={Transition}>
     <Grid maxWidth={900} container margin="auto" padding={1}>
       <Grid item xs={12} sm={12} md={12}>
@@ -66,17 +80,19 @@ const Preview = ({ displayPreview, hidePreview, view, publishingOption, setPubli
         <Divider />
 
         <TextField
+          maxRows={3}
           color="primary"
           fullWidth
-          // error={keywords.length && !!keywordsHandler(keywords) ? true : false}
-          placeholder="View Description"
           multiline
-          // value={keywords}
+          value={description}
+          placeholder="d"
           variant="standard"
-          // multiline
           placeholder="Write a preview description"
-          // onChange={(e) => keywordsHandler(e.target.value.trimStart().replace(/\s+/g, " "))}
+          onChange={descriptionChangeHandler}
         />
+        <Typography variant="body2" color="primary" fontSize={12} textAlign="right" marginTop={-0.6}>
+          {description.length}/158
+        </Typography>
         <Typography component="div" variant="subtitle1" fontSize={14}>
           <b>Note: </b>
           Changes here will affect how your view appears in public places like ViewCrunch’s homepage and in subscribers’ inboxes — not
@@ -90,26 +106,35 @@ const Preview = ({ displayPreview, hidePreview, view, publishingOption, setPubli
         </Typography>
         <Select options={publishingOption} value={publishTo} setValue={setPublishTo} />
 
-        {view.tags ? (
+        {view.keywords ? (
           <>
             <Typography variant="subtitle1" fontSize={14} mt={3}>
-              Tags you've added for readers to know about your view
+              Keywords you've added for readers to know about your view
             </Typography>
 
             <Stack direction="row" spacing={1}>
-              {view.tags?.split(",")?.map((tag) => (
-                <Chip key={tag} label={tag} />
+              {view.keywords?.split(",")?.map((tag) => (
+                <Chip key={tag} label={tag} color="info" />
               ))}
             </Stack>
           </>
         ) : (
           <Typography variant="subtitle1" fontSize={14} mt={3}>
-            Tags improve visibility for readers when they search and it also helps them know what your view is all about
+            Keywords improve visibility for readers when they search and it also helps them know what your view is all about
           </Typography>
         )}
-        <Button sx={{ mt: 1 }} size="small" onClick={() => {}} color="success" variant="contained">
+
+        <LoadingButton
+          sx={{ mt: 3 }}
+          size="small"
+          onClick={publishHandler}
+          color="success"
+          variant="contained"
+          loading={loading}
+          loadingPosition="start"
+          startIcon={<PublishIcon />}>
           Publish
-        </Button>
+        </LoadingButton>
       </Grid>
 
       <Grid item xs={12} sm={12} md={12}>

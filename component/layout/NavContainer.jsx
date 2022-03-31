@@ -40,7 +40,7 @@ const NavbarContainer = (props) => {
     ["Bookmarks", "/bookmarks", <TimelineIcon />],
     ["Profile", `/profile`, <AssignmentIndIcon />],
     ["Organization", "/organization", <PublicIcon />],
-    ["Write", `/crunch/write`, <WriteIcon />],
+    ["Write", `/crunch/publish`, <WriteIcon />],
   ];
 
   const currentThemeHandler = () => {

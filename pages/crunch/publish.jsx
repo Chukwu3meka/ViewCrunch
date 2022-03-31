@@ -2,13 +2,13 @@ import PublishContainer from "@component/crunch/publish";
 
 import ErrorPage from "@component/others/ErrorPage";
 
-const Publish = ({ crunches, error: { code, title } }) => {
+const Publish = ({ crunches, displayName, error: { code, title } }) => {
   if (code) return <ErrorPage code={code} title={title} />;
 
   return (
     <>
       {/* SEO page */}
-      <PublishContainer crunches={crunches} />
+      <PublishContainer crunches={crunches} displayName={displayName} />
     </>
   );
 };
@@ -25,11 +25,12 @@ export const getServerSideProps = async (ctx) => {
     const {
       crunches,
       status: { suspended },
+      details: { displayName },
     } = profile;
 
     if (suspended) throw 1007; //check if profile is suspended
 
-    return { props: { error: {}, crunches } };
+    return { props: { error: {}, crunches, displayName } };
   } catch (error) {
     const { code, title } = typeof error === "number" ? errorCodes[error] : { code: 400, title: "Internal Server Error" };
 
