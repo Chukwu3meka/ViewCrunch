@@ -7,6 +7,9 @@ import { PreviewContainer, Publish } from ".";
 
 const PublishContainer = (props) => {
   const [title, setTitle] = useState("");
+
+  const [tags, setTags] = useState("");
+
   const [displayPreview, setDisplayPreview] = useState(false);
 
   const titleChangeHandler = (e) => setTitle(e.target.value);
@@ -102,6 +105,10 @@ const PublishContainer = (props) => {
           loading,
           // descriptionHandler,
           formatContentArray,
+
+          setTags,
+          tags,
+
           // oldContent: viewToBeModified.content,
         }}
         titleChangeHandler={titleChangeHandler}
@@ -109,7 +116,16 @@ const PublishContainer = (props) => {
         // content={content}
       />
       )
-      <PreviewContainer displayPreview={displayPreview} setDisplayPreview={setDisplayPreview} view={{ title }} />
+      <PreviewContainer
+        displayPreview={displayPreview}
+        setDisplayPreview={setDisplayPreview}
+        view={{
+          title,
+          tags,
+
+          content: [...contentArray, contentText],
+        }}
+      />
     </>
   );
 };

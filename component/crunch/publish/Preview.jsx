@@ -23,6 +23,10 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
+
+import Chip from "@mui/material/Chip";
+import Stack from "@mui/material/Stack";
+
 import Slide from "@mui/material/Slide";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
@@ -40,10 +44,12 @@ const Transition = forwardRef(function Transition(props, ref) {
 const Preview = ({ displayPreview, hidePreview, view, publishingOption, setPublishTo, publishTo }) => (
   <Dialog fullScreen open={displayPreview} onClose={hidePreview} TransitionComponent={Transition}>
     <Grid maxWidth={900} container margin="auto" padding={1}>
-      <Grid item xs={12} sm={12}>
-        <IconButton onClick={hidePreview} aria-label="close">
-          <CloseIcon color="secondary" />
-        </IconButton>
+      <Grid item xs={12} sm={12} md={12}>
+        <Box width={10} ml="auto">
+          <IconButton onClick={hidePreview} aria-label="close" edge="end">
+            <CloseIcon color="secondary" />
+          </IconButton>
+        </Box>
       </Grid>
       <Grid item xs={12} sm={12} md={6}>
         <Typography variant="body2" fontSize={18}>
@@ -68,7 +74,7 @@ const Preview = ({ displayPreview, hidePreview, view, publishingOption, setPubli
           // value={keywords}
           variant="standard"
           // multiline
-          placeholder="Add or change tags (up to 5) separated by comma,"
+          placeholder="Write a preview description"
           // onChange={(e) => keywordsHandler(e.target.value.trimStart().replace(/\s+/g, " "))}
         />
         <Typography component="div" variant="subtitle1" fontSize={14}>
@@ -84,39 +90,32 @@ const Preview = ({ displayPreview, hidePreview, view, publishingOption, setPubli
         </Typography>
         <Select options={publishingOption} value={publishTo} setValue={setPublishTo} />
 
-        <Typography variant="subtitle1" fontSize={14} mt={3}>
-          Add tags, so readers know what your view is about
-        </Typography>
+        {view.tags ? (
+          <>
+            <Typography variant="subtitle1" fontSize={14} mt={3}>
+              Tags you've added for readers to know about your view
+            </Typography>
 
-        <TextField
-          color="primary"
-          fullWidth
-          // error={keywords.length && !!keywordsHandler(keywords) ? true : false}
-          label="Keywords"
-          // value={keywords}
-          variant="outlined"
-          // multiline
-          label="Add or change tags (up to 5) separated by comma,"
-          // onChange={(e) => keywordsHandler(e.target.value.trimStart().replace(/\s+/g, " "))}
-        />
+            <Stack direction="row" spacing={1}>
+              {view.tags?.split(",")?.map((tag) => (
+                <Chip key={tag} label={tag} />
+              ))}
+            </Stack>
+          </>
+        ) : (
+          <Typography variant="subtitle1" fontSize={14} mt={3}>
+            Tags improve visibility for readers when they search and it also helps them know what your view is all about
+          </Typography>
+        )}
         <Button sx={{ mt: 1 }} size="small" onClick={() => {}} color="success" variant="contained">
           Publish
         </Button>
       </Grid>
-    </Grid>
 
-    <Box className={styles.preview} display="flex" overflow="hidden">
-      <Box maxWidth="70%" width="100%"></Box>
-    </Box>
-    {/* <Endpoint
-      ratingHover={ratingHover}
-      setRatingHover={setRatingHover}
-      loading={loading}
-      endpoint={endpoint}
-      activeTab={activeTab}
-      handleTabChange={handleTabChange}
-      copyToCLipboardHandler={copyToCLipboardHandler}
-    /> */}
+      <Grid item xs={12} sm={12} md={12}>
+        <article className={styles.preview} dangerouslySetInnerHTML={{ __html: view.content }} />
+      </Grid>
+    </Grid>
   </Dialog>
 );
 

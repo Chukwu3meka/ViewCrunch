@@ -14,6 +14,8 @@ const Publish = ({
   //
   titleChangeHandler,
   title,
+  setTags,
+  tags,
   formatContentArray,
   setContentArray,
   contentArray,
@@ -90,16 +92,30 @@ const Publish = ({
               sx={{
                 fontSize: "1.1em",
                 caretColor: "#1197c0",
-                // minHeight: 100,
-                // minHeight: 100,
-                paddingTop: 4,
               }}
               placeholder="Tell the world your view..."
             />
           )}
         </div>
 
-        <Button size="small" onClick={previewHandler} color="success" variant="contained">
+        <Typography variant="subtitle1" fontSize={14} mt={3}>
+          Add tags, so readers know what your view is about
+        </Typography>
+
+        <TextField
+          color="primary"
+          fullWidth
+          // error={keywords.length && !!keywordsHandler(keywords) ? true : false}
+          label="Keywords"
+          value={tags}
+          variant="outlined"
+          // multiline
+          label="Add or change tags (up to 5) separated by comma,"
+          onChange={(e) => setTags(e.target.value)}
+          // onChange={(e) => keywordsHandler(e.target.value.trimStart().replace(/\s+/g, " "))}
+        />
+
+        <Button size="small" onClick={previewHandler} color="success" variant="contained" sx={{ mt: 2 }}>
           Publish
         </Button>
         {/* <LoadingButton

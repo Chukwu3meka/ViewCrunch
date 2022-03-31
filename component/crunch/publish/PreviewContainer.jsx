@@ -8,6 +8,14 @@ const PreviewContainer = ({ displayPreview, setDisplayPreview, view }) => {
 
   const publishingOption = ["username", "vdvd", "ASdsad", "Sadasdas", "sfdaaaaaaaaaaaaaaaffffffffffffffffasdffsd"];
 
+  const content = view.content
+    .map((x) => {
+      if (typeof x === "string") return x;
+      if (typeof x === "object") return `<Image src='${x.image}' alt='${view.title}' layout="fill" />`;
+    })
+    .flat(Infinity)
+    .join("");
+
   return (
     <Preview
       setPublishTo={setPublishTo}
@@ -15,7 +23,7 @@ const PreviewContainer = ({ displayPreview, setDisplayPreview, view }) => {
       publishTo={publishTo}
       displayPreview={displayPreview}
       hidePreview={hidePreview}
-      view={view}
+      view={{ ...view, content }}
     />
   );
 };
