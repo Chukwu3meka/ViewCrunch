@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Preview } from ".";
 import Joi from "joi";
 import { useSnackbar } from "notistack";
+import { fetcher } from "@utils/clientFunctions";
 
 const PreviewContainer = ({ displayPreview, setDisplayPreview, view, crunches, myID, displayName }) => {
   const { enqueueSnackbar } = useSnackbar();
@@ -24,7 +25,7 @@ const PreviewContainer = ({ displayPreview, setDisplayPreview, view, crunches, m
 
   const publishingOption = [displayName, ...crunches];
 
-  const publishHandler = () => {
+  const publishHandler = async () => {
     setLoading(true);
 
     const title = view.title || false;
@@ -34,42 +35,52 @@ const PreviewContainer = ({ displayPreview, setDisplayPreview, view, crunches, m
 
     // description, keywords, title
     const schema = Joi.object({
-      title: Joi.string()
-        // If you omit { invert: true } option, it will require you to have all regex
-        .regex(/^[,. \-a-z0-9]+$/, { invert: true })
-        .min(3)
-        .max(150)
-        .required()
-        .trim(),
-      description: Joi.string()
-        .regex(/^[,. \-a-z0-9]+$/)
-        .min(30)
-        .max(158)
-        .required()
-        .trim(),
+      title: Joi.string().min(3).max(150).required().trim(),
+      description: Joi.string().max(158).trim(),
       keywords: Joi.array().items(
         Joi.string()
-          .regex(/^[a-z]+$/)
           .min(3)
-          .max(10)
+          .max(20)
           .trim()
+          .error((errors) => {
+            errors.forEach((err) => {
+              switch (err.code) {
+                case "any.empty":
+                  err.message = `Tag should not be empty!`;
+                  break;
+                case "string.min":
+                  err.message = `Tags (${err.value}) should have at least ${err.local.limit} characters!`;
+                  break;
+                case "string.max":
+                  err.message = `Tags (${err.value}) should have at most ${err.local.limit} characters!`;
+                  break;
+                default:
+                  break;
+              }
+            });
+            return errors;
+          })
       ),
-
       content: Joi.string().min(30).required().trim(),
     });
 
     const { error, value } = schema.validate({ title, keywords, description, content: content.join() });
 
-    // const { link } = await fetcher(
-    //   oldContent ? "/api/crunch/retouchView" : "/api/crunch/publishView",
-    //   JSON.stringify({ description, profile, title, content, keywords, crunch, moderator, oldContent: oldContent || false })
-    // );
-
     if (error) {
-      enqueueSnackbar(error.details[0].message, { variant: "error" });
+      // enqueueSnackbar(error.details[0].message, { variant: "error" });
+      enqueueSnackbar(error.stack, { variant: "error" });
       setLoading(false);
     } else {
+      const link = await fetcher(
+        "/api/crunch/publish",
+        JSON.stringify({ title, keywords, description, content, myID, crunch: publishTo === displayName ? "community" : publishTo })
+      );
+
       setLoading(false);
+
+      // redirect author to view if view was published succesfully
+      if (link) return router.push(link);
+      enqueueSnackbar("Error Occured", { variant: "error" });
     }
   };
 

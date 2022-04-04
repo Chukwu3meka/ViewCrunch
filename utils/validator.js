@@ -8,17 +8,17 @@ const sanitize = (value) => {
 const validate = (valueType, value) => {
   value = value.trim();
   switch (valueType) {
+    case "title": {
+      let status = /^(?!.*\.\.)(?!.*\.$)[^\W][\w\s\-:()]{12,151}$/gim.test(value);
+      if (status && value.split(" ").length >= 3 && value.split(" ").length <= 20) return value;
+      return undefined;
+    }
     case "handle": {
       const handle = value?.startsWith("@") ? value.substr(1).toLowerCase() : "";
       // const status = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.\s@!~#^$*']{2,14}$/gim.test(handle);
       // const status = /^(?!.*\.\.)(?!.*\.$)[^\W][\w]{2,14}$/gim.test(handle);
       const status = /^[a-zA-Z0-9_]{3,13}$/gim.test(handle);
       if (status && !["favourite", "news", "notification", "crunch", "info", "handle", "viewcrunch"].includes(handle)) return value;
-      return undefined;
-    }
-    case "title": {
-      let status = /^(?!.*\.\.)(?!.*\.$)[^\W][\w\s\-:()]{12,151}$/gim.test(value);
-      if (status && value.split(" ").length >= 3 && value.split(" ").length <= 20) return value;
       return undefined;
     }
     case "description": {
@@ -63,7 +63,8 @@ const validate = (valueType, value) => {
     case "email": {
       if (!value) return null;
       value = value.toLowerCase();
-      const reg = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[A-Z]{2}|com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum)\b/;
+      const reg =
+        /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[A-Z]{2}|com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum)\b/;
       return (reg.test(value) && value.split("@")[0].length >= 5 && value.split("@")[0].length <= 30) || null;
     }
     case "comment": {
