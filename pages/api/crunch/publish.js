@@ -1,102 +1,109 @@
-import { toId } from "@utils/clientFunctions";
-import firebaseAdmin from "@utils/firebaseServer";
+import { time2read, toId } from "@utils/clientFunctions";
+import { firestore } from "@utils/firebaseServer";
 import { uploadToFirestorage } from "@utils/serverFunctions";
+// import firebaseAdmin from "@utils/firebaseServer";
+// import { uploadToFirestorage } from "@utils/serverFunctions";
 
-const publishHandler = async ({ profile: { myHandle }, title, description, content, keywords, crunch, moderator }) => {
-  const images = [],
-    viewID = toId(myHandle, title),
-    viewURL = `${myHandle}/${toId(title)}`;
+import { FieldValue, Timestamp } from "firebase-admin/firestore";
 
-  const newView = {
-    title: {
-      data: title,
-      length: title.split(" ").length,
-      path: `/${viewURL}`,
-    },
-    date: firebaseAdmin.firestore.Timestamp.now(),
-    author: myHandle,
+const publishHandler = async ({ title, keywords, description, content, myID, crunch }) => {
+  const view = {
     comments: [],
-    upvote: [],
-    downvote: [],
-    keywords,
-    description,
-    crunch: [crunch],
-    visible: {
-      moderator: myHandle,
-      date: firebaseAdmin.firestore.Timestamp.now(),
-      status: moderator ? true : false,
-      data: moderator ? "published by a moderator" : "just published",
+    content,
+    stat: {
+      author: myID,
+      crunch,
+      date: Timestamp.now(),
+      image: null,
+      description,
+      keywords,
+      readTime: time2read(content.join()),
+      viewLink: null,
+    },
+    status: {
+      visible: false,
+      date: Timestamp.now(),
+      description: crunch === "community" ? "Published in my name" : "Awaiting Moderator approval",
+      moderator: null,
+    },
+    title,
+    votes: {
+      downvote: [],
+      total: 0,
+      upvote: [],
     },
   };
 
-  for (const x of content) {
-    if (typeof x === "object") {
-      images.push(
-        await uploadToFirestorage({
-          image: x.image,
-          imageTitle: `${title}~${content.indexOf(x) + 1}.png`,
-          myHandle,
-        })
-      );
-    }
-  }
-
-  newView.pryImage = images[0] || `/images/no-image.webp`;
-  newView.content = [...content]
-    .map((x) => {
-      if (typeof x === "string") return x;
-      if (typeof x === "object") return `<Image src="${images.shift()}" alt="${title}" layout="fill" />`;
-    })
-    .flat(Infinity)
-    .join("\n");
-
-  await firebaseAdmin
-    .firestore()
+  return await firestore
     .collection("view")
-    .doc(viewID)
-    .set(newView)
-    .then(async () => {
-      await firebaseAdmin
-        .firestore()
-        .collection("profile")
-        .doc(myHandle)
-        .update({
-          [`published.${viewID}`]: {
-            title: newView.title.data,
-            date: newView.date,
-            pryImage: newView.pryImage,
-            upvote: 0,
-            downvote: 0,
-          },
-        })
-        .then(() => {})
-        .catch((error) => {
-          throw new TypeError(error);
-        });
-    })
-    .catch((error) => {
-      throw new TypeError(error);
-    });
+    .add(view)
+    .then(async (x) => {
+      const { id: viewId } = x;
 
-  return `/${viewURL}`;
+      // add images to storage and get their url
+      const pathToImages = [];
+      for (const [index, x] of content.entries()) {
+        if (typeof x === "object") {
+          const imageURL = await uploadToFirestorage({
+            myID,
+            image: x.image,
+            viewId: `${viewId}_${index}.png`,
+          });
+
+          pathToImages.push(imageURL);
+        }
+      }
+
+      // update main values in view
+      await firestore
+        .collection("view")
+        .doc(viewId)
+        .update({
+          "stat.image": pathToImages[0] || "no-image-view.png",
+          "status.visible": crunch === "community" ? true : false,
+          "status.moderator": crunch === "community" ? "Community" : null,
+          "stat.viewLink": toId(`/view/${title}-${viewId}`, false),
+          content: content
+            .map((x, index) => {
+              if (typeof x === "string") return x;
+              if (typeof x === "object") return `<Image src="${pathToImages.shift()}" alt="${title} ~ ${index}" layout="fill" />`;
+            })
+            .flat(Infinity)
+            .join("\n"),
+        })
+        .catch((err) => {
+          throw "Unable to update main view content";
+        });
+
+      return updatedViewLink;
+    })
+
+    .catch(() => {
+      throw "Unable to publish view";
+    });
 };
 
 export default async (req, res) => {
   try {
     const { title, keywords, description, content, myID, crunch } = req.body;
 
-    const link = await publishHandler({ profile, title, description, content, keywords, crunch, moderator });
+    const link = await publishHandler({ title, keywords, description, content, myID, crunch });
     return res.status(200).json({ link });
   } catch (error) {
-    // console.log("error", error);
-    return res.status(401).json({ link: undefined });
+    let errMsg;
+    switch (error) {
+      case "suspended":
+        errMsg = "Author's account suspended";
+        break;
+      default:
+        errMsg = "An Error occured";
+        break;
+    }
+
+    console.log("error", error);
+    return res.status(401).json({ errMsg });
   }
 };
 
-export const config = {
-  api: {
-    bodyParser: {
-      sizeLimit: "30mb",
-    },
-  },
-};
+// limit size of payload
+export const config = { api: { bodyParser: { sizeLimit: "30mb" } } };

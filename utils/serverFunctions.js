@@ -1,3 +1,4 @@
+import { bucket } from "@utils/firebaseServer";
 import { dateCalculator } from "./clientFunctions";
 
 const { v4 } = require("uuid");
@@ -94,35 +95,37 @@ export const profileFromRefresh = async ({ refresh, cookie, optional }) => {
   return profile;
 };
 
-export const uploadToFirestorage = async ({ image, myHandle, imageTitle }) => {
-  // try {
-  //   if (!imageTitle || !myHandle || !image) throw new TypeError("incomplete parameters");
-  //   const accessToken = v4(),
-  //     base64 = image.replace(/\s/g, "").split(";base64,").pop(),
-  //     imageBuffer = new Buffer.from(base64, "base64");
-  //   return await bucket.file(`images/${myHandle}/${imageTitle}`).save(
-  //     imageBuffer,
-  //     {
-  //       metadata: {
-  //         contentType: "image/png",
-  //         metadata: {
-  //           firebaseStorageDownloadTokens: accessToken,
-  //         },
-  //       },
-  //     },
-  //     (err) => {
-  //       if (err) {
-  //         throw new TypeError(`uploadImages ${err}`);
-  //       } else {
-  //         return `https://firebasestorage.googleapis.com/v0/b/${process.env.NEXT_PUBLIC_STOR}/o/${encodeURIComponent(
-  //           `images/${myHandle}/${imageTitle}`
-  //         )}?alt=media&token=${accessToken}`;
-  //       }
-  //     }
-  //   );
-  // } catch (err) {
-  //   // console.log({ err });
-  // }
+export const uploadToFirestorage = async ({ image, myID, viewId }) => {
+  try {
+    if (!viewId || !myID || !image) throw "incomplete parameters";
+    const accessToken = v4(),
+      base64 = image.replace(/\s/g, "").split(";base64,").pop(),
+      imageBuffer = new Buffer.from(base64, "base64");
+
+    return await bucket.file(`images/${myID}/${viewId}`).save(
+      imageBuffer,
+      {
+        metadata: {
+          contentType: "image/png",
+          metadata: {
+            firebaseStorageDownloadTokens: accessToken,
+          },
+        },
+      },
+      (err) => {
+        if (err) {
+          throw `uploadImages ${err}`;
+        } else {
+          return `https://firebasestorage.googleapis.com/v0/b/${
+            JSON.parse(process.env.NEXT_PUBLIC_CLIENT).storageBucket
+          }/o/${encodeURIComponent(`images/${myID}/${viewId}`)}?alt=media&token=${accessToken}`;
+        }
+      }
+    );
+  } catch (err) {
+    // console.log({ err });
+    throw `uploadImages ${err}`;
+  }
 };
 
 export const deleteImages = async ({ title, content, myHandle, deleteType }) => {

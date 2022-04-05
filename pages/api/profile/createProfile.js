@@ -71,7 +71,7 @@ const createProfileHandler = async ({ uid, displayName, photoURL, refreshToken }
           seen: false,
         },
       },
-      picture: { cover: photoURL, profile: photoURL },
+      picture: { cover: photoURL || "no-image-view.png", profile: photoURL || "no-image-profile.png" },
       crunches: ["Lifehack", "Universal", "Career 101", "Finance", "Cyber Security", "Developers"],
       details: {
         displayName,

@@ -1,6 +1,8 @@
 @import "@source/_variables.scss";
 
 .preview {
+  border: 1px solid color(secondary);
+  border-radius: 5px;
   padding: 10px;
   margin: 10px 0;
   h1,
@@ -68,21 +70,19 @@
     & > button {
       display: none;
       position: absolute;
-      // cursor: pointer;
+      cursor: pointer;
     }
     & > img {
       max-width: 100%;
       border-radius: 5px;
     }
-    transition-property: transform;
-    transition-timing-function: ease-in-out;
-    transition-delay: 0.2s;
   }
-  & > span:hover {
-    & > button {
-      display: initial;
+
+  & > span:hover > button {
+    display: initial;
+    & > svg {
+      margin-top: 5px;
     }
-    transform: scale(1.06);
   }
 }
 

@@ -4,16 +4,24 @@ import { Preview } from ".";
 import Joi from "joi";
 import { useSnackbar } from "notistack";
 import { fetcher } from "@utils/clientFunctions";
+import { useRouter } from "next/router";
 
 const PreviewContainer = ({ displayPreview, setDisplayPreview, view, crunches, myID, displayName }) => {
   const { enqueueSnackbar } = useSnackbar();
   const [publishTo, setPublishTo] = useState(displayName);
+  const router = useRouter();
 
   const [loading, setLoading] = useState(false);
 
   const [description, setDescription] = useState("");
 
-  const hidePreview = () => setDisplayPreview(false);
+  const hidePreview = () => {
+    if (loading) {
+      enqueueSnackbar("Please wait, while we publish your view", { variant: "warning" });
+    } else {
+      setDisplayPreview(false);
+    }
+  };
 
   const content = view.content
     .map((x) => {
@@ -29,7 +37,7 @@ const PreviewContainer = ({ displayPreview, setDisplayPreview, view, crunches, m
     setLoading(true);
 
     const title = view.title || false;
-    const keywords = view.keywords?.split(",").slice(0, 5) || ["viewcrunch"];
+    const keywords = view.keywords ? view.keywords?.split(",").slice(0, 5) : ["viewcrunch"];
     const description = description || "viewcrunch";
     const content = view.content || false;
 
@@ -71,7 +79,7 @@ const PreviewContainer = ({ displayPreview, setDisplayPreview, view, crunches, m
       enqueueSnackbar(error.stack, { variant: "error" });
       setLoading(false);
     } else {
-      const link = await fetcher(
+      const { link, errMsg } = await fetcher(
         "/api/crunch/publish",
         JSON.stringify({ title, keywords, description, content, myID, crunch: publishTo === displayName ? "community" : publishTo })
       );
@@ -80,7 +88,7 @@ const PreviewContainer = ({ displayPreview, setDisplayPreview, view, crunches, m
 
       // redirect author to view if view was published succesfully
       if (link) return router.push(link);
-      enqueueSnackbar("Error Occured", { variant: "error" });
+      enqueueSnackbar(errMsg, { variant: "error" });
     }
   };
 
