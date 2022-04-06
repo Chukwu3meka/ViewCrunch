@@ -23,7 +23,7 @@ function checkInternet(cb) {
   });
 }
 
-export const verifyToken = async (refresh) => {
+const verifyToken = async (refresh) => {
   const { access_token: token } = await fetch(
     `https://securetoken.googleapis.com/v1/token?key=${JSON.parse(process.env.NEXT_PUBLIC_CLIENT).apiKey}`,
     {
@@ -38,7 +38,7 @@ export const verifyToken = async (refresh) => {
 };
 
 // optional: rep if authentication is optional
-export const profileFromRefresh = async ({ refresh, cookie, optional }) => {
+const profileFromRefresh = async ({ refresh, cookie, optional }) => {
   const { auth, firestore } = await require("@utils/firebaseServer");
 
   if (!refresh) {
@@ -95,7 +95,7 @@ export const profileFromRefresh = async ({ refresh, cookie, optional }) => {
   return profile;
 };
 
-export const uploadToFirestorage = async ({ image, myID, viewId }) => {
+const uploadToFirestorage = async ({ image, myID, viewId }) => {
   try {
     if (!viewId || !myID || !image) throw "incomplete parameters";
     const accessToken = v4(),
@@ -296,3 +296,9 @@ export const convertContentToArray = async (content) => {
 // export const saveTempImage = async ({ image, myHandle, api = "crunch", imageTitle }) => {
 //   return console.log("saveTempImage is deprecated in server functions");
 // };
+
+module.exports = {
+  verifyToken: verifyToken,
+  profileFromRefresh: profileFromRefresh,
+  uploadToFirestorage: uploadToFirestorage,
+};
