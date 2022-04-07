@@ -97,38 +97,42 @@ const profileFromRefresh = async ({ refresh, cookie, optional }) => {
 
 const uploadToFirestorage = async ({ image, myID, viewId }) => {
   try {
+    console.log("hey");
     if (!viewId || !myID || !image) throw "incomplete parameters";
     const accessToken = v4(),
       base64 = image.replace(/\s/g, "").split(";base64,").pop(),
       imageBuffer = new Buffer.from(base64, "base64");
 
-    return await bucket.file(`images/${myID}/${viewId}`).save(
-      imageBuffer,
-      {
-        metadata: {
-          contentType: "image/png",
+    // console.log({ image });
+    return await bucket
+      // .file(`images/${myID}/${viewId}`)
+      .file(`images/${myID}`)
+      .save(
+        imageBuffer,
+        {
           metadata: {
-            firebaseStorageDownloadTokens: accessToken,
+            contentType: "image/png",
+            metadata: { firebaseStorageDownloadTokens: accessToken },
           },
         },
-      },
-      (err) => {
-        if (err) {
-          throw `uploadImages ${err}`;
-        } else {
-          return `https://firebasestorage.googleapis.com/v0/b/${
-            JSON.parse(process.env.NEXT_PUBLIC_CLIENT).storageBucket
-          }/o/${encodeURIComponent(`images/${myID}/${viewId}`)}?alt=media&token=${accessToken}`;
+        (err) => {
+          if (err) {
+            console.log(err);
+            throw `uploadImages ${err}`;
+          } else {
+            return `https://firebasestorage.googleapis.com/v0/b/${
+              JSON.parse(process.env.NEXT_PUBLIC_CLIENT).storageBucket
+            }/o/${encodeURIComponent(`images/${myID}/${viewId}`)}?alt=media&token=${accessToken}`;
+          }
         }
-      }
-    );
+      );
   } catch (err) {
     // console.log({ err });
     throw `uploadImages ${err}`;
   }
 };
 
-export const deleteImages = async ({ title, content, myHandle, deleteType }) => {
+const deleteImages = async ({ title, content, myHandle, deleteType }) => {
   // try {
   //   const extractStorageLinks = () => {
   //     const links = [];
@@ -181,7 +185,7 @@ export const deleteImages = async ({ title, content, myHandle, deleteType }) => 
 // "      https://firebasestorage.googleapis.com/v0/b/viewcrunch-2018.appspot.com/o/images%2F%40maduekwepedro%2FWealth%3A%20Freedom%20or%20not~1.png?alt=media&token=db2b4cca-31ae-4ac4-981f-3cf07d10e602
 // "
 
-export const convertContentToArray = async (content) => {
+const convertContentToArray = async (content) => {
   // const contentArray = [],
   //   formerImagesUrl = [];
   // content = await content?.replace(/<Image src="/g, `\n<Image src="`).replace(/layout="fill" \/>/g, `layout="fill" />\n`);
@@ -299,6 +303,8 @@ export const convertContentToArray = async (content) => {
 
 module.exports = {
   verifyToken: verifyToken,
+  deleteImages: deleteImages,
   profileFromRefresh: profileFromRefresh,
   uploadToFirestorage: uploadToFirestorage,
+  convertContentToArray: convertContentToArray,
 };

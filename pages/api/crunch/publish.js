@@ -1,15 +1,14 @@
-import { time2read, toId } from "@utils/clientFunctions";
+import { sleep, time2read, toId } from "@utils/clientFunctions";
 import { firestore } from "@utils/firebaseServer";
-import { uploadToFirestorage } from "@utils/serverFunctions";
 // import firebaseAdmin from "@utils/firebaseServer";
-// import { uploadToFirestorage } from "@utils/serverFunctions";
+import { uploadToFirestorage } from "@utils/serverFunctions";
 
 import { FieldValue, Timestamp } from "firebase-admin/firestore";
 
 const publishHandler = async ({ title, keywords, description, content, myID, crunch }) => {
   const view = {
     comments: [],
-    content,
+    content: null,
     stat: {
       author: myID,
       crunch,
@@ -54,31 +53,35 @@ const publishHandler = async ({ title, keywords, description, content, myID, cru
         }
       }
 
+      const formattedContent = content
+        .map((x, index) => {
+          if (typeof x === "string") return x;
+          if (typeof x === "object") return `<Image src="${pathToImages.shift()}" alt="${title} ~ ${index}" layout="fill" />`;
+        })
+        .flat(Infinity)
+        .join("\n");
+
       // update main values in view
       await firestore
         .collection("view")
         .doc(viewId)
         .update({
+          content: formattedContent,
           "stat.image": pathToImages[0] || "no-image-view.png",
           "status.visible": crunch === "community" ? true : false,
-          "status.moderator": crunch === "community" ? "Community" : null,
           "stat.viewLink": toId(`/view/${title}-${viewId}`, false),
-          content: content
-            .map((x, index) => {
-              if (typeof x === "string") return x;
-              if (typeof x === "object") return `<Image src="${pathToImages.shift()}" alt="${title} ~ ${index}" layout="fill" />`;
-            })
-            .flat(Infinity)
-            .join("\n"),
+          "status.moderator": crunch === "community" ? "Community" : null,
         })
         .catch((err) => {
+          console.log(err);
           throw "Unable to update main view content";
         });
 
       return updatedViewLink;
     })
 
-    .catch(() => {
+    .catch((err) => {
+      console.log(err);
       throw "Unable to publish view";
     });
 };
@@ -86,7 +89,6 @@ const publishHandler = async ({ title, keywords, description, content, myID, cru
 export default async (req, res) => {
   try {
     const { title, keywords, description, content, myID, crunch } = req.body;
-
     const link = await publishHandler({ title, keywords, description, content, myID, crunch });
     return res.status(200).json({ link });
   } catch (error) {

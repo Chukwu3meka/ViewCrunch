@@ -22,16 +22,15 @@ export const getServerSideProps = async (ctx) => {
 
     const profile = (await profileFromRefresh({ cookie: ctx.req.headers.cookie })) || {};
 
-    // const {
-    //   crunches,
-    //   status: { suspended },
-    //   details: { displayName },
-    // } = profile;
+    const {
+      crunches,
+      status: { suspended },
+      details: { displayName },
+    } = profile;
 
-    // if (suspended) throw 1007; //check if profile is suspended
+    if (suspended) throw 1007; //check if profile is suspended
 
-    // return { props: { error: {}, crunches, displayName } };
-    return { props: { error: {}, crunches: [] } };
+    return { props: { error: {}, crunches, displayName } };
   } catch (error) {
     const { code, title } = typeof error === "number" ? errorCodes[error] : { code: 400, title: "Internal Server Error" };
 

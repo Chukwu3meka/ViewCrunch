@@ -151,8 +151,8 @@ CustomSelect.propTypes = {
 
 const Select = ({ options, value, setValue }) => (
   <CustomSelect value={value} onChange={setValue}>
-    {options.map((option) => (
-      <StyledOption key={option} value={option}>
+    {options.map((option, i) => (
+      <StyledOption key={i} value={option}>
         {option}
       </StyledOption>
     ))}

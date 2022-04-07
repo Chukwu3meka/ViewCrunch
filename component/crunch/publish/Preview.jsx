@@ -59,7 +59,7 @@ const Preview = ({
   <Dialog
     fullScreen
     open={displayPreview}
-    // onClose={hidePreview} //disable this to prevent closing preview when esc button is clicked
+    onClose={hidePreview} //disable this to prevent closing preview when esc button is clicked
     TransitionComponent={Transition}>
     <Grid maxWidth={900} container margin="auto" padding={1}>
       <Grid item xs={12} sm={12} md={12}>
