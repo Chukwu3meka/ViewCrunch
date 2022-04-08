@@ -110,7 +110,7 @@ const View = ({
             <DownvoteIcon fontSize="inherit" />
           </IconButton>
         </div>
-        <Typography>{`${shortNumber(votes)} upvote${votes > 1 ? "s" : null}`}</Typography>
+        <Typography>{`${shortNumber(votes)} upvote${votes > 1 ? "s" : ""}`}</Typography>
         <SpeedDial
           ariaLabel="SpeedDial basic example"
           // direction="left"

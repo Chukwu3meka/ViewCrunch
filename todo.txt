@@ -1,3 +1,7 @@
-Remove contributors from crunch, as all users have right to publish, moderators have option to review before views are made public, and public views can still be taken down
-
- 
+Your first name
+Your professional title (i.e. “Java developer”)
+Your total years of IT experience
+Your educational level (when applicable)
+Your main tech stack/tools
+Your career goals, and the reasoning behind them
+An interesting fact about yourself

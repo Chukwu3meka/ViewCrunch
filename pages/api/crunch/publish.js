@@ -60,7 +60,7 @@ const publishHandler = async ({ title, keywords, description, content, myID, cru
         .update({
           "stat.image": pathToImages[0] || "no-image-view.png",
           "status.visible": crunch === "community" ? true : false,
-          "stat.viewLink": toId(`/view/${title}-${viewId}`, false),
+          "stat.viewLink": toId(`${title}-${viewId}`, false),
           "status.moderator": crunch === "community" ? "Community" : null,
           content: content
             .map((x, index) => {

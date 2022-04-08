@@ -159,7 +159,7 @@ export const fetchViews = async ({ crunch, myID, blacklist, lastVisible }) => {
         }
       }
     } else {
-      console.log("last view");
+      // console.log("last view");
       lastVisible = "last view";
     }
 
@@ -172,16 +172,20 @@ export const fetchViews = async ({ crunch, myID, blacklist, lastVisible }) => {
 
 export const fetchView = async (viewLink) => {
   try {
-    const viewSnapshot = await getDocs(query(viewRef, where("stat.viewLink", "==", viewLink), limit(1)));
+    const viewLinkArray = viewLink.toString().split("-");
+    const viewId = viewLinkArray[viewLinkArray.length - 1];
 
-    if (viewSnapshot.size) {
+    const currentViewRef = doc(firestore, "view", viewId);
+    const snapshot = await getDoc(currentViewRef);
+
+    if (snapshot.exists()) {
       const {
         comments,
         content,
         title,
         votes,
         stat: { author, crunch, date, image, keywords, readTime, viewLink, description },
-      } = viewSnapshot.docs[0].data();
+      } = snapshot.data();
 
       const {
         picture: { profile: profilePicture },
