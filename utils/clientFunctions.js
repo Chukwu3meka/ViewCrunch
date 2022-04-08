@@ -126,3 +126,5 @@ export const dateDiff = (date) => Math.round((new Date() - new Date(date)) / (10
 export const errorProp = (code = 404, title = "Page not found") => ({
   error: { code, title },
 });
+
+export const removeImagesInContent = (content) => content.toString().replace(/<[^>]+>/g, "");
