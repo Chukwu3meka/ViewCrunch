@@ -7,7 +7,7 @@ const errorCodes = {
   1005: { code: 400, title: "Invalid UID" },
   1006: { code: 400, title: "Profile not in Database" },
   1007: { code: 400, title: "Profile is Suspended temporarily" },
-  1008: { code: 400, title: "" },
+  1008: { code: 451, title: "Writing disabled for this user" },
   1009: { code: 400, title: "" },
   1010: { code: 400, title: "" },
   1011: { code: 400, title: "" },

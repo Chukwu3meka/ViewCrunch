@@ -39,7 +39,7 @@ export const getServerSideProps = async (ctx) => {
       .doc(crunchID)
       .get()
       .then(async (snapshot) => {
-        const { about, contributors, date, followers, moderators, picture, suspended, title, stat } = snapshot.data();
+        const { about, date, followers, moderators, picture, suspended, title, stat } = snapshot.data();
 
         return {
           about,
@@ -49,7 +49,6 @@ export const getServerSideProps = async (ctx) => {
           suspended,
           follower: followers?.includes(profile.id),
           moderator: moderators?.includes(profile.id),
-          contributor: contributors?.includes(profile.id),
           date: dateCalculator({ date: date.toDate().toDateString() }),
           ...stat,
           lastPublished: dateCalculator({ date: stat.lastPublished.toDate().toDateString() }),

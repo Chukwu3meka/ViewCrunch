@@ -1,9 +1,8 @@
-import { sleep, time2read, toId } from "@utils/clientFunctions";
+import { time2read, toId } from "@utils/clientFunctions";
 import { firestore } from "@utils/firebaseServer";
-// import firebaseAdmin from "@utils/firebaseServer";
 import { uploadToFirestorage } from "@utils/serverFunctions";
 
-import { FieldValue, Timestamp } from "firebase-admin/firestore";
+import { Timestamp } from "firebase-admin/firestore";
 
 const publishHandler = async ({ title, keywords, description, content, myID, crunch }) => {
   const view = {
@@ -54,6 +53,7 @@ const publishHandler = async ({ title, keywords, description, content, myID, cru
       }
 
       // update main values in view
+
       await firestore
         .collection("view")
         .doc(viewId)

@@ -14,9 +14,24 @@ export default async (req, res) => {
       .get()
       .then(async (snap) => {
         for (const doc of snap.docs) {
+          return;
+          // console.log(doc.data().status.data);
           await firestore.collection("crunch").doc(doc.id).update({
             // admin: FieldValue.delete(),
-            // follower: FieldValue.delete(),
+            // status
+            // (map)
+            // data
+            // "visible"
+            // date
+            // September 20, 2021 at 11:51:10 AM UTC+1
+            // description
+            // "approved by ViewCrunch Moderator"
+            // moderator
+            // "zqWXUjfcFXPGKzgN3HCvoFuOz043"
+            // contributors: FieldValue.delete(),
+            // "stat.totalContributors": FieldValue.delete(),
+            // "status.data": FieldValue.delete(),
+            // add publish:true to profile.status
             // moderator: FieldValue.delete(),
             // moderators: ["zqWXUjfcFXPGKzgN3HCvoFuOz043"],
             // followers: ["zqWXUjfcFXPGKzgN3HCvoFuOz043"],
@@ -31,7 +46,7 @@ export default async (req, res) => {
             //   totalContributors: 1,
             //   totalFollowers: range(30, 250),
             // },
-            "stat.lastPublished": Timestamp.now(),
+            // "stat.lastPublished": Timestamp.now(),
           });
         }
       });

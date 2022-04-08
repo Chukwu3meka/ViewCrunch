@@ -25,7 +25,7 @@ export const fetchHomeData = async () => {
   try {
     const trending = [];
     const trendingSnapshot = await getDocs(
-      query(viewRef, where("status.data", "==", "visible"), orderBy("votes.total", "desc"), orderBy("stat.date", "desc"), limit(6))
+      query(viewRef, where("status.visible", "==", true), orderBy("votes.total", "desc"), orderBy("stat.date", "desc"), limit(6))
     );
 
     if (trendingSnapshot.size) {
@@ -102,29 +102,23 @@ export const fetchViews = async ({ crunch, myID, blacklist, lastVisible }) => {
       lastVisible && crunch
         ? query(
             viewRef,
-            where("status.data", "==", "visible"),
+            where("status.visible", "==", true),
             where("stat.crunch", "==", crunch),
             orderBy("stat.date", "desc"),
             startAfter(Timestamp.fromDate(new Date(JSON.parse(lastVisible.date)), lastVisible.title)),
             limit(5)
           )
         : !lastVisible && crunch
-        ? query(
-            viewRef,
-            where("status.data", "==", "visible"),
-            where("stat.crunch", "==", crunch),
-            orderBy("stat.date", "desc"),
-            limit(7)
-          )
+        ? query(viewRef, where("status.visible", "==", true), where("stat.crunch", "==", crunch), orderBy("stat.date", "desc"), limit(7))
         : lastVisible && !crunch
         ? query(
             viewRef,
-            where("status.data", "==", "visible"),
+            where("status.visible", "==", true),
             orderBy("stat.date", "desc"),
             startAfter(Timestamp.fromDate(new Date(JSON.parse(lastVisible.date)), lastVisible.title)),
             limit(5)
           )
-        : query(viewRef, where("status.data", "==", "visible"), orderBy("stat.date", "desc"), limit(7))
+        : query(viewRef, where("status.visible", "==", true), orderBy("stat.date", "desc"), limit(7))
     );
 
     const views = [];

@@ -24,10 +24,11 @@ export const getServerSideProps = async (ctx) => {
 
     const {
       crunches,
-      status: { suspended },
+      status: { suspended, publish },
       details: { displayName },
     } = profile;
 
+    if (!publish) throw 1008; //check if profile is suspended
     if (suspended) throw 1007; //check if profile is suspended
 
     return { props: { error: {}, crunches, displayName } };
