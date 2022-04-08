@@ -1,6 +1,8 @@
 import { bucket } from "@utils/firebaseServer";
 import { dateCalculator } from "./clientFunctions";
 
+// import { getStorage, ref, uploadString } from "firebase/storage";
+
 const { v4 } = require("uuid");
 // import firebaseAdmin, { bucket } from "@utils/firebaseServer";
 
@@ -97,35 +99,31 @@ const profileFromRefresh = async ({ refresh, cookie, optional }) => {
 
 const uploadToFirestorage = async ({ image, myID, viewId }) => {
   try {
-    console.log("hey");
     if (!viewId || !myID || !image) throw "incomplete parameters";
+
     const accessToken = v4(),
       base64 = image.replace(/\s/g, "").split(";base64,").pop(),
       imageBuffer = new Buffer.from(base64, "base64");
 
-    // console.log({ image });
-    return await bucket
-      // .file(`images/${myID}/${viewId}`)
-      .file(`images/${myID}`)
-      .save(
-        imageBuffer,
-        {
-          metadata: {
-            contentType: "image/png",
-            metadata: { firebaseStorageDownloadTokens: accessToken },
-          },
+    return await bucket.file(`images/${myID}/${viewId}`).save(
+      imageBuffer,
+      {
+        metadata: {
+          contentType: "image/png",
+          metadata: { firebaseStorageDownloadTokens: accessToken },
         },
-        (err) => {
-          if (err) {
-            console.log(err);
-            throw `uploadImages ${err}`;
-          } else {
-            return `https://firebasestorage.googleapis.com/v0/b/${
-              JSON.parse(process.env.NEXT_PUBLIC_CLIENT).storageBucket
-            }/o/${encodeURIComponent(`images/${myID}/${viewId}`)}?alt=media&token=${accessToken}`;
-          }
+      },
+      (err) => {
+        if (err) {
+          console.log("err mo  tttj");
+          throw `uploadImages ${err}`;
+        } else {
+          return `https://firebasestorage.googleapis.com/v0/b/${
+            JSON.parse(process.env.NEXT_PUBLIC_CLIENT).storageBucket
+          }/o/${encodeURIComponent(`images/${myID}/${viewId}`)}?alt=media&token=${accessToken}`;
         }
-      );
+      }
+    );
   } catch (err) {
     // console.log({ err });
     throw `uploadImages ${err}`;

@@ -34,6 +34,9 @@ const PreviewContainer = ({ displayPreview, setDisplayPreview, view, crunches, m
   const publishingOption = [displayName, ...crunches];
 
   const publishHandler = async () => {
+    const a = `werew rew r ewr er<Image src="https://firebasestorage.googleapis.com/v0/b/viewcrunch-2018.appspot.com/o/images%2FzqWXUjfcFXPGKzgN3HCvoFuOz043%2Fm5c0tHcLCBLASZrYpWNC_1.png?alt=media&token=25f35980-3719-4dd5-802d-802e033731c0" alt="qqw ewq ewq ewqe   ~ 1" layout="fill" /><Image src="https://firebasestorage.googleapis.com/v0/b/viewcrunch-2018.appspot.com/o/images%2FzqWXUjfcFXPGKzgN3HCvoFuOz043%2Fm5c0tHcLCBLASZrYpWNC_2.png?alt=media&token=f36c7960-f7fc-440c-a2dd-6fca15d64071" alt="qqw ewq ewq ewqe   ~ 2" layout="fill" /><Image src="https://firebasestorage.googleapis.com/v0/b/viewcrunch-2018.appspot.com/o/images%2FzqWXUjfcFXPGKzgN3HCvoFuOz043%2Fm5c0tHcLCBLASZrYpWNC_3.png?alt=media&token=66e77732-6616-45c0-9b0b-f286f91c7b0c" alt="qqw ewq ewq ewqe   ~ 3" layout="fill" /><Image src="https://firebasestorage.googleapis.com/v0/b/viewcrunch-2018.appspot.com/o/images%2FzqWXUjfcFXPGKzgN3HCvoFuOz043%2Fm5c0tHcLCBLASZrYpWNC_4.png?alt=media&token=3f9ae70b-b314-4c7c-8699-176f91a6d44b" alt="qqw ewq ewq ewqe   ~ 4" layout="fill" />`;
+
+    return;
     setLoading(true);
 
     const title = view.title || false;

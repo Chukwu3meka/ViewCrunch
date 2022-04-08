@@ -53,35 +53,32 @@ const publishHandler = async ({ title, keywords, description, content, myID, cru
         }
       }
 
-      const formattedContent = content
-        .map((x, index) => {
-          if (typeof x === "string") return x;
-          if (typeof x === "object") return `<Image src="${pathToImages.shift()}" alt="${title} ~ ${index}" layout="fill" />`;
-        })
-        .flat(Infinity)
-        .join("\n");
-
       // update main values in view
       await firestore
         .collection("view")
         .doc(viewId)
         .update({
-          content: formattedContent,
           "stat.image": pathToImages[0] || "no-image-view.png",
           "status.visible": crunch === "community" ? true : false,
           "stat.viewLink": toId(`/view/${title}-${viewId}`, false),
           "status.moderator": crunch === "community" ? "Community" : null,
+          content: content
+            .map((x, index) => {
+              if (typeof x === "string") return x;
+              if (typeof x === "object") return `<Image src="${pathToImages.shift()}" alt="${title} ~ ${index}" layout="fill" />`;
+            })
+            .flat(Infinity)
+            .join("\n"),
         })
         .catch((err) => {
           console.log(err);
           throw "Unable to update main view content";
         });
 
-      return updatedViewLink;
+      return `/view/${toId(title)}-${viewId}`;
     })
-
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
       throw "Unable to publish view";
     });
 };
@@ -102,7 +99,7 @@ export default async (req, res) => {
         break;
     }
 
-    console.log("error", error);
+    // console.log("error", error);
     return res.status(401).json({ errMsg });
   }
 };

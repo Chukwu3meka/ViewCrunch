@@ -25,4 +25,14 @@ const newsRef = firestore.collection("news"),
   crunchRef = firestore.collection("crunch"),
   profileRef = firestore.collection("profile");
 
-export { bucket, auth, firestore, viewRef, profileRef, crunchRef, newsRef };
+// export { bucket, auth, firestore, viewRef, profileRef, crunchRef, newsRef };
+
+module.exports = {
+  bucket: bucket,
+  auth: auth,
+  firestore: firestore,
+  viewRef: viewRef,
+  profileRef: profileRef,
+  crunchRef: crunchRef,
+  newsRef: newsRef,
+};
