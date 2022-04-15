@@ -38,7 +38,7 @@ export const fetcher = (url, data) => {
   return fetch(url, {
     method: "POST",
     headers: new Headers({ "Content-Type": "application/json" }),
-    body: data,
+    body: JSON.stringify(data),
     credentials: "same-origin",
   }).then((res) => res.json());
 };
