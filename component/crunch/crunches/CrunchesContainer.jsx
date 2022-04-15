@@ -50,7 +50,7 @@ const CrunchesContainer = (props) => {
       };
 
       updateCrunch();
-      const success = await fetcher("/api/crunch/follow", JSON.stringify({ follower, id, myID, title }));
+      const success = await fetcher("/api/crunch/follow", { follower, id, myID, title });
 
       if (success) return updateCrunch();
       enqueueSnackbar("Cannot acces Server", { variant: "error" });

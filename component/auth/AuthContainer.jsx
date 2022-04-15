@@ -89,7 +89,7 @@ const AuthContainer = (props) => {
         stsTokenManager: { refreshToken },
       } = auth;
 
-      const profile = await fetcher("/api/profile/createProfile", JSON.stringify({ uid, displayName, photoURL, refreshToken }));
+      const profile = await fetcher("/api/profile/createProfile", { uid, displayName, photoURL, refreshToken });
 
       if (profile) {
         setAuthenticated(profile);

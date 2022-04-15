@@ -45,7 +45,7 @@ const StoryContainer = (props) => {
   }, [props.deviceWidth]);
 
   const reportHandler = async (report) => {
-    const reprtSent = await fetcher("/api/report/reportView", JSON.stringify({ myID: profile.myID, viewID, report }));
+    const reprtSent = await fetcher("/api/report/reportView", { myID: profile.myID, viewID, report });
 
     if (reprtSent) enqueueSnackbar("Report sent successfully, We'll get back to you soon", { variant: "success" });
   };
@@ -64,7 +64,7 @@ const StoryContainer = (props) => {
         case "blacklist": {
           if (author.author === profile.myID) return enqueueSnackbar(`You can't blacklist yourself`, { variant: "error" });
 
-          const blacklisted = await fetcher("/api/profile/blacklist", JSON.stringify({ myID: profile.myID, author: author.author }));
+          const blacklisted = await fetcher("/api/profile/blacklist", { myID: profile.myID, author: author.author });
 
           enqueueSnackbar(
             `${author.displayName}, has been ${blacklisted ? "added to" : "removed from"} blacklist. ${
@@ -77,7 +77,7 @@ const StoryContainer = (props) => {
         }
 
         case "bookmark": {
-          const bookmarked = await fetcher("/api/profile/bookmark", JSON.stringify({ myID: profile.myID, viewID }));
+          const bookmarked = await fetcher("/api/profile/bookmark", { myID: profile.myID, viewID });
 
           enqueueSnackbar(`${view.title}, has been ${bookmarked ? "added to" : "removed from"} bookmark.`, { variant: "success" });
 
@@ -117,7 +117,7 @@ const StoryContainer = (props) => {
           if (upvoted) setUpvoted(false);
         }
 
-        const res = await fetcher("/api/view/voteView", JSON.stringify({ myID: profile.myID, vote, viewID }));
+        const res = await fetcher("/api/view/voteView", { myID: profile.myID, vote, viewID });
 
         if (res) {
           const { downvoted, total, upvoted } = res;

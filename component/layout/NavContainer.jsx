@@ -47,7 +47,7 @@ const NavbarContainer = (props) => {
     const myTheme = currentTheme === "light" ? "dark" : "light";
     setCurrentTheme(myTheme);
     setProfileAction({ ...profile, myTheme });
-    online && fetcher("/api/profile/changeTheme", JSON.stringify({ myID, myTheme }));
+    online && fetcher("/api/profile/changeTheme", { myID, myTheme });
   };
 
   return <Nav {...{ mainNav, activeNav, currentThemeHandler, myNotification, children }} />;

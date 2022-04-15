@@ -26,7 +26,7 @@ const NotificationContainer = (props) => {
 
   const deleteMessageHandler = (index) => async () => {
     const { message, seen } = messages[index];
-    const res = await fetcher("/api/profile/deleteNotification", JSON.stringify({ myID, messageID: message }));
+    const res = await fetcher("/api/profile/deleteNotification", { myID, messageID: message });
 
     setMessages(messages.filter((x) => x.message !== message));
     if (!seen) {
@@ -50,7 +50,7 @@ const NotificationContainer = (props) => {
         setUnseen(unseen - 1);
         setNotificationAction(unseen - 1);
 
-        await fetcher("/api/profile/notificationOpened", JSON.stringify({ myID, messageID: message }));
+        await fetcher("/api/profile/notificationOpened", { myID, messageID: message });
       }
     }
   };

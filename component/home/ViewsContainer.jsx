@@ -107,7 +107,7 @@ const ViewsContainer = (props) => {
 
       setBookmarks(bookmarks.includes(viewID) ? bookmarks.filter((x) => x !== viewID) : [...bookmarks, viewID]);
 
-      const bookmarked = await fetcher("/api/profile/bookmark", JSON.stringify({ myID, viewID }));
+      const bookmarked = await fetcher("/api/profile/bookmark", { myID, viewID });
 
       enqueueSnackbar(`${title}, has been ${bookmarked ? "added to" : "removed from"} bookmark.`, { variant: "success" });
     };

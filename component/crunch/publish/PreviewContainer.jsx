@@ -80,10 +80,14 @@ const PreviewContainer = ({ displayPreview, setDisplayPreview, view, crunches, m
       enqueueSnackbar(error.stack, { variant: "error" });
       setLoading(false);
     } else {
-      const { link, errMsg } = await fetcher(
-        "/api/crunch/publish",
-        JSON.stringify({ title, keywords, description, content, myID, crunch: publishTo === displayName ? "community" : publishTo })
-      );
+      const { link, errMsg } = await fetcher("/api/crunch/publish", {
+        title,
+        keywords,
+        description,
+        content,
+        myID,
+        crunch: publishTo === displayName ? "community" : publishTo,
+      });
 
       setLoading(false);
 
