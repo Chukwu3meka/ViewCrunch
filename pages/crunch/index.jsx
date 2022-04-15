@@ -47,7 +47,6 @@ export const getServerSideProps = async (ctx) => {
           .then(async (snapshot) => {
             const {
               about,
-              contributors,
               date,
               followers,
               moderators,
@@ -60,7 +59,6 @@ export const getServerSideProps = async (ctx) => {
             myCrunches.push({
               crunchID,
               about,
-              contributor: contributors?.includes(profile.id),
               date: dateCalculator({ date: date.toDate().toDateString() }),
               follower: followers?.includes(profile.id),
               moderator: moderators?.includes(profile.id),
@@ -76,7 +74,6 @@ export const getServerSideProps = async (ctx) => {
     let lastVisible;
     for (let loop = 0; loop < 3; loop++) {
       if (otherCrunches.length >= 5) break;
-
       await (lastVisible
         ? crunchRef
             .where("suspended", "==", false)
@@ -91,7 +88,6 @@ export const getServerSideProps = async (ctx) => {
             const crunchID = crunch.id,
               {
                 about,
-                contributors,
                 date,
                 followers,
                 moderators,
@@ -107,7 +103,6 @@ export const getServerSideProps = async (ctx) => {
               otherCrunches.push({
                 crunchID,
                 about,
-                contributor: contributors?.includes(profile.id),
                 date: dateCalculator({ date: date.toDate().toDateString() }),
                 follower: followers?.includes(profile.id),
                 moderator: moderators?.includes(profile.id),

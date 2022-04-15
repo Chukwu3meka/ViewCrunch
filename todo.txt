@@ -5,3 +5,9 @@ Your educational level (when applicable)
 Your main tech stack/tools
 Your career goals, and the reasoning behind them
 An interesting fact about yourself
+
+
+
+storage: https://console.firebase.google.com/u/0/project/viewcrunch-2018/storage/viewcrunch-2018.appspot.com/files/~2Fimages
+
+database: https://console.firebase.google.com/u/0/project/viewcrunch-2018/firestore/data/~2Fview
