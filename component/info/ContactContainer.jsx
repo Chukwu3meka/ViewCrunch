@@ -4,11 +4,11 @@ import { useState, useRef, useEffect } from "react";
 
 import { Contact } from ".";
 import { fetcher } from "@utils/clientFunctions";
+import { Router, useRouter } from "next/router";
 
 const contactLinks = [
-  { title: "ViewCrunch Services", path: "/info/company" },
+  { title: "ViewCrunch Services", path: "/company" },
   { title: "Reporting a user", path: "/info/faq?id=Reporting-a-user" },
-  { title: "Exploitation", path: "/Exploitation" },
   { title: "Advertisement and Pricing", path: "/info/advertise" },
   { title: "Visit Our FAQ section", path: "/info/faq" },
   { title: "Signing In", path: "/info/faq?id=Signing-In" },
@@ -36,7 +36,8 @@ const supportTeam = [
 ];
 
 const ContactContainer = (props) => {
-  const commentRef = useRef(null),
+  const router = useRouter(),
+    commentRef = useRef(null),
     { enqueueSnackbar } = useSnackbar(),
     [online, setOnline] = useState(props.online),
     [values, setValues] = useState({ email: "", name: "", comment: "", section: "others" });
@@ -44,6 +45,14 @@ const ContactContainer = (props) => {
   useEffect(() => {
     setOnline(props.online);
   }, [props.online]);
+
+  useEffect(() => {
+    if (router.query.section === "service") {
+      setValues({ ...values, section: "service" });
+      // scroll to comment on section change
+      setTimeout(() => commentRef.current.focus(), 100);
+    }
+  }, []);
 
   const sectionHandler = ({ target: { value } }) => {
     setValues({ ...values, section: value });

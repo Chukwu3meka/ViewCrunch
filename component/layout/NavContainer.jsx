@@ -39,7 +39,7 @@ const NavbarContainer = (props) => {
     ["NEWS", "/news", <NewsIcon />],
     ["Bookmarks", "/bookmarks", <TimelineIcon />],
     ["Profile", `/profile`, <AssignmentIndIcon />],
-    ["Organization", "/organization", <PublicIcon />],
+    ["Company", "/company", <PublicIcon />],
     ["Write", `/crunch/publish`, <WriteIcon />],
   ];
 

@@ -36,9 +36,7 @@ const InfoContainer = ({ title, body, path }) => {
     <Grid container style={{ maxWidth: "1200px", margin: "auto" }}>
       <NavContainer>
         <div>
-          <Typography color="MenuText" variant="h4">
-            Info Section
-          </Typography>
+          <Typography variant="h4">Info Section</Typography>
           <hr />
           <Typography variant="body2">Find information concerning ViewCrunch on our info tab or at the bottom of any page.</Typography>
         </div>
