@@ -17,7 +17,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Footer, NavContainer } from "@component/layout";
 
-const Contact = () => (
+const Company = () => (
   <Grid container style={{ maxWidth: "2200px", margin: "auto" }}>
     <NavContainer>
       <div>
@@ -51,4 +51,4 @@ const Contact = () => (
   </Grid>
 );
 
-export default Contact;
+export default Company;

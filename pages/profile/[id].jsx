@@ -1,65 +1,35 @@
 import SeoHead from "@component/others/SeoHead";
+import ProfileContainer from "@component/profile";
 import ErrorPage from "@component/others/ErrorPage";
-import CrunchIDContainer from "@component/crunch/crunchID";
 
-const CrunchID = ({ crunchDetails, error: { code, title } }) => {
+const ProfilePage = ({ profileData, error: { code, title } }) => {
   if (code) return <ErrorPage code={code} title={title} />;
 
   return (
     <>
       <SeoHead
         {...{
-          seo_title: crunchDetails.title,
-          seo_description: crunchDetails.about,
-          seo_hashtag: `#${crunchDetails.title}`,
-          seo_keywords: `viewcrunch crunches, viewcrunch, crunches, ${crunchDetails.title?.toLowerCase()}`,
+          seo_title: "ViewCrunch Bookmarks Page",
+          seo_description: "ViewsCrunch Bookmarks page. Here you get a list of views you have bookmarked.",
+          seo_hashtag: "#ViewCrunch Bookmarks",
+          seo_keywords: "viewcrunch bookmarks, viewcrunch, bookmarks",
         }}
       />
-      <CrunchIDContainer crunchDetails={crunchDetails} />
+      <ProfileContainer profileData={profileData} />
     </>
   );
 };
 
-export default CrunchID;
+export default ProfilePage;
 
 export const getServerSideProps = async (ctx) => {
   const errorCodes = require("@source/errorCodes").default;
-
   try {
-    const { dateCalculator, toId } = require("@utils/clientFunctions");
-    const { profileFromRefresh } = require("@utils/serverFunctions");
+    const { profile_id } = require("@utils/serverFbQuery");
 
-    const profile = (await profileFromRefresh({ cookie: ctx.req.headers.cookie, optional: true })) || {};
+    const profileData = await profile_id({ cookie: ctx.req.headers.cookie });
 
-    const { crunchRef } = await require("@utils/firebaseServer");
-
-    const crunchID = ctx.query.id;
-
-    const crunchDetails = await crunchRef
-      .doc(crunchID)
-      .get()
-      .then(async (snapshot) => {
-        const { about, contributors, date, followers, moderators, picture, suspended, title, stat } = snapshot.data();
-
-        return {
-          about,
-          title,
-          picture,
-          crunchID,
-          suspended,
-          follower: followers?.includes(profile.id),
-          moderator: moderators?.includes(profile.id),
-          contributor: contributors?.includes(profile.id),
-          date: dateCalculator({ date: date.toDate().toDateString() }),
-          ...stat,
-          lastPublished: dateCalculator({ date: stat.lastPublished.toDate().toDateString() }),
-        };
-      })
-      .catch((err) => {
-        throw err;
-      });
-
-    return { props: { error: {}, crunchDetails } };
+    return { props: { error: {}, profileData } };
   } catch (error) {
     const { code, title } = typeof error === "number" ? errorCodes[error] : { code: 400, title: "Internal Server Error" };
 

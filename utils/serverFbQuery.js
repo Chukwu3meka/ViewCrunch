@@ -204,6 +204,8 @@ const bookmarks_index = async ({ cookie }) => {
 
 const profile_id = async ({ cookie }) => {
   const profile = (await profileFromRefresh({ cookie, optional: true })) || {};
+
+  return {};
 };
 
 const handler = async ({ cookie }) => {
