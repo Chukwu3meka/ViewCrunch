@@ -24,39 +24,10 @@ export default CrunchID;
 
 export const getServerSideProps = async (ctx) => {
   const errorCodes = require("@source/errorCodes").default;
-
   try {
-    const { dateCalculator, toId } = require("@utils/clientFunctions");
-    const { profileFromRefresh } = require("@utils/serverFunctions");
+    const { crunch_ID } = require("@utils/serverFbQuery");
 
-    const profile = (await profileFromRefresh({ cookie: ctx.req.headers.cookie, optional: true })) || {};
-
-    const { crunchRef } = await require("@utils/firebaseServer");
-
-    const crunchID = ctx.query.id;
-
-    const crunchDetails = await crunchRef
-      .doc(crunchID)
-      .get()
-      .then(async (snapshot) => {
-        const { about, date, followers, moderators, picture, suspended, title, stat } = snapshot.data();
-
-        return {
-          about,
-          title,
-          picture,
-          crunchID,
-          suspended,
-          follower: followers?.includes(profile.id),
-          moderator: moderators?.includes(profile.id),
-          date: dateCalculator({ date: date.toDate().toDateString() }),
-          ...stat,
-          lastPublished: dateCalculator({ date: stat.lastPublished.toDate().toDateString() }),
-        };
-      })
-      .catch((err) => {
-        throw err;
-      });
+    const crunchDetails = await crunch_ID({ cookie: ctx.req.headers.cookie, crunchID: ctx.query.id });
 
     return { props: { error: {}, crunchDetails } };
   } catch (error) {

@@ -67,7 +67,7 @@ const ContactContainer = (props) => {
         if (!status) return enqueueSnackbar(`Please, Try again. Server unable to handle request.`, { variant: "error" });
 
         setValues({ email: "", name: "", comment: "", section: "others" });
-        enqueueSnackbar(`Submitted successful, We'll be in touch soon`, { variant: "success" });
+        enqueueSnackbar(`Submitted successful, We'll get in touch soon`, { variant: "success" });
       } else {
         enqueueSnackbar(`Network connectivity issue.`, { variant: "warning" });
       }

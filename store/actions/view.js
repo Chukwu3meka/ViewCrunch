@@ -1,5 +1,5 @@
 import { addError, removeError } from "./error";
-import { fetchViews } from "@utils/firestoreFetch";
+import { fetchViews } from "@utils/clientFbQuery";
 
 export const getViewsAction = ({ crunch, reduxMyID, reduxLastVisible, reduxBlacklist }) => {
   return async (dispatch) => {

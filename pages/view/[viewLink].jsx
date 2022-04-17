@@ -30,7 +30,7 @@ const Index = ({ error, view, author, viewID }) => {
 export default Index;
 
 export const getServerSideProps = async (ctx) => {
-  const { fetchView } = await require("@utils/firestoreFetch");
+  const { fetchView } = await require("@utils/clientFbQuery");
 
   const { pageData = {}, error = false } = await fetchView(ctx.query.viewLink);
 

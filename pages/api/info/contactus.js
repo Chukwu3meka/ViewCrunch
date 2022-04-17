@@ -1,21 +1,20 @@
-import firebaseAdmin from "@utils/firebaseServer";
+import { firestore } from "@utils/firebaseServer";
+import { Timestamp } from "firebase-admin/firestore";
 
-const handler = async ({ name, email, comment, section }) => {
-  await firebaseAdmin
-    .firestore()
+const handler = async ({ name, email, comment, section }) =>
+  await firestore
     .collection("contactus")
     .add({
       name,
       email,
       comment,
       section,
-      date: firebaseAdmin.firestore.Timestamp.now(),
+      date: Timestamp.now(),
     })
-    .then()
+    .then((doc) => true)
     .catch((error) => {
-      throw new TypeError(error);
+      throw error;
     });
-};
 
 export default async (req, res) => {
   try {
@@ -23,7 +22,7 @@ export default async (req, res) => {
     await handler({ name, email, comment, section });
     return res.status(200).send(true);
   } catch (error) {
-    // console.log(error)
+    console.log(error);
     return res.status(401).send(false);
   }
 };

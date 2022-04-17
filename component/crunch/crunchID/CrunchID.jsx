@@ -33,7 +33,6 @@ const CrunchID = ({ crunchViews, crunchDetails: { title, about, picture, date, t
               {`
             Created ${date} ● 
             ${shortNumber(totalFollowers)} Follower${totalFollowers > 1 ? "s" : ""} ●
-            ${shortNumber(totalModerators)} Moderator${totalModerators > 1 ? "s" : ""} ●
             Last View Published ${lastPublished}
             `}
             </Typography>

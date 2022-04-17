@@ -7,7 +7,7 @@ const Index = ({ error, trending, crunches }) =>
 export default Index;
 
 export const getServerSideProps = async () => {
-  const { fetchHomeData } = await require("@utils/firestoreFetch");
+  const { fetchHomeData } = await require("@utils/clientFbQuery");
 
   const { error = false, trending = [], crunches = [] } = await fetchHomeData();
 
