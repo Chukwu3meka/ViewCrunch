@@ -18,18 +18,9 @@ export const getServerSideProps = async (ctx) => {
   const errorCodes = require("@source/errorCodes").default;
 
   try {
-    const { profileFromRefresh } = require("@utils/serverFunctions");
+    const { crunch_publish } = require("@utils/serverFbQuery");
 
-    const profile = (await profileFromRefresh({ cookie: ctx.req.headers.cookie })) || {};
-
-    const {
-      crunches,
-      status: { suspended, publish },
-      details: { displayName },
-    } = profile;
-
-    if (!publish) throw 1008; //check if profile is suspended
-    if (suspended) throw 1007; //check if profile is suspended
+    const { crunches, displayName } = await crunch_publish({ cookie: ctx.req.headers.cookie });
 
     return { props: { error: {}, crunches, displayName } };
   } catch (error) {

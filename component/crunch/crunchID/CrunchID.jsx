@@ -1,17 +1,14 @@
-import Link from "next/link";
 import Image from "next/image";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
 import { styles } from ".";
+import { Views } from "@component/home";
 import { shortNumber } from "@utils/clientFunctions";
 import { Footer, NavContainer } from "@component/layout";
-import { Views } from "@component/home";
 
-const CrunchID = ({ crunchViews, crunchDetails: { title, about, picture, date, totalFollowers, totalModerators, lastPublished } }) => (
+const CrunchID = ({ crunchViews, crunchDetails: { title, about, picture, date, totalFollowers, lastPublished } }) => (
   <Grid container style={{ maxWidth: "1200px", margin: "auto" }}>
     <NavContainer>
       <div className={styles.nav}>

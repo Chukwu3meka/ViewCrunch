@@ -26,24 +26,11 @@ export default NotificationPage;
 export const getServerSideProps = async (ctx) => {
   const errorCodes = require("@source/errorCodes").default;
   try {
-    const { profileFromRefresh } = require("@utils/serverFunctions");
+    const { notification_index } = require("@utils/serverFbQuery");
 
-    const profile = await profileFromRefresh({ cookie: ctx.req.headers.cookie });
+    const notification = await notification_index({ cookie: ctx.req.headers.cookie });
 
-    const messages = Object.entries(profile.notification)
-      .map(([key, value]) => ({
-        ...value,
-        message: key,
-        date: dateCalculator({ date: value.date.toDate().toDateString() }),
-      }))
-      .reverse();
-
-    return {
-      props: {
-        error: {},
-        notification: { messages, unseen: profile.unseenNotification },
-      },
-    };
+    return { props: { error: {}, notification } };
   } catch (error) {
     const { code, title } = typeof error === "number" ? errorCodes[error] : { code: 400, title: "Internal Server Error" };
 
