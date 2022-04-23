@@ -1,32 +1,25 @@
+import Fab from "@mui/material/Fab";
+import AddPhotoIcon from "@mui/icons-material/AddAPhoto";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import { Box, Button, Grid, Input, TextField, Tooltip, Typography } from "@mui/material";
+
 import { styles } from ".";
 import { Footer, NavContainer } from "@component/layout";
-import { Box, Button, Grid, Input, TextField, Tooltip, Typography } from "@mui/material";
-import AddPhotoIcon from "@mui/icons-material/AddAPhoto";
-import Fab from "@mui/material/Fab";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import LoadingButton from "@mui/lab/LoadingButton";
-import PublishIcon from "@mui/icons-material/Publish";
-
-import Alert from "@mui/material/Alert";
-import AlertTitle from "@mui/material/AlertTitle";
 
 const Publish = ({
-  //
-  titleChangeHandler,
   title,
-  setKeywords,
   keywords,
-  formatContentArray,
-  setContentArray,
-  contentArray,
   contentText,
+  setKeywords,
+  contentArray,
+  imageHandler,
   setContentText,
   previewHandler,
-  loading,
-  imageHandler,
+  setContentArray,
+  titleChangeHandler,
+  formatContentArray,
 }) => (
   <Grid container>
-    {/* style={{ maxWidth: "1200px", margin: "auto" }} */}
     <NavContainer>
       <div className={styles.nav}>
         <Typography variant="h4">Publish</Typography>
@@ -47,7 +40,6 @@ const Publish = ({
         />
 
         {/* content */}
-
         <div id={styles.content}>
           {formatContentArray()?.map((x, index, loopArray) =>
             typeof x === "object" ? (
@@ -72,7 +64,6 @@ const Publish = ({
                 value={x}
                 fullWidth
                 // InputProps={{ disableUnderline: true }}
-                multiline
                 onChange={(e) => {
                   const tempContent = [...formatContentArray()];
                   tempContent[index] = e.target.value;
@@ -112,20 +103,11 @@ const Publish = ({
           // multiline
           label="Add or change keywords (up to 5) separated by comma,"
           onChange={(e) => setKeywords(e.target.value)}
-          // onChange={(e) => keywordsHandler(e.target.value.trimStart().replace(/\s+/g, " "))}
         />
 
         <Button size="small" onClick={previewHandler} color="success" variant="contained" sx={{ mt: 2 }}>
           preview
         </Button>
-        {/* <LoadingButton
-          size="small"
-          onClick={previewHandler}
-          loading={loading}
-          color="success"
-          variant="contained">
-          Publish
-        </LoadingButton> */}
       </Box>
 
       <Fab color="primary" aria-label="add-image" sx={{ position: "fixed", bottom: 16, right: 16, overflow: "hidden" }}>

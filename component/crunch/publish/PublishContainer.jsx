@@ -64,7 +64,6 @@ const PublishContainer = (props) => {
 
   const previewHandler = () => {
     setLoading(true);
-    // console.log("publish");
     setDisplayPreview(true);
     setLoading(false);
   };
@@ -72,8 +71,6 @@ const PublishContainer = (props) => {
   return (
     <>
       <Publish
-        //
-
         {...{
           // title,
           // crunch,

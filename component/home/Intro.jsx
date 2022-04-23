@@ -7,10 +7,10 @@ const Intro = () => (
   <div className={styles.intro}>
     <div>
       <Typography variant="h3" component="h2">
-        There's a lot to learn on the Internet
+        There's a lot on the Internet
       </Typography>
       <Typography variant="h5" component="h3">
-        Without direction, we easily loose focus
+        On ViewCrunch, you choose your interest
       </Typography>
       <div>
         <Image src="/images/ViewCrunch.webp" layout="fill" alt="ViewCrunch Intro" />

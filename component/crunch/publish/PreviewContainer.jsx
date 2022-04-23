@@ -35,7 +35,7 @@ const PreviewContainer = ({ displayPreview, setDisplayPreview, view, crunches, m
   const publishingOption = [displayName, ...crunches];
 
   const publishHandler = async () => {
-    setLoading(true);
+    // setLoading(true);
 
     const title = view.title || false;
     const content = view.content || false;
@@ -44,7 +44,38 @@ const PreviewContainer = ({ displayPreview, setDisplayPreview, view, crunches, m
 
     // description, keywords, title
     const schema = Joi.object({
-      title: Joi.string().min(3).max(150).required().trim(),
+      title: Joi.string()
+        .min(3)
+        .max(150)
+        .required()
+        .trim()
+        .pattern(/^[ A-Za-z0-9'$.@&!|_-]*$/)
+
+        .error((errors) => {
+          errors.forEach((err) => {
+            console.log(err.code);
+
+            switch (err.code) {
+              case "any.empty":
+                err.message = `Title should not be empty!`;
+                break;
+              case "string.min":
+                err.message = `Title should have at least ${err.local.limit} characters!`;
+                break;
+              case "string.max":
+                err.message = `Title should have at most ${err.local.limit} characters!`;
+                break;
+              case "string.pattern.base":
+                err.message = `Only Alphanumeric, Emptyspace and \` ' $ . @ & ! | _ - \` allowed in title`;
+                break;
+              default:
+                break;
+            }
+          });
+          return errors;
+        }),
+
+      // title: Joi.string().min(3).max(150).required().trim(),
       description: Joi.string().max(158).trim(),
       keywords: Joi.array().items(
         Joi.string()
@@ -80,19 +111,19 @@ const PreviewContainer = ({ displayPreview, setDisplayPreview, view, crunches, m
       enqueueSnackbar(error.stack, { variant: "error" });
       setLoading(false);
     } else {
-      const { link, errMsg } = await fetcher("/api/crunch/publish", {
-        title,
-        keywords,
-        description,
-        content,
-        myID,
-        crunch: publishTo === displayName ? "community" : publishTo,
-      });
+      // const { link, errMsg } = await fetcher("/api/crunch/publish", {
+      //   title,
+      //   keywords,
+      //   description,
+      //   content,
+      //   myID,
+      //   crunch: publishTo === displayName ? "community" : publishTo,
+      // });
 
       setLoading(false);
 
       // redirect author to view if view was published succesfully
-      if (link) return router.push(link);
+      // if (link) return router.push(link);
       enqueueSnackbar(errMsg, { variant: "error" });
     }
   };
