@@ -10,7 +10,7 @@ const Intro = () => (
         There's a lot on the Internet
       </Typography>
       <Typography variant="h5" component="h3">
-        On ViewCrunch, you choose your interest
+        On ViewCrunch, you choose your views
       </Typography>
       <div>
         <Image src="/images/ViewCrunch.webp" layout="fill" alt="ViewCrunch Intro" />
