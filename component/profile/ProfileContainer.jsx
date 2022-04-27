@@ -1,7 +1,9 @@
 import { Profile } from ".";
 
 const ProfileContainer = ({ profileData }) => {
-  return <Profile />;
+  // console.log(profileData);
+
+  return <Profile profileData={profileData} />;
 };
 
 export default ProfileContainer;

@@ -1,4 +1,5 @@
 import Profile from "./Profile";
 import ProfileContainer from "./ProfileContainer";
+import ProfilePicture from "./ProfilePicture";
 
-export { Profile, ProfileContainer as default };
+export { ProfilePicture, Profile, ProfileContainer as default };

@@ -1,7 +1,8 @@
 import { Grid, Typography, Box } from "@mui/material";
 import { Footer, NavContainer } from "@component/layout";
+import { ProfilePicture } from ".";
 
-const Profile = () => {
+const Profile = ({ profileData }) => {
   return (
     <Grid container style={{ maxWidth: "2200px", margin: "auto" }}>
       <NavContainer>
@@ -15,9 +16,10 @@ const Profile = () => {
       </NavContainer>
 
       <Grid item xs={12} sm={12} md={8}>
-        <Box>
-          <Footer />
-        </Box>
+        <Box></Box>
+        <ProfilePicture profileData={profileData} />
+
+        <Footer />
       </Grid>
     </Grid>
   );
