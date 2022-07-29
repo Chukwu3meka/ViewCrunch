@@ -39,7 +39,7 @@ const NavbarContainer = (props) => {
     ["NEWS", "/news", <NewsIcon />],
     ["Bookmarks", "/bookmarks", <TimelineIcon />],
     ["Profile", `/profile`, <AssignmentIndIcon />],
-    ["Company", "https://alienforest.com", <PublicIcon />, true],
+    ["Company", "https://chukwuemeka.vercel.app/", <PublicIcon />, true],
     ["Write", `/crunch/publish`, <WriteIcon />],
   ];
 
