@@ -1,7 +1,6 @@
 import SeoHead from "@component/others/SeoHead";
 import ErrorPage from "@component/others/ErrorPage";
 import NotificationContainer from "@component/notification";
-import { dateCalculator } from "@utils/clientFunctions";
 
 const NotificationPage = ({ notification, error: { code, title } }) => {
   if (code) return <ErrorPage code={code} title={title} />;
@@ -25,9 +24,9 @@ export default NotificationPage;
 
 export const getServerSideProps = async (ctx) => {
   const errorCodes = require("@source/errorCodes").default;
+
   try {
     const { notification_index } = require("@utils/serverFbQuery");
-
     const notification = await notification_index({ cookie: ctx.req.headers.cookie });
 
     return { props: { error: {}, notification } };

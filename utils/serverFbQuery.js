@@ -123,7 +123,7 @@ const crunch_index = async ({ cookie }) => {
 };
 
 const crunch_publish = async ({ cookie }) => {
-  const profile = (await profileFromRefresh({ cookie, optional: true })) || {};
+  const profile = await profileFromRefresh({ cookie });
 
   const {
     crunches,
@@ -138,25 +138,29 @@ const crunch_publish = async ({ cookie }) => {
 };
 
 const notification_index = async ({ cookie }) => {
-  const profile = (await profileFromRefresh({ cookie, optional: true })) || {};
+  try {
+    const profile = await profileFromRefresh({ cookie });
 
-  const messages = Object.entries(profile.notification)
-    .map(([key, value]) => ({
-      ...value,
-      message: key,
-      date: dateCalculator({ date: value.date.toDate().toDateString() }),
-    }))
-    .reverse();
+    const messages = Object?.entries(profile.notification)
+      .map(([key, value]) => ({
+        ...value,
+        message: key,
+        date: dateCalculator({ date: value.date.toDate().toDateString() }),
+      }))
+      ?.reverse();
 
-  return { messages, unseen: profile.unseenNotification };
+    return { messages, unseen: profile?.unseenNotification || 0 };
+  } catch (error) {
+    throw error;
+  }
 };
 
 const bookmarks_index = async ({ cookie }) => {
-  const profile = (await profileFromRefresh({ cookie, optional: true })) || {};
+  const profile = await profileFromRefresh({ cookie });
 
   const bookmarks = [];
 
-  for (const bookmark of profile.bookmarks.reverse()) {
+  for (const bookmark of profile.bookmarks?.reverse() || []) {
     await viewRef
       .doc(bookmark)
       .get()
@@ -204,8 +208,6 @@ const bookmarks_index = async ({ cookie }) => {
 
 const profile_id = async ({ cookie }) => {
   const profileData = (await profileFromRefresh({ cookie, optional: true })) || {};
-
-  console.log(profileData);
 
   if (!profileData) throw 1006;
 

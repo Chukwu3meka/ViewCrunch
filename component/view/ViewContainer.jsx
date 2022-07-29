@@ -52,15 +52,25 @@ const StoryContainer = (props) => {
 
   const actionsHandler = async (name) => {
     try {
+
+
+      if (name ===  "share") {
+        if (navigator) navigator.share({ title: view.title, text: view.description, url });
+        break;
+      }
+
+
+      // case "share": {
+      //   if (navigator) navigator.share({ title: view.title, text: view.description, url });
+      //   break;
+      // }
+
+
+
       if (!online) return enqueueSnackbar("You're not Connected to the internet", { variant: "warning" });
       if (!profile.myID) return enqueueSnackbar("Kindly signin at bottom of the page", { variant: "warning" });
 
       switch (name) {
-        case "share": {
-          if (navigator) navigator.share({ title: view.title, text: view.description, url });
-          break;
-        }
-
         case "blacklist": {
           if (author.author === profile.myID) return enqueueSnackbar(`You can't blacklist yourself`, { variant: "error" });
 

@@ -54,15 +54,23 @@ const Views = ({ label = "Recently Published", views, loading, fetchFailed, getV
                       </Typography>
                     </a>
                   </Link>
-                  <Typography variant="body2">{content.replace(/<[^>]+>/g, "")}</Typography>
+
+                  <Link href={viewLink}>
+                    <Typography sx={{ cursor: "pointer" }} variant="body2">
+                      {content.replace(/<[^>]+>/g, "")}
+                    </Typography>
+                  </Link>
 
                   {!mobile ? (
                     <ViewsFooter {...{ mobile: false, date, readTime, keyword, title, author, viewID, bookmarks, bookmarkHandler }} />
                   ) : null}
                 </div>
-                <div>
-                  <Image src={image} layout="fill" alt={title} />
-                </div>
+
+                <Link href={viewLink}>
+                  <div>
+                    <Image src={image} layout="fill" alt={title} />
+                  </div>
+                </Link>
               </div>
               {mobile ? (
                 <ViewsFooter {...{ mobile: true, date, readTime, keyword, title, author, viewID, bookmarks, bookmarkHandler }} />

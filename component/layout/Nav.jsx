@@ -10,6 +10,19 @@ import ThemeIcon from "@mui/icons-material/EmojiObjects";
 
 import { navStyles } from ".";
 
+const ChipLink = ({ link, label, icon, myNotification, activeNav }) => (
+  <Chip
+    label={label}
+    variant="outlined"
+    color={activeNav === link ? "secondary" : "info"}
+    icon={
+      <Badge color="secondary" badgeContent={link === "/notification" && !!myNotification ? myNotification : null}>
+        {icon}
+      </Badge>
+    }
+  />
+);
+
 const Nav = ({ mainNav, activeNav, currentThemeHandler, myNotification, children }) => (
   <Grid item xs={12} sm={12} md={4}>
     <div className={navStyles.navigation}>
@@ -17,23 +30,19 @@ const Nav = ({ mainNav, activeNav, currentThemeHandler, myNotification, children
       <div>
         <Typography component="h2">MAIN NAVIGATION</Typography>
         <nav>
-          {mainNav.map(([label, link, icon]) => (
-            <Link href={{ pathname: link }} key={link}>
-              <a>
-                <Chip
-                  key={link}
-                  label={label}
-                  icon={
-                    <Badge color="secondary" badgeContent={link === "/notification" && !!myNotification ? myNotification : null}>
-                      {icon}
-                    </Badge>
-                  }
-                  variant="outlined"
-                  color={activeNav === link ? "secondary" : "info"}
-                />
+          {mainNav.map(([label, link, icon, externalSite]) =>
+            externalSite ? (
+              <a key={link} href={link} rel="nofollow" target="_blank">
+                <ChipLink {...{ link, label, icon, myNotification, activeNav }} />
               </a>
-            </Link>
-          ))}
+            ) : (
+              <Link href={{ pathname: link }} key={link}>
+                <a>
+                  <ChipLink {...{ link, label, icon, myNotification, activeNav }} />
+                </a>
+              </Link>
+            )
+          )}
         </nav>
       </div>
       <div>

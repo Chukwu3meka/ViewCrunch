@@ -30,7 +30,7 @@ const Index = ({ error, view, author, viewID }) => {
 export default Index;
 
 export const getServerSideProps = async (ctx) => {
-  console.log("Adsdsds", "fsdfd".toString().split("-"));
+  // console.log("Adsdsds", "fsdfd".toString().split("-"));
   const { fetchView } = await require("@utils/clientFbQuery");
 
   const { pageData = {}, error = false } = await fetchView(ctx.query.viewLink);

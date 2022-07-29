@@ -65,10 +65,10 @@
           }
         }
         & > div:nth-of-type(2) {
-          position: relative;
-
           width: 80px;
           height: 90px;
+          cursor: pointer;
+          position: relative;
         }
       }
     }

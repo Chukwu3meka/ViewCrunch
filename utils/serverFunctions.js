@@ -93,7 +93,11 @@ const profileFromRefresh = async ({ refresh, cookie, optional }) => {
       throw error;
     });
 
-  if (!profile) throw 1006;
+  // console.log({ profile }, "profile ");
+
+  if (!profile) throw 1006; // 👈 null and undefined check
+  if (Object.keys(profile).length === 0 && Object.getPrototypeOf(profile) === Object.prototype) throw 1001; // 👈 empty array
+
   return profile;
 };
 
@@ -115,7 +119,7 @@ const uploadToFirestorage = async ({ image, myID, viewId }) => {
       },
       (err) => {
         if (err) {
-          console.log("err mo  tttj");
+          // console.log("err mo  tttj");
           throw `uploadImages ${err}`;
         } else {
           return `https://firebasestorage.googleapis.com/v0/b/${
